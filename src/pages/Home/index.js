@@ -1,21 +1,24 @@
-import React from 'react'
-// import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react';
+import { Text } from 'react-native';
+// import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-class index extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+const ContainerView = styled.View`
+  padding-top: 60px;
+`;
 
+class Home extends React.Component {
   render() {
     return (
-      <div>Home</div>
-    )
+      <ContainerView>
+        <Text>Home</Text>
+      </ContainerView>
+    );
   }
 }
 
-index.defaultProps = {};
+Home.defaultProps = {};
 
-index.propTypes = {};
+Home.propTypes = {};
 
-export default index;
+export default Home;

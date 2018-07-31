@@ -1,17 +1,24 @@
-import React from 'react'
-// import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react';
+import { Text } from 'react-native';
+// import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-class index extends React.Component {
+const ContainerView = styled.View`
+  padding-top: 60px;
+`;
+
+class Demo extends React.Component {
   render() {
     return (
-      <div>Demo</div>
-    )
+      <ContainerView>
+        <Text>Demo</Text>
+      </ContainerView>
+    );
   }
 }
 
-index.defaultProps = {};
+Demo.defaultProps = {};
 
-index.propTypes = {};
+Demo.propTypes = {};
 
-export default index;
+export default Demo;
