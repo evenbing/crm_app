@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>技术研发中心 : 首页日程安排</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">技术研发中心</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="15597717.html">CRM部分</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="15598653.html">CRM 系统 PRD</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="16351659.html">CRM  微应用</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            技术研发中心 : 首页日程安排
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> yuxiang</span>, last modified on 四月 20, 2018
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h3 id="id-首页日程安排-1.业务场景">1.业务场景</h3><p>员工进入应用查看个人日程任务安排。</p><h3 id="id-首页日程安排-2.竞品分析">2.竞品分析</h3><p>日程/任务安排</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171542.png" data-image-src="attachments/16352865/17171542.png" data-unresolved-comment-count="0" data-linked-resource-id="17171542" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_15-22-47.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="305" src="attachments/16352865/17171543.png" data-image-src="attachments/16352865/17171543.png" data-unresolved-comment-count="0" data-linked-resource-id="17171543" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_15-23-4.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><p>新增日程/任务</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="290" src="attachments/16352865/17171544.png" data-image-src="attachments/16352865/17171544.png" data-unresolved-comment-count="0" data-linked-resource-id="17171544" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_15-23-17.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171545.png" data-image-src="attachments/16352865/17171545.png" data-unresolved-comment-count="0" data-linked-resource-id="17171545" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_15-23-30.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="297" src="attachments/16352865/17171546.png" data-image-src="attachments/16352865/17171546.png" data-unresolved-comment-count="0" data-linked-resource-id="17171546" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_15-23-40.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><h3 id="id-首页日程安排-3.方案设计-数据模型">3.方案设计-数据模型</h3><h3 id="id-首页日程安排-4.方案设计-交互页面">4.方案设计-交互页面</h3><p>1.首页显示日程安排，点击月份显示年份+月份明细，点击月份显示当月日历。</p><p>左右滑动日期可切换日期，点击日期显示当日日程/任务。</p><p>日程显示开始时间、结束时间、日程主题、耗时，点击日程可进行下一步处理或延时操作，下一步将会调用创建日程/任务弹窗。</p><p>任务显示任务截止时间、任务名称、关联业务、完成状态，点击任务可进行完成或延时操作。</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171655.png" data-image-src="attachments/16352865/17171655.png" data-unresolved-comment-count="0" data-linked-resource-id="17171655" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="00-首页日程.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171662.png" data-image-src="attachments/16352865/17171662.png" data-unresolved-comment-count="0" data-linked-resource-id="17171662" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-11-27.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><p>点击延时按钮拉起时间弹窗，可选择延期时长，延期后开始时间、结束时间同步推迟。</p><p>点击下一步按钮拉起创建任务/日程浮层，点击后进入创建页面。</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171663.png" data-image-src="attachments/16352865/17171663.png" data-unresolved-comment-count="0" data-linked-resource-id="17171663" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-11-48.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171664.png" data-image-src="attachments/16352865/17171664.png" data-unresolved-comment-count="0" data-linked-resource-id="17171664" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-12-5.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><p>2.创建日程/任务</p><p>点击创建日程按钮进入创建日程页面，点击创建任务按钮进入创建任务页面。</p><p>日程字段：主题、开始时间、结束时间、提醒规则、参与人、关联业务、重复规则、描述、图片</p><p>任务字段：主题、截止时间、提醒规则、负责人、参与人、关联业务、描述、图片</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171660.png" data-image-src="attachments/16352865/17171660.png" data-unresolved-comment-count="0" data-linked-resource-id="17171660" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-11-1.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="310" src="attachments/16352865/17171686.png" data-image-src="attachments/16352865/17171686.png" data-unresolved-comment-count="0" data-linked-resource-id="17171686" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-34-13.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171657.png" data-image-src="attachments/16352865/17171657.png" data-unresolved-comment-count="0" data-linked-resource-id="17171657" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="02-创建任务.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><p>选择关联业务、设置提醒、重复规则</p><p>重复规则说明：</p><p>每日重复：按设置的开始时间和结束时间重复</p><p>每周重复：按设置开始时间的周几和结束时间的周几进行重复</p><p>每月重复：按设置开始时间的日期和结束时间的日期进行重复</p><p>重复后会自动在日历上更新日程</p><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171658.png" data-image-src="attachments/16352865/17171658.png" data-unresolved-comment-count="0" data-linked-resource-id="17171658" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="03-关联业务.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171678.png" data-image-src="attachments/16352865/17171678.png" data-unresolved-comment-count="0" data-linked-resource-id="17171678" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-21-16.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/16352865/17171682.png" data-image-src="attachments/16352865/17171682.png" data-unresolved-comment-count="0" data-linked-resource-id="17171682" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-26-15.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="16352865" data-linked-resource-container-version="5"></span></p><p><span style="color: rgb(0,0,0);"><br/></span></p><h3 id="id-首页日程安排-5.方案设计-页面功能">5.方案设计-页面功能</h3><h5 id="id-首页日程安排-1.页面元素-数据映射:">1. <strong>页面元素-数据映射</strong><strong>:</strong></h5><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="wrapped confluenceTable"><tbody><tr><td class="confluenceTd"><p><strong>页面元素</strong></p></td><td class="confluenceTd"><p><strong>表名</strong></p></td><td class="confluenceTd"><p><strong>字段名称</strong></p></td><td colspan="1" class="confluenceTd"><strong>是否必须</strong></td><td colspan="1" class="confluenceTd"><strong>验证要求</strong></td><td class="confluenceTd"><p><strong>备注</strong></p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> <em> </em></p></td></tr></tbody></table></div></div><p> </p><p><em>列表数据性报表建议使用下面的格式</em></p><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="wrapped confluenceTable"><tbody><tr><td class="confluenceTd"><p><strong>中文</strong></p></td><td class="confluenceTd"><p><strong>英文</strong></p></td><td class="confluenceTd"><p><strong>字段名称</strong></p></td><td class="confluenceTd"><p><strong>备注</strong></p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> <em> </em></p></td></tr></tbody></table></div></div><h5 id="id-首页日程安排-2.用户事件定义:">2. <strong>用户事件定义</strong><strong>:</strong></h5><p><strong>特别注意提示文案，提示文案用“”包括</strong></p><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="wrapped confluenceTable"><tbody><tr><td class="confluenceTd"><p><strong>事件</strong></p></td><td class="confluenceTd"><p><strong>流程功能说明</strong></p></td></tr><tr><td class="confluenceTd"><p>页面加载</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>保存_Click</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>新增_Click</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>……</p></td><td class="confluenceTd"><p> </p></td></tr></tbody></table></div></div><h3 id="id-首页日程安排-6.影响范围与应对">6.影响范围与应对</h3><p>无</p><h3 id="id-首页日程安排-7.技术细化方案">7.技术细化方案</h3><p>无</p><h3 id="id-首页日程安排-8.问答">8. 问答</h3><p>无</p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171542.png">image2018-4-20_15-22-47.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171543.png">image2018-4-20_15-23-4.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171544.png">image2018-4-20_15-23-17.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171545.png">image2018-4-20_15-23-30.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171546.png">image2018-4-20_15-23-40.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171655.png">00-首页日程.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171656.png">01-创建日程.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171657.png">02-创建任务.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171658.png">03-关联业务.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171660.png">image2018-4-20_17-11-1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171662.png">image2018-4-20_17-11-27.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171663.png">image2018-4-20_17-11-48.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171664.png">image2018-4-20_17-12-5.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171678.png">image2018-4-20_17-21-16.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171682.png">image2018-4-20_17-26-15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/16352865/17171686.png">image2018-4-20_17-34-13.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on 七月 02, 2018 10:09</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>
