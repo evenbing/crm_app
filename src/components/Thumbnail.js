@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../constants';
-import { isAndroid } from '../utils/device';
+import { isAndroid } from '../utils/utils';
 import defaultAvatar from '../img/default_avatar.png';
 
 function getRound(size) {
@@ -27,13 +27,14 @@ const AvatarImg = styled.Image.attrs({
 
 const Thumbnail = (props) => {
   const {
-    imgUri, size, round, borderRadius,
+    imgUri, size, round, borderRadius, source, resizeMode,
   } = props;
   return (
     <AvatarImg
       size={size}
-      source={imgUri ? { uri: imgUri } : defaultAvatar}
+      source={imgUri ? { uri: imgUri } : (source || defaultAvatar)}
       round={round}
+      resizeMode={resizeMode}
       borderRadius={borderRadius}
     />
   );
@@ -41,16 +42,20 @@ const Thumbnail = (props) => {
 
 Thumbnail.defaultProps = {
   imgUri: '',
+  source: null,
   size: theme.avatarSize,
   round: false,
   borderRadius: 0,
+  resizeMode: 'contain',
 };
 
 Thumbnail.propTypes = {
   imgUri: PropTypes.string,
+  source: PropTypes.number,
   size: PropTypes.number,
   round: PropTypes.bool,
   borderRadius: PropTypes.number,
+  resizeMode: PropTypes.string,
 };
 
 export default Thumbnail;

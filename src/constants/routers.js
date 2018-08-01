@@ -11,10 +11,7 @@ export default {
   // common card
   // home module
   home: 'app.tabView.root.home',
-  memberBirthday: 'app.tabView.root.home.memberBirthday',
-  redPacket: 'app.tabView.root.home.redPacket',
-  redStatistics: 'app.tabView.root.home.redStatistics',
-  // member module
-  member: 'app.tabView.root.member',
+  // crm module
+  crm: 'app.tabView.root.crm',
 };
 

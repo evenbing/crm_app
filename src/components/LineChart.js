@@ -6,9 +6,8 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { Dimensions } from 'react-native';
-import Echarts from 'native-echarts';
+import Echarts from 'xn-rn-echarts';
 import { theme } from '../constants';
 
 class LineChart extends React.PureComponent {
@@ -32,7 +31,7 @@ class LineChart extends React.PureComponent {
           boundaryGap: true,
           type: 'category',
           name: null,
-          data: data.map(obj=>obj.dateId),
+          data: data.map(obj => obj.dateId),
           axisTick: {
             alignWithLabel: true,
             show: false,
@@ -79,7 +78,7 @@ class LineChart extends React.PureComponent {
         {
           name,
           type: 'line',
-          data: data.map(obj=>obj.achievement),
+          data: data.map(obj => obj.achievement),
           showSymbol: false,
         },
       ],

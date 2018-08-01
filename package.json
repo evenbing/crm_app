@@ -10,7 +10,8 @@
   "ios": "react-native run-ios",
   "iPhoneX": "react-native run-ios --simulator 'iPhone X'",
   "test": "jest",
-  "clear": "watchman watch-del-all && rm -rf $TMPDIR/react-* && rm -rf node_modules/ && yarn install && yarn start -- --reset-cache"
+  "clear": "watchman watch-del-all && rm -rf $TMPDIR/react-* && rm -rf node_modules/ && yarn install && yarn start -- --reset-cache",
+  "build": "chmod 777 install.sh && ./install.sh"
  },
  "dependencies": {
   "autobind-decorator": "^2.1.0",
@@ -21,9 +22,14 @@
   "prop-types": "^15.6.2",
   "react": "16.0.0-alpha.12",
   "react-native": "0.47.2",
+  "react-native-linear-gradient": "^2.4.0",
+  "react-native-modal": "^6.5.0",
+  "react-native-root-siblings": "2.2.0",
+  "react-native-svg": "5.4.1",
   "react-navigation": "1.0.0-beta.31",
   "styled-components": "^3.3.3",
-  "uuid": "^3.3.2"
+  "uuid": "^3.3.2",
+  "xn-rn-echarts": "^1.0.8"
  },
  "devDependencies": {
   "babel-eslint": "^8.2.3",

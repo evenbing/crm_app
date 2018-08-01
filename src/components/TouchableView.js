@@ -7,35 +7,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
+import { NoDoublePress } from '../utils/utils';
 
 class TouchableView extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillUnmount() {
-    this.clearTimer();
-  }
-
-  onClick = () => {
-    const { onPress } = this.props;
-    if (global.isClick) return;
-    global.isClick = true;
-    onPress && onPress();
-    this.clearTimer();
-    global.timer = setTimeout(() => {
-      global.isClick = false;
-    }, 300);
+  onClick = (value) => {
+    NoDoublePress.onPress(() => {
+      this.props.onPress(value);
+    });
   };
 
-  clearTimer() {
-    if (global.timer) clearTimeout(global.timer);
-    global.timer = null;
-  }
   render() {
     const { children, style, activeOpacity } = this.props;
     return (
-      <TouchableOpacity activeOpacity={activeOpacity} style={style} onPress={this.onClick}>{children}</TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={activeOpacity}
+        style={style}
+        onPress={this.onClick}
+      >
+        {children}
+      </TouchableOpacity>
     );
   }
 }

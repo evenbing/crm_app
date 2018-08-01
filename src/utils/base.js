@@ -4,47 +4,7 @@
  * @time 2018/6/23
  * @author JUSTIN XU
  */
-import { Toast } from 'native-base';
 import { pinyin } from './pinyin';
-
-export function xnToast(content) {
-  if (global.toast !== undefined) {
-    Toast.hide();
-  }
-  global.toast = Toast.show(content.toString(), {
-    duration: Toast.durations.LONG,
-    position: Toast.positions.CENTER,
-    shadow: true,
-    animation: true,
-    hideOnPress: true,
-    delay: 0,
-  });
-}
-
-export function formatStringWithHtml(originString) {
-  if (originString === undefined) {
-    return '';
-  }
-  const newString = originString
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-  return newString;
-}
-
-// 防止按钮多次触发
-export const NoDoublePress = {
-  lastPressTime: 1,
-  onPress(callback) {
-    const curTime = new Date().getTime();
-    if (curTime - this.lastPressTime > 500) {
-      this.lastPressTime = curTime;
-      callback();
-    }
-  },
-};
 
 /** 根据数组对象排序 默认升序
  * @param prop 属性值
@@ -96,64 +56,59 @@ export function getTenantId() {
   return global.tenantId;
 }
 
-function formatDateNow(value) {
-  const { birthDate, birthMonth, birthYear } = value;
-  if (!(birthDate && birthMonth && birthYear)) return '';
-  const date = new Date().getDate();
-  const month = new Date().getMonth() + 1;
-  const year = new Date().getFullYear();
-  if(month === birthMonth) {
-    if(date === birthDate) return '今天';
-    const week = getWeekNumber(year, month, date)
-    const birthWeek = getWeekNumber(year, month, birthDate)
-    if(week === birthWeek) return '本周';
-    return '本月';
-  }
-
-  return `${birthYear}-${birthMonth}-${birthDate}`;
-}
-
-//计算周的范围结束
-const getWeekNumber = (y, m, d) => {
-  let now = new Date(y, m - 1, d),
-      year = now.getFullYear(),
-      month = now.getMonth(),
-      days = now.getDate();
-  //那一天是那一年中的第多少天
-  for (let i = 0; i < month; i++) {
-      days += getMonthDays(year, i);
-  }
-
-  //那一年第一天是星期几
-  let yearFirstDay = new Date(year, 0, 1).getDay() || 7;
-
-  let week = null;
-  if (yearFirstDay == 1) {
-      week = Math.ceil(days / yearFirstDay);
-  } else {
-      days -= (7 - yearFirstDay + 1);
-      week = Math.ceil(days / 7) + 1;
-  }
-
-  return week;
-}
 /**
- 10  * 获取某一年份的某一月份的天数
- 11  *
- 12  * @param {Number} year
- 13  * @param {Number} month
- 14  */
-const getMonthDays = (year, month) => {
+ * 判断年份是否为润年
+ * @param {Number} year
+ */
+export function isLeapYear(year) {
+  return (year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0);
+}
+
+/**
+ * 获取某一年份的某一月份的天数
+ * @param {Number} year
+ * @param {Number} month
+ */
+export function getMonthDays(year, month) {
   return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] || (isLeapYear(year) ? 29 : 28);
 }
 
-/**
- 2  * 判断年份是否为润年
- 3  *
- 4  * @param {Number} year
- 5  */
-const isLeapYear = (year) => {
-  return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+// 计算周的范围结束
+export function getWeekNumber(y, m, d) {
+  const now = new Date(y, m - 1, d);
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  let days = now.getDate();
+  // 那一天是那一年中的第多少天
+  for (let i = 0; i < month; i++) {
+    days += getMonthDays(year, i);
+  }
+  // 那一年第一天是星期几
+  const yearFirstDay = new Date(year, 0, 1).getDay() || 7;
+  let week = null;
+  if (yearFirstDay === 1) {
+    week = Math.ceil(days / 7);
+  } else {
+    days -= ((7 - yearFirstDay) + 1);
+    week = Math.ceil(days / 7) + 1;
+  }
+  return week;
+}
+
+export function formatDateNow(value) {
+  const { birthDate, birthMonth, birthYear } = value;
+  if (!(birthDate && birthMonth)) return '';
+  const date = new Date().getDate();
+  const month = new Date().getMonth() + 1;
+  const year = new Date().getFullYear();
+  if (month === birthMonth && date === birthDate) return '今天';
+  const week = getWeekNumber(year, month, date);
+  const birthWeek = getWeekNumber(year, birthMonth, birthDate);
+  // console.log("year:", year, " month:", month, " date:", date, " birthMonth:", birthMonth, " birthDate:", birthDate, " week:", week, " birthWeek:", birthWeek)
+  if (week === birthWeek) return '本周';
+  if (month === birthMonth) return '本月';
+  if (!birthYear) return `${birthMonth}-${birthDate}`;
+  return `${birthYear}-${birthMonth}-${birthDate}`;
 }
 
 // 格式化会员list
