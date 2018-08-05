@@ -23,7 +23,9 @@ import { registerTopNavigator } from './utils/navigationService';
 // import MemberSignListScreen from './pages/card/memberSignList';
 // root page -> home
 import HomeScreen from './pages/Home';
-// root page -> member
+// root page -> CRM
+import CRMScreen from './pages/CRM';
+
 import DemoScreen from './pages/Demo';
 
 const DefaultHeaderView = styled.View`
@@ -89,7 +91,7 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 });
 
 const CrmRouteConfig = {
-  [routers.crm]: { screen: DemoScreen },
+  [routers.crm]: { screen: CRMScreen },
 };
 
 const CrmNavigatorConfig = {
