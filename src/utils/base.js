@@ -4,7 +4,13 @@
  * @time 2018/6/23
  * @author JUSTIN XU
  */
+import { NativeModules } from 'react-native';
 import { pinyin } from './pinyin';
+
+// nav go back
+export function NativeGoBack() {
+  NativeModules.system.navTo('BACK');
+}
 
 /** 根据数组对象排序 默认升序
  * @param prop 属性值

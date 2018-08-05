@@ -1,3 +1,9 @@
+/**
+ * @component MobxDemo.js
+ * @description MobxDemo
+ * @time 2018/8/5
+ * @author JUSTIN XU
+ */
 import React from 'react';
 import { Text, Button } from 'react-native';
 // import PropTypes from 'prop-types';
@@ -16,7 +22,7 @@ const ContainerView = styled.View``;
 useStrict(true);
 
 @observer
-class Demo extends React.Component {
+class MobxDemo extends React.Component {
   render() {
     return (
       <ContainerView>
@@ -30,8 +36,8 @@ class Demo extends React.Component {
   }
 }
 
-Demo.navigationOptions = ({ navigation, screenProps }) => ({
-  title: 'Demo',
+MobxDemo.navigationOptions = ({ navigation, screenProps }) => ({
+  title: 'MobxDemo',
   headerLeft: (
     <LeftBackIcon
       onPress={navigation.state.params ? navigation.state.params._close : null}
@@ -39,8 +45,8 @@ Demo.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-Demo.defaultProps = {};
+MobxDemo.defaultProps = {};
 
-Demo.propTypes = {};
+MobxDemo.propTypes = {};
 
-export default Demo;
+export default MobxDemo;

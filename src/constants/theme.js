@@ -5,10 +5,12 @@
  * @author JUSTIN XU
  */
 export default {
-  primaryColor: '#5374C7',
+  primaryColor: '#18B548',
   headerBackgroundColor: '#333333',
+  dangerColor: '#D32E2B',
   headerColor: '#ffffff',
-  textColor: '#333',
+  borderColor: '#F6F6F6',
+  textColor: '#484848',
   fontMedium: 'PingFangSC-Medium',
   fontRegular: 'PingFangSC-Regular',
   avatarSize: 60,

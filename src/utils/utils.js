@@ -81,7 +81,7 @@ export const NoDoublePress = {
   lastPressTime: 1,
   onPress(callback) {
     const curTime = new Date().getTime();
-    if (curTime - this.lastPressTime > 1000) {
+    if (curTime - this.lastPressTime > 500) {
       this.lastPressTime = curTime;
       callback();
     }

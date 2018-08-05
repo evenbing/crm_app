@@ -17,7 +17,6 @@ import { registerTopNavigator } from './utils/navigationService';
 // import HomeModel from './logicStores/home';
 // import MemberModel from './logicStores/member';
 // root page -> common card
-// import CardPerformanceScreen from './pages/card/performance';
 // import MemberRecordScreen from './pages/card/memberRecord';
 // import MemberDetailScreen from './pages/card/memberDetail';
 // import MemberSignListScreen from './pages/card/memberSignList';
@@ -25,8 +24,9 @@ import { registerTopNavigator } from './utils/navigationService';
 import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
-
-import DemoScreen from './pages/Demo';
+// root page -> Demo page
+import MobxDemoScreen from './pages/Demo/MobxDemo';
+import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
 
 const DefaultHeaderView = styled.View`
   flex: 1;
@@ -35,6 +35,8 @@ const DefaultHeaderView = styled.View`
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
+  [routers.actionSheetDemo]: { screen: ActionSheetDemoScreen },
+  [routers.mobxDemo]: { screen: MobxDemoScreen },
 };
 
 const HomeNavigatorConfig = {
@@ -96,7 +98,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.demo,
+  initialRouteName: routers.crm,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);

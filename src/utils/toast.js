@@ -54,7 +54,7 @@ const Toast = {
    * @param options 配置
    * @param callback 回调函数
   * */
-  basicToast(content, { position = 0, duration = 2000, ...restProps } = {}, callback) {
+  basicToast(content, { position = 0, duration = 1500, ...restProps } = {}, callback) {
     // only show one
     if (this.toast) return;
     this.toast = RootToast.show(content, {
