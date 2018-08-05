@@ -11,7 +11,7 @@ import getConfig from './config';
 import AppService from './service/AppService';
 
 import XnLoading from './components/xnLoading';
-// import Toast from './utils/toast';
+import Toast from './utils/toast';
 import Navigator from './router';
 import { getFooterBottom } from './utils/utils';
 
@@ -74,7 +74,7 @@ class App extends React.Component {
       global.guideUserId = guideUserId;
       this.setState({ loading: false });
     } catch (e) {
-      // Toast.showError(e.message);
+      Toast.showError(e.message);
     }
   };
 
