@@ -7,6 +7,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import RootToast from '../components/Toast';
+import { moderateScale } from './scale';
 
 // static source
 import succeedIcon from '../img/succeed.png';
@@ -14,22 +15,22 @@ import warningIcon from '../img/warning.png';
 import errorIcon from '../img/error.png';
 
 const ContainerView = styled.View`
-  width: 181px;
-  height: 105px;
+  width: ${moderateScale(181)};
+  height: ${moderateScale(105)};
   justify-content: center;
   align-items: center;
 `;
 
 const ImageIcon = styled.Image`
-  width: 39px;
-  height: 39px;
+  width: ${moderateScale(39)};
+  height: ${moderateScale(39)};
 `;
 
 const MessageText = styled.Text`
   color: #fff;
-  margin-top: 12px;
+  margin-top:${moderateScale(12)};
   text-align: center;
-  line-height: 15px;
+  line-height:${moderateScale(15)};
 `;
 
 const SuccessText = MessageText.extend`

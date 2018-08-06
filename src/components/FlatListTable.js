@@ -7,7 +7,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import uuidv1 from 'uuid/v1';
 import { FlatList, ActivityIndicator } from 'react-native';
 
 const TableBody = styled.View`
@@ -64,6 +63,7 @@ class FlatListTable extends React.PureComponent {
         onEndReached,
         onEndReachedThreshold,
         ListHeaderComponent,
+        keyExtractor,
         ListFooterComponent,
         noDataBool,
         noDataText,
@@ -93,7 +93,7 @@ class FlatListTable extends React.PureComponent {
           onEndReached={onEndReached}
           onEndReachedThreshold={onEndReachedThreshold}
           ListHeaderComponent={ListHeaderComponent}
-          keyExtractor={() => uuidv1()}
+          keyExtractor={keyExtractor}
           style={{
             ...flatListStyle,
           }}
@@ -149,7 +149,7 @@ FlatListTable.defaultProps = {
   ListFooterComponent: null,
   renderItem: () => null,
   renderItemElem: null,
-  numColumns: 1
+  numColumns: 1,
 };
 
 FlatListTable.propTypes = {
@@ -159,6 +159,7 @@ FlatListTable.propTypes = {
   ]).isRequired,
   renderHeader: PropTypes.element,
   renderItem: PropTypes.func,
+  keyExtractor: PropTypes.func.isRequired,
   renderItemElem: PropTypes.element,
   ItemSeparatorComponent: PropTypes.func,
   flatListStyle: PropTypes.objectOf(PropTypes.any),

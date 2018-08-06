@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Modal from 'react-native-modal';
 import { theme } from '../../constants';
+import { moderateScale } from '../../utils/scale';
 
 // components
 import TouchableView from '../../components/TouchableView';
@@ -19,16 +20,14 @@ const ModalView = styled(Modal)`
   justify-content: flex-end;
 `;
 
-const ContainerView = styled.View`
-`;
+const ContainerView = styled.View``;
 
 const ItemBasicView = css`
-  padding: 0 16px;
-  height: 44px;
-  border-bottom-width: 1px;
+  padding: 0 ${moderateScale(16)}px;
+  height: ${moderateScale(44)};
+  border-bottom-width: ${props => props.isLast ? '0px' : '1px'};
   border-style: solid;
   border-bottom-color: ${props => props.isLast ? 'transparent' : theme.borderColor};
-  background-color: #FFFFFF;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -38,17 +37,21 @@ const ItemPressView = styled(TouchableView)`
   ${ItemBasicView};
 `;
 
+const ItemListView = styled.View`
+  background-color: #ffffff;
+`;
+
 const ItemView = styled.View`
   ${ItemBasicView};
 `;
 
 const ItemText = styled.Text`
   color: ${theme.textColor};
-  font-size: 16px;
+  font-size: ${moderateScale(16)};
 `;
 
 const FooterView = styled(TouchableView)`
-  height: 49px;
+  height: ${moderateScale(49)};
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -57,7 +60,7 @@ const FooterView = styled(TouchableView)`
 
 const FooterText = styled.Text`
   color: ${theme.primaryColor};
-  font-size: 16px;
+  font-size: ${moderateScale(16)};
 `;
 
 class ActionSheet extends React.PureComponent {
@@ -126,7 +129,9 @@ class ActionSheet extends React.PureComponent {
         onBackdropPress={onPressClose}
       >
         <ContainerView>
-          {this.renderItem()}
+          <ItemListView>
+            {this.renderItem()}
+          </ItemListView>
           <HorizontalDivider />
           {this.renderFooter()}
         </ContainerView>

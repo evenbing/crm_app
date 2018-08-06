@@ -11,9 +11,8 @@ import Toast from '../../utils/toast';
 import { routers } from '../../constants';
 
 // components
-import CommStatusBar from '../../components/Layout/CommStatusBar';
-import LeftBackIcon from '../../components/Layout/LeftBackIcon';
-import ActionSheet from '../../components/Modal/ActionSheet';
+import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import { ActionSheet } from '../../components/Modal';
 // import TouchableView from '../../components/TouchableView';
 
 const ContainerView = styled.View``;

@@ -1,31 +1,29 @@
 import React from 'react';
-import { Text, Button } from 'react-native';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { moderateScale } from '../../utils/scale';
 
 // components
-import CommStatusBar from '../../components/Layout/CommStatusBar';
-import LeftBackIcon from '../../components/Layout/LeftBackIcon';
-
-import { HeadItem, NavItem, ScrollView } from '../../components/CRM'
+import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import { HeadItem, NavItem } from '../../components/CRM';
 
 
 const ContainerView = styled.ScrollView`
-flex: 1;
-background-color: #fff;
+  flex: 1;
+  background-color: #fff;
 `;
 
 const HeaderView = styled.View`
-height: 100px;
-flex-direction: row;
+  height: ${moderateScale(100)};
+  flex-direction: row;
 `;
 
 const NavListView = styled.View`
-margin-top: 10px;
-`
+  margin-top: ${moderateScale(10)};
+`;
 
 useStrict(true);
 
@@ -41,8 +39,8 @@ const HeadList = [
   {
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
-  }
-]
+  },
+];
 
 const NavList = [
   {
@@ -89,14 +87,14 @@ const NavList = [
 
 @observer
 class CRM extends React.Component {
-
   onNavHandler = path => {
 
-  }
+  };
 
   render() {
     return (
       <ContainerView>
+        <CommStatusBar />
         <LinearGradient
           start={{ x: 1.0, y: 0.0 }}
           end={{ x: 0.0, y: 1.0 }}
@@ -135,6 +133,18 @@ CRM.navigationOptions = ({ navigation, screenProps }) => ({
 
 CRM.defaultProps = {};
 
-CRM.propTypes = {};
+CRM.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default CRM;

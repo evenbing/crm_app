@@ -13,6 +13,7 @@ export default {
   home: 'app.tabView.root.home',
   // crm module
   crm: 'app.tabView.root.crm',
+  customer: 'app.tabView.root.crm.customer',
   // demo
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',

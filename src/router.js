@@ -12,6 +12,7 @@ import { observer } from 'mobx-react/native';
 import styled from 'styled-components';
 import { routers, theme } from './constants';
 import { getHeaderPadding, getHeaderHeight } from './utils/utils';
+import { moderateScale } from './utils/scale';
 import { registerTopNavigator } from './utils/navigationService';
 // root model
 // import HomeModel from './logicStores/home';
@@ -24,6 +25,7 @@ import { registerTopNavigator } from './utils/navigationService';
 import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
+import CustomerScreen from './pages/CRM/Customer';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -57,7 +59,7 @@ const HomeNavigatorConfig = {
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
-      fontSize: 16,
+      fontSize: moderateScale(18),
       fontWeight: 'bold',
       textAlign: 'center',
     },
@@ -79,13 +81,13 @@ HomeStack.navigationOptions = ({ navigation }) => ({
     focused ? (
       <Image
         source={require('./img/rootTabBar/home-focus.png')}
-        style={{ width: 24, height: 22 }}
+        style={{ width: moderateScale(24), height: moderateScale(22) }}
         resizeMode="contain"
       />
     ) : (
       <Image
         source={require('./img/rootTabBar/home.png')}
-        style={{ width: 24, height: 22 }}
+        style={{ width: moderateScale(24), height: moderateScale(22) }}
         resizeMode="contain"
       />
     )
@@ -94,11 +96,12 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 
 const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
+  [routers.customer]: { screen: CustomerScreen },
 };
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.customer,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
@@ -132,7 +135,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

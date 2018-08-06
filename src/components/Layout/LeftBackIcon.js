@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { goBack } from '../../utils/navigationService';
+import { moderateScale } from '../../utils/scale';
 
 import TouchableView from '../TouchableView';
 
@@ -18,8 +19,8 @@ const ContainerView = styled.View`
 `;
 
 const ImageIcon = styled.Image`
-  width: 10px;
-  height: 18px;
+  width: ${moderateScale(10)};
+  height: ${moderateScale(18)};
 `;
 
 class LeftBackIcon extends React.PureComponent{
@@ -32,8 +33,8 @@ class LeftBackIcon extends React.PureComponent{
         <TouchableView
           onPress={onPress || (() => goBack())}
           style={{
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingLeft: moderateScale(10),
+            paddingRight: moderateScale(10),
             justifyContent: 'center',
           }}
         >

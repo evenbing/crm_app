@@ -1,4 +1,4 @@
-import HeadItem from './headItem'
-import NavItem from './navItem'
+import HeadItem from './HeadItem';
+import NavItem from './NavItem';
 
-export { HeadItem, NavItem }
+export { HeadItem, NavItem };
