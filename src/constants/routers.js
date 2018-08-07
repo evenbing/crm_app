@@ -14,6 +14,8 @@ export default {
   // crm module
   crm: 'app.tabView.root.crm',
   customer: 'app.tabView.root.crm.customer',
+  productList: 'app.tabView.root.crm.productList',
+  priceList: 'app.tabView.root.crm.priceList',
   // demo
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',

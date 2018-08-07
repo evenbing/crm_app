@@ -8,7 +8,9 @@ import { moderateScale } from '../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { HeadItem, NavItem } from '../../components/CRM';
+import { HeadItem } from '../../components/CRM';
+import NavItem from '../../components/NavItem'
+import { routers } from '../../constants';
 
 
 const ContainerView = styled.ScrollView`
@@ -23,6 +25,7 @@ const HeaderView = styled.View`
 
 const NavListView = styled.View`
   margin-top: ${moderateScale(10)};
+  margin-bottom: ${moderateScale(10)};
 `;
 
 useStrict(true);
@@ -76,19 +79,19 @@ const NavList = [
   {
     icon: require('../../img/crm/qrCode.png'),
     title: '产品',
-    path: '',
+    path: routers.productList,
   },
   {
     icon: require('../../img/crm/qrCode.png'),
     title: '价格表',
-    path: '',
+    path: routers.priceList,
   },
 ]
 
 @observer
 class CRM extends React.Component {
   onNavHandler = path => {
-
+    this.props.navigation.navigate(path);
   };
 
   render() {
@@ -109,7 +112,8 @@ class CRM extends React.Component {
           {
             NavList.map((obj, index) => (
               <NavItem
-                data={obj}
+                leftText={obj.title}
+                icon={obj.icon}
                 key={index}
                 isLast={index === NavList.length - 1}
                 onPress={() => this.onNavHandler(obj.path)}

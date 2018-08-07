@@ -10,8 +10,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View, Text, Image } from 'react-native';
 import theme from '../../constants/theme';
+import { moderateScale } from '../../utils/scale';
+import TouchableView from '../TouchableView'
 
-const ContainerView = styled(View)`
+const ContainerView = styled(TouchableView)`
 width: 100%;
 height: 60px;
 padding: 0 15px;
@@ -52,11 +54,19 @@ background-color: transparent;
 `;
 
 const RightView = styled(View)`
-width: 8px;
 height: 100%;
 alignItems: center;
 justifyContent: center;
+flexDirection: row;
 `;
+
+const RightText = styled(Text)`
+font-family: ${theme.fontRegular};
+font-size: 16px;
+color: #373737;
+background-color: transparent;
+margin-right: 5px;
+`
 
 const NavIcon = styled.Image`
   width: 6px;
@@ -65,17 +75,25 @@ const NavIcon = styled.Image`
 
 class NavItem extends React.PureComponent {
   render() {
-    const { data, onPress, isLast } = this.props;
+    const {
+      leftText,
+      leftTextStyle,
+      icon,
+      rightText,
+      rightTextStyle,
+      onPress,
+      isLast,
+      height,
+    } = this.props;
     return (
-      <ContainerView onPress={onPress}>
+      <ContainerView onPress={onPress} style={{height}}>
         <BorderView isLast={isLast}>
           <LeftView>
-            <IconView>
-              <Image source={data.icon} />
-            </IconView>
-            <TitleText>{data.title}</TitleText>
+            { icon ? <IconView><Image source={icon} /></IconView> : null }
+            <TitleText style={leftTextStyle}>{leftText}</TitleText>
           </LeftView>
           <RightView>
+            <RightText style={rightTextStyle}>{rightText}</RightText>
             <NavIcon
               source={require('../../img/nav.png')}
               resizeMode="contain"
@@ -88,14 +106,24 @@ class NavItem extends React.PureComponent {
 }
 
 NavItem.defaultProps = {
-  data: {},
+  leftText: "",
+  leftTextStyle: {},
+  icon: "",
+  rightText: "",
+  rightTextStyle: {},
   isLast: false,
+  height: 60,
   onPress: () => null,
 };
 
 NavItem.propTypes = {
-  data: PropTypes.objectOf(PropTypes.any),
+  leftText: PropTypes.string.isRequired,
+  leftTextStyle: PropTypes.object,
+  icon: PropTypes.any,
+  rightText: PropTypes.string.isRequired,
+  rightTextStyle: PropTypes.object,
   isLast: PropTypes.bool,
+  height: PropTypes.number,
   onPress: PropTypes.func,
 };
 

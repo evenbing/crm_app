@@ -26,6 +26,11 @@ import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
+// root page -> CRM -> 产品目录
+import ProductListScreen from './pages/ProductList';
+// root page -> CRM -> 价格表
+import PriceListScreen from './pages/PriceList';
+
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -97,11 +102,13 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
+  [routers.priceList]: { screen: PriceListScreen },
+  [routers.productList]: { screen: ProductListScreen },
 };
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.customer,
+  initialRouteName: routers.crm,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
