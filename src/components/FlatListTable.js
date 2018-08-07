@@ -14,12 +14,6 @@ const TableBody = styled.View`
   flex: 1;
 `;
 
-const ItemSeparator = styled.View`
-  width: 100%;
-  height: 1px;
-  background-color: #F6F6F6;
-`;
-
 const ListEmptyView = styled.View`
   height: ${props => props.height};
   width: 100%;
@@ -136,7 +130,7 @@ FlatListTable.defaultProps = {
   renderHeader: null,
   flatListStyle: null,
   tableBodyStyle: null,
-  ItemSeparatorComponent: () => <ItemSeparator />,
+  ItemSeparatorComponent: null,
   onRefresh: null,
   refreshing: false,
   onEndReached: null,

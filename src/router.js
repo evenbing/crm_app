@@ -25,7 +25,8 @@ import { registerTopNavigator } from './utils/navigationService';
 import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
-import CustomerScreen from './pages/CRM/Customer';
+import CustomerScreen from './pages/Customer';
+import SalesCluesScreen from './pages/SalesClues';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/ProductList';
 // root page -> CRM -> 价格表
@@ -102,6 +103,7 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
+  [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
 };
