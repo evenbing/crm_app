@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { Text, View, TouchableOpacity } from 'react-native';
 
 import { theme } from '../constants/index';
-import BorderShadow from './BorderShadow';
+import BorderShadow from './Shadow/BorderShadow';
 
 const TabsPanelView = styled(View)`
   background: #FFFFFF;

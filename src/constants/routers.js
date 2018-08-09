@@ -16,6 +16,7 @@ export default {
   customer: 'app.tabView.root.crm.customer',
   productList: 'app.tabView.root.crm.productList',
   priceList: 'app.tabView.root.crm.priceList',
+  salesClues: 'app.tabView.root.crm.salesClues',
   // demo
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',

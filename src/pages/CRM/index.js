@@ -9,7 +9,7 @@ import { moderateScale } from '../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { HeadItem } from '../../components/CRM';
-import NavItem from '../../components/NavItem'
+import NavItem from '../../components/NavItem';
 import { routers } from '../../constants';
 
 
@@ -34,6 +34,7 @@ const HeadList = [
   {
     icon: require('../../img/crm/customerIcon.png'),
     text: '客户',
+    path: routers.customer,
   },
   {
     icon: require('../../img/crm/saleIcon.png'),
@@ -54,7 +55,7 @@ const NavList = [
   {
     icon: require('../../img/crm/qrCode.png'),
     title: '销售线索',
-    path: '',
+    path: routers.salesClues,
   },
   {
     icon: require('../../img/crm/qrCode.png'),
@@ -104,7 +105,14 @@ class CRM extends React.Component {
           colors={['#98CE5E', '#019D55']}
         >
           <HeaderView>
-            { HeadList.map((item, index) => <HeadItem key={index} isLast={index===HeadList.length-1} data={item} />) }
+            { HeadList.map((item, index) => (
+              <HeadItem
+                key={index}
+                isLast={index === HeadList.length - 1}
+                data={item}
+                onPress={() => this.onNavHandler(item.path)}
+              />
+            )) }
           </HeaderView>
         </LinearGradient>
 

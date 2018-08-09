@@ -7,8 +7,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 import { View, Text, Image } from 'react-native';
+
+import TouchableView from '../../components/TouchableView';
 
 import { theme } from '../../constants';
 
@@ -18,7 +19,7 @@ alignItems: center;
 justifyContent: center;
 `;
 
-const ContentView = styled(View)`
+const ContentView = styled(TouchableView)`
 alignItems: center;
 `
 const IconView = styled(View)`
@@ -52,13 +53,14 @@ class HeadItem extends PureComponent {
   render() {
     const {
       data,
-      isLast
+      isLast,
+      onPress,
     } = this.props;
 
     const { icon, text, width, height } = data;
     return (
       <Container>
-        <ContentView>
+        <ContentView onPress={onPress}>
           <IconView><Image source={icon} /></IconView>
           <ItemText>{text}</ItemText>
         </ContentView>
@@ -71,11 +73,13 @@ class HeadItem extends PureComponent {
 HeadItem.defaultProps = {
   data: {},
   isLast: false,
+  onPress: () => null,
 };
 
 HeadItem.propTypes = {
   data: PropTypes.objectOf(PropTypes.any),
   isLast: PropTypes.bool,
+  onPress: PropTypes.func,
 };
 
 export default HeadItem;
