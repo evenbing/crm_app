@@ -39,7 +39,7 @@ const HeadList = [
   {
     icon: require('../../img/crm/saleIcon.png'),
     text: '销售机会',
-    path: '',
+    path: routers.salesChance,
   },
   {
     icon: require('../../img/crm/statisticsIcon.png'),

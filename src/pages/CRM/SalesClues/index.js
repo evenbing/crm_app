@@ -44,11 +44,11 @@ class SalesClues extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  safeCloseOpenRow(index) {
+  safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
-  }
+  };
   renderItem = (props) => {
     const { index } = props;
     return (

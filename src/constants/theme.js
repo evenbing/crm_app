@@ -8,12 +8,16 @@ import { moderateScale } from '../utils/scale';
 
 export default {
   primaryColor: '#18B548',
+  whiteColor: '#FFFFFF',
   headerBackgroundColor: '#333333',
   dangerColor: '#D32E2B',
   headerColor: '#ffffff',
   borderColor: '#F6F6F6',
   pageBackColor: '#F6F6F6',
   textColor: '#484848',
+  textGrayColor: '#A3A3A3',
+  listTitleColor: '#4F4F4F',
+  listTipColor: '#787878',
   fontMedium: 'PingFangSC-Medium',
   fontRegular: 'PingFangSC-Regular',
   avatarSize: 60,

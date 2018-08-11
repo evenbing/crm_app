@@ -25,11 +25,13 @@ import { registerTopNavigator } from './utils/navigationService';
 import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
-// root page -> CRM -> Customer module
+// root page -> CRM -> 客户 module
 import CustomerScreen from './pages/CRM/Customer';
-// root page -> CRM -> Sales clues module
+// root page -> CRM -> 销售机会 module
+import SalesChanceScreen from './pages/CRM/SalesChance';
+// root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
-// root page -> CRM -> Market activity module
+// root page -> CRM -> 活动机会 module
 import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/ProductList';
@@ -107,6 +109,7 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
+  [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.priceList]: { screen: PriceListScreen },
