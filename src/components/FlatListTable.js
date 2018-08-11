@@ -64,6 +64,7 @@ class FlatListTable extends React.PureComponent {
         loadingMore,
         renderItem,
         renderItemElem,
+        flatRef,
         ...restProps
       },
     } = this;
@@ -73,7 +74,7 @@ class FlatListTable extends React.PureComponent {
       >
         { renderHeader }
         <FlatList
-          ref="flatList"
+          ref={flatRef}
           data={data}
           onLayout={(e) => {
             const { height } = e.nativeEvent.layout;
@@ -144,6 +145,7 @@ FlatListTable.defaultProps = {
   renderItem: () => null,
   renderItemElem: null,
   numColumns: 1,
+  flatRef: () => null,
 };
 
 FlatListTable.propTypes = {
@@ -169,6 +171,7 @@ FlatListTable.propTypes = {
   loadingMore: PropTypes.bool,
   ListFooterComponent: PropTypes.element,
   numColumns: PropTypes.number,
+  flatRef: PropTypes.func,
 };
 
 export default FlatListTable;

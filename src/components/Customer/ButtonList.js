@@ -1,19 +1,19 @@
 /**
  * @component ButtonList.js
- * @description 右侧滑动组件
+ * @description 滑动按钮list组件
  * @time 2018/8/7
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
-import TouchableView from '../../components/TouchableView';
+import { theme } from '../../constants/index';
+import TouchableView from '../TouchableView';
 
 const ContainerView = styled.View`
   background-color: ${theme.pageBackColor};
   height: ${theme.moderateScale(88)};
-  padding-left: ${theme.moderateScale(17)};
+  padding-left: ${theme.moderateScale(15)};
   padding-right: ${theme.moderateScale(15)};
   flex-direction: row;
 `;

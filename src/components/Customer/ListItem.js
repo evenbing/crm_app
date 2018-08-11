@@ -1,13 +1,13 @@
 /**
  * @component ListItem.js
- * @description 客户列表条目组件
+ * @description 列表条目组件
  * @time 2018/8/7
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
+import { theme } from '../../constants/index';
 
 const ContainerView = styled.View`
   padding-left: ${theme.moderateScale(15)};
@@ -27,15 +27,15 @@ const TitleView = styled.Text`
   font-size: ${theme.moderateScale(16)};
   font-family: ${theme.fontMedium};
   color: #4F4F4F ;
+  margin-bottom: ${theme.moderateScale(10)};
 `;
 const TimeView = styled.Text`
-  margin-top: ${theme.moderateScale(10)};
   color: #A3A3A3;
 `;
 const BoardView = styled.View`
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: ${theme.moderateScale(15)};
   height: 1px;
   width: 100%;
   background-color: #EEEEEE;
@@ -52,24 +52,48 @@ const RightText = styled.Text`
 `;
 
 class ListItem extends React.PureComponent {
-  render() {
+  renderLeft = () => {
     const {
-      item,
+      item: { title, tipList = [] },
+      left,
     } = this.props;
-    const bool = item.status === 1;
+    if (React.isValidElement(left)) return left;
+    if (left === 'hidden') return null;
+    return (
+      <LeftView>
+        <TitleView>{title}</TitleView>
+        {
+          (Array.isArray(tipList) && tipList.length) ?
+            tipList.map(_ => (
+              <TimeView key={_}>{_}</TimeView>
+            )) : null
+        }
+      </LeftView>
+    );
+  };
+  renderRight = () => {
+    const {
+      item: { status },
+      right,
+    } = this.props;
+    if (React.isValidElement(right)) return right;
+    if (right === 'hidden') return null;
+    const bool = status === 1;
+    return (
+      <RightView>
+        <RightText
+          color={bool ? theme.primaryColor : '#5374C7'}
+        >
+          {bool ? '进行中' : '已计划'}
+        </RightText>
+      </RightView>
+    );
+  };
+  render() {
     return (
       <ContainerView>
-        <LeftView>
-          <TitleView>{item.name}</TitleView>
-          <TimeView>{item.company}</TimeView>
-        </LeftView>
-        <RightView>
-          <RightText
-            color={bool ? theme.primaryColor : '#5374C7'}
-          >
-            {bool ? '进行中' : '已计划'}
-          </RightText>
-        </RightView>
+        {this.renderLeft()}
+        {this.renderRight()}
         <BoardView />
       </ContainerView>
     );
@@ -78,10 +102,14 @@ class ListItem extends React.PureComponent {
 
 ListItem.defaultProps = {
   item: {},
+  left: null,
+  right: null,
 };
 
 ListItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  left: PropTypes.node,
+  right: PropTypes.node,
 };
 
 export default ListItem;

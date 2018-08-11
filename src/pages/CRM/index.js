@@ -39,10 +39,12 @@ const HeadList = [
   {
     icon: require('../../img/crm/saleIcon.png'),
     text: '销售机会',
+    path: '',
   },
   {
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
+    path: '',
   },
 ];
 
@@ -50,7 +52,7 @@ const NavList = [
   {
     icon: require('../../img/crm/qrCode.png'),
     title: '市场活动',
-    path: '',
+    path: routers.markActivity,
   },
   {
     icon: require('../../img/crm/qrCode.png'),
@@ -91,7 +93,7 @@ const NavList = [
 
 @observer
 class CRM extends React.Component {
-  onNavHandler = path => {
+  onNavHandler = (path) => {
     this.props.navigation.navigate(path);
   };
 

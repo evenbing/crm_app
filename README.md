@@ -35,5 +35,7 @@ java (v1.8.0_172)
   |--setup.js       全局入口js
 
 |--package.json
+|--install.sh       打包脚本
+|--PROGRESS.md      进度md
 |--README.md
 ```

@@ -33,13 +33,17 @@ class SearchInput extends React.Component {
   render() {
     const {
       searchWidth,
+      searchStyle,
       onChangeText,
       onSearch,
       value,
       ...resetProps
     } = this.props;
     return (
-      <SearcherView width={searchWidth}>
+      <SearcherView
+        width={searchWidth}
+        style={searchStyle}
+      >
         <TextInput
           placeholderTextColor="#c1c1c1"
           returnKeyType="done"
@@ -68,6 +72,7 @@ SearchInput.defaultProps = {
   onChangeText: () => null,
   value: '',
   onSearch: () => null,
+  searchStyle: {},
 };
 
 SearchInput.propTypes = {
@@ -78,6 +83,7 @@ SearchInput.propTypes = {
   value: PropTypes.string,
   onChangeText: PropTypes.func,
   onSearch: PropTypes.func,
+  searchStyle: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SearchInput;

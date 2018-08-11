@@ -53,7 +53,7 @@
     "pit": false
   },
   "rules": {
-    "no-underscore-dangle": ["error", { "allow": ["__APP__", "__ANDROID__", "__IOS__"] }],
+    "no-underscore-dangle": ["error", { "allow": ["__APP__", "__ANDROID__", "__IOS__", "_root"] }],
     "react/jsx-filename-extension": [
       1,
       {

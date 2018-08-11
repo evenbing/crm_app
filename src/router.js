@@ -25,8 +25,12 @@ import { registerTopNavigator } from './utils/navigationService';
 import HomeScreen from './pages/Home';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
-import CustomerScreen from './pages/Customer';
-import SalesCluesScreen from './pages/SalesClues';
+// root page -> CRM -> Customer module
+import CustomerScreen from './pages/CRM/Customer';
+// root page -> CRM -> Sales clues module
+import SalesCluesScreen from './pages/CRM/SalesClues';
+// root page -> CRM -> Market activity module
+import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/ProductList';
 // root page -> CRM -> 价格表
@@ -51,7 +55,7 @@ const HomeNavigatorConfig = {
   initialRouteName: routers.home,
   cardStyle: { shadowColor: 'transparent' },
   navigationOptions: {
-    // // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+    // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
     headerStyle: {
       paddingTop: getHeaderPadding(),
       backgroundColor: '#333238',
@@ -104,6 +108,7 @@ const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
+  [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
 };

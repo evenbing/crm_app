@@ -1,6 +1,6 @@
 /**
  * @component index.js
- * @description 客户页面
+ * @description 销售线索页面
  * @time 2018/8/6
  * @author JUSTIN XU
  */
@@ -10,21 +10,19 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../constants';
+import { theme } from '../../../constants/index';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../components/Layout';
-import SearchInput from '../../components/SearchInput';
-import { ContainerView } from '../../components/Styles/Layout';
-import { ScreenTab } from '../../components/Customer';
-import FlatListTable from '../../components/FlatListTable';
-import ListItem from './ListItem';
-import ButtonList from './ButtonList';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
+import SearchInput from '../../../components/SearchInput';
+import { ContainerView } from '../../../components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
+import FlatListTable from '../../../components/FlatListTable';
 
 useStrict(true);
 
 @observer
-class Customer extends React.Component {
+class SalesClues extends React.Component {
   state = {
     activeIndex: 0,
   };
@@ -41,11 +39,23 @@ class Customer extends React.Component {
       alert('isLast');
     }
   };
+  onRowOpen = (index) => {
+    console.log(index);
+    this.safeCloseOpenRow(index);
+    this.prevNodeIndex = index;
+  };
+  safeCloseOpenRow(index) {
+    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
+    }
+  }
   renderItem = (props) => {
+    const { index } = props;
     return (
       <SwipeRow
         disableRightSwipe
-        rightOpenValue={-((44 * 3) + 15 + 17)}
+        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        rightOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         style={{
           paddingTop: 0,
           paddingLeft: 0,
@@ -55,12 +65,14 @@ class Customer extends React.Component {
           borderBottomWidth: 0,
         }}
         preview
+        previewOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
+        onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem {...props} />
         }
         right={
           <ButtonList
-            list={[1, 2, 3]}
+            list={[1, 2]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }
@@ -82,11 +94,11 @@ class Customer extends React.Component {
         />
         <FlatListTable
           data={[
-            { name: '李总', time: '最近跟进时间：2018-09-09 12:00' },
-            { name: '张总', time: '最近跟进时间：2018-09-09 12:00' },
-            { name: '何总', time: '最近跟进时间：2018-09-09 12:00' },
+            { title: '李总', tipList: ['西风网络'], status: 0 },
+            { title: '张总', tipList: ['阿里巴巴'], status: 1 },
+            { title: '何总', tipList: ['字体跳动'], status: 0 },
           ]}
-          keyExtractor={item => item.name}
+          keyExtractor={item => item.title}
           renderItem={this.renderItem}
         />
 
@@ -95,8 +107,8 @@ class Customer extends React.Component {
   }
 }
 
-Customer.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '客户',
+SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '销售线索',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -113,9 +125,9 @@ Customer.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-Customer.defaultProps = {};
+SalesClues.defaultProps = {};
 
-Customer.propTypes = {
+SalesClues.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -129,5 +141,5 @@ Customer.propTypes = {
   }).isRequired,
 };
 
-export default Customer;
+export default SalesClues;
 
