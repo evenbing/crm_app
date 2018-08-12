@@ -11,7 +11,6 @@ import { FlatList, ActivityIndicator } from 'react-native';
 import { theme } from '../constants';
 
 const TableBody = styled.View`
-  background-color: ${theme.whiteColor};
   flex: 1;
 `;
 
