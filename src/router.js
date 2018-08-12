@@ -31,10 +31,12 @@ import CustomerScreen from './pages/CRM/Customer';
 import SalesChanceScreen from './pages/CRM/SalesChance';
 // root page -> CRM -> 业绩统计 module
 import PerfStatistScreen from './pages/CRM/PerfStatist';
+// root page -> CRM -> 市场活动 module
+import MarkActivityScreen from './pages/CRM/MarkActivity';
+// root page -> CRM -> 联系人 module
+import ContactsScreen from './pages/CRM/Contacts';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
-// root page -> CRM -> 活动机会 module
-import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/CRM/ProductList';
 // root page -> CRM -> 价格表
@@ -117,12 +119,13 @@ const CrmRouteConfig = {
   [routers.customer]: { screen: CustomerScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.perfStatist]: { screen: PerfStatistScreen },
-  [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
+  [routers.salesClues]: { screen: SalesCluesScreen },
+  [routers.contacts]: { screen: ContactsScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
   [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
-  [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen }
+  [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen },
 };
 
 const CrmNavigatorConfig = {

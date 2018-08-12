@@ -1,6 +1,6 @@
 /**
  * @component LeftItem.js
- * @description 左边条目
+ * @description 左边条目组件
  * @time 2018/8/11
  * @author JUSTIN XU
  */
