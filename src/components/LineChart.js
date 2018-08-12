@@ -7,12 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions } from 'react-native';
-import Echarts from 'xn-rn-echarts';
+import Echarts from 'js-rn-echarts';
 import { theme } from '../constants';
 
 class LineChart extends React.PureComponent {
   render() {
-    const { data, name } = this.props
+    const { data, name } = this.props;
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -22,8 +22,8 @@ class LineChart extends React.PureComponent {
       toolbox: {
       },
       grid: {
-        top: 23.5,
-        bottom: 94.5,
+        top: 15,
+        bottom: 37,
       },
       xAxis: [
         {
@@ -72,7 +72,7 @@ class LineChart extends React.PureComponent {
         },
       ],
       // 图形的颜色组
-      color: [theme.primaryColor],
+      color: [theme.chartLineColor],
       // 需要显示的图形名称，类型，以及数据设置
       series: [
         {
@@ -86,7 +86,7 @@ class LineChart extends React.PureComponent {
     return (
       <Echarts
         option={option}
-        height={281}
+        height={195}
         width={Dimensions.get('window').width}
       />
     );

@@ -15,6 +15,7 @@ export default {
   crm: 'app.tabView.root.crm',
   customer: 'app.tabView.root.crm.customer',
   salesChance: 'app.tabView.root.crm.salesChance',
+  perfStatist: 'app.tabView.root.crm.perfStatist',
   salesClues: 'app.tabView.root.crm.salesClues',
   markActivity: 'app.tabView.root.crm.markActivity',
   productList: 'app.tabView.root.crm.productList',

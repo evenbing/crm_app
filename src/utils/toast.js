@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import styled from 'styled-components';
-import RootToast from '../components/Toast';
+import RootToast from 'js-root-toast';
 import { moderateScale } from './scale';
 
 // static source
