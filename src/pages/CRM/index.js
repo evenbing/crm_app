@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
+import uuidv1 from 'uuid/v1';
+
 import { moderateScale } from '../../utils/scale';
 
 // components
@@ -32,16 +34,19 @@ useStrict(true);
 
 const HeadList = [
   {
+    key: uuidv1(),
     icon: require('../../img/crm/customerIcon.png'),
     text: '客户',
     path: routers.customer,
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/saleIcon.png'),
     text: '销售机会',
     path: '',
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
     path: '',
@@ -50,46 +55,54 @@ const HeadList = [
 
 const NavList = [
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '市场活动',
     path: routers.markActivity,
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '销售线索',
     path: routers.salesClues,
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '联系人',
     path: '',
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '合同',
     path: '',
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '回款计划',
     path: '',
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '回款记录',
     path: '',
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '产品',
     path: routers.productList,
   },
   {
+    key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '价格表',
     path: routers.priceList,
   },
-]
+];
 
 @observer
 class CRM extends React.Component {
@@ -109,7 +122,7 @@ class CRM extends React.Component {
           <HeaderView>
             { HeadList.map((item, index) => (
               <HeadItem
-                key={index}
+                key={item.key}
                 isLast={index === HeadList.length - 1}
                 data={item}
                 onPress={() => this.onNavHandler(item.path)}
@@ -124,7 +137,7 @@ class CRM extends React.Component {
               <NavItem
                 leftText={obj.title}
                 icon={obj.icon}
-                key={index}
+                key={obj.key}
                 isLast={index === NavList.length - 1}
                 onPress={() => this.onNavHandler(obj.path)}
               />
@@ -136,14 +149,16 @@ class CRM extends React.Component {
   }
 }
 
-CRM.navigationOptions = ({ navigation, screenProps }) => ({
-  title: 'CRM',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
-  ),
-});
+CRM.navigationOptions = ({ navigation, screenProps }) => {
+  return ({
+    title: 'CRM',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={navigation.state.params ? navigation.state.params._close : null}
+      />
+    ),
+  });
+};
 
 CRM.defaultProps = {};
 
