@@ -8,8 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Image, View } from 'react-native';
-import { theme } from '../../../constants';
-import Thumbnail from '../../../components/Thumbnail';
+import { theme } from '../../../../constants/index';
+import Thumbnail from '../../../../components/Thumbnail';
 
 const CardItemGroup = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -74,21 +74,21 @@ class RankItem extends React.PureComponent {
     if (index === 0) {
       return (
         <Image
-          source={require('../../../img/crm/perfStatist/first.png')}
+          source={require('../../../../img/crm/perfStatist/first.png')}
         />
       );
     }
     if (index === 1) {
       return (
         <Image
-          source={require('../../../img/crm/perfStatist/second.png')}
+          source={require('../../../../img/crm/perfStatist/second.png')}
         />
       );
     }
     if (index === 2) {
       return (
         <Image
-          source={require('../../../img/crm/perfStatist/third.png')}
+          source={require('../../../../img/crm/perfStatist/third.png')}
         />
       );
     }
