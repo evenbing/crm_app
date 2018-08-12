@@ -23,10 +23,11 @@ java (v1.8.0_172)
   |--logicStores    mobx modal数据
   |--pages          页面(一个tabBar一个文件夹.)
     |--CRM          首页CRM
-    |--ProductList  产品目录
-    |--PriceList    价格表
-    |--card         多个tabBar公用页面
-    |--...          更多
+      |--ProductList        产品目录
+      |--PriceList          价格表
+      |--ReimbursementPlan  回款计划
+      |--card         多个tabBar公用页面
+      |--...          更多
   |--service        服务API
   |--utils          工具文件夹
   |--app.js         

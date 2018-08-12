@@ -18,35 +18,17 @@ useStrict(true);
 @observer
 class ReimbursementPlan extends React.Component {
 
-  onNavHandler = path => {
-    // this.props.navigation.navigate(path);
-  };
-
   render() {
-    const list = [
-      {
-        list: [{},{}]
-      },
-      {
-        list: [{}]
-      }
-    ]
-
     return (
       <ContainerView>
         <CommStatusBar />
-        <NavListView>
-          {
-            list.map((obj, index) => <ProductItemList key={index} data={obj} />)
-          }
-        </NavListView>
       </ContainerView>
     );
   }
 }
 
 ReimbursementPlan.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '产品目录',
+  title: '回款计划',
   headerLeft: (
     <LeftBackIcon
       onPress={navigation.state.params ? navigation.state.params._close : null}
