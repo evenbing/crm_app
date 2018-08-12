@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
 import { View } from 'react-native'
+import { Input } from 'native-base';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
@@ -10,7 +11,9 @@ import { moderateScale } from '../../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../.../components/TabContainer';
+import TabContainer from '../../../components/TabContainer';
+import DetailListItem from './component/detailListItem';
+import TouchableView from '../../../components/TouchableView';
 import { theme } from '../../../constants'
 
 const ContainerView = styled.View`
@@ -51,13 +54,6 @@ font-size: ${moderateScale(14)};
 color: #ffffff;
 background-color: transparent;
 `
-
-const TabView = styled.View`
-flex-direction: row;
-height: ${moderateScale(50)};
-marginTop: ${moderateScale(15)};
-`
-
 const FooterView = styled.View`
 position: absolute;
 bottom: 0;
@@ -66,7 +62,34 @@ right: 0;
 height: ${moderateScale(50)};
 borderTopWidth: 1px;
 borderTopColor: #F6F6F6;
+background-color: #fff;
+flex-direction: row;
+align-items: center;
 `;
+
+const RecordText = styled.Text`
+font-family: ${theme.fontRegular};
+font-size: ${moderateScale(12)};
+color: #18B548;
+margin-left: ${moderateScale(15)};
+`
+const InputView = styled(Input)`
+flex: 1;
+height: ${moderateScale(30)};
+borderWidth: 1px;
+borderColor: #DDDDDD;
+border-radius: 4;
+margin-left: ${moderateScale(10)};
+`
+const IconView = styled(View)`
+width: ${moderateScale(30)};
+height: ${moderateScale(30)};
+`
+const BottomIcon = styled.View`
+width: 100%;
+height: 100%;
+background-color: #fff000;
+`
 
 useStrict(true);
 
@@ -88,7 +111,10 @@ class ReimbursementPlanDetail extends React.Component {
     const tabProps = {
       list: ['动态', '活动详情'],
       activeIndex: tabIndex,
-      onChange: index => this.onTabChange(index)
+      onChange: index => this.onTabChange(index),
+      style: {
+        marginTop: moderateScale(15)
+      }
     }
 
     return (
@@ -122,7 +148,12 @@ class ReimbursementPlanDetail extends React.Component {
 
   getFooterComponent() {
     return (
-      <FooterView></FooterView>
+      <FooterView>
+        <RecordText>记录类型</RecordText>
+        <InputView />
+        <IconView style={{marginLeft: moderateScale(3)}}><BottomIcon /></IconView>
+        <IconView style={{marginLeft: moderateScale(8), marginRight: moderateScale(13)}}><BottomIcon /></IconView>
+      </FooterView>
     )
   }
 
@@ -139,31 +170,45 @@ class ReimbursementPlanDetail extends React.Component {
 
   renderItem = ({item, index}) => {
     return (
-      // <ProductItem isLeft={index%2 === 0} horizontal={false} data={item} onPress={()=>this.onProductItemHandler(item)} />
-      <MainView />
+      <DetailListItem isFrist={index===0} key={index} data={item} />
     )
   }
 
   render() {
-    // const { list = [{}, {}, {}, {}, {}, {}], refreshing = false, loadingMore = false } = {};
-    // const flatProps = {
-    //   keyExtractor: (item, index) => index,
-    //   data: [...list],
-    //   ListHeaderComponent: null,
-    //   renderItem: this.renderItem,
-    //   ItemSeparatorComponent: null,
-    //   onRefresh: this.onRefresh,
-    //   onEndReached: this.onEndReached,
-    //   refreshing,
-    //   noDataBool: !refreshing && list.length === 0,
-    //   loadingMore
-    // }
+    const list = [
+      {
+        type: 1,
+        list: [{url: true}, {}, {}]
+      },
+      {
+        type: 0,
+        list: [{url: true}, {}, {}]
+      },
+      {
+        type: 1,
+        list: [{url: true}, {}, {}]
+      }
+    ]
+    const { refreshing = false, loadingMore = false } = {};
+    const flatProps = {
+      keyExtractor: (item, index) => index,
+      data: list,
+      ListHeaderComponent: this.getHeaderComponent(),
+      renderItem: this.renderItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.onRefresh,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore
+    }
+
 
     return (
       <ContainerView>
         <CommStatusBar />
         <MainView>
-          { this.getHeaderComponent() }
+          <FlatListTable {...flatProps} />
           { this.getFooterComponent() }
         </MainView>
       </ContainerView>

@@ -7,24 +7,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { moderateScale } from '../utils/scale';
 import { theme } from '../constants';
 
+import BorderShadow from './Shadow/BorderShadow';
 import TouchableView from './TouchableView';
 
 const ContainerView = styled.View``;
 
+const TabView = styled.View`
+height: ${moderateScale(50)};
+background-color: #fff;
+align-items: center;
+flex-direction: row;
+justify-content: center;
+`
+
 const TabItemView = styled(TouchableView)`
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+flex: 1;
+height: ${moderateScale(26)};
+align-items: center;
+justify-content: center;
+borderRightWidth: ${props => props.isLast ? '0' : '1px' };
+borderRightColor: #F6F6F6;
 `;
 
 const HeaderText = styled.Text`
-  margin-top:  ${theme.moderateScale(3)};
-  font-family:${theme.fontMedium};
-  font-size:  ${theme.moderateScale(18)};
-  color: ${theme.listTitleColor};
+font-family:${theme.fontMedium};
+font-size:  ${theme.moderateScale(16)};
+color: ${props => props.active ? '#18B548' : '#696969' };
 `;
 
 class TabContainer extends React.PureComponent {
@@ -35,22 +47,40 @@ class TabContainer extends React.PureComponent {
       activeIndex,
       onChange,
       isShadow,
+      style
     } = this.props;
+
+    const shadowOpt = {
+      width: theme.moderateScale(750),
+      color: '#979797',
+      border: theme.moderateScale(4),
+      opacity: 0.5,
+      side: 'bottom',
+      style: { width: '100%', marginTop: theme.moderateScale(4) },
+    };
+
+
     return (
       <ContainerView>
-        {
-          list.map((_, index) => (
-            <TabItemView
-              key={index}
-              onPress={() => {
-                if (index === activeIndex) return;
-                onChange(index);
-              }}
-            >
-              <HeaderText active={activeIndex === index}>{_}</HeaderText>
-            </TabItemView>
-          ))
-        }
+        <TabView style={style}>
+          {
+            list.map((_, index) => (
+              <TabItemView
+                key={index}
+                isLast={index == list.length - 1}
+                onPress={() => {
+                  if (index === activeIndex) return;
+                  onChange(index);
+                }}
+              >
+                <HeaderText active={activeIndex === index}>{_}</HeaderText>
+              </TabItemView>
+            ))
+          }
+        </TabView>
+
+        { isShadow ? <BorderShadow setting={shadowOpt} /> : null}
+
       </ContainerView>
     );
   }
@@ -61,6 +91,7 @@ TabContainer.defaultProps = {
   onChange: () => null,
   isShadow: true,
   activeIndex: 0,
+  style: {}
 };
 
 TabContainer.propTypes = {
@@ -68,6 +99,7 @@ TabContainer.propTypes = {
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
   isShadow: PropTypes.bool,
+  style: PropTypes.object
 };
 
 export default TabContainer;
