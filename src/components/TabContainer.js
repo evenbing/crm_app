@@ -41,7 +41,6 @@ color: ${props => props.active ? '#18B548' : '#696969' };
 
 class TabContainer extends React.PureComponent {
   render() {
-
     const {
       list,
       activeIndex,
@@ -87,7 +86,6 @@ class TabContainer extends React.PureComponent {
 }
 
 TabContainer.defaultProps = {
-  list: [],
   onChange: () => null,
   isShadow: true,
   activeIndex: 0,
