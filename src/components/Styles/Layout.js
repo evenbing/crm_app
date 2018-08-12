@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import theme from '../../constants/theme';
 import { getFooterBottom } from '../../utils/utils';
 
-// divider styles
+// container styles
 export const ContainerView = styled.View`
   flex: 1;
   background-color: ${props => props.backgroundColor || theme.pageBackColor};

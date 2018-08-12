@@ -10,7 +10,7 @@ import { moderateScale } from '../../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../.../components/TabContainer';
+import TabContainer from '../../../components/TabContainer';
 import { theme } from '../../../constants'
 
 const ContainerView = styled.View`

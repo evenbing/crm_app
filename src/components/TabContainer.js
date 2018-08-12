@@ -29,7 +29,6 @@ const HeaderText = styled.Text`
 
 class TabContainer extends React.PureComponent {
   render() {
-
     const {
       list,
       activeIndex,
@@ -57,7 +56,6 @@ class TabContainer extends React.PureComponent {
 }
 
 TabContainer.defaultProps = {
-  list: [],
   onChange: () => null,
   isShadow: true,
   activeIndex: 0,

@@ -18,6 +18,7 @@ export default {
   perfStatist: 'app.tabView.root.crm.perfStatist',
   markActivity: 'app.tabView.root.crm.markActivity',
   contacts: 'app.tabView.root.crm.contacts',
+  contactDetails: 'app.tabView.root.crm.contactsDetails',
   salesClues: 'app.tabView.root.crm.salesClues',
   productList: 'app.tabView.root.crm.productList',
   priceList: 'app.tabView.root.crm.priceList',

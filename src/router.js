@@ -35,6 +35,7 @@ import PerfStatistScreen from './pages/CRM/PerfStatist';
 import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 联系人 module
 import ContactsScreen from './pages/CRM/Contacts';
+import ContactDetailsScreen from './pages/CRM/Contacts/Details';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
 // root page -> CRM -> 产品目录
@@ -122,6 +123,7 @@ const CrmRouteConfig = {
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.contacts]: { screen: ContactsScreen },
+  [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
   [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
