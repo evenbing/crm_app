@@ -18,7 +18,7 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
 import FlatListTable from '../../../components/FlatListTable';
-import LeftItem from './LeftItem';
+import LeftItem from './component/LeftItem';
 
 useStrict(true);
 

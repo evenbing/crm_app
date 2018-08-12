@@ -9,9 +9,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import Accordion from '../../../components/Accordion';
-import ListItem from '../../../components/Customer/ListItem';
-import theme from '../../../constants/theme';
+import Accordion from '../../../../components/Accordion';
+import ListItem from '../../../../components/Customer/ListItem';
+import theme from '../../../../constants/theme';
 
 const ContainerView = styled.View``;
 

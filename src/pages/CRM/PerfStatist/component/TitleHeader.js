@@ -7,10 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { theme } from '../../../../constants/index';
 
 // components
-import Thumbnail from '../../../components/Thumbnail';
+import Thumbnail from '../../../../components/Thumbnail';
 
 const ContainerView = styled.View`
   margin-top: ${props => theme.moderateScale(props.marginTop || 10)};
@@ -54,7 +54,7 @@ TitleHeader.defaultProps = {
   containerStyle: {},
   titleStyle: {},
   imageSize: 24,
-  imageSource: require('../../../img/crm/perfStatist/statistics.png'),
+  imageSource: require('../../../../img/crm/perfStatist/statistics.png'),
   title: null,
 };
 
