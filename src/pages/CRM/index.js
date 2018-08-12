@@ -43,7 +43,7 @@ const HeadList = [
     key: uuidv1(),
     icon: require('../../img/crm/saleIcon.png'),
     text: '销售机会',
-    path: '',
+    path: routers.salesChance,
   },
   {
     key: uuidv1(),

@@ -50,6 +50,17 @@ const LastIcon = styled.View`
 `;
 
 class ScreenTab extends React.PureComponent {
+  renderIcon = (node, isLast, active) => {
+    if (React.isValidElement(node)) return null;
+    if (isLast) {
+      return (
+        <LastIcon color={active && theme.primaryColor} />
+      );
+    }
+    return (
+      <IconView color={active && theme.primaryColor} />
+    );
+  };
   renderTab = () => {
     const {
       data,
@@ -58,22 +69,20 @@ class ScreenTab extends React.PureComponent {
     } = this.props;
     if (!(data && data.length)) return null;
     const dataLen = data.length;
-    return data.map((obj, index) => {
+    return data.map((_, index) => {
       const active = activeIndex === index;
-      const isLast = dataLen - 1 === index ;
+      const isLast = dataLen - 1 === index;
       return (
         <HeaderContainer
-          onPress={() => onChange && onChange({ index, isLast })}
+          onPress={() => onChange({ index, isLast })}
           key={index}
         >
-          <HeaderText color={active && theme.primaryColor}>{obj}</HeaderText>
           {
-            isLast ? (
-              <LastIcon color={active && theme.primaryColor} />
-            ) : (
-              <IconView color={active && theme.primaryColor} />
+            React.isValidElement(_) ? _ : (
+              <HeaderText color={active && theme.primaryColor}>{_}</HeaderText>
             )
           }
+          {this.renderIcon(_, isLast, active)}
         </HeaderContainer>
       );
     });

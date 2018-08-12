@@ -1,12 +1,12 @@
 /**
  * @component index.js
- * @description 客户页面
+ * @description 销售机会页面
  * @time 2018/8/6
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
@@ -18,19 +18,32 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
 import FlatListTable from '../../../components/FlatListTable';
+import TouchableView from '../../../components/TouchableView';
+import LeftItem from './LeftItem';
+import BoardList from './BoardList';
+
+const DashboardView = styled(TouchableView)`
+  width: ${theme.moderateScale(20)};
+  height: ${theme.moderateScale(20)};
+  background-color: ${props => props.backgroundColor || 'red'};
+`;
 
 useStrict(true);
 
 @observer
-class Customer extends React.Component {
+class SalesChance extends React.Component {
   state = {
     activeIndex: 0,
+    isBoard: false,
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
+  onToggleType = () => {
+    this.setState({ isBoard: !this.state.isBoard });
+  };
   onPressRight = () => alert('right');
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
@@ -49,13 +62,28 @@ class Customer extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
+  renderBoard = () => {
+    if (this.state.isBoard) {
+      return (
+        <DashboardView
+          onPress={this.onToggleType}
+        />
+      );
+    }
+    return (
+      <DashboardView
+        backgroundColor="blue"
+        onPress={this.onToggleType}
+      />
+    );
+  };
   renderItem = (props) => {
     const { index } = props;
     return (
       <SwipeRow
         disableRightSwipe
-        ref={(row) => { this[`rows.${index}`] = row; }}
-        rightOpenValue={-theme.moderateScale((44 * 3) + 15 + 15)}
+        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        rightOpenValue={-theme.moderateScale(44 + 15 + 15)}
         style={{
           paddingTop: 0,
           paddingLeft: 0,
@@ -65,18 +93,63 @@ class Customer extends React.Component {
           borderBottomWidth: 0,
         }}
         preview
-        previewOpenValue={-theme.moderateScale((44 * 3) + 15 + 15)}
+        previewOpenValue={-theme.moderateScale(44 + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
-          <ListItem {...props} right="hidden" />
+          <ListItem
+            {...props}
+            right="hidden"
+            left={
+              <LeftItem />
+            }
+          />
         }
         right={
           <ButtonList
-            list={[1, 2, 3]}
+            list={[1]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }
       />
+    );
+  };
+  renderSection = () => {
+    if (!this.state.isBoard) {
+      return (
+        <FlatListTable
+          data={[
+            {
+              title: '网络会议',
+              tipList: [
+                '开始时间：2018-09-09 12:00',
+                '结束时间：2018-09-010 12:00',
+              ],
+              status: 0,
+            },
+            {
+              title: '安放展会',
+              tipList: [
+                '开始时间：2018-09-09 12:00',
+                '结束时间：2018-09-010 12:00',
+              ],
+              status: 1,
+            },
+            {
+              title: '电话会议',
+              tipList: [
+                '开始时间：2018-09-09 12:00',
+                '结束时间：2018-09-010 12:00',
+              ],
+              status: 0,
+            },
+          ]}
+          keyExtractor={item => item.title}
+          renderItem={this.renderItem}
+        />
+      );
+    }
+    return (
+      <BoardList />
     );
   };
   render() {
@@ -88,27 +161,23 @@ class Customer extends React.Component {
         <CommStatusBar />
         <SearchInput />
         <ScreenTab
-          data={['跟进时间', '我负责的', '筛选']}
+          data={[
+            '销售金额',
+            '我负责的',
+            this.renderBoard(),
+            '筛选',
+          ]}
           activeIndex={activeIndex}
           onChange={this.onChange}
         />
-        <FlatListTable
-          data={[
-            { title: '李总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-            { title: '张总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-            { title: '何总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-          ]}
-          keyExtractor={item => item.title}
-          renderItem={this.renderItem}
-        />
-
+        {this.renderSection()}
       </ContainerView>
     );
   }
 }
 
-Customer.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '客户',
+SalesChance.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '销售机会',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -125,9 +194,9 @@ Customer.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-Customer.defaultProps = {};
+SalesChance.defaultProps = {};
 
-Customer.propTypes = {
+SalesChance.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -141,5 +210,5 @@ Customer.propTypes = {
   }).isRequired,
 };
 
-export default Customer;
+export default SalesChance;
 
