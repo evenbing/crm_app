@@ -36,9 +36,13 @@ import SalesCluesScreen from './pages/CRM/SalesClues';
 // root page -> CRM -> 活动机会 module
 import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 产品目录
-import ProductListScreen from './pages/ProductList';
+import ProductListScreen from './pages/CRM/ProductList';
 // root page -> CRM -> 价格表
-import PriceListScreen from './pages/PriceList';
+import PriceListScreen from './pages/CRM/PriceList';
+// root page -> CRM -> 回款计划
+import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
+// root page -> CRM -> 回款计划资料
+import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/detail';
 
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
@@ -117,6 +121,8 @@ const CrmRouteConfig = {
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
+  [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
+  [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen }
 };
 
 const CrmNavigatorConfig = {

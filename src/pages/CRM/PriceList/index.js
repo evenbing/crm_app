@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { moderateScale } from '../../utils/scale';
+import { moderateScale } from '../../../utils/scale';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import NavItem from '../../components/NavItem';
+import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import NavItem from '../../../components/NavItem';
 
 const ContainerView = styled.ScrollView`
   flex: 1;

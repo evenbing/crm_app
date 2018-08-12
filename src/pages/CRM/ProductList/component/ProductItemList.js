@@ -9,8 +9,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View, Text, Image } from 'react-native';
-import { theme } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
+import { theme } from '../../../../constants';
+import { moderateScale } from '../../../../utils/scale';
 import ProductItem from './ProductItem'
 
 const ContainerView = styled(View)`

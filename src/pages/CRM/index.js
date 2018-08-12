@@ -88,7 +88,7 @@ const NavList = [
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '回款记录',
-    path: '',
+    path: routers.reimbursementPlan,
   },
   {
     key: uuidv1(),

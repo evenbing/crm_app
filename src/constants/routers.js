@@ -20,6 +20,8 @@ export default {
   markActivity: 'app.tabView.root.crm.markActivity',
   productList: 'app.tabView.root.crm.productList',
   priceList: 'app.tabView.root.crm.priceList',
+  reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
+  reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
   // demo
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',
