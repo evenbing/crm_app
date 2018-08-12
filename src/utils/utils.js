@@ -86,7 +86,7 @@ export const NoDoublePress = {
       callback();
     }
   },
-}
+};
 
 export function xnBorderWidth() {
   if (isIphoneX()) {

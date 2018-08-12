@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants/index';
+import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -84,7 +84,9 @@ class SalesClues extends React.Component {
       state: { activeIndex },
     } = this;
     return (
-      <ContainerView>
+      <ContainerView
+        bottomPadding
+      >
         <CommStatusBar />
         <SearchInput />
         <ScreenTab

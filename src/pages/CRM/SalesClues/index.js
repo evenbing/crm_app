@@ -10,13 +10,13 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants/index';
+import { theme } from '../../../constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer';
 import FlatListTable from '../../../components/FlatListTable';
 
 useStrict(true);
@@ -84,7 +84,9 @@ class SalesClues extends React.Component {
       state: { activeIndex },
     } = this;
     return (
-      <ContainerView>
+      <ContainerView
+        bottomPadding
+      >
         <CommStatusBar />
         <SearchInput />
         <ScreenTab

@@ -1966,6 +1966,12 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts@3.2.3:
+  version "3.2.3"
+  resolved "https://registry.npmjs.org/echarts/-/echarts-3.2.3.tgz#4f01e15bfda3352fcd8ef9049f13d8448971a258"
+  dependencies:
+    zrender "^3.1.3"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/ee-first/download/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -3527,6 +3533,18 @@ jest@23.2.0:
     import-local "^1.0.0"
     jest-cli "^23.2.0"
 
+js-rn-echarts@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/js-rn-echarts/-/js-rn-echarts-0.1.0.tgz#5172df41c83a9b6b8e73d19102bb4a44d068bd50"
+  dependencies:
+    echarts "3.2.3"
+
+js-root-toast@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/js-root-toast/-/js-root-toast-0.1.1.tgz#be11618b187d2d25e4b654283dd7a22edf368f8b"
+  dependencies:
+    react-native-root-siblings "2.2.0"
+
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
@@ -4780,7 +4798,7 @@ react-native-modal@^6.5.0:
 
 react-native-root-siblings@2.2.0:
   version "2.2.0"
-  resolved "http://registry.npm.taobao.org/react-native-root-siblings/download/react-native-root-siblings-2.2.0.tgz#57bb2f7b0a5399c48e14b36d5f3ae7015cd3fb95"
+  resolved "https://registry.npmjs.org/react-native-root-siblings/-/react-native-root-siblings-2.2.0.tgz#57bb2f7b0a5399c48e14b36d5f3ae7015cd3fb95"
   dependencies:
     static-container "^1.0.0"
 
@@ -5555,7 +5573,7 @@ stacktrace-parser@^0.1.3:
 
 static-container@^1.0.0:
   version "1.2.0"
-  resolved "http://registry.npm.taobao.org/static-container/download/static-container-1.2.0.tgz#1c6e92b869da47d32abe47f45f50bf39661d9c2f"
+  resolved "https://registry.npmjs.org/static-container/-/static-container-1.2.0.tgz#1c6e92b869da47d32abe47f45f50bf39661d9c2f"
 
 static-extend@^0.1.1:
   version "0.1.2"
@@ -6168,10 +6186,6 @@ xmldom@0.1.x:
   version "0.1.27"
   resolved "http://registry.npm.taobao.org/xmldom/download/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
 
-xn-rn-echarts@^1.0.8:
-  version "1.0.8"
-  resolved "http://registry.npm.taobao.org/xn-rn-echarts/download/xn-rn-echarts-1.0.8.tgz#fcf2b1a7a2eccf5dc8dcda6bdb4f2ea04b462c91"
-
 xpipe@^1.0.5:
   version "1.0.5"
   resolved "http://registry.npm.taobao.org/xpipe/download/xpipe-1.0.5.tgz#8dd8bf45fc3f7f55f0e054b878f43a62614dafdf"
@@ -6271,3 +6285,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zrender@^3.1.3:
+  version "3.7.4"
+  resolved "https://registry.npmjs.org/zrender/-/zrender-3.7.4.tgz#f847d53948481ef6d42906d1ea9aeec7acbefdf2"

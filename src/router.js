@@ -29,6 +29,8 @@ import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
+// root page -> CRM -> 业绩统计 module
+import PerfStatistScreen from './pages/CRM/PerfStatist';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
 // root page -> CRM -> 活动机会 module
@@ -110,6 +112,7 @@ const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
+  [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.priceList]: { screen: PriceListScreen },

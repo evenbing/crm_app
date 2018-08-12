@@ -5,7 +5,7 @@ import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
 import uuidv1 from 'uuid/v1';
-
+import { nativeGoBack } from '../../utils/base';
 import { moderateScale } from '../../utils/scale';
 
 // components
@@ -49,7 +49,7 @@ const HeadList = [
     key: uuidv1(),
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
-    path: '',
+    path: routers.perfStatist,
   },
 ];
 
@@ -149,16 +149,15 @@ class CRM extends React.Component {
   }
 }
 
-CRM.navigationOptions = ({ navigation, screenProps }) => {
-  return ({
-    title: 'CRM',
-    headerLeft: (
-      <LeftBackIcon
-        onPress={navigation.state.params ? navigation.state.params._close : null}
-      />
-    ),
-  });
-};
+// { navigation, screenProps }
+CRM.navigationOptions = () => ({
+  title: 'CRM',
+  headerLeft: (
+    <LeftBackIcon
+      onPress={() => nativeGoBack()}
+    />
+  ),
+});
 
 CRM.defaultProps = {};
 
