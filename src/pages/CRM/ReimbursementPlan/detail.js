@@ -8,6 +8,7 @@ import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import FlatListTable from '../../../components/FlatListTable';
 import { theme } from '../../../constants'
 
 const ContainerView = styled.ScrollView`
@@ -16,6 +17,9 @@ const ContainerView = styled.ScrollView`
 `;
 
 const MainView = styled.View`
+flex: 1;
+paddingBottom: 50px;
+position: relative;
 `;
 
 const HeaderView = styled.View`
@@ -23,11 +27,11 @@ height: ${moderateScale(224)};
 align-items: center;
 `;
 
-const TextView = style.View`
+const TextView = styled.View`
 
 `
 
-const IconImage = style.Image`
+const Icon = styled.View`
 
 `
 
@@ -59,25 +63,72 @@ useStrict(true);
 @observer
 class ReimbursementPlanDetail extends React.Component {
 
+  getHeaderComponent() {
+    return (
+      <LinearGradient
+        start={{ x: 1.0, y: 0.0 }}
+        end={{ x: 0.0, y: 1.0 }}
+        colors={['#98CE5E', '#019D55']}
+      >
+        <HeaderView>
+          <MediumText style={{marginTop: moderateScale(50)}}>20180909-0001</MediumText>
+          <RegularText style={{marginTop: moderateScale(4)}}></RegularText>
+          <TextView style={{marginTop: moderateScale(10)}}>
+            <MediumText >负责人：张三</MediumText>
+            <Icon style={{width: moderateScale(18), height: moderateScale(18), marginLeft: moderateScale(5), backgroundColor: '#ff0000'}} />
+          </TextView>
+          <RegularText style={{marginTop: moderateScale(10)}}>计划回款金额：¥100,000,000.00</RegularText>
+        </HeaderView>
+      </LinearGradient>
+    )
+  }
+
+  getFooterComponent() {
+    return (
+      <FooterView></FooterView>
+    )
+  }
+
+  onRefresh = () => {
+    // this.getData()
+  }
+
+  onEndReached = () => {
+    // let { total, list, pageNumber, loadingMore } = {}
+    // if(list.length < total && loadingMore === false) {
+      // this.getData(pageNumber + 1)
+    // }
+  }
+
+  renderItem = ({item, index}) => {
+    return (
+      // <ProductItem isLeft={index%2 === 0} horizontal={false} data={item} onPress={()=>this.onProductItemHandler(item)} />
+      <MainView />
+    )
+  }
+
   render() {
+    // const { list = [{}, {}, {}, {}, {}, {}], refreshing = false, loadingMore = false } = {};
+    // const flatProps = {
+    //   keyExtractor: (item, index) => index,
+    //   data: [...list],
+    //   ListHeaderComponent: null,
+    //   renderItem: this.renderItem,
+    //   ItemSeparatorComponent: null,
+    //   onRefresh: this.onRefresh,
+    //   onEndReached: this.onEndReached,
+    //   refreshing,
+    //   noDataBool: !refreshing && list.length === 0,
+    //   loadingMore
+    // }
+
     return (
       <ContainerView>
         <CommStatusBar />
         <MainView>
-          <LinearGradient
-            start={{ x: 1.0, y: 0.0 }}
-            end={{ x: 0.0, y: 1.0 }}
-            colors={['#98CE5E', '#019D55']}
-          >
-            <HeaderView>
-              <MediumText style={{marginTop: moderateScale(50)}}>20180909-0001</MediumText>
-              <RegularText style={{marginTop: moderateScale(4)}}></RegularText>
-              <View style={{marginTop: moderateScale(10)}}><MediumText >负责人：张三</MediumText><</View>
-              <RegularText style={{marginTop: moderateScale(10)}}>计划回款金额：¥100,000,000.00</RegularText>
-            </HeaderView>
-          </LinearGradient>
+          { this.getHeaderComponent() }
+          { this.getFooterComponent() }
         </MainView>
-        <FooterView></FooterView>
       </ContainerView>
     );
   }
