@@ -88,7 +88,7 @@ class Customer extends React.Component {
         bottomPadding
       >
         <CommStatusBar />
-        <SearchInput />
+        <SearchInput placeholder="输入客户名称" />
         <ScreenTab
           data={['跟进时间', '我负责的', '筛选']}
           activeIndex={activeIndex}

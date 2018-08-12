@@ -161,7 +161,7 @@ class SalesChance extends React.Component {
         bottomPadding
       >
         <CommStatusBar />
-        <SearchInput />
+        <SearchInput placeholder="输入客户名称" />
         <ScreenTab
           data={[
             '销售金额',

@@ -70,7 +70,7 @@ const NavList = [
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '联系人',
-    path: '',
+    path: routers.contacts,
   },
   {
     key: uuidv1(),

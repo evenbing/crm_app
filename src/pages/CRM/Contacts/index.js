@@ -1,6 +1,6 @@
 /**
  * @component index.js
- * @description 销售线索页面
+ * @description 联系人页面
  * @time 2018/8/6
  * @author JUSTIN XU
  */
@@ -13,16 +13,17 @@ import { observer } from 'mobx-react/native';
 import { theme } from '../../../constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
 import FlatListTable from '../../../components/FlatListTable';
+import LeftItem from './LeftItem';
 
 useStrict(true);
 
 @observer
-class SalesClues extends React.Component {
+class Contacts extends React.Component {
   state = {
     activeIndex: 0,
   };
@@ -54,7 +55,7 @@ class SalesClues extends React.Component {
     return (
       <SwipeRow
         disableRightSwipe
-        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        ref={(row) => { this[`rows.${index}`] = row; }}
         rightOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         style={{
           paddingTop: 0,
@@ -68,7 +69,13 @@ class SalesClues extends React.Component {
         previewOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
-          <ListItem {...props} />
+          <ListItem
+            {...props}
+            right="hidden"
+            left={
+              <LeftItem {...props} />
+            }
+          />
         }
         right={
           <ButtonList
@@ -96,9 +103,9 @@ class SalesClues extends React.Component {
         />
         <FlatListTable
           data={[
-            { title: '李总', tipList: ['西风网络'], status: 0 },
-            { title: '张总', tipList: ['阿里巴巴'], status: 1 },
-            { title: '何总', tipList: ['字体跳动'], status: 0 },
+            { title: '李总', job: '市场总监', company: '阿里巴巴' },
+            { title: '张总', job: '销售总监', company: '字节跳动' },
+            { title: '何总', job: '人力总监', company: '腾讯科技' },
           ]}
           keyExtractor={item => item.title}
           renderItem={this.renderItem}
@@ -109,8 +116,8 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '销售线索',
+Contacts.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '联系人',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -127,9 +134,9 @@ SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-SalesClues.defaultProps = {};
+Contacts.defaultProps = {};
 
-SalesClues.propTypes = {
+Contacts.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -143,5 +150,5 @@ SalesClues.propTypes = {
   }).isRequired,
 };
 
-export default SalesClues;
+export default Contacts;
 
