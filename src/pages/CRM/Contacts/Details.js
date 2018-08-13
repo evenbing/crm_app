@@ -6,13 +6,19 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import styled from 'styled-components';
 import { theme } from '../../../constants';
+import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import DetailsHead from './component/DetailsHead';
+import FlatListTable from '../../../components/FlatListTable';
+import TabContainer from '../../../components/TabContainer';
+import DynamicList from '../../../components/Details/DynamicList';
+import TouchableView from '../../../components/TouchableView';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -39,7 +45,38 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+const FooterView = styled(TouchableView)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: ${moderateScale(50)};
+  border-top-width: 1px;
+  border-top-color: #F6F6F6;
+  background-color: ${theme.whiteColor};
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FooterText = styled.Text`
+  color: ${theme.primaryColor};
+  font-size: ${moderateScale(18)};
+`;
+
 class Details extends React.Component {
+  state = {
+    tabIndex: 0,
+  };
+  onTabChange = (index) => {
+    this.setState({ tabIndex: index });
+  };
+  onRefresh = () => {
+    //
+  };
+  onEndReached = () => {
+    //
+  };
   renderTotalItem = () => {
     const list = [
       { title: '日程', text: '12' },
@@ -53,17 +90,117 @@ class Details extends React.Component {
       </ItemView>
     ));
   };
+  renderHeader = () => {
+    const { tabIndex } = this.state;
+    const tabProps = {
+      list: ['动态', '活动详情'],
+      activeIndex: tabIndex,
+      onChange: index => this.onTabChange(index),
+      style: {
+        marginTop: moderateScale(15),
+      },
+    };
+    return (
+      <View>
+        <DetailsHead />
+        <TotalView>
+          {this.renderTotalItem()}
+        </TotalView>
+        <TabContainer {...tabProps} />
+      </View>
+    );
+  };
+  renderDynamicItem = ({ item, index }) => {
+    return (
+      <DynamicList isFrist={index === 0} data={item} />
+    );
+  };
+  renderDynamicView = () => {
+    const list = [
+      {
+        type: 1,
+        list: [{ url: true }, {}, {}],
+      },
+      {
+        type: 0,
+        list: [{ url: true }, {}, {}],
+      },
+      {
+        type: 1,
+        list: [{ url: true }, {}, {}],
+      },
+    ];
+    const { refreshing = false, loadingMore = false } = {};
+    const flatProps = {
+      keyExtractor: (item, index) => index,
+      data: list,
+      ListHeaderComponent: this.renderHeader(),
+      renderItem: this.renderDynamicItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.onRefresh,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
+    return (
+      <FlatListTable {...flatProps} />
+    );
+  };
+  renderDetailsView = () => {
+    const list = [
+      {
+        type: 1,
+        list: [{ url: true }, {}, {}],
+      },
+      {
+        type: 0,
+        list: [{ url: true }, {}, {}],
+      },
+      {
+        type: 1,
+        list: [{ url: true }, {}, {}],
+      },
+    ];
+    const { refreshing = false, loadingMore = false } = {};
+    const flatProps = {
+      keyExtractor: (item, index) => index,
+      data: list,
+      ListHeaderComponent: this.renderHeader(),
+      renderItem: this.renderDynamicItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.onRefresh,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
+    return (
+      <FlatListTable {...flatProps} />
+    );
+  };
   render() {
+    const {
+      state: {
+        tabIndex,
+      },
+    } = this;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
         bottomPadding
       >
         <CommStatusBar />
-        <DetailsHead />
-        <TotalView>
-          {this.renderTotalItem()}
-        </TotalView>
+        {
+          tabIndex === 0
+            ?
+            this.renderDynamicView()
+            :
+            this.renderDetailsView()
+        }
+        <FooterView onPress={() => alert(1)}>
+          <FooterText>编辑资料</FooterText>
+        </FooterView>
       </ContainerView>
     );
   }

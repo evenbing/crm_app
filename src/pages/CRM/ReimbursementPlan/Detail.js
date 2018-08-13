@@ -12,9 +12,9 @@ import { moderateScale } from '../../../utils/scale';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
-import DetailListItem from './component/detailListItem';
-import TouchableView from '../../../components/TouchableView';
-import { theme } from '../../../constants'
+import DynamicList from '../../../components/Details/DynamicList';
+// import TouchableView from '../../../components/TouchableView';
+import { theme } from '../../../constants';
 
 const ContainerView = styled.View`
 flex: 1;
@@ -55,16 +55,16 @@ color: #ffffff;
 background-color: transparent;
 `
 const FooterView = styled.View`
-position: absolute;
-bottom: 0;
-left: 0;
-right: 0;
-height: ${moderateScale(50)};
-borderTopWidth: 1px;
-borderTopColor: #F6F6F6;
-background-color: #fff;
-flex-direction: row;
-align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: ${moderateScale(50)};
+  borderTopWidth: 1px;
+  borderTopColor: #F6F6F6;
+  background-color: #fff;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const RecordText = styled.Text`
@@ -105,7 +105,17 @@ class ReimbursementPlanDetail extends React.Component {
   }
 
 
-  getHeaderComponent() {
+  onRefresh = () => {
+    // this.getData()
+  }
+
+  onEndReached = () => {
+    // let { total, list, pageNumber, loadingMore } = {}
+    // if(list.length < total && loadingMore === false) {
+    // this.getData(pageNumber + 1)
+    // }
+  }
+  renderHeaderComponent = () => {
     const { tabIndex } = this.state;
 
     const tabProps = {
@@ -113,9 +123,9 @@ class ReimbursementPlanDetail extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
       style: {
-        marginTop: moderateScale(15)
-      }
-    }
+        marginTop: moderateScale(15),
+      },
+    };
 
     return (
       <View>
@@ -146,7 +156,7 @@ class ReimbursementPlanDetail extends React.Component {
     )
   }
 
-  getFooterComponent() {
+  renderFooterComponent = () => {
     return (
       <FooterView>
         <RecordText>记录类型</RecordText>
@@ -154,25 +164,14 @@ class ReimbursementPlanDetail extends React.Component {
         <IconView style={{marginLeft: moderateScale(3)}}><BottomIcon /></IconView>
         <IconView style={{marginLeft: moderateScale(8), marginRight: moderateScale(13)}}><BottomIcon /></IconView>
       </FooterView>
-    )
-  }
-
-  onRefresh = () => {
-    // this.getData()
-  }
-
-  onEndReached = () => {
-    // let { total, list, pageNumber, loadingMore } = {}
-    // if(list.length < total && loadingMore === false) {
-      // this.getData(pageNumber + 1)
-    // }
-  }
+    );
+  };
 
   renderItem = ({item, index}) => {
     return (
-      <DetailListItem isFrist={index===0} key={index} data={item} />
-    )
-  }
+      <DynamicList isFrist={index===0} key={index} data={item} />
+    );
+  };
 
   render() {
     const list = [
@@ -187,21 +186,21 @@ class ReimbursementPlanDetail extends React.Component {
       {
         type: 1,
         list: [{url: true}, {}, {}]
-      }
-    ]
+      },
+    ];
     const { refreshing = false, loadingMore = false } = {};
     const flatProps = {
       keyExtractor: (item, index) => index,
       data: list,
-      ListHeaderComponent: this.getHeaderComponent(),
+      ListHeaderComponent: this.renderHeaderComponent(),
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
       onEndReached: this.onEndReached,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
-      loadingMore
-    }
+      loadingMore,
+    };
 
 
     return (
@@ -209,7 +208,7 @@ class ReimbursementPlanDetail extends React.Component {
         <CommStatusBar />
         <MainView>
           <FlatListTable {...flatProps} />
-          { this.getFooterComponent() }
+          { this.renderFooterComponent() }
         </MainView>
       </ContainerView>
     );

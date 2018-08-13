@@ -17,26 +17,26 @@ import TouchableView from './TouchableView';
 const ContainerView = styled.View``;
 
 const TabView = styled.View`
-height: ${moderateScale(50)};
-background-color: #fff;
-align-items: center;
-flex-direction: row;
-justify-content: center;
-`
+  height: ${moderateScale(50)};
+  background-color: #fff;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+`;
 
 const TabItemView = styled(TouchableView)`
-flex: 1;
-height: ${moderateScale(26)};
-align-items: center;
-justify-content: center;
-borderRightWidth: ${props => props.isLast ? '0' : '1px' };
-borderRightColor: #F6F6F6;
+  flex: 1;
+  height: ${moderateScale(26)};
+  align-items: center;
+  justify-content: center;
+  borderRightWidth: ${props => props.isLast ? '0' : '1px' };
+  borderRightColor: #F6F6F6;
 `;
 
 const HeaderText = styled.Text`
-font-family:${theme.fontMedium};
-font-size:  ${theme.moderateScale(16)};
-color: ${props => props.active ? '#18B548' : '#696969' };
+  font-family:${theme.fontMedium};
+  font-size:  ${theme.moderateScale(16)};
+  color: ${props => props.active ? '#18B548' : '#696969' };
 `;
 
 class TabContainer extends React.PureComponent {
@@ -46,7 +46,8 @@ class TabContainer extends React.PureComponent {
       activeIndex,
       onChange,
       isShadow,
-      style
+      style,
+      children,
     } = this.props;
 
     const shadowOpt = {
@@ -66,7 +67,7 @@ class TabContainer extends React.PureComponent {
             list.map((_, index) => (
               <TabItemView
                 key={index}
-                isLast={index == list.length - 1}
+                isLast={index === list.length - 1}
                 onPress={() => {
                   if (index === activeIndex) return;
                   onChange(index);
@@ -79,7 +80,11 @@ class TabContainer extends React.PureComponent {
         </TabView>
 
         { isShadow ? <BorderShadow setting={shadowOpt} /> : null}
-
+        {
+          React.Children.map(children, (_, index) => {
+            if (index === activeIndex) return _;
+          })
+        }
       </ContainerView>
     );
   }
@@ -89,7 +94,8 @@ TabContainer.defaultProps = {
   onChange: () => null,
   isShadow: true,
   activeIndex: 0,
-  style: {}
+  style: {},
+  children: null,
 };
 
 TabContainer.propTypes = {
@@ -97,7 +103,11 @@ TabContainer.propTypes = {
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
   isShadow: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.objectOf(PropTypes.any),
+  children: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 };
 
 export default TabContainer;
