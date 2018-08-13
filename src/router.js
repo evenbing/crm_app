@@ -128,7 +128,7 @@ const CrmRouteConfig = {
   [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
-  [routers.modifyProductPrice] : { screen: MidifyProductPriceScreen },
+  [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
   [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
   [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen },
 };

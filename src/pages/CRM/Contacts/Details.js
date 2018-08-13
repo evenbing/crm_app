@@ -18,6 +18,7 @@ import DetailsHead from './component/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
+import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
 import TouchableView from '../../../components/TouchableView';
 
 const TotalView = styled.View`
@@ -110,11 +111,9 @@ class Details extends React.Component {
       </View>
     );
   };
-  renderDynamicItem = ({ item, index }) => {
-    return (
-      <DynamicList isFrist={index === 0} data={item} />
-    );
-  };
+  renderDynamicItem = ({ item, index }) => (
+    <DynamicList isFrist={index === 0} data={item} />
+  );
   renderDynamicView = () => {
     const list = [
       {
@@ -147,6 +146,9 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
+  renderDetailsItem = props => (
+    <ActivityDetailsItem {...props} />
+  );
   renderDetailsView = () => {
     const list = [
       {
@@ -167,7 +169,7 @@ class Details extends React.Component {
       keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDynamicItem,
+      renderItem: this.renderDetailsItem,
       ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
       onEndReached: this.onEndReached,
