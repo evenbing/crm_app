@@ -25,7 +25,9 @@ java (v1.8.0_172)
     |--CRM          首页CRM
       |--ProductList        产品目录
       |--PriceList          价格表
+      |--ModifyProductPrice 修改产品报价
       |--ReimbursementPlan  回款计划
+        |--detail           回款计划资料
       |--card         多个tabBar公用页面
       |--...          更多
   |--service        服务API

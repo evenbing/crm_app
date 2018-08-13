@@ -94,7 +94,7 @@ const NavList = [
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '产品',
-    path: routers.productList,
+    path: routers.modifyProductPrice,
   },
   {
     key: uuidv1(),

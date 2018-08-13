@@ -21,6 +21,7 @@ export default {
   contactDetails: 'app.tabView.root.crm.contactsDetails',
   salesClues: 'app.tabView.root.crm.salesClues',
   productList: 'app.tabView.root.crm.productList',
+  modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
   priceList: 'app.tabView.root.crm.priceList',
   reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
   reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
