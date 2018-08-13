@@ -61,7 +61,8 @@ useStrict(true);
 
 const NavInputItemStyle = {
   leftTextStyle: {
-    color: '#373737'
+    color: '#373737',
+    width: moderateScale(80)
   },
   height: 44
 }
