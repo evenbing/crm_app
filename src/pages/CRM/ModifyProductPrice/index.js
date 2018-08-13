@@ -89,31 +89,31 @@ class ModifyProductPrice extends React.Component {
     const TableList = [
       {
         leftText: '销售单价',
-        inputStyle: {
+        inputProps: {
           placeholder: '请输入销售单价'
         }
       },
       {
         leftText: '数量',
-        inputStyle: {
+        inputProps: {
           placeholder: '请输入商品数量'
         }
       },
       {
         leftText: '折扣(%)',
-        inputStyle: {
+        inputProps: {
           placeholder: '请输入折扣'
         }
       },
       {
         leftText: '总价',
-        inputStyle: {
+        inputProps: {
           placeholder: '请输入总价'
         }
       },
       {
         leftText: '备注',
-        inputStyle: {
+        inputProps: {
           placeholder: '请输入备注，十字以内'
         }
       }

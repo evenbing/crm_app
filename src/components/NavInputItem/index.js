@@ -12,7 +12,7 @@ import { View, Text, Image } from 'react-native';
 import theme from '../../constants/theme';
 import { moderateScale } from '../../utils/scale';
 import TouchableView from '../TouchableView'
-import TextInput from '../TextInput'
+import SearchInput from '../SearchInput'
 
 const ContainerView = styled(TouchableView)`
 width: 100%;
@@ -72,7 +72,7 @@ class NavInputItem extends React.PureComponent {
             <TitleText style={leftTextStyle}>{leftText}</TitleText>
           </LeftView>
           <RightView>
-            <TextInput {...inputProps} />
+            <SearchInput {...inputProps} />
           </RightView>
         </BorderView>
       </ContainerView>
