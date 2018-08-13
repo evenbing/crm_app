@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { theme, routers } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
 // components
@@ -184,6 +184,9 @@ class Details extends React.Component {
       state: {
         tabIndex,
       },
+      props: {
+        navigation: { navigate },
+      },
     } = this;
     return (
       <ContainerView
@@ -198,7 +201,7 @@ class Details extends React.Component {
             :
             this.renderDetailsView()
         }
-        <FooterView onPress={() => alert(1)}>
+        <FooterView onPress={() => navigate(routers.contactsEditor)}>
           <FooterText>编辑资料</FooterText>
         </FooterView>
       </ContainerView>
