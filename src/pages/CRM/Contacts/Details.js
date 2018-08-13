@@ -67,7 +67,7 @@ const FooterText = styled.Text`
 
 class Details extends React.Component {
   state = {
-    tabIndex: 0,
+    tabIndex: 1,
   };
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
@@ -138,6 +138,9 @@ class Details extends React.Component {
       ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
       onEndReached: this.onEndReached,
+      flatListStyle: {
+        marginBottom: theme.moderateScale(50),
+      },
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,
@@ -155,14 +158,6 @@ class Details extends React.Component {
         type: 1,
         list: [{ url: true }, {}, {}],
       },
-      {
-        type: 0,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
     ];
     const { refreshing = false, loadingMore = false } = {};
     const flatProps = {
@@ -173,6 +168,9 @@ class Details extends React.Component {
       ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
       onEndReached: this.onEndReached,
+      flatListStyle: {
+        marginBottom: theme.moderateScale(50),
+      },
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,

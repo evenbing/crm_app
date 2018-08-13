@@ -15,7 +15,7 @@ import TouchableView from '../TouchableView';
 
 const ContainerView = styled(TouchableView)`
   width: 100%;
-  height: ${moderateScale(60)};
+  height: ${props => moderateScale(props.height || 60)};
   padding: 0 ${moderateScale(15)}px;
 `;
 
@@ -85,9 +85,10 @@ class NavItem extends React.PureComponent {
       isLast,
       height,
       showNavIcon,
+      rightSuffix,
     } = this.props;
     return (
-      <ContainerView onPress={onPress} style={{ height }}>
+      <ContainerView onPress={onPress} height={height}>
         <BorderView isLast={isLast}>
           <LeftView>
             { icon ? <IconView><Image source={icon} /></IconView> : null }
@@ -96,6 +97,7 @@ class NavItem extends React.PureComponent {
           <RightView>
             <RightText style={rightTextStyle}>{rightText}</RightText>
             { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
+            { rightSuffix }
           </RightView>
         </BorderView>
       </ContainerView>
@@ -111,6 +113,7 @@ NavItem.defaultProps = {
   height: 60,
   onPress: () => null,
   showNavIcon: true,
+  rightSuffix: null,
 };
 
 NavItem.propTypes = {
@@ -123,6 +126,7 @@ NavItem.propTypes = {
   height: PropTypes.number,
   onPress: PropTypes.func,
   showNavIcon: PropTypes.bool,
+  rightSuffix: PropTypes.node,
 };
 
 export default NavItem;
