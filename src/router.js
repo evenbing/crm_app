@@ -135,7 +135,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.contactDetails,
+  initialRouteName: routers.crm,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);

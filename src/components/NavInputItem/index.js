@@ -115,7 +115,7 @@ NavItem.defaultProps = {
   showNavIcon: true
 };
 
-NavItem.propTypes = {
+NavInputItem.propTypes = {
   leftText: PropTypes.string.isRequired,
   leftTextStyle: PropTypes.object,
   icon: PropTypes.any,
@@ -127,4 +127,4 @@ NavItem.propTypes = {
   showNavIcon: PropTypes.bool
 };
 
-export default NavItem;
+export default NavInputItem;

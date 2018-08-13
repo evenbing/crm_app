@@ -53,8 +53,7 @@ color: #858585;
 `
 const ListView = styled.View`
 background: #FFFFFF;
-padding-left: ${moderateScale(15)};
-padding-right: ${moderateScale(15)};
+marginTop: ${moderateScale(10)};
 `
 
 useStrict(true);
@@ -69,14 +68,16 @@ class ModifyProductPrice extends React.Component {
       leftTextStyle: {
         fontFamily: theme.fontRegular,
         fontSize: moderateScale(16),
-        color: '#373737'
+        color: '#373737',
+        backgroundColor: '#ff0000'
       },
       rightText: '¥99999.00',
-      leftTextStyle: {
+      rightTextStyle: {
         fontFamily: theme.fontRegular,
         fontSize: moderateScale(16),
         color: '#AEAEAE'
-      }
+      },
+      showNavIcon: false
     }
 
     return (
@@ -90,7 +91,7 @@ class ModifyProductPrice extends React.Component {
           </HeaderView>
 
           <ListView>
-            <NavItem />
+            <NavItem {...navItemProps} />
 
           </ListView>
         </MainView>
