@@ -1,6 +1,6 @@
 
 /**
- * @component DetailItem.jsm.js
+ * @component DynamicItem.jsm.js
  * @description ProductItem
  * @time 2018/8/07
  * @author zhao
@@ -8,9 +8,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { moderateScale } from '../../../../utils/scale';
-import TouchableView from '../../../../components/TouchableView'
+import { theme } from '../../constants/index';
+import { moderateScale } from '../../utils/scale';
+import TouchableView from '../TouchableView'
 
 const ContainerView = styled(TouchableView)`
 flex-direction: row;
@@ -68,7 +68,7 @@ color: #18B548;
 `
 
 
-class DetailItem extends React.PureComponent {
+class DynamicItem extends React.PureComponent {
   render() {
     const { onPress, data } = this.props
 
@@ -92,14 +92,14 @@ class DetailItem extends React.PureComponent {
   }
 }
 
-DetailItem.defaultProps = {
+DynamicItem.defaultProps = {
   data: {},
   onPress: () => null,
 };
 
-DetailItem.propTypes = {
+DynamicItem.propTypes = {
   data: PropTypes.object.isRequired,
   onPress: PropTypes.func,
 };
 
-export default DetailItem;
+export default DynamicItem;

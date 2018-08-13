@@ -1,17 +1,17 @@
 
 /**
- * @component DetailListItem.jsm.js
- * @description DetailListItem
+ * @component DynamicList.jsm.js
+ * @description DynamicList
  * @time 2018/8/12
  * @author zhao
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { moderateScale } from '../../../../utils/scale';
+import { theme } from '../../constants/index';
+import { moderateScale } from '../../utils/scale';
 
-import DetailItem from './detailItem';
+import DynamicItem from './DynamicItem';
 
 const ContainerView = styled.View`
 padding-left: ${moderateScale(15)};
@@ -43,13 +43,13 @@ const RightView = styled.View`
 flex: 1;
 `
 
-class DetailListItem extends React.PureComponent {
+class DynamicList extends React.PureComponent {
   render() {
     const { onPress, data, isFrist } = this.props
     return (
       <ContainerView onPress={onPress} isFrist={isFrist}>
         {
-          data.type == 1 ? <LeftView><DayText>今天</DayText></LeftView> : (
+          data.type === 1 ? <LeftView><DayText>今天</DayText></LeftView> : (
             <LeftView>
               <MonthText>5月</MonthText>
               <DayText>27</DayText>
@@ -58,7 +58,7 @@ class DetailListItem extends React.PureComponent {
         }
         <RightView>
           {
-            data.list.map((item, index) => <DetailItem key={index} data={item} />)
+            data.list.map((item, index) => <DynamicItem key={index} data={item} />)
           }
         </RightView>
       </ContainerView>
@@ -66,16 +66,16 @@ class DetailListItem extends React.PureComponent {
   }
 }
 
-DetailListItem.defaultProps = {
+DynamicList.defaultProps = {
   data: {},
   onPress: () => null,
-  isFrist: false
+  isFrist: false,
 };
 
-DetailListItem.propTypes = {
-  data: PropTypes.object.isRequired,
+DynamicList.propTypes = {
+  data: PropTypes.objectOf(PropTypes.any),
   onPress: PropTypes.func,
-  isFrist: PropTypes.bool
+  isFrist: PropTypes.bool,
 };
 
-export default DetailListItem;
+export default DynamicList;

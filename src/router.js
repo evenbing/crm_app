@@ -47,7 +47,7 @@ import PriceListScreen from './pages/CRM/PriceList';
 // root page -> CRM -> 回款计划
 import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
 // root page -> CRM -> 回款计划资料
-import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/detail';
+import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/Detail';
 
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
@@ -135,7 +135,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.contactDetails,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
@@ -143,7 +143,7 @@ const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 CrmStack.navigationOptions = ({ navigation }) => {
   const { index, params } = navigation.state;
   return {
-    tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
+    tabBarVisible: (params && params.hide) ? !params.hide : index === 1,
     tabBarLabel: 'CRM',
     tabBarIcon: ({ focused }) => (
       focused ? (
