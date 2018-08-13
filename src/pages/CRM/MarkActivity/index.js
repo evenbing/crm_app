@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants/index';
+import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -84,9 +84,11 @@ class SalesClues extends React.Component {
       state: { activeIndex },
     } = this;
     return (
-      <ContainerView>
+      <ContainerView
+        bottomPadding
+      >
         <CommStatusBar />
-        <SearchInput />
+        <SearchInput placeholder="输入客户名称" />
         <ScreenTab
           data={['跟进时间', '我负责的', '筛选']}
           activeIndex={activeIndex}

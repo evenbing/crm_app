@@ -8,9 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlatList, ActivityIndicator } from 'react-native';
+import { theme } from '../constants';
 
 const TableBody = styled.View`
-  background-color: #ffffff;
   flex: 1;
 `;
 
@@ -22,7 +22,7 @@ const ListEmptyView = styled.View`
 `;
 
 const EmptyText = styled.Text`
-  font-size: 16px;
+  font-size: ${theme.moderateScale(16)};
   color: #999;
 `;
 
@@ -32,7 +32,7 @@ const FooterView = styled.View`
   justify-content: center;
   align-items: center;
   padding: 0;
-  height: 44px;
+  height: ${theme.moderateScale(44)};
 `;
 
 class FlatListTable extends React.PureComponent {
@@ -79,7 +79,7 @@ class FlatListTable extends React.PureComponent {
           onLayout={(e) => {
             const { height } = e.nativeEvent.layout;
             if (listHeight < height) {
-              this.setState({ listHeight: height });
+              this.setState({ listHeight: theme.moderateScale(height) });
             }
           }}
           onRefresh={onRefresh}

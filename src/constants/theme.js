@@ -18,6 +18,7 @@ export default {
   textGrayColor: '#A3A3A3',
   listTitleColor: '#4F4F4F',
   listTipColor: '#787878',
+  chartLineColor: '#5374C7',
   fontMedium: 'PingFangSC-Medium',
   fontRegular: 'PingFangSC-Regular',
   avatarSize: 60,

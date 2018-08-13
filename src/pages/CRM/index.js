@@ -5,7 +5,7 @@ import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
 import uuidv1 from 'uuid/v1';
-
+import { nativeGoBack } from '../../utils/base';
 import { moderateScale } from '../../utils/scale';
 
 // components
@@ -49,7 +49,7 @@ const HeadList = [
     key: uuidv1(),
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
-    path: '',
+    path: routers.perfStatist,
   },
 ];
 
@@ -70,7 +70,7 @@ const NavList = [
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '联系人',
-    path: '',
+    path: routers.contacts,
   },
   {
     key: uuidv1(),
@@ -82,19 +82,19 @@ const NavList = [
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '回款计划',
-    path: '',
+    path: routers.reimbursementPlan,
   },
   {
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '回款记录',
-    path: '',
+    path: routers.reimbursementPlanDetail,
   },
   {
     key: uuidv1(),
     icon: require('../../img/crm/qrCode.png'),
     title: '产品',
-    path: routers.productList,
+    path: routers.modifyProductPrice,
   },
   {
     key: uuidv1(),
@@ -149,16 +149,15 @@ class CRM extends React.Component {
   }
 }
 
-CRM.navigationOptions = ({ navigation, screenProps }) => {
-  return ({
-    title: 'CRM',
-    headerLeft: (
-      <LeftBackIcon
-        onPress={navigation.state.params ? navigation.state.params._close : null}
-      />
-    ),
-  });
-};
+// { navigation, screenProps }
+CRM.navigationOptions = () => ({
+  title: 'CRM',
+  headerLeft: (
+    <LeftBackIcon
+      onPress={() => nativeGoBack()}
+    />
+  ),
+});
 
 CRM.defaultProps = {};
 

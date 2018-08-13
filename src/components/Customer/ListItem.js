@@ -7,9 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants/index';
+import { theme } from '../../constants';
 
-const ContainerView = styled.View`
+// components
+import TouchableView from '../../components/TouchableView';
+
+const ContainerView = styled(TouchableView)`
   padding-left: ${theme.moderateScale(15)};
   padding-right: ${theme.moderateScale(15)};
   height: ${theme.moderateScale(88)};
@@ -102,9 +105,16 @@ class ListItem extends React.PureComponent {
     );
   };
   render() {
+    const {
+      props: {
+        containerStyle,
+        onPress,
+      },
+    } = this;
     return (
       <ContainerView
-        style={this.props.containerStyle}
+        style={containerStyle}
+        onPress={onPress}
       >
         {this.renderLeft()}
         {this.renderRight()}
@@ -120,6 +130,7 @@ ListItem.defaultProps = {
   right: null,
   titleStyle: {},
   containerStyle: {},
+  onPress: () => null,
 };
 
 ListItem.propTypes = {
@@ -128,6 +139,7 @@ ListItem.propTypes = {
   right: PropTypes.node,
   titleStyle: PropTypes.objectOf(PropTypes.any),
   containerStyle: PropTypes.objectOf(PropTypes.any),
+  onPress: PropTypes.func,
 };
 
 export default ListItem;

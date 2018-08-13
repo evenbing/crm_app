@@ -8,7 +8,7 @@ import { NativeModules } from 'react-native';
 import { pinyin } from './pinyin';
 
 // nav go back
-export function NativeGoBack() {
+export function nativeGoBack() {
   NativeModules.system.navTo('BACK');
 }
 

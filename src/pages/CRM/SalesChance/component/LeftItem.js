@@ -1,13 +1,13 @@
 /**
  * @component LeftItem.js
- * @description 左边条目
+ * @description 左边条目组件
  * @time 2018/8/11
  * @author JUSTIN XU
  */
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { theme } from '../../../../constants/index';
 
 const ContainerView = styled.View`
   flex: 1;

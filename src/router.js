@@ -29,14 +29,26 @@ import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
+// root page -> CRM -> 业绩统计 module
+import PerfStatistScreen from './pages/CRM/PerfStatist';
+// root page -> CRM -> 市场活动 module
+import MarkActivityScreen from './pages/CRM/MarkActivity';
+// root page -> CRM -> 联系人 module
+import ContactsScreen from './pages/CRM/Contacts';
+import ContactDetailsScreen from './pages/CRM/Contacts/Details';
+import ContactEditorScreen from './pages/CRM/Contacts/Editor';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
-// root page -> CRM -> 活动机会 module
-import MarkActivityScreen from './pages/CRM/MarkActivity';
 // root page -> CRM -> 产品目录
-import ProductListScreen from './pages/ProductList';
+import ProductListScreen from './pages/CRM/ProductList';
+// root page -> CRM -> 修改产品报价
+import MidifyProductPriceScreen from './pages/CRM/ModifyProductPrice';
 // root page -> CRM -> 价格表
-import PriceListScreen from './pages/PriceList';
+import PriceListScreen from './pages/CRM/PriceList';
+// root page -> CRM -> 回款计划
+import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
+// root page -> CRM -> 回款计划资料
+import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/Detail';
 
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
@@ -110,10 +122,17 @@ const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
-  [routers.salesClues]: { screen: SalesCluesScreen },
+  [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
+  [routers.salesClues]: { screen: SalesCluesScreen },
+  [routers.contacts]: { screen: ContactsScreen },
+  [routers.contactDetails]: { screen: ContactDetailsScreen },
+  [routers.contactsEditor]: { screen: ContactEditorScreen },
   [routers.priceList]: { screen: PriceListScreen },
   [routers.productList]: { screen: ProductListScreen },
+  [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
+  [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
+  [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen },
 };
 
 const CrmNavigatorConfig = {
@@ -126,7 +145,7 @@ const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 CrmStack.navigationOptions = ({ navigation }) => {
   const { index, params } = navigation.state;
   return {
-    tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
+    tabBarVisible: (params && params.hide) ? !params.hide : index === 1,
     tabBarLabel: 'CRM',
     tabBarIcon: ({ focused }) => (
       focused ? (
