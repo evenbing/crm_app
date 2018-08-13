@@ -14,39 +14,39 @@ import TouchableView from '../../components/TouchableView';
 import { theme } from '../../constants';
 
 const Container = styled(View)`
-flex: 1;
-alignItems: center;
-justifyContent: center;
+  flex: 1;
+  alignItems: center;
+  justifyContent: center;
 `;
 
 const ContentView = styled(TouchableView)`
 alignItems: center;
-`
+`;
 const IconView = styled(View)`
 width: 36px;
 height: 36px;
 alignItems: center;
 justifyContent: center;
-`
+`;
 
 const ItemText = styled(Text)`
 font-family: ${theme.fontMedium};
 font-size: 16px;
 color: #FFFFFF;
 background-color: transparent;
-`
+`;
 
 const LineView = styled(View)`
 position: absolute;
 right: 0;
 width: 1px;
-`
+`;
 
 const LineBorder = styled(View)`
 borderWidth: 1px;
 borderColor: #A1D6B7;
 height: 28px;
-`
+`;
 class HeadItem extends PureComponent {
   state = {}
 
