@@ -94,10 +94,7 @@ class NavItem extends React.PureComponent {
           </LeftView>
           <RightView>
             <RightText style={rightTextStyle}>{rightText}</RightText>
-            <NavIcon
-              source={require('../../img/nav.png')}
-              resizeMode="contain"
-            />
+            { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
           </RightView>
         </BorderView>
       </ContainerView>
@@ -114,6 +111,7 @@ NavItem.defaultProps = {
   isLast: false,
   height: 60,
   onPress: () => null,
+  showNavIcon: true
 };
 
 NavItem.propTypes = {
@@ -125,6 +123,7 @@ NavItem.propTypes = {
   isLast: PropTypes.bool,
   height: PropTypes.number,
   onPress: PropTypes.func,
+  showNavIcon: PropTypes.bool
 };
 
 export default NavItem;
