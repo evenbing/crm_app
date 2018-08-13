@@ -43,6 +43,7 @@ const IconView = styled(View)`
   height: ${moderateScale(24)};
   alignItems: center;
   justifyContent: center;
+  margin-right: ${moderateScale(14)};
 `;
 
 const TitleText = styled(Text)`
@@ -70,7 +71,6 @@ const RightText = styled(Text)`
 const NavIcon = styled.Image`
   width: ${moderateScale(6)};
   height: ${moderateScale(11)};
-  margin-right: ${moderateScale(14)};
 `;
 
 class NavItem extends React.PureComponent {
