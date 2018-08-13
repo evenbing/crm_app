@@ -108,6 +108,7 @@ class NavItem extends React.PureComponent {
 NavItem.defaultProps = {
   leftTextStyle: {},
   icon: null,
+  rightText: null,
   rightTextStyle: {},
   isLast: false,
   height: 60,

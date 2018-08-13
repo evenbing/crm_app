@@ -23,11 +23,28 @@ java (v1.8.0_172)
   |--logicStores    mobx modal数据
   |--pages          页面(一个tabBar一个文件夹.)
     |--CRM          首页CRM
-      |--ProductList        产品目录
-      |--PriceList          价格表
-      |--ModifyProductPrice 修改产品报价
-      |--ReimbursementPlan  回款计划
+      |--Contacts           联系人模块
+        |--Details.js       联系人详情页面
+        |--index.js         列表页面
+      |--Customer           客户模块
+        |--index.js         列表页面
+      |--MarkActivity       市场活动模块
+        |--index.js         列表页面
+      |--ModifyProductPrice 修改产品模块
+        |--index.js         列表页面
+      |--PerfStatist        业绩统计模块
+        |--index.js         列表页面
+      |--PriceList          价格表模块
+        |--index.js         列表页面
+      |--ProductList        产品目录模块
+        |--index.js         列表页面
+      |--ReimbursementPlan  回款计划模块
         |--detail           回款计划资料
+        |--index.js         列表页面
+      |--SalesChance        销售机会模块
+        |--index.js         列表页面  
+      |--SalesClues         销售线索模块
+        |--index.js         列表页面 
       |--card         多个tabBar公用页面
       |--...          更多
   |--service        服务API

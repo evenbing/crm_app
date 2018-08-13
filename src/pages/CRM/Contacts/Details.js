@@ -67,7 +67,7 @@ const FooterText = styled.Text`
 
 class Details extends React.Component {
   state = {
-    tabIndex: 1,
+    tabIndex: 0,
   };
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
