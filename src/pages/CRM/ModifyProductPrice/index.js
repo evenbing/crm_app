@@ -9,6 +9,7 @@ import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
 
 import NavItem from '../../../components/NavItem'
+import NavInputItem from '../../../components/NavInputItem'
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -58,27 +59,65 @@ marginTop: ${moderateScale(10)};
 
 useStrict(true);
 
+const NavInputItemStyle = {
+  leftTextStyle: {
+    color: '#373737'
+  },
+  height: 44
+}
+
 @observer
 class ModifyProductPrice extends React.Component {
 
   render() {
     const navItemProps = {
-      height: moderateScale(44),
+      height: 44,
       leftText: '价格表价格',
       leftTextStyle: {
         fontFamily: theme.fontRegular,
-        fontSize: moderateScale(16),
         color: '#373737',
-        backgroundColor: '#ff0000'
       },
       rightText: '¥99999.00',
       rightTextStyle: {
         fontFamily: theme.fontRegular,
-        fontSize: moderateScale(16),
         color: '#AEAEAE'
       },
-      showNavIcon: false
+      showNavIcon: false,
+      isLast: false
     }
+
+    const TableList = [
+      {
+        leftText: '销售单价',
+        inputStyle: {
+          placeholder: '请输入销售单价'
+        }
+      },
+      {
+        leftText: '数量',
+        inputStyle: {
+          placeholder: '请输入商品数量'
+        }
+      },
+      {
+        leftText: '折扣(%)',
+        inputStyle: {
+          placeholder: '请输入折扣'
+        }
+      },
+      {
+        leftText: '总价',
+        inputStyle: {
+          placeholder: '请输入总价'
+        }
+      },
+      {
+        leftText: '备注',
+        inputStyle: {
+          placeholder: '请输入备注，十字以内'
+        }
+      }
+    ]
 
     return (
       <ContainerView>
@@ -92,7 +131,9 @@ class ModifyProductPrice extends React.Component {
 
           <ListView>
             <NavItem {...navItemProps} />
-
+            {
+              TableList.map((obj, index) => <NavInputItem key={index} {...obj} {...NavInputItemStyle} /> )
+            }
           </ListView>
         </MainView>
       </ContainerView>

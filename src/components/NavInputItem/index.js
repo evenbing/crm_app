@@ -12,11 +12,13 @@ import { View, Text, Image } from 'react-native';
 import theme from '../../constants/theme';
 import { moderateScale } from '../../utils/scale';
 import TouchableView from '../TouchableView'
+import TextInput from '../TextInput'
 
 const ContainerView = styled(TouchableView)`
 width: 100%;
-height: 60px;
-padding: 0 15px;
+height: ${props => moderateScale(props.height || 60)};
+padding-left: ${moderateScale(15)};
+padding-right: ${moderateScale(15)};
 `;
 
 const BorderView = styled(View)`
@@ -32,70 +34,45 @@ justifyContent: space-between;
 `;
 
 const LeftView = styled(View)`
-flex: 1;
 height: 100%;
 flexDirection: row;
 alignItems: center;
 `;
 
-const IconView = styled(View)`
-width: 24px;
-height: 24px;
-alignItems: center;
-justifyContent: center;
-`;
-
 const TitleText = styled(Text)`
+width: ${moderateScale(80)};
 font-family: ${theme.fontRegular};
 font-size: 16px;
 color: #373737;
-marginLeft: 14px;
 background-color: transparent;
 `;
 
 const RightView = styled(View)`
+flex: 1;
 height: 100%;
 alignItems: center;
 justifyContent: center;
 flexDirection: row;
 `;
 
-const RightText = styled(Text)`
-font-family: ${theme.fontRegular};
-font-size: 16px;
-color: #373737;
-background-color: transparent;
-margin-right: 5px;
-`
-
-const NavIcon = styled.Image`
-  width: 6px;
-  height: 11px;
-`;
-
-class NavItem extends React.PureComponent {
+class NavInputItem extends React.PureComponent {
   render() {
     const {
       leftText,
       leftTextStyle,
-      icon,
-      rightText,
-      rightTextStyle,
       onPress,
       isLast,
       height,
-      showNavIcon,
+      inputProps,
     } = this.props;
     return (
       <ContainerView onPress={onPress} style={{height}}>
         <BorderView isLast={isLast}>
           <LeftView>
-            { icon ? <IconView><Image source={icon} /></IconView> : null }
             <TitleText style={leftTextStyle}>{leftText}</TitleText>
           </LeftView>
           <RightView>
-            <RightText style={rightTextStyle}>{rightText}</RightText>
-            { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
+            <TextInput {...inputProps} />
           </RightView>
         </BorderView>
       </ContainerView>
@@ -103,28 +80,22 @@ class NavItem extends React.PureComponent {
   }
 }
 
-NavItem.defaultProps = {
+NavInputItem.defaultProps = {
   leftText: "",
   leftTextStyle: {},
-  icon: "",
-  rightText: "",
-  rightTextStyle: {},
   isLast: false,
   height: 60,
   onPress: () => null,
-  showNavIcon: true
+  inputProps: {}
 };
 
 NavInputItem.propTypes = {
   leftText: PropTypes.string.isRequired,
   leftTextStyle: PropTypes.object,
-  icon: PropTypes.any,
-  rightText: PropTypes.string.isRequired,
-  rightTextStyle: PropTypes.object,
   isLast: PropTypes.bool,
   height: PropTypes.number,
   onPress: PropTypes.func,
-  showNavIcon: PropTypes.bool
+  inputProps: PropTypes.object
 };
 
 export default NavInputItem;

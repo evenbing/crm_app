@@ -117,7 +117,7 @@ NavItem.propTypes = {
   leftText: PropTypes.string.isRequired,
   leftTextStyle: PropTypes.objectOf(PropTypes.any),
   icon: PropTypes.number,
-  rightText: PropTypes.string.isRequired,
+  rightText: PropTypes.string,
   rightTextStyle: PropTypes.objectOf(PropTypes.any),
   isLast: PropTypes.bool,
   height: PropTypes.number,
