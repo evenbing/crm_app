@@ -148,7 +148,7 @@ const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 CrmStack.navigationOptions = ({ navigation }) => {
   const { index, params } = navigation.state;
   return {
-    tabBarVisible: (params && params.hide) ? !params.hide : index === 1,
+    tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
     tabBarLabel: 'CRM',
     tabBarIcon: ({ focused }) => (
       focused ? (
