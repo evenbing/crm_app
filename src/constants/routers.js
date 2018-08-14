@@ -23,10 +23,12 @@ export default {
   markActivity: 'app.tabView.root.crm.markActivity',
   // contacts module
   contacts: 'app.tabView.root.crm.contacts',
-  contactDetails: 'app.tabView.root.crm.contactsDetails',
+  contactDetails: 'app.tabView.root.crm.contactDetails',
   contactsEditor: 'app.tabView.root.crm.contactsEditor',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
+  salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
+  // productList module
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
   priceList: 'app.tabView.root.crm.priceList',

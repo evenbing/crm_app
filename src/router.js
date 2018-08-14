@@ -47,6 +47,7 @@ import ContactDetailsScreen from './pages/CRM/Contacts/Details';
 import ContactEditorScreen from './pages/CRM/Contacts/Editor';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
+import SalesClueDetailsScreen from './pages/CRM/SalesClues/Details';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/CRM/ProductList';
 // root page -> CRM -> 修改产品报价
@@ -137,6 +138,7 @@ const CrmRouteConfig = {
   [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
+  [routers.salesClueDetails]: { screen: SalesClueDetailsScreen },
   [routers.contacts]: { screen: ContactsScreen },
   [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.contactsEditor]: { screen: ContactEditorScreen },
@@ -149,7 +151,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.customer,
+  initialRouteName: routers.crm,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
