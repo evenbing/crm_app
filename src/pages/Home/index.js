@@ -19,6 +19,7 @@ import { ActionSheet } from '../../components/Modal';
 import { moderateScale } from '../../utils/scale';
 import CalendarIcon from '../../img/home/ico_header_calendar.png';
 import AddButtonImage from '../../img/home/add.png';
+import { routers } from '../../constants';
 // import TouchableView from '../../components/TouchableView';
 
 const data = [
@@ -172,6 +173,14 @@ class Home extends React.Component {
     });
   };
 
+  showMessage = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+
+    navigate(routers.messageList);
+  }
+
   keyExtractor = item => item.key;
 
   renderItem = ({ item }) => {
@@ -195,9 +204,6 @@ class Home extends React.Component {
     const {
       state: {
         isVisible,
-      },
-      props: {
-        navigation: { navigate },
       },
     } = this;
     const taskActionSheetProps = {
@@ -230,7 +236,7 @@ class Home extends React.Component {
               <WeekDay>星期四</WeekDay>
             </HeaderViewMiddle>
             <HeaderViewRight>
-              <NoticeView yes />
+              <NoticeView yes onPress={this.showMessage} />
             </HeaderViewRight>
           </HeaderView>
         </LinearGradient>

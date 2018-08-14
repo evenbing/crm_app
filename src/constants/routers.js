@@ -11,6 +11,9 @@ export default {
   // common card
   // home module
   home: 'app.tabView.root.home',
+  messageList: 'app.tabView.root.home.messageList',
+  upcomingScheduleList: 'app.tabView.root.home.upcomingScheduleList',
+  upcomingTaskList: 'app.tabView.root.home.upcomingTaskList',
   notificationList: 'app.tabView.root.home.notificationList',
   // crm module
   crm: 'app.tabView.root.crm',
@@ -33,4 +36,3 @@ export default {
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',
 };
-

@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-
-
-const Container = styled.View`
-  flex: 1;
-  background-color: white;
-`;
-
-const List = styled.FlatList`
-
-`;
+import { LeftBackIcon } from '../../components/Layout';
 
 class NotificationList extends Component {
   constructor(props) {
@@ -24,20 +11,15 @@ class NotificationList extends Component {
 
   render() {
     return (
-      <Container>
-        <CommStatusBar />
-        <List
-          data={data}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
-      </Container>
+      <View>
+        <Text> NotificationList </Text>
+      </View>
     );
   }
 }
 
 NotificationList.navigationOptions = ({ navigation }) => ({
-  title: '消息提醒',
+  title: '通知',
   headerLeft: (
     <LeftBackIcon
       onPress={navigation.state.params ? navigation.state.params._close : null}

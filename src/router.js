@@ -23,6 +23,12 @@ import { registerTopNavigator } from './utils/navigationService';
 // import MemberSignListScreen from './pages/card/memberSignList';
 // root page -> home
 import HomeScreen from './pages/Home';
+// root page -> home -> MessageList
+import MessageList from './pages/Home/MessageList';
+// root page -> home -> UpcomingScheduleList
+import UpcomingScheduleList from './pages/Home/UpcomingScheduleList';
+// root page -> home -> UpcomingTaskList
+import UpcomingTaskList from './pages/Home/UpcomingTaskList';
 // root page -> home -> NotificationList
 import NotificationList from './pages/Home/NotificationList';
 // root page -> CRM
@@ -65,6 +71,9 @@ const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
   [routers.actionSheetDemo]: { screen: ActionSheetDemoScreen },
   [routers.mobxDemo]: { screen: MobxDemoScreen },
+  [routers.messageList]: { screen: MessageList },
+  [routers.upcomingScheduleList]: { screen: UpcomingScheduleList },
+  [routers.upcomingTaskList]: { screen: UpcomingTaskList },
   [routers.notificationList]: { screen: NotificationList },
 };
 
