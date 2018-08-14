@@ -12,6 +12,7 @@ import { theme } from '../../constants/';
 
 import BorderShadow from '../Shadow/BorderShadow';
 import TouchableView from '../TouchableView';
+import Thumbnail from '../Thumbnail';
 
 const TabsPanelView = styled.View`
   background: ${theme.pageBackColor};
@@ -42,23 +43,30 @@ const IconView = styled.View`
   background-color: ${props => props.color || '#7A7A7A'};
 `;
 
-const LastIcon = styled.View`
-  width: ${theme.moderateScale(21)};
-  height: ${theme.moderateScale(21)};
-  margin-left: ${theme.moderateScale(4)};
-  background-color: ${props => props.color || '#7A7A7A'};
-`;
-
 class ScreenTab extends React.PureComponent {
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
     if (isLast) {
       return (
-        <LastIcon color={active && theme.primaryColor} />
+        <Thumbnail
+          source={require('../../img/crm/screen.png')}
+          size={20}
+        />
+      );
+    }
+    if (active) {
+      return (
+        <Thumbnail
+          source={require('../../img/crm/triangle-focus.png')}
+          size={9}
+        />
       );
     }
     return (
-      <IconView color={active && theme.primaryColor} />
+      <Thumbnail
+        source={require('../../img/crm/triangle.png')}
+        size={9}
+      />
     );
   };
   renderTab = () => {
@@ -111,6 +119,7 @@ class ScreenTab extends React.PureComponent {
 }
 
 ScreenTab.defaultProps = {
+  data: [],
   onChange: () => null,
   isShadow: false,
   activeIndex: 0,
