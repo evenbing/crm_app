@@ -11,6 +11,7 @@ export default {
   // common card
   // home module
   home: 'app.tabView.root.home',
+  notificationList: 'app.tabView.root.home.notificationList',
   // crm module
   crm: 'app.tabView.root.crm',
   customer: 'app.tabView.root.crm.customer',

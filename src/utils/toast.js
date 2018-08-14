@@ -137,6 +137,6 @@ const Toast = {
       ...options,
     }, callback);
   },
-}
+};
 
 export default Toast;

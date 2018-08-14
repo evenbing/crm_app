@@ -5,13 +5,11 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
 import uuidv1 from 'uuid/v1';
 import Toast from '../../utils/toast';
-import { routers } from '../../constants';
 import ListItem from './ListItem';
 import NoticeView from './NotiveView';
 
@@ -84,7 +82,7 @@ const data = [
       { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
     ],
   },
-]; 
+];
 
 const ContainerView = styled.View``;
 
@@ -241,7 +239,7 @@ class Home extends React.Component {
             <AddButtonIcon />
           </AddButton>
         </CalendarView>
-        <List 
+        <List
           data={data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
