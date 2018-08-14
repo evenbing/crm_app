@@ -140,7 +140,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.customer,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
@@ -174,7 +174,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
