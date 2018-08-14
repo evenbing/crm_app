@@ -11,6 +11,7 @@ import theme from '../../constants/theme';
 export const HorizontalDivider = styled.View`
   width: 100%;
   height: ${props => props.height || 10};
+  background-color: ${props => props.backgroundColor || theme.pageBackColor};
 `;
 
 export const VerticalDivider = styled.View`

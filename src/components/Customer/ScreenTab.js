@@ -36,35 +36,28 @@ const HeaderText = styled.Text`
   color: ${props => props.color || '#7A7A7A'};
 `;
 
-const IconView = styled.View`
-  width: ${theme.moderateScale(8)};
-  height: ${theme.moderateScale(5)};
-  margin-left: ${theme.moderateScale(4)};
-  background-color: ${props => props.color || '#7A7A7A'};
-`;
-
 class ScreenTab extends React.PureComponent {
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
     if (isLast) {
       return (
         <Thumbnail
-          source={require('../../img/crm/screen.png')}
-          size={20}
+          source={require('../../img/crm/screenTab/screen.png')}
+          size={18}
         />
       );
     }
     if (active) {
       return (
         <Thumbnail
-          source={require('../../img/crm/triangle-focus.png')}
+          source={require('../../img/crm/screenTab/triangle-focus.png')}
           size={9}
         />
       );
     }
     return (
       <Thumbnail
-        source={require('../../img/crm/triangle.png')}
+        source={require('../../img/crm/screenTab/triangle.png')}
         size={9}
       />
     );
