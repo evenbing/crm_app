@@ -22,7 +22,6 @@ const TabsPanelView = styled.View`
   align-items: center;
   padding-left: ${theme.moderateScale(15)};
   padding-right: ${theme.moderateScale(15)};
-  border: 1px red;
 `;
 
 const HeaderContainer = styled(TouchableView)`

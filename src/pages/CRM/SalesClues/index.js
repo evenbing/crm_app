@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import {routers, theme} from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -51,6 +51,9 @@ class SalesClues extends React.Component {
   };
   renderItem = (props) => {
     const { index } = props;
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
@@ -68,7 +71,10 @@ class SalesClues extends React.Component {
         previewOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
-          <ListItem {...props} />
+          <ListItem
+            {...props}
+            onPress={() => navigate(routers.salesClueDetails)}
+          />
         }
         right={
           <ButtonList

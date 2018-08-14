@@ -1,7 +1,7 @@
 /**
  * @component Details.js
- * @description 联系人详情页面
- * @time 2018/8/12
+ * @description 详情页面
+ * @time 2018/8/14
  * @author JUSTIN XU
  */
 import React from 'react';
@@ -14,20 +14,19 @@ import { moderateScale } from '../../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
+import { HorizontalDivider } from '../../../components/Styles/Divider';
 import DetailsHead from './component/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
-import TouchableView from '../../../components/TouchableView';
+import SendFooter from '../../../components/Details/SendFooter';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
-  padding: 0 ${theme.moderateScale(60)}px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${theme.borderColor};
 `;
 
 const ItemView = styled.View`
@@ -44,25 +43,6 @@ const NumberText = styled.Text`
 const TitleText = styled.Text`
   color: #494949;
   font-family: ${theme.fontRegular};
-`;
-
-const FooterView = styled(TouchableView)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: ${moderateScale(50)};
-  border-top-width: 1px;
-  border-top-color: #F6F6F6;
-  background-color: ${theme.whiteColor};
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FooterText = styled.Text`
-  color: ${theme.primaryColor};
-  font-size: ${moderateScale(18)};
 `;
 
 class Details extends React.Component {
@@ -82,7 +62,9 @@ class Details extends React.Component {
     const list = [
       { title: '日程', text: '12' },
       { title: '任务', text: '10' },
-      { title: '销售机会', text: '3' },
+      { title: '联系人', text: '2' },
+      { title: '销售机会', text: '8' },
+      { title: '合同', text: '15' },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -104,6 +86,7 @@ class Details extends React.Component {
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
+        <HorizontalDivider height={15} />
         <TabContainer {...tabProps} />
       </View>
     );
@@ -198,16 +181,14 @@ class Details extends React.Component {
             :
             this.renderDetailsView()
         }
-        <FooterView onPress={() => navigate(routers.contactsEditor)}>
-          <FooterText>编辑资料</FooterText>
-        </FooterView>
+        <SendFooter />
       </ContainerView>
     );
   }
 }
 
 Details.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '联系人',
+  title: '销售线索',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

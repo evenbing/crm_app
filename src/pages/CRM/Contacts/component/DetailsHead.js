@@ -65,8 +65,8 @@ class DetailsHead extends React.PureComponent {
         <ContainerView>
           <PhoneView>
             <Thumbnail
-              source={null}
-              size={15}
+              source={require('../../../../img/crm/details/phone.png')}
+              size={14}
             />
             <PhoneText>电话联系</PhoneText>
           </PhoneView>
@@ -82,7 +82,7 @@ class DetailsHead extends React.PureComponent {
           >
             <PersonText>负责人: 张三</PersonText>
             <Thumbnail
-              source={null}
+              source={require('../../../../img/crm/details/principalGo.png')}
               size={15}
             />
           </ItemView>

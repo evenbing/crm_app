@@ -17,7 +17,10 @@ export default {
   notificationList: 'app.tabView.root.home.notificationList',
   // crm module
   crm: 'app.tabView.root.crm',
+  // customer module
   customer: 'app.tabView.root.crm.customer',
+  customerDetails: 'app.tabView.root.crm.customerDetails',
+  // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',
   perfStatist: 'app.tabView.root.crm.perfStatist',
   markActivity: 'app.tabView.root.crm.markActivity',
