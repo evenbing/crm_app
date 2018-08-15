@@ -5,7 +5,6 @@ import NavView from '../../components/NavItem';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
-import TextInput from '../../components/TextInput';
 
 const ContainerView = styled.View`
   flex: 1;
