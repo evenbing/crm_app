@@ -63,7 +63,10 @@ class Details extends React.Component {
   renderTotalItem = () => {
     const list = [
       { title: '日程', text: '12' },
-      { title: '任务', text: '10' },
+      { title: '任务', text: '2' },
+      { title: '联系人', text: '5' },
+      { title: '销售线索', text: '11' },
+      { title: '销售机会', text: '8' },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -85,7 +88,11 @@ class Details extends React.Component {
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
-        <HorizontalDivider height={15} />
+        <HorizontalDivider
+          height={15}
+          boarderBottomWidth={1}
+          boarderBottomColor={theme.borderColor}
+        />
         <TabContainer {...tabProps} />
       </View>
     );
@@ -195,7 +202,7 @@ class Details extends React.Component {
 }
 
 Details.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '销售线索',
+  title: '销售机会',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

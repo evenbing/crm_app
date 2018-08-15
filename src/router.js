@@ -40,6 +40,7 @@ import CustomerScreen from './pages/CRM/Customer';
 import CustomerDetailsScreen from './pages/CRM/Customer/Details';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
+import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';
 // root page -> CRM -> 业绩统计 module
 import PerfStatistScreen from './pages/CRM/PerfStatist';
 // root page -> CRM -> 市场活动 module
@@ -141,6 +142,7 @@ const CrmRouteConfig = {
   [routers.customer]: { screen: CustomerScreen },
   [routers.customerDetails]: { screen: CustomerDetailsScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
+  [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
   [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.markActivityDetails]: { screen: MarkActivityDetailsScreen },
@@ -158,7 +160,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.salesChanceDetails,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);

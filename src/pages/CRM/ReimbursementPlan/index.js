@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import {routers, theme} from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -79,6 +79,9 @@ class ReimbursementPlan extends React.Component {
   };
   renderItem = (props) => {
     const { index } = props;
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
@@ -102,6 +105,7 @@ class ReimbursementPlan extends React.Component {
             left={
               <LeftItem {...props} />
             }
+            onPress={() => navigate(routers.reimbursementPlanDetail)}
           />
         }
         right={

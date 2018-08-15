@@ -68,8 +68,6 @@ class Contacts extends React.Component {
           backgroundColor: '#fff',
           borderBottomWidth: 0,
         }}
-        preview
-        previewOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem

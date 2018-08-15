@@ -23,6 +23,8 @@ export default {
   customerDetails: 'app.tabView.root.crm.customerDetails',
   // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',
+  salesChanceDetails: 'app.tabView.root.crm.salesChanceDetails',
+  // perfStatist module
   perfStatist: 'app.tabView.root.crm.perfStatist',
   // markActivity module
   markActivity: 'app.tabView.root.crm.markActivity',
@@ -38,6 +40,7 @@ export default {
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
   priceList: 'app.tabView.root.crm.priceList',
+  // reimbursementPlan module
   reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
   reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
   // demo
