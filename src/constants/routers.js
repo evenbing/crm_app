@@ -15,6 +15,7 @@ export default {
   upcomingScheduleList: 'app.tabView.root.home.upcomingScheduleList',
   upcomingTaskList: 'app.tabView.root.home.upcomingTaskList',
   notificationList: 'app.tabView.root.home.notificationList',
+  addSchedule: 'app.tabView.root.home.addSchedule',
   // crm module
   crm: 'app.tabView.root.crm',
   customer: 'app.tabView.root.crm.customer',

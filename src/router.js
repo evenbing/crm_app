@@ -31,6 +31,8 @@ import UpcomingScheduleList from './pages/Home/UpcomingScheduleList';
 import UpcomingTaskList from './pages/Home/UpcomingTaskList';
 // root page -> home -> NotificationList
 import NotificationList from './pages/Home/NotificationList';
+// root page -> home -> AddSchedule
+import AddSchedule from './pages/Home/AddSchedule';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
 // root page -> CRM -> 客户 module
@@ -76,6 +78,7 @@ const HomeRouteConfig = {
   [routers.upcomingScheduleList]: { screen: UpcomingScheduleList },
   [routers.upcomingTaskList]: { screen: UpcomingTaskList },
   [routers.notificationList]: { screen: NotificationList },
+  [routers.addSchedule]: { screen: AddSchedule },
 };
 
 const HomeNavigatorConfig = {
