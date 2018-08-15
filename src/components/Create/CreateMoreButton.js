@@ -26,6 +26,7 @@ const FooterButtonView = styled(TouchableView)`
   align-items: center;
   border: 1px solid ${theme.primaryColor};
   border-radius: ${theme.moderateScale(4)};
+  background-color: ${theme.whiteColor};
 `;
 
 const FooterText = styled.Text`

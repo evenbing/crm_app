@@ -20,6 +20,7 @@ export default {
   crm: 'app.tabView.root.crm',
   // customer module
   customer: 'app.tabView.root.crm.customer',
+  createCustomer: 'app.tabView.root.crm.createCustomer',
   customerDetails: 'app.tabView.root.crm.customerDetails',
   // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',
@@ -35,8 +36,8 @@ export default {
   contactsEditor: 'app.tabView.root.crm.contactsEditor',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
-  salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
   createClue: 'app.tabView.root.crm.createClue',
+  salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
   // productList module
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',

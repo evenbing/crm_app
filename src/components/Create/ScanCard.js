@@ -16,7 +16,6 @@ const ContainerView = styled.View`
   padding-left: ${theme.moderateScale(15)};
   padding-right: ${theme.moderateScale(15)};
   padding-bottom: ${theme.moderateScale(17)};
-  background-color: ${theme.titleBackColor};
 `;
 
 const BackImage = styled.ImageBackground`

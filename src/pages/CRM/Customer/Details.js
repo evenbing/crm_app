@@ -86,7 +86,12 @@ class Details extends React.Component {
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
-        <HorizontalDivider height={15} />
+        <HorizontalDivider
+          height={15}
+          backgroundColor={theme.whiteColor}
+          boarderBottomWidth={1}
+          boarderBottomColor={theme.borderColor}
+        />
         <TabContainer {...tabProps} />
       </View>
     );
@@ -188,7 +193,7 @@ class Details extends React.Component {
 }
 
 Details.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '销售线索',
+  title: '客户资料',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

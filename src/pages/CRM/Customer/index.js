@@ -31,7 +31,9 @@ class Customer extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('right');
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.createCustomer);
+  };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
