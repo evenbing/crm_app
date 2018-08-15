@@ -68,8 +68,6 @@ class Contacts extends React.Component {
           backgroundColor: '#fff',
           borderBottomWidth: 0,
         }}
-        preview
-        previewOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
@@ -83,7 +81,10 @@ class Contacts extends React.Component {
         }
         right={
           <ButtonList
-            list={[1, 2]}
+            list={[
+              require('../../../img/crm/buttonList/address.png'),
+              require('../../../img/crm/buttonList/phone.png'),
+            ]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }

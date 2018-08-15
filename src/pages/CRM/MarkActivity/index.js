@@ -67,8 +67,6 @@ class SalesClues extends React.Component {
           backgroundColor: '#fff',
           borderBottomWidth: 0,
         }}
-        preview
-        previewOpenValue={-theme.moderateScale(44 + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem

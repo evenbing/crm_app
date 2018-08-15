@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
+// import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -19,7 +19,9 @@ import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
-import TouchableView from '../../../components/TouchableView';
+import SendFooter from '../../../components/Details/SendFooter';
+import EditorFooter from '../../../components/Details/EditorFooter';
+// import TouchableView from '../../../components/TouchableView';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -44,25 +46,6 @@ const NumberText = styled.Text`
 const TitleText = styled.Text`
   color: #494949;
   font-family: ${theme.fontRegular};
-`;
-
-const FooterView = styled(TouchableView)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: ${moderateScale(50)};
-  border-top-width: 1px;
-  border-top-color: #F6F6F6;
-  background-color: ${theme.whiteColor};
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FooterText = styled.Text`
-  color: ${theme.primaryColor};
-  font-size: ${moderateScale(18)};
 `;
 
 class Details extends React.Component {
@@ -198,9 +181,15 @@ class Details extends React.Component {
             :
             this.renderDetailsView()
         }
-        <FooterView onPress={() => navigate(routers.contactsEditor)}>
-          <FooterText>编辑资料</FooterText>
-        </FooterView>
+        {
+          tabIndex === 0 ?
+            <SendFooter />
+            : (
+              <EditorFooter
+                onPress={() => navigate(routers.contactsEditor)}
+              />
+            )
+        }
       </ContainerView>
     );
   }

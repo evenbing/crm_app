@@ -63,7 +63,7 @@ class Details extends React.Component {
     const list = [
       { title: '日程', text: '12' },
       { title: '任务', text: '2' },
-      { title: '活动', text: '5' },
+      { title: '联系人', text: '5' },
       { title: '销售线索', text: '11' },
       { title: '销售机会', text: '8' },
     ];

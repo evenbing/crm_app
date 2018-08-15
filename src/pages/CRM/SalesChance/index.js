@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import {routers, theme} from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -79,6 +79,9 @@ class SalesChance extends React.Component {
   };
   renderItem = (props) => {
     const { index } = props;
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
@@ -92,8 +95,6 @@ class SalesChance extends React.Component {
           backgroundColor: '#fff',
           borderBottomWidth: 0,
         }}
-        preview
-        previewOpenValue={-theme.moderateScale(44 + 15 + 15)}
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
@@ -102,11 +103,14 @@ class SalesChance extends React.Component {
             left={
               <LeftItem />
             }
+            onPress={() => navigate(routers.salesChanceDetails)}
           />
         }
         right={
           <ButtonList
-            list={[1]}
+            list={[
+              require('../../../img/crm/buttonList/follow.png'),
+            ]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }

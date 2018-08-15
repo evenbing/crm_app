@@ -1,74 +1,90 @@
 /**
- * @component Editor.js
- * @description 编辑资料页面
- * @time 2018/8/13
+ * @component CreateCustomer.js
+ * @description 新增客户页面
+ * @time 2018/8/15
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
+import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
 `;
 
 const RightTet = styled.Text`
-  font-size: ${moderateScale(16)};
+  font-size: ${theme.moderateScale(16)};
   color: #AEAEAE;
   font-family: ${theme.fontRegular};
 `;
 
 const NavItemStyle = {
-  leftWidth: moderateScale(83),
+  leftWidth: theme.moderateScale(83),
   height: 44,
   showNavIcon: true,
 };
 
-class Editor extends React.Component {
+class CreateCustomer extends React.Component {
   render() {
     return (
-      <ContainerView
+      <ContainerScrollView
         bottomPadding
       >
         <CommStatusBar />
-        <HorizontalDivider
-          height={9}
+        <ScanCard
+          onPress={() => alert(1)}
         />
-        <TitleItem text="必填信息" />
+        <TitleItem
+          text="必填信息"
+          fontSize={16}
+        />
         <ListView>
           <NavInputItem
-            leftText="活动名称"
+            leftText="客户名称"
             inputProps={{
-              'placeholder': '请输入活动名称',
-              fontSize: moderateScale(16),
+              'placeholder': '请输入名称',
+              fontSize: theme.moderateScale(16),
             }}
             leftTextStyle={{
               color: '#373737',
-              width: moderateScale(80),
+              width: theme.moderateScale(80),
             }}
             height={44}
           />
           <NavInputItem
-            leftText="开始日期"
+            leftText="省份地市"
+            inputProps={{
+              'placeholder': '请输入省份，地方，市',
+              fontSize: theme.moderateScale(16),
+            }}
+            leftTextStyle={{
+              color: '#373737',
+              width: theme.moderateScale(80),
+            }}
+            height={44}
+          />
+          <NavInputItem
+            leftText="详细地址"
             right={
-              <RightTet>请选择活动开始日期</RightTet>
+              <RightTet>请选择地址</RightTet>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="结束日期"
+            leftText="电话"
             right={
-              <RightTet>2017-09-09</RightTet>
+              <RightTet>请输入电话</RightTet>
             }
             {...NavItemStyle}
           />
@@ -80,17 +96,19 @@ class Editor extends React.Component {
             {...NavItemStyle}
           />
         </ListView>
-        <HorizontalDivider height={41} />
+        <HorizontalDivider
+          height={41}
+        />
         <CreateMoreButton
           onPress={() => alert(1)}
         />
-      </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
 
-Editor.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '编辑资料',
+CreateCustomer.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '新建客户',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -100,13 +118,16 @@ Editor.navigationOptions = ({ navigation, screenProps }) => ({
     <RightView
       onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
     />
   ),
 });
 
-Editor.defaultProps = {};
+CreateCustomer.defaultProps = {};
 
-Editor.propTypes = {
+CreateCustomer.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -120,4 +141,4 @@ Editor.propTypes = {
   }).isRequired,
 };
 
-export default Editor;
+export default CreateCustomer;
