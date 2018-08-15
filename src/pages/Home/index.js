@@ -205,11 +205,27 @@ class Home extends React.Component {
       state: {
         isVisible,
       },
+      props: {
+        navigation: {
+          navigate,
+        },
+      },
     } = this;
     const taskActionSheetProps = {
       isVisible,
       onPressClose: this.onToggleTaskVisible,
-      onPressItem: ({ index, item }) => Toast.showSuccess(`${index}: ${JSON.stringify(item)}`),
+      onPressItem: ({ item }) => {
+        switch (item.leftText) {
+          case '新建日程':
+            navigate(routers.addSchedule);
+            break;
+          case '新建任务':
+            navigate(routers.addTask);
+            break;
+          default:
+            break;
+        }
+      },
       list: [
         { leftText: '新建日程' },
         { leftText: '新建任务' },

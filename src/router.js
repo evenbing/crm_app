@@ -33,6 +33,8 @@ import UpcomingTaskList from './pages/Home/UpcomingTaskList';
 import NotificationList from './pages/Home/NotificationList';
 // root page -> home -> AddSchedule
 import AddSchedule from './pages/Home/AddSchedule';
+// root page -> home -> AddTask
+import AddTask from './pages/Home/AddTask';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
 // root page -> CRM -> 客户 module
@@ -81,6 +83,7 @@ const HomeRouteConfig = {
   [routers.upcomingTaskList]: { screen: UpcomingTaskList },
   [routers.notificationList]: { screen: NotificationList },
   [routers.addSchedule]: { screen: AddSchedule },
+  [routers.addTask]: { screen: AddTask },
 };
 
 const HomeNavigatorConfig = {
@@ -192,7 +195,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.crm,
+  initialRouteName: routers.home,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
