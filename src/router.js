@@ -42,6 +42,7 @@ import SalesChanceScreen from './pages/CRM/SalesChance';
 import PerfStatistScreen from './pages/CRM/PerfStatist';
 // root page -> CRM -> 市场活动 module
 import MarkActivityScreen from './pages/CRM/MarkActivity';
+import MarkActivityDetailsScreen from './pages/CRM/MarkActivity/Details';
 // root page -> CRM -> 联系人 module
 import ContactsScreen from './pages/CRM/Contacts';
 import ContactDetailsScreen from './pages/CRM/Contacts/Details';
@@ -139,6 +140,7 @@ const CrmRouteConfig = {
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },
+  [routers.markActivityDetails]: { screen: MarkActivityDetailsScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.salesClueDetails]: { screen: SalesClueDetailsScreen },
   [routers.contacts]: { screen: ContactsScreen },
@@ -187,7 +189,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
