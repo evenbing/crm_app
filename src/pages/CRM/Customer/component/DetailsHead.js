@@ -9,18 +9,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
 
-// static source
-import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
-
 // components
 import { HeaderBack } from '../../../../components/Details';
+import { VerticalDivider } from '../../../../components/Styles/Divider';
 import Thumbnail from '../../../../components/Thumbnail';
 
-// padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
-const PhoneView = styled.View`
-  width: ${theme.moderateScale(82)};
+const FollowView = styled.View`
+  width: ${theme.moderateScale(54)};
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(15)};
   border: 1px solid ${theme.whiteColor};
@@ -30,10 +27,10 @@ const PhoneView = styled.View`
   align-items: center;
   flex-direction: row;
   align-self: flex-end;
-  margin-right: ${theme.moderateScale(15)};
+  margin-right: ${theme.moderateScale(16)};
 `;
 
-const PhoneText = styled.Text`
+const FollowText = styled.Text`
   margin-left: ${theme.moderateScale(4)};
   color: ${theme.whiteColor};
 `;
@@ -45,15 +42,21 @@ const ItemView = styled.View`
   background-color: transparent;
   margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
   margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+  position: relative;
+`;
+
+const DecorationView = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  bottom: ${theme.moderateScale(-4)};
+  background-color: ${theme.whiteColor};
 `;
 
 const NameText = styled.Text`
   font-size: ${theme.moderateScale(20)};
   color: ${theme.whiteColor};
-`;
-
-const TimeText = NameText.extend`
-  font-size: ${theme.moderateScale(14)};
 `;
 
 const PersonText = NameText.extend`
@@ -62,60 +65,77 @@ const PersonText = NameText.extend`
 `;
 
 const FooterView = styled.View`
-  height: ${theme.moderateScale(36)};
+  height: ${theme.moderateScale(55)};
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, .15);
 `;
 
-const PlanStatusText = styled.Text`
-  color: #e2c244;
-  margin-right: ${theme.moderateScale(2)};
+const FooterItemView = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
+
+const VerticalStyle = {
+  width: 3,
+  height: 28,
+  backgroundColor: theme.whiteColor,
+};
 
 class DetailsHead extends React.PureComponent {
   render() {
     return (
       <HeaderBack>
         <ContainerView>
-          <PhoneView>
+          <FollowView>
             <Thumbnail
-              source={require('../../../../img/crm/details/phone.png')}
+              source={require('../../../../img/crm/details/follow.png')}
               size={14}
             />
-            <PhoneText>电话联系</PhoneText>
-          </PhoneView>
-          <ItemView>
-            <NameText>李总</NameText>
+            <FollowText>关注</FollowText>
+          </FollowView>
+          <ItemView
+            marginTop={10}
+          >
+            <ItemView>
+              <NameText>网络技术研讨会</NameText>
+              <DecorationView />
+            </ItemView>
           </ItemView>
-          {/*
-          <ItemView marginTop={2}>
-            <CompanyText>西风网络</CompanyText>
-          </ItemView>
-          */}
           <ItemView
             marginTop={23}
+            marginBottom={42}
           >
             <PersonText>负责人: 张三</PersonText>
             <Thumbnail
-              source={PrincipalIcon}
+              source={require('../../../../img/crm/details/principalGo.png')}
               size={15}
             />
-          </ItemView>
-          <ItemView
-            marginTop={7}
-            marginBottom={34}
-          >
-            <TimeText>2018-09-09 至 2018-09-09</TimeText>
           </ItemView>
           <FooterView>
-            <TimeText>活动状态：</TimeText>
-            <PlanStatusText>已计划</PlanStatusText>
-            <Thumbnail
-              source={PrincipalIcon}
-              size={15}
-            />
+            <FooterItemView>
+              <Thumbnail
+                source={require('../../../../img/crm/details/phone.png')}
+                size={22}
+              />
+            </FooterItemView>
+            <VerticalDivider {...VerticalStyle} />
+            <FooterItemView>
+              <Thumbnail
+                source={require('../../../../img/crm/details/phone.png')}
+                size={22}
+              />
+            </FooterItemView>
+            <VerticalDivider {...VerticalStyle} />
+            <FooterItemView>
+              <Thumbnail
+                source={require('../../../../img/crm/details/phone.png')}
+                size={22}
+              />
+            </FooterItemView>
           </FooterView>
         </ContainerView>
       </HeaderBack>

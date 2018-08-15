@@ -18,10 +18,15 @@ export default {
   addSchedule: 'app.tabView.root.home.addSchedule',
   // crm module
   crm: 'app.tabView.root.crm',
+  // customer module
   customer: 'app.tabView.root.crm.customer',
+  customerDetails: 'app.tabView.root.crm.customerDetails',
+  // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',
   perfStatist: 'app.tabView.root.crm.perfStatist',
+  // markActivity module
   markActivity: 'app.tabView.root.crm.markActivity',
+  markActivityDetails: 'app.tabView.root.crm.markActivityDetails',
   // contacts module
   contacts: 'app.tabView.root.crm.contacts',
   contactDetails: 'app.tabView.root.crm.contactDetails',

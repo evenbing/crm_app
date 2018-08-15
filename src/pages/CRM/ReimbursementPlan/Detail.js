@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
-import { View } from 'react-native'
-import { Input } from 'native-base';
+import { View } from 'react-native';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { theme } from '../../../constants';
 
 import { moderateScale } from '../../../utils/scale';
 // components
@@ -14,110 +14,67 @@ import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 // import TouchableView from '../../../components/TouchableView';
-import { theme } from '../../../constants';
+import SendFooter from '../../../components/Details/SendFooter';
 
 const ContainerView = styled.View`
-flex: 1;
-background-color: #F6F6F6;
-height: 100%;
+  flex: 1;
+  background-color: #F6F6F6;
+  height: 100%;
 `;
 
 const MainView = styled.View`
-flex: 1;
-height: 100%;
-paddingBottom: 50px;
+  flex: 1;
+  height: 100%;
+  padding-bottom: ${theme.moderateScale(50)};
 `;
 
 const HeaderView = styled.View`
-height: ${moderateScale(225)};
-align-items: center;
+  height: ${moderateScale(225)};
+  align-items: center;
 `;
 
 const TextView = styled.View`
-flex-direction: row;
-align-items: center;
-`
-
-const Icon = styled.View`
-
-`
-
-const MediumText = styled.Text`
-font-family: ${theme.fontMedium};
-font-size: ${moderateScale(20)};
-color: #ffffff;
-background-color: transparent;
-`
-const RegularText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(14)};
-color: #ffffff;
-background-color: transparent;
-`
-const FooterView = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: ${moderateScale(50)};
-  borderTopWidth: 1px;
-  borderTopColor: #F6F6F6;
-  background-color: #fff;
   flex-direction: row;
   align-items: center;
 `;
 
-const RecordText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(12)};
-color: #18B548;
-margin-left: ${moderateScale(15)};
-`
-const InputView = styled(Input)`
-flex: 1;
-height: ${moderateScale(30)};
-borderWidth: 1px;
-borderColor: #DDDDDD;
-border-radius: 4;
-margin-left: ${moderateScale(10)};
-`
-const IconView = styled(View)`
-width: ${moderateScale(30)};
-height: ${moderateScale(30)};
-`
-const BottomIcon = styled.View`
-width: 100%;
-height: 100%;
-background-color: #fff000;
-`
+const Icon = styled.View``;
+
+const MediumText = styled.Text`
+  font-family: ${theme.fontMedium};
+  font-size: ${moderateScale(20)};
+  color: ${theme.whiteColor};
+  background-color: transparent;
+`;
+
+const RegularText = styled.Text`
+  font-family: ${theme.fontRegular};
+  font-size: ${moderateScale(14)};
+  color: ${theme.whiteColor};
+  background-color: transparent;
+`;
 
 useStrict(true);
 
 @observer
 class ReimbursementPlanDetail extends React.Component {
-
   state = {
     tabIndex: 0,
-  }
-
-  onTabChange = index => {
-    this.setState({tabIndex: index});
-  }
-
-
+  };
+  onTabChange = (index) => {
+    this.setState({ tabIndex: index });
+  };
   onRefresh = () => {
     // this.getData()
-  }
-
+  };
   onEndReached = () => {
     // let { total, list, pageNumber, loadingMore } = {}
     // if(list.length < total && loadingMore === false) {
     // this.getData(pageNumber + 1)
     // }
-  }
+  };
   renderHeaderComponent = () => {
     const { tabIndex } = this.state;
-
     const tabProps = {
       list: ['动态', '活动详情'],
       activeIndex: tabIndex,
@@ -126,7 +83,6 @@ class ReimbursementPlanDetail extends React.Component {
         marginTop: moderateScale(15),
       },
     };
-
     return (
       <View>
         <LinearGradient
@@ -153,23 +109,12 @@ class ReimbursementPlanDetail extends React.Component {
         <TabContainer {...tabProps} />
 
       </View>
-    )
-  }
-
-  renderFooterComponent = () => {
-    return (
-      <FooterView>
-        <RecordText>记录类型</RecordText>
-        <InputView />
-        <IconView style={{marginLeft: moderateScale(3)}}><BottomIcon /></IconView>
-        <IconView style={{marginLeft: moderateScale(8), marginRight: moderateScale(13)}}><BottomIcon /></IconView>
-      </FooterView>
     );
   };
 
-  renderItem = ({item, index}) => {
+  renderItem = ({ item, index }) => {
     return (
-      <DynamicList isFrist={index===0} key={index} data={item} />
+      <DynamicList isFrist={index === 0} key={index} data={item} />
     );
   };
 
@@ -177,15 +122,15 @@ class ReimbursementPlanDetail extends React.Component {
     const list = [
       {
         type: 1,
-        list: [{url: true}, {}, {}]
+        list: [{ url: true }, {}, {}],
       },
       {
         type: 0,
-        list: [{url: true}, {}, {}]
+        list: [{ url: true }, {}, {}],
       },
       {
         type: 1,
-        list: [{url: true}, {}, {}]
+        list: [{ url: true }, {}, {}],
       },
     ];
     const { refreshing = false, loadingMore = false } = {};
@@ -208,8 +153,8 @@ class ReimbursementPlanDetail extends React.Component {
         <CommStatusBar />
         <MainView>
           <FlatListTable {...flatProps} />
-          { this.renderFooterComponent() }
         </MainView>
+        <SendFooter />
       </ContainerView>
     );
   }
@@ -219,7 +164,7 @@ ReimbursementPlanDetail.navigationOptions = ({ navigation, screenProps }) => ({
   title: '回款计划资料',
   headerLeft: (
     <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
+      onPress={() => navigation.goBack()}
     />
   ),
 });

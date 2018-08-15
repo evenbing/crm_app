@@ -18,12 +18,14 @@ const ContainerView = styled.View`
 
 const HeaderTitleText = styled.Text`
   color: ${props => props.color || theme.primaryColor};
+  font-size: ${props => theme.moderateScale(props.fontSize)};
 `;
 
 class TitleItem extends React.PureComponent {
   render() {
     const {
       color,
+      fontSize,
       titleStyle,
       text,
     } = this.props;
@@ -31,6 +33,7 @@ class TitleItem extends React.PureComponent {
       <ContainerView>
         <HeaderTitleText
           color={color}
+          fontSize={fontSize}
           style={titleStyle}
         >
           {text}
@@ -44,12 +47,14 @@ TitleItem.defaultProps = {
   color: null,
   titleStyle: {},
   text: null,
+  fontSize: 14,
 };
 
 TitleItem.propTypes = {
   color: PropTypes.string,
   titleStyle: PropTypes.objectOf(PropTypes.any),
   text: PropTypes.string,
+  fontSize: PropTypes.number,
 };
 
 export default TitleItem;

@@ -1,7 +1,7 @@
 /**
  * @component DetailsHead.js
  * @description 详情头部组件
- * @time 2018/8/12
+ * @time 2018/8/14
  * @author JUSTIN XU
  */
 import React from 'react';
@@ -9,18 +9,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
 
+// static source
+import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
+
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
 
-const ContainerView = styled.View`
-  padding: 0 ${theme.moderateScale(15)}px;
-`;
+// padding: 0 ${theme.moderateScale(15)}px;
+const ContainerView = styled.View``;
 
 const PhoneView = styled.View`
-  width: ${theme.moderateScale(82)};
+  width: ${theme.moderateScale(54)};
   height: ${theme.moderateScale(22)};
-  margin-top: ${theme.moderateScale(20)};
+  margin-top: ${theme.moderateScale(15)};
   border: 1px solid ${theme.whiteColor};
   border-radius: ${theme.moderateScale(4)};
   background-color: transparent;
@@ -28,6 +30,7 @@ const PhoneView = styled.View`
   align-items: center;
   flex-direction: row;
   align-self: flex-end;
+  margin-right: ${theme.moderateScale(15)};
 `;
 
 const PhoneText = styled.Text`
@@ -49,13 +52,26 @@ const NameText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
-const CompanyText = NameText.extend`
+const TimeText = NameText.extend`
   font-size: ${theme.moderateScale(14)};
 `;
 
 const PersonText = NameText.extend`
   font-size: ${theme.moderateScale(18)};
   margin-right: ${theme.moderateScale(5)};
+`;
+
+const FooterView = styled.View`
+  height: ${theme.moderateScale(36)};
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .15);
+`;
+
+const PlanStatusText = styled.Text`
+  color: #e2c244;
+  margin-right: ${theme.moderateScale(2)};
 `;
 
 class DetailsHead extends React.PureComponent {
@@ -65,27 +81,44 @@ class DetailsHead extends React.PureComponent {
         <ContainerView>
           <PhoneView>
             <Thumbnail
-              source={require('../../../../img/crm/details/phone.png')}
+              source={require('../../../../img/crm/details/follow.png')}
               size={14}
             />
-            <PhoneText>电话联系</PhoneText>
+            <PhoneText>关注</PhoneText>
           </PhoneView>
-          <ItemView>
-            <NameText>李总</NameText>
+          <ItemView
+            marginTop={10}
+          >
+            <NameText>网络技术研讨会</NameText>
           </ItemView>
+          {/*
           <ItemView marginTop={2}>
             <CompanyText>西风网络</CompanyText>
           </ItemView>
+          */}
           <ItemView
-            marginTop={12}
-            marginBottom={41}
+            marginTop={23}
           >
             <PersonText>负责人: 张三</PersonText>
             <Thumbnail
-              source={require('../../../../img/crm/details/principalGo.png')}
+              source={PrincipalIcon}
               size={15}
             />
           </ItemView>
+          <ItemView
+            marginTop={7}
+            marginBottom={34}
+          >
+            <TimeText>2018-09-09 至 2018-09-09</TimeText>
+          </ItemView>
+          <FooterView>
+            <TimeText>活动状态：</TimeText>
+            <PlanStatusText>已计划</PlanStatusText>
+            <Thumbnail
+              source={PrincipalIcon}
+              size={15}
+            />
+          </FooterView>
         </ContainerView>
       </HeaderBack>
     );
