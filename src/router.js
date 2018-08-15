@@ -53,6 +53,7 @@ import ContactEditorScreen from './pages/CRM/Contacts/Editor';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
 import SalesClueDetailsScreen from './pages/CRM/SalesClues/Details';
+import CreateCluesScreen from './pages/CRM/SalesClues/CreateClues';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/CRM/ProductList';
 // root page -> CRM -> 修改产品报价
@@ -148,6 +149,7 @@ const CrmRouteConfig = {
   [routers.markActivityDetails]: { screen: MarkActivityDetailsScreen },
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.salesClueDetails]: { screen: SalesClueDetailsScreen },
+  [routers.createClue]: { screen: CreateCluesScreen },
   [routers.contacts]: { screen: ContactsScreen },
   [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.contactsEditor]: { screen: ContactEditorScreen },

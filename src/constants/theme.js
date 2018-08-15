@@ -19,6 +19,7 @@ export default {
   listTitleColor: '#4F4F4F',
   listTipColor: '#787878',
   chartLineColor: '#5374C7',
+  titleBackColor: '#FDFDFD',
   fontMedium: 'PingFangSC-Medium',
   fontRegular: 'PingFangSC-Regular',
   avatarSize: 60,

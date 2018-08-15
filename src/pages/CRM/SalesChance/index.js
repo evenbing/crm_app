@@ -108,7 +108,9 @@ class SalesChance extends React.Component {
         }
         right={
           <ButtonList
-            list={[1]}
+            list={[
+              require('../../../img/crm/buttonList/follow.png'),
+            ]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }

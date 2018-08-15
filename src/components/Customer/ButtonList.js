@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { theme } from '../../constants/index';
 import TouchableView from '../TouchableView';
 
+import Thumbnail from '../Thumbnail';
+
 const ContainerView = styled.View`
   background-color: ${theme.pageBackColor};
   height: ${theme.moderateScale(88)};
@@ -17,17 +19,12 @@ const ContainerView = styled.View`
   padding-right: ${theme.moderateScale(15)};
   flex-direction: row;
 `;
+
 const ButtonView = styled(TouchableView)`
   width: ${theme.moderateScale(44)};
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: red;
-`;
-const Button = styled.Text`
-  background-color: blue;
-  width: ${theme.moderateScale(22)};
-  height: ${theme.moderateScale(22)};
 `;
 
 class ButtonList extends React.PureComponent {
@@ -42,7 +39,10 @@ class ButtonList extends React.PureComponent {
         key={item}
         onPress={() => onPressItem({ item, index })}
       >
-        <Button>{item}</Button>
+        <Thumbnail
+          source={item}
+          size={28}
+        />
       </ButtonView>
     ));
   };

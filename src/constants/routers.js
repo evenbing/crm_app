@@ -36,6 +36,7 @@ export default {
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
   salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
+  createClue: 'app.tabView.root.crm.createClue',
   // productList module
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',

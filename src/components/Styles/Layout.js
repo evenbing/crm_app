@@ -14,3 +14,9 @@ export const ContainerView = styled.View`
   background-color: ${props => props.backgroundColor || theme.pageBackColor};
   padding-bottom: ${props => props.bottomPadding ? getFooterBottom() : 0};
 `;
+
+export const ContainerScrollView = styled.ScrollView`
+  flex: 1;
+  background-color: ${props => props.backgroundColor || theme.pageBackColor};
+  padding-bottom: ${props => props.bottomPadding ? getFooterBottom() : 0};
+`;

@@ -31,7 +31,9 @@ class SalesClues extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('right');
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.createClue);
+  };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
