@@ -35,6 +35,7 @@ export default {
   contacts: 'app.tabView.root.crm.contacts',
   contactDetails: 'app.tabView.root.crm.contactDetails',
   contactsEditor: 'app.tabView.root.crm.contactsEditor',
+  queryBusiness: 'app.tabView.root.crm.queryBusiness',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
   createClue: 'app.tabView.root.crm.createClue',

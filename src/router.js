@@ -41,6 +41,7 @@ import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
 import CustomerDetailsScreen from './pages/CRM/Customer/Details';
 import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
+import QueryBusinessScreen from './pages/CRM/Customer/QueryBusiness';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
 import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';
@@ -147,6 +148,7 @@ const CrmRouteConfig = {
   [routers.customer]: { screen: CustomerScreen },
   [routers.createCustomer]: { screen: CreateCustomerScreen },
   [routers.customerDetails]: { screen: CustomerDetailsScreen },
+  [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
   [routers.perfStatist]: { screen: PerfStatistScreen },
@@ -175,7 +177,7 @@ const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 CrmStack.navigationOptions = ({ navigation }) => {
   const { index, params } = navigation.state;
   return {
-    tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
+    tabBarVisible: (params && params.hide) ? !params.hide : index === 1,
     tabBarLabel: 'CRM',
     tabBarIcon: ({ focused }) => (
       focused ? (
@@ -201,7 +203,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

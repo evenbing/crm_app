@@ -22,7 +22,7 @@ const ListView = styled.View`
   background: ${theme.whiteColor};
 `;
 
-const RightTet = styled.Text`
+const CenterText = styled.Text`
   font-size: ${moderateScale(16)};
   color: #AEAEAE;
   font-family: ${theme.fontRegular};
@@ -35,6 +35,12 @@ const NavItemStyle = {
 };
 
 class Editor extends React.Component {
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+  onPressRight = () => alert('finish');
   render() {
     return (
       <ContainerView
@@ -60,22 +66,22 @@ class Editor extends React.Component {
           />
           <NavInputItem
             leftText="开始日期"
-            right={
-              <RightTet>请选择活动开始日期</RightTet>
+            center={
+              <CenterText>请选择活动开始日期</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="结束日期"
-            right={
-              <RightTet>2017-09-09</RightTet>
+            center={
+              <CenterText>2017-09-09</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
-            right={
-              <RightTet>请选择所属部门</RightTet>
+            center={
+              <CenterText>请选择所属部门</CenterText>
             }
             {...NavItemStyle}
           />

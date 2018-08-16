@@ -12,6 +12,7 @@ import AppService from './service/AppService';
 
 import XnLoading from './components/xnLoading';
 import Toast from './utils/toast';
+// import { HomeStack as Navigator } from './router';
 import Navigator from './router';
 import { getFooterBottom } from './utils/utils';
 

@@ -8,54 +8,60 @@ import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
 
-import NavItem from '../../../components/NavItem'
-import NavInputItem from '../../../components/NavInputItem'
+import NavItem from '../../../components/NavItem';
+import NavInputItem from '../../../components/NavInputItem';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { theme } from '../../../constants';
 
 const ContainerView = styled.ScrollView`
-flex: 1;
+  flex: 1;
 `;
 
 const MainView = styled.View`
-flex: 1;
-background-color: #F6F6F6;
-`
+  flex: 1;
+  background-color: #F6F6F6;
+`;
+
 const HeaderView = styled.View`
-height: ${moderateScale(215)};
-background: #FFFFFF;
-align-items: center;
-padding-top: ${moderateScale(15)};
-`
+  height: ${moderateScale(215)};
+  background: #FFFFFF;
+  align-items: center;
+  padding-top: ${moderateScale(15)};
+`;
+
 const ItemView = styled.View`
-width: ${moderateScale(120)};
-height: ${moderateScale(120)};
-margin-bottom: ${moderateScale(15)};
-`
+  width: ${moderateScale(120)};
+  height: ${moderateScale(120)};
+  margin-bottom: ${moderateScale(15)};
+`;
+
 const ItemImage = styled.View`
-width: 100%;
-height: 100%;
-background-color: #0000ff;
-`
-const TextView = styled.View``
+  width: 100%;
+  height: 100%;
+  background-color: #0000ff;
+`;
+
+const TextView = styled.View``;
 
 const ItemNameText = styled.Text`
-font-family: ${theme.fontMedium};
-font-size: ${moderateScale(16)};
-color: #373737;
-background-color: transparent;
-`
+  font-family: ${theme.fontMedium};
+  font-size: ${moderateScale(16)};
+  color: #373737;
+  background-color: transparent;
+`;
+
 const ItemPriceText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(14)};
-color: #858585;
-`
+  font-family: ${theme.fontRegular};
+  font-size: ${moderateScale(14)};
+  color: #858585;
+`;
+
 const ListView = styled.View`
-background: #FFFFFF;
-marginTop: ${moderateScale(10)};
-`
+  background: #FFFFFF;
+  margin-top: ${moderateScale(10)};
+`;
 
 useStrict(true);
 
@@ -65,11 +71,16 @@ const NavInputItemStyle = {
     width: moderateScale(80),
   },
   height: 44,
-}
+};
 
 @observer
 class ModifyProductPrice extends React.Component {
-
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+  onPressRight = () => alert('finish');
   render() {
     const navItemProps = {
       height: 44,
@@ -147,6 +158,15 @@ ModifyProductPrice.navigationOptions = ({ navigation, screenProps }) => ({
   headerLeft: (
     <LeftBackIcon
       onPress={navigation.state.params ? navigation.state.params._close : null}
+    />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
     />
   ),
 });

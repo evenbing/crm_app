@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { theme, routers } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -17,15 +17,20 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-
+import TouchableView from '../../../components/TouchableView';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
 `;
 
-const RightTet = styled.Text`
+const CenterTet = styled.Text`
   font-size: ${theme.moderateScale(16)};
   color: #AEAEAE;
+  font-family: ${theme.fontRegular};
+`;
+
+const RightText = styled.Text`
+  color: ${theme.primaryColor};
   font-family: ${theme.fontRegular};
 `;
 
@@ -36,7 +41,16 @@ const NavItemStyle = {
 };
 
 class CreateCustomer extends React.Component {
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+  onPressRight = () => alert('finish');
   render() {
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <ContainerScrollView
         bottomPadding
@@ -61,6 +75,11 @@ class CreateCustomer extends React.Component {
               width: theme.moderateScale(80),
             }}
             height={44}
+            right={
+              <TouchableView onPress={() => navigate(routers.queryBusiness)}>
+                <RightText>工商信息查询</RightText>
+              </TouchableView>
+            }
           />
           <NavInputItem
             leftText="省份地市"
@@ -76,22 +95,22 @@ class CreateCustomer extends React.Component {
           />
           <NavInputItem
             leftText="详细地址"
-            right={
-              <RightTet>请选择地址</RightTet>
+            center={
+              <CenterTet>请选择地址</CenterTet>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="电话"
-            right={
-              <RightTet>请输入电话</RightTet>
+            center={
+              <CenterTet>请输入电话</CenterTet>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
-            right={
-              <RightTet>请选择所属部门</RightTet>
+            center={
+              <CenterTet>请选择所属部门</CenterTet>
             }
             {...NavItemStyle}
           />

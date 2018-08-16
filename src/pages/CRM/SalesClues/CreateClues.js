@@ -23,7 +23,7 @@ const ListView = styled.View`
   background: ${theme.whiteColor};
 `;
 
-const RightTet = styled.Text`
+const CenterText = styled.Text`
   font-size: ${theme.moderateScale(16)};
   color: #AEAEAE;
   font-family: ${theme.fontRegular};
@@ -36,6 +36,12 @@ const NavItemStyle = {
 };
 
 class CreateClues extends React.Component {
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+  onPressRight = () => alert('finish');
   render() {
     return (
       <ContainerScrollView
@@ -76,15 +82,15 @@ class CreateClues extends React.Component {
           />
           <NavInputItem
             leftText="市场活动"
-            right={
-              <RightTet>请选择市场活动</RightTet>
+            center={
+              <CenterText>请选择市场活动</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
-            right={
-              <RightTet>请选择所属部门</RightTet>
+            center={
+              <CenterText>请选择所属部门</CenterText>
             }
             {...NavItemStyle}
           />
