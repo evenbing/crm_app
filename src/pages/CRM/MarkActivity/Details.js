@@ -201,7 +201,7 @@ class Details extends React.Component {
 }
 
 Details.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '销售线索',
+  title: '市场活动',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

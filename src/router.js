@@ -41,7 +41,7 @@ import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
 import CustomerDetailsScreen from './pages/CRM/Customer/Details';
 import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
-import QueryBusinessScreen from './pages/CRM/Customer/QueryBusiness';
+import QueryBusinessScreen from './pages/Model/QueryBusiness/index';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
 import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';

@@ -1,14 +1,13 @@
 /**
- * @component QueryBusiness.js
- * @description 工商信息查询页面
+ * @component index.js
+ * description 工商信息查询页面
  * @time 2018/8/16
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { View } from 'react-native';
-import { theme, routers } from '../../../constants';
+import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';

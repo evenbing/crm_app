@@ -7,10 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
+import { theme } from '../../../../constants/index';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
+import { HeaderBack } from '../../../../components/Details/index';
 import { VerticalDivider } from '../../../../components/Styles/Divider';
 
 const ContainerView = styled.View``;
