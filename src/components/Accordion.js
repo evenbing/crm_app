@@ -11,6 +11,7 @@ import { theme } from '../constants';
 
 // components
 import TouchableView from './TouchableView';
+import Thumbnail from './Thumbnail';
 
 const ContainerView = styled.View``;
 
@@ -47,11 +48,8 @@ const RightText = styled.Text`
   color: ${theme.listTipColor};
 `;
 
-const RightIcon = styled.View`
+const RightIcon = styled(Thumbnail)`
   margin-left: ${theme.moderateScale(11)};
-  width: ${theme.moderateScale(14)};
-  height: ${theme.moderateScale(14)};
-  background-color: ${props => props.backgroundColor || 'red'};
 `;
 
 const BoardView = styled.View`
@@ -74,6 +72,8 @@ class Accordion extends React.PureComponent {
       rightUnit,
       right,
       onPress,
+      unfoldIcon,
+      foldIcon,
     } = this.props;
     return (
       <ContainerView>
@@ -84,7 +84,10 @@ class Accordion extends React.PureComponent {
           <RightView>
             <RightUnit>{rightUnit}</RightUnit>
             <RightText>{right}</RightText>
-            <RightIcon backgroundColor={showMain && 'blue'} />
+            <RightIcon
+              source={showMain ? foldIcon : unfoldIcon}
+              size={14}
+            />
           </RightView>
           <BoardView />
         </HeaderView>
@@ -103,6 +106,8 @@ Accordion.defaultProps = {
   rightUnit: '¥',
   right: null,
   onPress: () => null,
+  foldIcon: require('../img/company/fold.png'),
+  unfoldIcon: require('../img/company/unfold.png'),
 };
 
 Accordion.propTypes = {
@@ -112,6 +117,8 @@ Accordion.propTypes = {
   rightUnit: PropTypes.string,
   right: PropTypes.string,
   onPress: PropTypes.func,
+  foldIcon: PropTypes.number,
+  unfoldIcon: PropTypes.number,
 };
 
 export default Accordion;

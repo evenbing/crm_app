@@ -34,7 +34,6 @@ export default {
   contacts: 'app.tabView.root.crm.contacts',
   contactDetails: 'app.tabView.root.crm.contactDetails',
   contactsEditor: 'app.tabView.root.crm.contactsEditor',
-  queryBusiness: 'app.tabView.root.crm.queryBusiness',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
   createClue: 'app.tabView.root.crm.createClue',
@@ -46,6 +45,10 @@ export default {
   // reimbursementPlan module
   reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
   reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
+  // common model
+  queryBusiness: 'app.tabView.root.crm.queryBusiness',
+  // common card
+  companyDepartment: 'app.tabView.root.crm.companyDepartment',
   // demo
   actionSheetDemo: 'app.tabView.root.actionSheetDemo',
   mobxDemo: 'app.tabView.root.mobxDemo',

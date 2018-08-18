@@ -56,7 +56,7 @@ java (v1.8.0_172)
         |--Details.js           销售线索详情页面
         |--index.js             列表页面
     |--Home        Home tab
-    |--Model       共用model
+    |--Modal       共用modal
       |--QueryBusiness          工商信息查询
     |--跟进统计(顺数第18个, 未完成。19-27 为列表筛选相关，待需求确定)
        名片识别（未完成）
