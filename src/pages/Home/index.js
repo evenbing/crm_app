@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
 import uuidv1 from 'uuid/v1';
 import Toast from '../../utils/toast';
-import ListItem from './ListItem';
-import NoticeView from './NotiveView';
+import ListItem from './components/ListItem';
+import NoticeView from './components/NotiveView';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
@@ -271,12 +271,10 @@ class Home extends React.Component {
   }
 }
 
-Home.navigationOptions = ({ navigation }) => ({
+Home.navigationOptions = () => ({
   title: '首页',
   headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
+    <LeftBackIcon />
   ),
 });
 

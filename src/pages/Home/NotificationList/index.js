@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
 
-import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
-import { moderateScale } from '../../utils/scale';
+import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
+import { moderateScale } from '../../../utils/scale';
 
 const ContainerView = styled.View`
   flex: 1;

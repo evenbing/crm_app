@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { moderateScale } from '../../utils/scale';
-import OperateIconImage from '../../img/home/ico_operate_icon.png';
+import { moderateScale } from '../../../utils/scale';
+import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 
 const Divder = styled.View`
   width: ${moderateScale(0.8)};

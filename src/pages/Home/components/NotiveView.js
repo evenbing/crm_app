@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from '../../../node_modules/styled-components';
-import { moderateScale } from '../../utils/scale';
-import AlarmIcon from '../../img/home/alarm.png';
+import styled from 'styled-components';
+import { moderateScale } from '../../../utils/scale';
+import AlarmIcon from '../../../img/home/alarm.png';
 
 const Container = styled.TouchableOpacity`
   width: ${moderateScale(30)};

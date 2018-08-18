@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
 
-import Toast from '../../utils/toast';
-import { moderateScale } from '../../utils/scale';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import ListItem from './ListItem';
+import Toast from '../../../utils/toast';
+import { moderateScale } from '../../../utils/scale';
+import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import ListItem from '../components/ListItem';
 
 const data = [
   {
@@ -77,7 +77,7 @@ const List = styled.FlatList`
   padding: ${moderateScale(10)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
 `;
 
-class UpcomingScheduleList extends Component {
+class UpcomingTaskList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -117,8 +117,8 @@ class UpcomingScheduleList extends Component {
   }
 }
 
-UpcomingScheduleList.navigationOptions = ({ navigation }) => ({
-  title: '待办日程',
+UpcomingTaskList.navigationOptions = ({ navigation }) => ({
+  title: '待办任务',
   headerLeft: (
     <LeftBackIcon
       onPress={navigation.state.params ? navigation.state.params._close : null}
@@ -126,4 +126,4 @@ UpcomingScheduleList.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-export default UpcomingScheduleList;
+export default UpcomingTaskList;
