@@ -18,9 +18,9 @@ import { registerTopNavigator } from './utils/navigationService';
 // import HomeModel from './logicStores/home';
 // import MemberModel from './logicStores/member';
 // root page -> common card
-// import MemberRecordScreen from './pages/card/memberRecord';
-// import MemberDetailScreen from './pages/card/memberDetail';
-// import MemberSignListScreen from './pages/card/memberSignList';
+import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
+// root page -> common modal
+import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 // root page -> home
 import HomeScreen from './pages/Home';
 // root page -> home -> MessageList
@@ -41,7 +41,6 @@ import CRMScreen from './pages/CRM';
 import CustomerScreen from './pages/CRM/Customer';
 import CustomerDetailsScreen from './pages/CRM/Customer/Details';
 import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
-import QueryBusinessScreen from './pages/Model/QueryBusiness/index';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
 import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';
@@ -68,7 +67,6 @@ import PriceListScreen from './pages/CRM/PriceList';
 import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
 // root page -> CRM -> 回款计划资料
 import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/Detail';
-
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -165,11 +163,12 @@ const CrmRouteConfig = {
   [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
   [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
   [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen },
+  [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
 };
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.companyDepartment,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
