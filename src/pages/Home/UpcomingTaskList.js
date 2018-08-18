@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
 
-import Toast from '../../../utils/toast';
-import { moderateScale } from '../../../utils/scale';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import ListItem from '../components/ListItem';
+import Toast from '../../utils/toast';
+import { moderateScale } from '../../utils/scale';
+import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import ListItem from './components/ListItem';
 
 const data = [
   {
@@ -117,12 +117,10 @@ class UpcomingTaskList extends Component {
   }
 }
 
-UpcomingTaskList.navigationOptions = ({ navigation }) => ({
+UpcomingTaskList.navigationOptions = () => ({
   title: '待办任务',
   headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
+    <LeftBackIcon />
   ),
 });
 

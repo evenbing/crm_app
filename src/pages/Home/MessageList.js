@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
-import IcoSchedule from '../../../img/home/ico_schedule.png';
-import IcoUpcomingTasks from '../../../img/home/ico_upcomingtasks.png';
-import IcoNotice from '../../../img/home/ico_notice.png';
-import NavItem from '../../../components/NavItem';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { routers } from '../../../constants';
+import IcoSchedule from '../../img/home/ico_schedule.png';
+import IcoUpcomingTasks from '../../img/home/ico_upcomingtasks.png';
+import IcoNotice from '../../img/home/ico_notice.png';
+import NavItem from '../../components/NavItem';
+import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import { routers } from '../../constants';
 
 const Container = styled.View`
   flex: 1;
@@ -82,12 +82,10 @@ class MessageList extends Component {
   }
 }
 
-MessageList.navigationOptions = ({ navigation }) => ({
+MessageList.navigationOptions = () => ({
   title: '消息提醒',
   headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
+    <LeftBackIcon />
   ),
 });
 

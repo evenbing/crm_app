@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { LeftBackIcon } from '../../../components/Layout';
+import { LeftBackIcon } from '../../components/Layout';
 
 class AddTask extends Component {
   constructor(props) {

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
 
-import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
-import { moderateScale } from '../../../utils/scale';
+import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
+import { moderateScale } from '../../utils/scale';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -94,12 +94,10 @@ class NotificationList extends Component {
   }
 }
 
-NotificationList.navigationOptions = ({ navigation }) => ({
+NotificationList.navigationOptions = () => ({
   title: '通知',
   headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
+    <LeftBackIcon />
   ),
 });
 

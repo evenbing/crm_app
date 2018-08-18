@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import NavView from '../../../components/NavItem';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { moderateScale } from '../../../utils/scale';
-import { theme } from '../../../constants';
+import NavView from '../../components/NavItem';
+import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import { moderateScale } from '../../utils/scale';
+import { theme } from '../../constants';
 
 const ContainerView = styled.View`
   flex: 1;

@@ -27,24 +27,24 @@ const NavList = [
     leftTextStyle: {},
     rightText: '未启用',
     rightTextStyle: {
-      color: '#AEAEAE'
+      color: '#AEAEAE',
     },
-    height: 44
+    height: 44,
   },
   {
     leftText: '内部报价',
     leftTextStyle: {},
     rightText: '启用',
     rightTextStyle: {
-      color: '#18B548'
+      color: '#18B548',
     },
-    height: 44
+    height: 44,
   },
-]
+];
 
 @observer
 class PriceList extends React.Component {
-  onNavHandler = path => {
+  onNavHandler = (path) => {
     // this.props.navigation.navigate(path);
   };
 
@@ -54,7 +54,7 @@ class PriceList extends React.Component {
         <CommStatusBar />
         <NavListView>
           {
-            NavList.map((item, index) => <NavItem key={index} {...item} isLast={index===NavList.length-1} onPress={()=>this.onNavHandler()} />)
+            NavList.map((item, index) => <NavItem key={index} {...item} isLast={index === NavList.length - 1} onPress={() => this.onNavHandler()} />)
           }
         </NavListView>
       </ContainerView>
@@ -62,12 +62,10 @@ class PriceList extends React.Component {
   }
 }
 
-PriceList.navigationOptions = ({ navigation, screenProps }) => ({
+PriceList.navigationOptions = () => ({
   title: '价格表',
   headerLeft: (
-    <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
-    />
+    <LeftBackIcon />
   ),
 });
 

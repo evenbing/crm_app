@@ -97,6 +97,7 @@
       "error",
       "BinaryExpression[operator='in']"
     ],
+    "react/no-array-index-key": [0],
     "import/no-unresolved": [0],
     "no-shadow": [0],
     "global-require": [0],
