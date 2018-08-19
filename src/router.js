@@ -63,6 +63,8 @@ import ProductListScreen from './pages/CRM/ProductList';
 import MidifyProductPriceScreen from './pages/CRM/ModifyProductPrice';
 // root page -> CRM -> 价格表
 import PriceListScreen from './pages/CRM/PriceList';
+import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
+import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
 // root page -> CRM -> 回款计划
 import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
 // root page -> CRM -> 回款计划资料
@@ -159,6 +161,8 @@ const CrmRouteConfig = {
   [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.contactsEditor]: { screen: ContactEditorScreen },
   [routers.priceList]: { screen: PriceListScreen },
+  [routers.internalPriceList]: { screen: InternalPriceList },
+  [routers.standardPriceList]: { screen: StandardPriceList },
   [routers.productList]: { screen: ProductListScreen },
   [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
   [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },

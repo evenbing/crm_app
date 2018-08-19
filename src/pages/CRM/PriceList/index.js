@@ -8,6 +8,7 @@ import { moderateScale } from '../../../utils/scale';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import NavItem from '../../../components/NavItem';
+import { routers } from '../../../constants';
 
 const ContainerView = styled.ScrollView`
   flex: 1;
@@ -30,6 +31,7 @@ const NavList = [
       color: '#AEAEAE',
     },
     height: 44,
+    path: routers.standardPriceList,
   },
   {
     leftText: '内部报价',
@@ -39,13 +41,14 @@ const NavList = [
       color: '#18B548',
     },
     height: 44,
+    path: routers.internalPriceList,
   },
 ];
 
 @observer
 class PriceList extends React.Component {
   onNavHandler = (path) => {
-    // this.props.navigation.navigate(path);
+    this.props.navigation.navigate(path);
   };
 
   render() {
@@ -54,7 +57,12 @@ class PriceList extends React.Component {
         <CommStatusBar />
         <NavListView>
           {
-            NavList.map((item, index) => <NavItem key={index} {...item} isLast={index === NavList.length - 1} onPress={() => this.onNavHandler()} />)
+            NavList.map((item, index) => (<NavItem
+              key={index}
+              {...item}
+              isLast={index === NavList.length - 1}
+              onPress={() => this.onNavHandler(item.path)}
+            />))
           }
         </NavListView>
       </ContainerView>

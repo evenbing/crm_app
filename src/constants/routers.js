@@ -41,7 +41,10 @@ export default {
   // productList module
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
+  // priceList module
   priceList: 'app.tabView.root.crm.priceList',
+  internalPriceList: 'app.tabView.root.crm.internalPriceList',
+  standardPriceList: 'app.tabView.root.crm.standardPriceList',
   // reimbursementPlan module
   reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
   reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
