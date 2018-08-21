@@ -119,14 +119,14 @@ class CreateCustomer extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => alert(1)}
+          onPress={() => navigate(routers.createCustomerMore)}
         />
       </ContainerScrollView>
     );
   }
 }
 
-CreateCustomer.navigationOptions = ({ navigation, screenProps }) => ({
+CreateCustomer.navigationOptions = ({ navigation }) => ({
   title: '新建客户',
   headerLeft: (
     <LeftBackIcon

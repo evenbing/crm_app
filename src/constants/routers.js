@@ -21,6 +21,7 @@ export default {
   // customer module
   customer: 'app.tabView.root.crm.customer',
   createCustomer: 'app.tabView.root.crm.createCustomer',
+  createCustomerMore: 'app.tabView.root.crm.createCustomerMore',
   customerDetails: 'app.tabView.root.crm.customerDetails',
   // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',

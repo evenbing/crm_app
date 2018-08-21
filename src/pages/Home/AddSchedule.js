@@ -5,6 +5,7 @@ import NavView from '../../components/NavItem';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
+import RemarkInput from '../../components/RemarkInput';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -27,26 +28,6 @@ const ItemTitle = styled.Text`
   font-family: ${theme.fontRegular};
   font-size: ${moderateScale(16)};
   color: #373737;
-`;
-
-const DescriptionContent = styled.TextInput.attrs({
-  numberOfLines: 5,
-  placeholder: ' 请输入内容描述',
-  placeholderTextColor: '#c1c1c1',
-  returnKeyType: 'done',
-  returnKeyLabel: 'done',
-  clearButtonMode: 'never',
-  underlineColorAndroid: 'transparent',
-  autoCorrect: false,
-  autoCapitalize: 'none',
-})`
-  height: ${moderateScale(100)};
-  margin: 0px ${moderateScale(15)}px;
-  padding: ${moderateScale(10)}px ${moderateScale(13)}px;
-  border-width: ${moderateScale(1)}px;
-  border-radius: ${moderateScale(2)}px;
-  border-color: #E9E9E9;
-  background-color: #F9F9F9;
 `;
 
 class AddSchedule extends Component {
@@ -79,7 +60,7 @@ class AddSchedule extends Component {
           <NavView leftText="重复规则" rightText="不重复" />
           <Divder height={1} marginHorizontal={15} />
           <ItemTitle>描述</ItemTitle>
-          <DescriptionContent />
+          <RemarkInput />
           <ItemTitle>图片</ItemTitle>
         </ScrollView>
       </ContainerView>

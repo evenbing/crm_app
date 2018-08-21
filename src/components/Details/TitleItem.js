@@ -14,7 +14,7 @@ const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
   flex-direction: row;
   align-items: center;
-  background-color: ${theme.titleBackColor};
+  background-color: ${props => props.titleBackColor || theme.titleBackColor};
 `;
 
 const HeaderTitleText = styled.Text`
@@ -29,9 +29,10 @@ class TitleItem extends React.PureComponent {
       fontSize,
       titleStyle,
       text,
+      titleBackColor,
     } = this.props;
     return (
-      <ContainerView>
+      <ContainerView titleBackColor={titleBackColor} >
         <HeaderTitleText
           color={color}
           fontSize={fontSize}

@@ -40,6 +40,7 @@ import CRMScreen from './pages/CRM';
 // root page -> CRM -> 客户 module
 import CustomerScreen from './pages/CRM/Customer';
 import CustomerDetailsScreen from './pages/CRM/Customer/Details';
+import CustomerDetailsMoreScreen from './pages/CRM/Customer/CreateCustomerMore';
 import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
@@ -147,6 +148,7 @@ const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
   [routers.customer]: { screen: CustomerScreen },
   [routers.createCustomer]: { screen: CreateCustomerScreen },
+  [routers.createCustomerMore]: { screen: CustomerDetailsMoreScreen },
   [routers.customerDetails]: { screen: CustomerDetailsScreen },
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },

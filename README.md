@@ -29,7 +29,7 @@ java (v1.8.0_172)
         |--index.js             列表页面
       |--Customer               客户模块
         |--CreateCustomer.js    新建客户页面
-        |--**                   新建客户更多页面（未完成）
+        |--**                   新建客户更多页面
         |--Details.js           客户资料详情页面
         |--index.js             列表页面
       |--MarkActivity           市场活动模块
