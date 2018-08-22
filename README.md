@@ -47,7 +47,7 @@ java (v1.8.0_172)
         |--Details.js           回款计划资料
         |--index.js             列表页面
       |--SalesChance            销售机会模块
-        |--***                  新建销售机会页面(顺数第六个, 未完成)
+        |--***                  新建销售机会页面
         |--Details.js           销售机会详情页面
         |--index.js             列表页面  
       |--SalesClues             销售线索模块

@@ -4,18 +4,24 @@ import { moderateScale } from '../../../../utils/scale';
 
 const Container = styled.View`
   flex-direction: row;
+  padding: ${moderateScale(11)}px ${moderateScale(15)}px;
 `;
 
 const Image = styled.Image`
   width: ${moderateScale(109)}px;
   height: ${moderateScale(109)}px;
+  margin-right: ${moderateScale(15)}px;
 `;
 
 const DiscountView = styled.View`
+  justify-content: center;
+  align-items: center;
   width: ${moderateScale(109)}px;
   height: ${moderateScale(24)}px;
   position: absolute;
-  bottom: 0px;
+  bottom: ${moderateScale(11)}px;
+  left: ${moderateScale(15)}px;
+  background-color: #DB0E0EC1;
 `;
 
 const Discount = styled.Text`
@@ -49,7 +55,7 @@ const Remark = styled.Text`
 `;
 
 const TotalPrice = styled.View`
-  flex: row;
+  flex-direction: row;
 `;
 
 const TotalPriceLabel = styled.Text`
@@ -63,6 +69,7 @@ const TotalPriceValue = styled.Text`
 `;
 
 const ProductItem = ({
+  image,
   discount,
   name,
   price,
@@ -71,7 +78,7 @@ const ProductItem = ({
   totalPrice,
 }) => (
   <Container>
-    <Image />
+    <Image source={image} />
     <DiscountView>
       <Discount>{discount}</Discount>
     </DiscountView>
