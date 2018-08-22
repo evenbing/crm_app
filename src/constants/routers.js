@@ -25,6 +25,7 @@ export default {
   customerDetails: 'app.tabView.root.crm.customerDetails',
   // salesChance module
   salesChance: 'app.tabView.root.crm.salesChance',
+  createSalesChance: 'app.tabView.root.crm.createSalesChance',
   salesChanceDetails: 'app.tabView.root.crm.salesChanceDetails',
   // perfStatist module
   perfStatist: 'app.tabView.root.crm.perfStatist',

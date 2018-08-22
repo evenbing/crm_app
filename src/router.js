@@ -44,6 +44,7 @@ import CustomerDetailsMoreScreen from './pages/CRM/Customer/CreateCustomerMore';
 import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
+import CreateSalesChanceScreen from './pages/CRM/SalesChance/CreateSalesChance';
 import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';
 // root page -> CRM -> 业绩统计 module
 import PerfStatistScreen from './pages/CRM/PerfStatist';
@@ -152,6 +153,7 @@ const CrmRouteConfig = {
   [routers.customerDetails]: { screen: CustomerDetailsScreen },
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
+  [routers.createSalesChance]: { screen: CreateSalesChanceScreen },
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
   [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.markActivity]: { screen: MarkActivityScreen },

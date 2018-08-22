@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import {routers, theme} from '../../../constants';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -182,7 +182,7 @@ class SalesChance extends React.Component {
   }
 }
 
-SalesChance.navigationOptions = ({ navigation, screenProps }) => ({
+SalesChance.navigationOptions = ({ navigation }) => ({
   title: '销售机会',
   headerLeft: (
     <LeftBackIcon
@@ -191,7 +191,7 @@ SalesChance.navigationOptions = ({ navigation, screenProps }) => ({
   ),
   headerRight: (
     <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      onPress={() => navigation.navigate(routers.createSalesChance)}
       right="新增"
       rightStyle={{
         color: theme.primaryColor,
