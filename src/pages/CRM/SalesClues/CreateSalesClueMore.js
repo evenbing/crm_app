@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
-import { theme, routers } from '../../../constants';
+import { theme } from '../../../constants';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import TouchableView from '../../../components/TouchableView';
 import RemarkInput from '../../../components/RemarkInput';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 
@@ -16,11 +15,6 @@ const ListView = styled.View`
 const CenterTet = styled.Text`
   font-size: ${theme.moderateScale(16)};
   color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const RightText = styled.Text`
-  color: ${theme.primaryColor};
   font-family: ${theme.fontRegular};
 `;
 
@@ -38,9 +32,6 @@ class CreateSalesClueMore extends Component {
   }
 
   render() {
-    const {
-      navigation: { navigate },
-    } = this.props;
     return (
       <ContainerScrollView
         bottomPadding

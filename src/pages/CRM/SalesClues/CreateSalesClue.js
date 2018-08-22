@@ -111,7 +111,7 @@ class CreateSalesClue extends React.Component {
   }
 }
 
-CreateSalesClue.navigationOptions = ({ navigation, screenProps }) => ({
+CreateSalesClue.navigationOptions = ({ navigation }) => ({
   title: '新增线索',
   headerLeft: (
     <LeftBackIcon
