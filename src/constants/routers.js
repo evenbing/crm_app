@@ -38,7 +38,8 @@ export default {
   contactsEditor: 'app.tabView.root.crm.contactsEditor',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
-  createClue: 'app.tabView.root.crm.createClue',
+  createSalesClue: 'app.tabView.root.crm.createSalesClue',
+  createSalesClueMore: 'app.tabView.root.crm.createSalesClueMore',
   salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
   // productList module
   productList: 'app.tabView.root.crm.productList',

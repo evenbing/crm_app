@@ -51,8 +51,8 @@ java (v1.8.0_172)
         |--Details.js           销售机会详情页面
         |--index.js             列表页面  
       |--SalesClues             销售线索模块
-        |--CreateClues.js       新增线索页面
-        |--**                   新增线索更多页面（未完成）
+        |--CreateSalesClue.js       新增线索页面
+        |--**                   新增线索更多页面
         |--Details.js           销售线索详情页面
         |--index.js             列表页面
     |--Home        Home tab

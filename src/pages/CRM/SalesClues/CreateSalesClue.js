@@ -1,5 +1,5 @@
 /**
- * @component CreateClues.js
+ * @component CreateSalesClue.js
  * @description 新增线索页面
  * @time 2018/8/15
  * @author JUSTIN XU
@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { theme, routers } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -35,7 +35,7 @@ const NavItemStyle = {
   showNavIcon: true,
 };
 
-class CreateClues extends React.Component {
+class CreateSalesClue extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
@@ -43,6 +43,11 @@ class CreateClues extends React.Component {
   }
   onPressRight = () => alert('finish');
   render() {
+    const {
+      navigation: {
+        navigate,
+      },
+    } = this.props;
     return (
       <ContainerScrollView
         bottomPadding
@@ -99,14 +104,14 @@ class CreateClues extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => alert(1)}
+          onPress={() => navigate(routers.createSalesClueMore)}
         />
       </ContainerScrollView>
     );
   }
 }
 
-CreateClues.navigationOptions = ({ navigation, screenProps }) => ({
+CreateSalesClue.navigationOptions = ({ navigation, screenProps }) => ({
   title: '新增线索',
   headerLeft: (
     <LeftBackIcon
@@ -124,9 +129,9 @@ CreateClues.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-CreateClues.defaultProps = {};
+CreateSalesClue.defaultProps = {};
 
-CreateClues.propTypes = {
+CreateSalesClue.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -140,4 +145,4 @@ CreateClues.propTypes = {
   }).isRequired,
 };
 
-export default CreateClues;
+export default CreateSalesClue;

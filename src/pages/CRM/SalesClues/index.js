@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import {routers, theme} from '../../../constants';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -32,7 +32,7 @@ class SalesClues extends React.Component {
     });
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.createClue);
+    this.props.navigation.navigate(routers.createSalesClue);
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });

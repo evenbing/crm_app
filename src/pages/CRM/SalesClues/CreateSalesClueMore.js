@@ -30,7 +30,7 @@ const NavItemStyle = {
   showNavIcon: true,
 };
 
-class CreateCustomerMore extends Component {
+class CreateSalesClueMore extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,9 +53,9 @@ class CreateCustomerMore extends Component {
         />
         <ListView>
           <NavInputItem
-            leftText="客户名称"
+            leftText="姓名"
             inputProps={{
-              'placeholder': '请输入名称',
+              'placeholder': '请输入姓名',
               fontSize: theme.moderateScale(16),
             }}
             leftTextStyle={{
@@ -63,21 +63,16 @@ class CreateCustomerMore extends Component {
               width: theme.moderateScale(80),
             }}
             height={44}
-            right={
-              <TouchableView onPress={() => navigate(routers.queryBusiness)}>
-                <RightText>工商信息查询</RightText>
-              </TouchableView>
-            }
           />
           <NavInputItem
-            leftText="客户级别"
+            leftText="性别"
             center={
-              <CenterTet>请选择级别</CenterTet>
+              <CenterTet>请选择性别</CenterTet>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="上级客户"
+            leftText="公司名称"
             inputProps={{
               'placeholder': '请输入公司名称',
               fontSize: theme.moderateScale(16),
@@ -89,9 +84,21 @@ class CreateCustomerMore extends Component {
             height={44}
           />
           <NavInputItem
-            leftText="行业"
+            leftText="部门"
             inputProps={{
-              'placeholder': '请输入所在行业',
+              'placeholder': '请输入部门',
+              fontSize: theme.moderateScale(16),
+            }}
+            leftTextStyle={{
+              color: '#373737',
+              width: theme.moderateScale(80),
+            }}
+            height={44}
+          />
+          <NavInputItem
+            leftText="职务"
+            inputProps={{
+              'placeholder': '请输入职务',
               fontSize: theme.moderateScale(16),
             }}
             leftTextStyle={{
@@ -108,23 +115,21 @@ class CreateCustomerMore extends Component {
         />
         <ListView>
           <NavInputItem
-            leftText="省份城市"
-            center={
-              <CenterTet>请选择省份、地、市</CenterTet>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="详细地址"
-            center={
-              <CenterTet>定位详细地址</CenterTet>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
             leftText="电话"
             inputProps={{
               'placeholder': '请输入电话',
+              fontSize: theme.moderateScale(16),
+            }}
+            leftTextStyle={{
+              color: '#373737',
+              width: theme.moderateScale(80),
+            }}
+            height={44}
+          />
+          <NavInputItem
+            leftText="手机"
+            inputProps={{
+              'placeholder': '请输入手机',
               fontSize: theme.moderateScale(16),
             }}
             leftTextStyle={{
@@ -158,9 +163,28 @@ class CreateCustomerMore extends Component {
             height={44}
           />
           <NavInputItem
-            leftText="网址"
+            leftText="省份"
+            center={
+              <CenterTet>请选择省份、地、市</CenterTet>
+            }
+            {...NavItemStyle}
+          />
+          <NavInputItem
+            leftText="地址"
             inputProps={{
-              'placeholder': '请输入网址',
+              'placeholder': '请输入地址',
+              fontSize: theme.moderateScale(16),
+            }}
+            leftTextStyle={{
+              color: '#373737',
+              width: theme.moderateScale(80),
+            }}
+            height={44}
+          />
+          <NavInputItem
+            leftText="邮编"
+            inputProps={{
+              'placeholder': '请输入邮编',
               fontSize: theme.moderateScale(16),
             }}
             leftTextStyle={{
@@ -177,28 +201,18 @@ class CreateCustomerMore extends Component {
         />
         <ListView>
           <NavInputItem
-            leftText="总人数"
-            inputProps={{
-              'placeholder': '请输入总人数',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
+            leftText="线索来源"
+            center={
+              <CenterTet>请选择线索来源</CenterTet>
+            }
+            {...NavItemStyle}
           />
           <NavInputItem
-            leftText="年销售额"
-            inputProps={{
-              'placeholder': '请输入年销售额',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
+            leftText="市场活动"
+            center={
+              <CenterTet>请选择市场活动</CenterTet>
+            }
+            {...NavItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
@@ -222,8 +236,8 @@ class CreateCustomerMore extends Component {
   }
 }
 
-CreateCustomerMore.navigationOptions = ({ navigation }) => ({
-  title: '更多客户信息',
+CreateSalesClueMore.navigationOptions = ({ navigation }) => ({
+  title: '更多销售线索',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -240,4 +254,4 @@ CreateCustomerMore.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-export default CreateCustomerMore;
+export default CreateSalesClueMore;
