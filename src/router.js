@@ -69,9 +69,9 @@ import PriceListScreen from './pages/CRM/PriceList';
 import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
 import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
 // root page -> CRM -> 回款计划
-import ReimbursementPlanScreen from './pages/CRM/ReimbursementPlan';
+import ReimbursementPlanScreen from './pages/CRM/ReceivablePlan';
 // root page -> CRM -> 回款计划资料
-import ReimbursementPlanDetailScreen from './pages/CRM/ReimbursementPlan/Detail';
+import ReimbursementPlanDetailScreen from './pages/CRM/ReceivablePlan/Detail';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -171,8 +171,8 @@ const CrmRouteConfig = {
   [routers.standardPriceList]: { screen: StandardPriceList },
   [routers.productList]: { screen: ProductListScreen },
   [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
-  [routers.reimbursementPlan]: { screen: ReimbursementPlanScreen },
-  [routers.reimbursementPlanDetail]: { screen: ReimbursementPlanDetailScreen },
+  [routers.receivablePlan]: { screen: ReimbursementPlanScreen },
+  [routers.receivablePlanDetail]: { screen: ReimbursementPlanDetailScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
 };
 

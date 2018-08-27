@@ -49,8 +49,8 @@ export default {
   internalPriceList: 'app.tabView.root.crm.internalPriceList',
   standardPriceList: 'app.tabView.root.crm.standardPriceList',
   // reimbursementPlan module
-  reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
-  reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
+  receivablePlan: 'app.tabView.root.crm.receivablePlan',
+  receivablePlanDetail: 'app.tabView.root.crm.receivablePlanDetail',
   // common model
   queryBusiness: 'app.tabView.root.crm.queryBusiness',
   // common card
