@@ -8,7 +8,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { init, getPassportId } from './utils/rpc';
 import getConfig from './config';
-import AppService from './service/AppService';
+import AppService from './service/app';
 
 import XnLoading from './components/xnLoading';
 import Toast from './utils/toast';

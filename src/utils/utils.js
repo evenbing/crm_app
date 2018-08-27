@@ -23,7 +23,7 @@ export function formatStringWithHtml(originString) {
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>');
   return newString;
-};
+}
 
 
 // 是否 isIphoneX

@@ -7,10 +7,10 @@ export let config = {
   app_key: null,
   secret: null,
   uploadUrl: null,
-}
+};
 
 export const init=function (data) {
-  config = data
+  config = data;
 };
 
 

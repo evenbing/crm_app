@@ -53,6 +53,7 @@
 		D09571EF212D6D3600DE7A55 /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EA212D6CEE00DE7A55 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09571F0212D6D3600DE7A55 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */; };
 		D09571F1212D6D3600DE7A55 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0A94DC5213397870068DB5F /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D09571FA212D6D7700DE7A55 /* libimageCropPicker.a */; };
 		D643CD7F98874143AC37FC71 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2D37E0A8B294B6BA514AB16 /* Zocial.ttf */; };
 		E4CA11FDF07F4DF8A351D8DD /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B536005EAC7D46C1826ACC1D /* Ionicons.ttf */; };
 		FB970578EC1F473B9001958C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CBDDA5B5D96F441188731874 /* SimpleLineIcons.ttf */; };
@@ -389,6 +390,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A94DC5213397870068DB5F /* libimageCropPicker.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				D09571F0212D6D3600DE7A55 /* RSKImageCropper.framework in Frameworks */,
