@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>犀牛api</title>
+    <style type="text/css">
+     *{margin:0;padding:0;list-style:none;box-sizing:border-box;line-height:1.5}html{height:100%;overflow:hidden;background:#fff}body{height:100%;overflow:auto;background:#fff;display:flex;flex-direction:column;padding:20px 30px}a,a:active,a:hover,a:link,a:visited{text-decoration:none}.xn-col-md-1{width:4.1666666%!important}.xn-col-md-2{width:8.3333332%!important}.xn-col-md-3{width:12.4999998%!important}.xn-col-md-4{width:16.6666664%!important}.xn-col-md-5{width:20.833333%!important}.xn-col-md-6{width:24.9999996%!important}.xn-col-md-7{width:29.1666662%!important}.xn-col-md-8{width:33.3333328%!important}.xn-col-md-9{width:37.4999994%!important}.xn-col-md-10{width:41.666666%!important}.xn-col-md-11{width:45.8333326%!important}.xn-col-md-12{width:49.9999992%!important}.xn-col-md-13{width:54.166666%!important}.xn-col-md-14{width:58.3333324%!important}.xn-col-md-15{width:62.499999%!important}.xn-col-md-16{width:66.6666656%!important}.xn-col-md-17{width:70.8333322%!important}.xn-col-md-18{width:74.9999988%!important}.xn-col-md-19{width:79.1666654%!important}.xn-col-md-20{width:83.333332%!important}.xn-col-md-21{width:87.4999986%!important}.xn-col-md-22{width:91.6666652%!important}.xn-col-md-23{width:95.8333318%!important}.xn-col-md-24{width:100%!important}.api-h1{font-size:28px;color:#333;line-height:50px;margin:10px 0}.api-h2{font-size:24px;color:#333;line-height:35px;margin-top:10px;margin-bottom:10px}.api-h3{font-size:16px;color:#333;line-height:30px;margin:10px 0}.api-info{font-size:14px;color:#999}.p{font-size:14px;color:#333;line-height:1.5;margin:5px 0}.api-tab table{margin:10px;border-top:1px solid #ddd;border-left:1px solid #ddd;border-spacing:0;width:900px}.api-tab table td,.api-tab table th{border-right:1px solid #ddd;border-bottom:1px solid #ddd;padding:3px 5px;line-height:30px}.api-tab table th{font-size:16px}.api-tab table td{font-size:12px}.api-tab table thead{background:#F2F2F2}.mb-10{margin-bottom:10px}.mb-20{margin-bottom:20px}.mb-30{margin-bottom:30px}.f-left{float:left}.f-right{float:right}
+
+    </style>
+</head>
+<body>
+    <div class="api-h1">api.customerrelations.priceProduct.get</div>
+    <div class="api-info mb-30">最近更新时间: 2018-04-10 11:42:32</div>
+
+    <div class="api-h2">功能说明</div>
+    <div class="api-h3">方法名：</div>
+    <p class="p">api.customerrelations.priceProduct.get</p>
+    <div class="api-h3">应用场景：</div>
+    <p class="p">根据Id获取价格清单对应产品价格</p>
+    <div class="api-h3">API用户授权类型：</div>
+    <p class="p">需要</p>
+
+    <div class="api-h3">公共参数：</div>
+    <div class="api-tab">
+        <table>
+            <thead>
+                <tr>
+                    <th class="xn-col-md-4">名称</th>
+                    <th class="xn-col-md-4">类型</th>
+                    <th class="xn-col-md-4">是否必须</th>
+                    <th class="xn-col-md-12">描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>method</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td>API接口名称</td>
+                </tr>
+                <tr>
+                    <td>session</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td>分配给用户的SessionKey，通过登陆授权获取。某个API是否需要传入session参数，需参考此API的API用户授权类型</td>
+                </tr>
+                <tr>
+                    <td>timestamp</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td>时间戳，当前时间2014-11-28 11:43:02 timestamp值为1417146182091。API服务端允许客户端请求时间误差为6分钟。</td>
+                </tr>
+                <tr>
+                    <td>format</td>
+                    <td>String</td>
+                    <td>否</td>
+                    <td> 可选，指定响应格式。默认xml,目前支持格式为xml,json</td>
+                </tr>
+                <tr>
+                <td >app_key</td>
+                <td >String</td>
+                <td >是</td>
+                <td > API分配给应用的AppKey</td>
+            </tr>
+            <tr>
+                <td >v</td>
+                <td >String</td>
+                <td >是</td>
+                <td > API协议版本，可选值:1.0。</td>
+            </tr>
+            <tr>
+                <td >sign</td>
+                <td >String</td>
+                <td >是</td>
+                <td > API输入参数签名结果</td>
+            </tr>
+            <tr>
+                <td >sign_method</td>
+                <td >String</td>
+                <td >是</td>
+                <td > 参数的加密方法选择，可选值是：md5,sha1。</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="api-h3">请求参数：</div>
+    <div class="api-tab">
+        <table>
+            <thead>
+                <tr>
+                    <th class="xn-col-md-4">参数</th>
+                    <th class="xn-col-md-2">名称</th>
+                    <th class="xn-col-md-2">类型</th>
+                    <th class="xn-col-md-2">必须</th>
+                    <th class="xn-col-md-4">默认值</th>
+                    <th class="xn-col-md-4">示例值</th>
+                    <th class="xn-col-md-6">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="api-h3">响应参数：</div>
+    <div class="api-tab">
+        <table>
+            <thead>
+                <tr>
+                    <th class="xn-col-md-4">参数</th>
+                    <th class="xn-col-md-4">名称</th>
+                    <th class="xn-col-md-2">类型</th>
+                    <th class="xn-col-md-2">是否必须</th>
+                    <th class="xn-col-md-4">示例值</th>
+                    <th class="xn-col-md-6">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="api-h3">错误码解释：</div>
+    <div class="api-tab">
+        <table>
+            <thead>
+                <tr>
+                    <th class="xn-col-md-6">错误码</th>
+                    <th class="xn-col-md-8">错误描述</th>
+                    <th class="xn-col-md-10">解决方案</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                   <td >暂无</td>
+                   <td >暂无</td>
+                   <td >暂无</td>
+               </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="p">文档结束</p>
+</body>
+</html>
