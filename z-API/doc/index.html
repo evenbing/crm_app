@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html >
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>API文档</title>
+   <meta charset='utf-8'>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible'>
+  <style type="text/css">
+*{margin:0;padding:0;list-style:none;box-sizing:border-box}html{height:100%;overflow:hidden;background:#fff}body{height:100%;overflow:hidden;background:#fff;display:flex;flex-direction:column}.api-header{height:80px;border-bottom:1px solid #ddd}.api-body-layout{background-color:#fff;position:relative;overflow:hidden;flex:1}.api-body{z-index:2;display:flex;flex-direction:row;height:100%;min-width:1190px}.api-side{background:#F7F8FA;width:210px;flex-wrap:wrap;overflow-y:auto;overflow-x:hidden}.api-side .category{height:64px;border-bottom:1px solid #ddd;padding:15px 5px 15px 15px;position:relative}.api-side .category .title{line-height:34px;font-size:14px;color:#333;display:inline-block}.api-side .category .category-icon{float:right;width:34px;height:34px;display:inline-block;cursor:pointer;transform:rotate(180deg);transition:all .2s ease-out;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAQCAYAAADJViUEAAAAAXNSR0IArs4c6QAAAjBJREFUKBV1kztoU2EUx5MbI6bEQRRpIg7iIHXL4yZzoLpIBhERBamo5EnRKBTpYsAudWgSS8jDoTiIkCgOjqIJIirNw9nBgIN5gCK4FHqTXH8n9BtC6oHvnnP//3P+5/vOd6/F8h+LxWLHU6mUYz86Go2eFdy6HxmJRE6Dv2S1y+XyLZWTTqe1wWDwYDQaxW0226KmCOXj8fgR4g2r1SpdtxQuvtvtXhqPx8uEVQQ6U8UoH4R8CKmjvErXj1Iklkwmvbg11he4R3DGVHG/34+YpnmNtZnP519LkRjnPzEcDrOEfzVNu18oFP4IfkAeYolE4jxbWSF843Q6s2zb3MOdhmGsU3QSbInCjuBik86c8wyFj+n4zeFwrGYymR0hK5WKjY4rFJ7jda1UKn0QXJnGZI9R+ARgzm63383lcgNF1mq1q3RLMoctl8v1TOHKqzOPAAxEZq6O3RgMaAYXAY2p/ZKOkkSHLGefV8qhUOgFWy7C3ej1eksKV94mQaPR+O33+78T3iTxlM/ne9tqtYxqtWoGAoEmogvg14PB4Ndms/ljqlheSO5QtEsYkUmHw+FP9XrdRHhX1/VtsEVELiD2DoHJVakzT8TcbvdTkp7TZZk7vzgBeRSLxZ8U3oE7jN/Y+wotk22rJDqNUN7mXWdd8Xg8n9vtdk94fJ+j9RG+jchRr9f7fqqzJMnXw5DukbTDlKOCKWMHryjcpPtlsDmFz3j5JfnWD80QANzIguD/AFysAUkjWhzyAAAAAElFTkSuQmCC) center 50% no-repeat}.api-side .category .category-icon-active{transform:rotate(0)}.category-list{padding:20px 0;position:absolute;z-index:99;top:0;bottom:0;left:210px;width:200px;background:#eee;display:none;overflow:auto}.category-list .item{font-size:14px;color:#333;margin:10px;line-height:30px;cursor:pointer}.api-side .page-search{padding:10px 15px;height:54px}.api-side .page-search .page-search-input{height:34px;width:100%;border:1px solid #ddd;padding:0 5px 0 35px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAVCAYAAACkCdXRAAAAAXNSR0IArs4c6QAAAnRJREFUOBGllEtoU0EUhnNvXtVITbS4sLpTsPgAcWGti+rSjRKMESQS89adIFbElS7EF65UyNtkI0R0oe1O3IioVFwVRXEhilhpNWkFk5iX36lMuNZKEzpwOHP/859/zsydM5ppgZHJZNY3Go39rVZrK+E+fBH/2mw2PwyHw+8XSJmDNGMgn8+vKZfLV8COYg1sApvCVmmatgXRHub3bTbbqUAg8IH5X6Mtlkwmt0EeIyqVnHc4HLd8Pt+sYsfj8eUIHuP7EvFfuq67I5HIExUXPyeWTqfXsq1xSN8sFsuhUCj01kgyzuUI6vX6HbDNbHvQyNWFSPA6Qk5W9hiDRhE1DwaDn6xWqwd+nQLiChevZ7PZjfjD2JloNPpOwMUG5zXJNk8gOJxKpXYrvl6r1Q7w8dPlcqUV2Innr96D94Xq3Iov2xxgexNer7eswE48OS1sHO4mxRexXmxGAV16yVupcnT2/RXrV0CXvp/qJlWOzsczbIB7tk6BnfhCobAC3hCFPFd8qWwU+9FsNi8rsBNfKpUukGeGe1fx9VgsNkNlFwGOUJ1ckUUH3bAX0knsJvkfVcLcpXU6ndcAxljpNsQRtiAr/jOIa8RPExjFXtCjZ42kdm8isKxYLCYI+rCX2A3a5Sk2TYe4ENoJdhw/jDdxaUfozasyV6MtpoBEIrGP+TlMDnd+/BVHImd7kJiHuZuueaBy55MVbpLnqFqtyrPTB/jdbre/8fv9n4VAC/bQOY+IbUdwD4Jyef+8GjLpduRyudWVSkWuVS+NPyjv238r60ScJt9Ab4rgFIJDSxKTBXkLdyH4mC0nliwmgtzPHTyqs78B/jML9jmBo3oAAAAASUVORK5CYII=);background-position:5px 50%;background-repeat:no-repeat;border-radius:4px}.api-side .page-list{flex:1;flex-wrap:wrap;-webkit-wrap:wrap;overflow:auto}.api-side .page-list .page .page-link{padding:5px 15px;display:inline-block;width:100%;color:#333;text-decoration:none;border-bottom:1px dashed #eee}.api-side .page-list .page .page-link .name{width:100%;display:block;font-size:14px;color:#333;line-height:20px;height:20px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.api-side .page-list .page .page-link .link{width:100%;line-height:20px;display:block;font-size:12px;color:#999;padding-left:15px;white-space:nowrap;text-overflow:ellipsis;height:20px;overflow:hidden}.api-main{min-width:980px;flex:1;border-left:1px solid #ddd}.api-main .api-iframe{padding:10px;width:100%;height:100%;border:transparent}
+
+  </style>
+ </head>
+ <body>
+
+  <div class="api-body-layout">
+      <ul class="category-list" id="categoryList">
+          <li class="item">网络</li>
+          <li class="item">api</li>
+      </ul>
+      <div class="api-body">
+          <div class="api-side">
+              <div class="category">
+                  <span class="title">customerRelations-API</span>
+                  <!-- <span class="category-icon" id="tabCategory"></span>-->
+              </div>
+              <div class="page-search"><input class="page-search-input" id="pageSearch"></div>
+              <ul class="page-list" id="pageList">
+                    <li class="page">
+                      <a class="page-link" href="./method/getSalesPhase.html" target="apiIFrame">
+                          <span class="name">根据Id获取销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findSalesPhase.html" target="apiIFrame">
+                          <span class="name">高级查询销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/save.html" target="apiIFrame">
+                          <span class="name">创建销售阶段</span>
+                          <span class="link">api.customerrelations.save</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateSalesPhase.html" target="apiIFrame">
+                          <span class="name">更新销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteSalesPhase.html" target="apiIFrame">
+                          <span class="name">删除销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/inactiveSalesPhase.html" target="apiIFrame">
+                          <span class="name">作废销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.inactive</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activeSalesPhase.html" target="apiIFrame">
+                          <span class="name">激活销售阶段</span>
+                          <span class="link">api.customerrelations.salesPhase.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getCompetitor.html" target="apiIFrame">
+                          <span class="name">根据Id获取竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/competitorChangeOwnerUser.html" target="apiIFrame">
+                          <span class="name">更改竞争者负责人</span>
+                          <span class="link">api.customerrelations.changeOwnerUser.competitor</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchCompetitor.html" target="apiIFrame">
+                          <span class="name">模糊查询竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findCompetitor.html" target="apiIFrame">
+                          <span class="name">高级查询竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createCompetitor.html" target="apiIFrame">
+                          <span class="name">创建竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateCompetitor.html" target="apiIFrame">
+                          <span class="name">更新竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteCompetitor.html" target="apiIFrame">
+                          <span class="name">删除竞争对手</span>
+                          <span class="link">api.customerrelations.competitor.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getActivity.html" target="apiIFrame">
+                          <span class="name">根据Id获取市场活动</span>
+                          <span class="link">api.customerrelations.activity.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchActivity.html" target="apiIFrame">
+                          <span class="name">模糊查询市场活动</span>
+                          <span class="link">api.customerrelations.activity.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findActivity.html" target="apiIFrame">
+                          <span class="name">高级查询市场活动</span>
+                          <span class="link">api.customerrelations.activity.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createActivity.html" target="apiIFrame">
+                          <span class="name">创建市场活动</span>
+                          <span class="link">api.customerrelations.activity.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateActivity.html" target="apiIFrame">
+                          <span class="name">更新市场活动</span>
+                          <span class="link">api.customerrelations.activity.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activityChangeOwnerUser.html" target="apiIFrame">
+                          <span class="name">更改活动负责人</span>
+                          <span class="link">api.customerrelations.changeOwnerUser.activity</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteActivity.html" target="apiIFrame">
+                          <span class="name">删除市场活动</span>
+                          <span class="link">api.customerrelations.activity.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteActivityParticipant.html" target="apiIFrame">
+                          <span class="name">删除活动联合参与人</span>
+                          <span class="link">api.customerrelations.activityParticipant.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activityParticipantCreate.html" target="apiIFrame">
+                          <span class="name"></span>
+                          <span class="link">api.customerrelations.participantCreate.activity</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activityParticipantFind.html" target="apiIFrame">
+                          <span class="name"></span>
+                          <span class="link">api.customerrelations.participantFind.activity</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getContact.html" target="apiIFrame">
+                          <span class="name">根据Id获取联系人</span>
+                          <span class="link">api.customerrelations.contact.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getContactById.html" target="apiIFrame">
+                          <span class="name">根据Id获取联系人</span>
+                          <span class="link">api.customerrelations.contactById.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchContact.html" target="apiIFrame">
+                          <span class="name">模糊查询联系人</span>
+                          <span class="link">api.customerrelations.contact.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findContact.html" target="apiIFrame">
+                          <span class="name">高级查询联系人</span>
+                          <span class="link">api.customerrelations.contact.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createContact.html" target="apiIFrame">
+                          <span class="name">创建联系人</span>
+                          <span class="link">api.customerrelations.contact.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateContact.html" target="apiIFrame">
+                          <span class="name">更新联系人</span>
+                          <span class="link">api.customerrelations.contact.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteContact.html" target="apiIFrame">
+                          <span class="name">删除联系人</span>
+                          <span class="link">api.customerrelations.contact.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/importContactList.html" target="apiIFrame">
+                          <span class="name">导入联系人</span>
+                          <span class="link">api.customerrelations.contactList.import</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getContactShare.html" target="apiIFrame">
+                          <span class="name">根据Id获取共享联系人</span>
+                          <span class="link">api.customerrelations.contactShare.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createContactShare.html" target="apiIFrame">
+                          <span class="name">创建共享联系人</span>
+                          <span class="link">api.customerrelations.contactShare.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteContactShare.html" target="apiIFrame">
+                          <span class="name">删除共享联系人</span>
+                          <span class="link">api.customerrelations.contactShare.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findContactShare.html" target="apiIFrame">
+                          <span class="name">高级查询共享联系人</span>
+                          <span class="link">api.customerrelations.contactShare.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getCustomer.html" target="apiIFrame">
+                          <span class="name">根据Id获取客户表</span>
+                          <span class="link">api.customerrelations.customer.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/customerChangeOwnerUser.html" target="apiIFrame">
+                          <span class="name">更改客户负责人</span>
+                          <span class="link">api.customerrelations.changeOwnerUser.customer</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchCustomer.html" target="apiIFrame">
+                          <span class="name">模糊查询客户表</span>
+                          <span class="link">api.customerrelations.customer.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findCustomer.html" target="apiIFrame">
+                          <span class="name">高级查询客户表</span>
+                          <span class="link">api.customerrelations.customer.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createCustomer.html" target="apiIFrame">
+                          <span class="name">创建客户表</span>
+                          <span class="link">api.customerrelations.customer.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateCustomer.html" target="apiIFrame">
+                          <span class="name">更新客户表</span>
+                          <span class="link">api.customerrelations.customer.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteCustomer.html" target="apiIFrame">
+                          <span class="name">删除客户表</span>
+                          <span class="link">api.customerrelations.customer.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/importCustomerList.html" target="apiIFrame">
+                          <span class="name">导入客户表</span>
+                          <span class="link">api.customerrelations.customerList.import</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/inactiveCustomer.html" target="apiIFrame">
+                          <span class="name">废止客户</span>
+                          <span class="link">api.customerrelations.customer.inactive</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activeCustomer.html" target="apiIFrame">
+                          <span class="name">启用客户</span>
+                          <span class="link">api.customerrelations.customer.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getCustomerParticipant.html" target="apiIFrame">
+                          <span class="name">根据Id获取客户联合跟进人</span>
+                          <span class="link">api.customerrelations.customerParticipant.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findCustomerParticipant.html" target="apiIFrame">
+                          <span class="name">高级查询客户联合跟进人</span>
+                          <span class="link">api.customerrelations.customerParticipant.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createCustomerParticipant.html" target="apiIFrame">
+                          <span class="name">创建客户联合跟进人</span>
+                          <span class="link">api.customerrelations.customerParticipant.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteCustomerParticipant.html" target="apiIFrame">
+                          <span class="name">删除客户联合跟进人</span>
+                          <span class="link">api.customerrelations.customerParticipant.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getCustomerContact.html" target="apiIFrame">
+                          <span class="name">根据Id获取客户联系人</span>
+                          <span class="link">api.customerrelations.customerContact.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findCustomerContact.html" target="apiIFrame">
+                          <span class="name">高级查询客户联系人</span>
+                          <span class="link">api.customerrelations.customerContact.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createCustomerContact.html" target="apiIFrame">
+                          <span class="name">创建客户联系人</span>
+                          <span class="link">api.customerrelations.customerContact.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteCustomerContact.html" target="apiIFrame">
+                          <span class="name">删除客户联系人</span>
+                          <span class="link">api.customerrelations.customerContact.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getOpportunity.html" target="apiIFrame">
+                          <span class="name">根据Id获取机会</span>
+                          <span class="link">api.customerrelations.opportunity.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchOpportunity.html" target="apiIFrame">
+                          <span class="name">模糊查询机会</span>
+                          <span class="link">api.customerrelations.opportunity.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOpportunity.html" target="apiIFrame">
+                          <span class="name">高级查询机会</span>
+                          <span class="link">api.customerrelations.opportunity.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunity.html" target="apiIFrame">
+                          <span class="name">创建机会</span>
+                          <span class="link">api.customerrelations.opportunity.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateOpportunity.html" target="apiIFrame">
+                          <span class="name">更新机会</span>
+                          <span class="link">api.customerrelations.opportunity.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteOpportunity.html" target="apiIFrame">
+                          <span class="name">删除机会</span>
+                          <span class="link">api.customerrelations.opportunity.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunityParticipant.html" target="apiIFrame">
+                          <span class="name">创建联合跟进人</span>
+                          <span class="link">api.customerrelations.opportunityParticipant.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteOpportunityParticipant.html" target="apiIFrame">
+                          <span class="name">删除联合跟进人</span>
+                          <span class="link">api.customerrelations.opportunityParticipant.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOpportunityCompetitor.html" target="apiIFrame">
+                          <span class="name">高级查询机会竞争对手</span>
+                          <span class="link">api.customerrelations.opportunityCompetitor.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOpportunityParticipant.html" target="apiIFrame">
+                          <span class="name">获取联合参与者</span>
+                          <span class="link">api.customerrelations.opportunityParticipant.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunityCompetitor.html" target="apiIFrame">
+                          <span class="name">创建机会竞争对手</span>
+                          <span class="link">api.customerrelations.opportunityCompetitor.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getOpportunityCompetitor.html" target="apiIFrame">
+                          <span class="name">根据Id获取机会竞争者</span>
+                          <span class="link">api.customerrelations.opportunityCompetitor.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateOpportunityCompetitor.html" target="apiIFrame">
+                          <span class="name">更新机会竞争对手</span>
+                          <span class="link">api.customerrelations.opportunityCompetitor.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteOpportunityCompetitor.html" target="apiIFrame">
+                          <span class="name">删除机会竞争对手</span>
+                          <span class="link">api.customerrelations.opportunityCompetitor.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOpportunityContact.html" target="apiIFrame">
+                          <span class="name">高级查询机会联系人</span>
+                          <span class="link">api.customerrelations.opportunityContact.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getOpportunityContact.html" target="apiIFrame">
+                          <span class="name">根据Id获取机会联系人</span>
+                          <span class="link">api.customerrelations.opportunityContact.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunityContact.html" target="apiIFrame">
+                          <span class="name">创建机会联系人</span>
+                          <span class="link">api.customerrelations.opportunityContact.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateOpportunityContact.html" target="apiIFrame">
+                          <span class="name">更新机会联系人</span>
+                          <span class="link">api.customerrelations.opportunityContact.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteOpportunityContact.html" target="apiIFrame">
+                          <span class="name">删除机会联系人</span>
+                          <span class="link">api.customerrelations.opportunityContact.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOpportunityItem.html" target="apiIFrame">
+                          <span class="name">高级查询机会相关的产品</span>
+                          <span class="link">api.customerrelations.opportunityItem.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunityItem.html" target="apiIFrame">
+                          <span class="name">创建机会相关的产品</span>
+                          <span class="link">api.customerrelations.opportunityItem.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateOpportunityItem.html" target="apiIFrame">
+                          <span class="name">更新机会相关的产品</span>
+                          <span class="link">api.customerrelations.opportunityItem.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteOpportunityItem.html" target="apiIFrame">
+                          <span class="name">删除机会相关的产品</span>
+                          <span class="link">api.customerrelations.opportunityItem.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getOpportunityItem.html" target="apiIFrame">
+                          <span class="name">根据Id获取机会相关的产品</span>
+                          <span class="link">api.customerrelations.opportunityItem.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/opportunityChangeOwnerUser.html" target="apiIFrame">
+                          <span class="name">更改机会负责人</span>
+                          <span class="link">api.customerrelations.changeOwnerUser.opportunity</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/cancelOpportunity.html" target="apiIFrame">
+                          <span class="name">废弃机会</span>
+                          <span class="link">api.customerrelations.opportunity.cancel</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activeOpportunity.html" target="apiIFrame">
+                          <span class="name">启用废弃机会</span>
+                          <span class="link">api.customerrelations.opportunity.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getFeed.html" target="apiIFrame">
+                          <span class="name">根据Id获取销售记录</span>
+                          <span class="link">api.customerrelations.feed.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchFeed.html" target="apiIFrame">
+                          <span class="name">模糊查询销售记录</span>
+                          <span class="link">api.customerrelations.feed.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findFeed.html" target="apiIFrame">
+                          <span class="name">高级查询销售记录</span>
+                          <span class="link">api.customerrelations.feed.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createFeed.html" target="apiIFrame">
+                          <span class="name">创建销售记录</span>
+                          <span class="link">api.customerrelations.feed.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateFeed.html" target="apiIFrame">
+                          <span class="name">更新销售记录</span>
+                          <span class="link">api.customerrelations.feed.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteFeed.html" target="apiIFrame">
+                          <span class="name">删除销售记录</span>
+                          <span class="link">api.customerrelations.feed.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getFollow.html" target="apiIFrame">
+                          <span class="name">根据Id获取关注</span>
+                          <span class="link">api.customerrelations.follow.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchFollow.html" target="apiIFrame">
+                          <span class="name">模糊查询关注</span>
+                          <span class="link">api.customerrelations.follow.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findFollow.html" target="apiIFrame">
+                          <span class="name">高级查询关注</span>
+                          <span class="link">api.customerrelations.follow.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createFollow.html" target="apiIFrame">
+                          <span class="name">创建关注</span>
+                          <span class="link">api.customerrelations.follow.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateFollow.html" target="apiIFrame">
+                          <span class="name">更新关注</span>
+                          <span class="link">api.customerrelations.follow.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteFollow.html" target="apiIFrame">
+                          <span class="name">删除关注</span>
+                          <span class="link">api.customerrelations.follow.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getLeads.html" target="apiIFrame">
+                          <span class="name">根据Id获取线索</span>
+                          <span class="link">api.customerrelations.leads.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchLeads.html" target="apiIFrame">
+                          <span class="name">模糊查询线索</span>
+                          <span class="link">api.customerrelations.leads.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findLeads.html" target="apiIFrame">
+                          <span class="name">高级查询线索</span>
+                          <span class="link">api.customerrelations.leads.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createLeads.html" target="apiIFrame">
+                          <span class="name">创建线索</span>
+                          <span class="link">api.customerrelations.leads.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateLeads.html" target="apiIFrame">
+                          <span class="name">更新线索</span>
+                          <span class="link">api.customerrelations.leads.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/changeLeadsOwnerUser.html" target="apiIFrame">
+                          <span class="name">更新线索(负责人)</span>
+                          <span class="link">api.customerrelations.leadsOwnerUser.change</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOpportunityByLeads.html" target="apiIFrame">
+                          <span class="name">线索创建机会</span>
+                          <span class="link">api.customerrelations.opportunityByLeads.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteLeads.html" target="apiIFrame">
+                          <span class="name">删除线索</span>
+                          <span class="link">api.customerrelations.leads.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getOwnerHistory.html" target="apiIFrame">
+                          <span class="name">根据Id获取负责人变更历史</span>
+                          <span class="link">api.customerrelations.ownerHistory.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchOwnerHistory.html" target="apiIFrame">
+                          <span class="name">模糊查询负责人变更历史</span>
+                          <span class="link">api.customerrelations.ownerHistory.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findOwnerHistory.html" target="apiIFrame">
+                          <span class="name">高级查询负责人变更历史</span>
+                          <span class="link">api.customerrelations.ownerHistory.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createOwnerHistory.html" target="apiIFrame">
+                          <span class="name">创建负责人变更历史</span>
+                          <span class="link">api.customerrelations.ownerHistory.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getUser.html" target="apiIFrame">
+                          <span class="name">根据Id获取用户</span>
+                          <span class="link">api.customerrelations.user.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findUser.html" target="apiIFrame">
+                          <span class="name">高级查询用户</span>
+                          <span class="link">api.customerrelations.user.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createUser.html" target="apiIFrame">
+                          <span class="name">创建用户</span>
+                          <span class="link">api.customerrelations.user.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateUser.html" target="apiIFrame">
+                          <span class="name">更新用户</span>
+                          <span class="link">api.customerrelations.user.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getManagementTeam.html" target="apiIFrame">
+                          <span class="name">根据Id获取管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchManagementTeam.html" target="apiIFrame">
+                          <span class="name">模糊查询管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findManagementTeam.html" target="apiIFrame">
+                          <span class="name">高级查询管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getManagementTeamAllList.html" target="apiIFrame">
+                          <span class="name">获取所有管理团队列表</span>
+                          <span class="link">api.customerrelations.managementTeamAllList.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createManagementTeam.html" target="apiIFrame">
+                          <span class="name">创建管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateManagementTeam.html" target="apiIFrame">
+                          <span class="name">更新管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteManagementTeam.html" target="apiIFrame">
+                          <span class="name">删除管理团队</span>
+                          <span class="link">api.customerrelations.managementTeam.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/importManagementTeamList.html" target="apiIFrame">
+                          <span class="name">导入管理团队</span>
+                          <span class="link">api.customerrelations.managementTeamList.import</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteUser.html" target="apiIFrame">
+                          <span class="name"></span>
+                          <span class="link">api.customerrelations.user.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findCountManagementTeam.html" target="apiIFrame">
+                          <span class="name">高级查询总数管理团队</span>
+                          <span class="link">api.customerrelations.countManagementTeam.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getDynamic.html" target="apiIFrame">
+                          <span class="name">根据Id获取动态表</span>
+                          <span class="link">api.customerrelations.dynamic.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchDynamic.html" target="apiIFrame">
+                          <span class="name">模糊查询动态表</span>
+                          <span class="link">api.customerrelations.dynamic.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findDynamic.html" target="apiIFrame">
+                          <span class="name">高级查询动态表</span>
+                          <span class="link">api.customerrelations.dynamic.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createDynamic.html" target="apiIFrame">
+                          <span class="name">创建动态表</span>
+                          <span class="link">api.customerrelations.dynamic.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateDynamic.html" target="apiIFrame">
+                          <span class="name">更新动态表</span>
+                          <span class="link">api.customerrelations.dynamic.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteDynamic.html" target="apiIFrame">
+                          <span class="name">删除动态表</span>
+                          <span class="link">api.customerrelations.dynamic.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getProductClazz.html" target="apiIFrame">
+                          <span class="name">根据Id获取产品类目表</span>
+                          <span class="link">api.customerrelations.productClazz.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findProductClazz.html" target="apiIFrame">
+                          <span class="name">高级查询产品类目表</span>
+                          <span class="link">api.customerrelations.productClazz.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createProductClazz.html" target="apiIFrame">
+                          <span class="name">创建产品类目表</span>
+                          <span class="link">api.customerrelations.productClazz.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateProductClazz.html" target="apiIFrame">
+                          <span class="name">更新产品类目表</span>
+                          <span class="link">api.customerrelations.productClazz.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteProductClazz.html" target="apiIFrame">
+                          <span class="name">删除产品类目表</span>
+                          <span class="link">api.customerrelations.productClazz.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getProduct.html" target="apiIFrame">
+                          <span class="name">根据Id获取产品表</span>
+                          <span class="link">api.customerrelations.product.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findProduct.html" target="apiIFrame">
+                          <span class="name">高级查询产品表</span>
+                          <span class="link">api.customerrelations.product.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createProduct.html" target="apiIFrame">
+                          <span class="name">创建产品表</span>
+                          <span class="link">api.customerrelations.product.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateProduct.html" target="apiIFrame">
+                          <span class="name">更新产品表</span>
+                          <span class="link">api.customerrelations.product.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteProduct.html" target="apiIFrame">
+                          <span class="name">删除产品表</span>
+                          <span class="link">api.customerrelations.product.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activeProduct.html" target="apiIFrame">
+                          <span class="name">启用产品</span>
+                          <span class="link">api.customerrelations.product.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/inactiveProduct.html" target="apiIFrame">
+                          <span class="name">禁用产品</span>
+                          <span class="link">api.customerrelations.product.inactive</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/exportProduct.html" target="apiIFrame">
+                          <span class="name">产品导出</span>
+                          <span class="link">api.customerrelations.product.export</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getPactProduct.html" target="apiIFrame">
+                          <span class="name">根据Id获取合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchPactProduct.html" target="apiIFrame">
+                          <span class="name">模糊查询合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findPactProduct.html" target="apiIFrame">
+                          <span class="name">高级查询合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createPactProduct.html" target="apiIFrame">
+                          <span class="name">创建合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updatePactProduct.html" target="apiIFrame">
+                          <span class="name">更新合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deletePactProduct.html" target="apiIFrame">
+                          <span class="name">删除合同产品关联表</span>
+                          <span class="link">api.customerrelations.pactProduct.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getPact.html" target="apiIFrame">
+                          <span class="name">根据Id获取合同表</span>
+                          <span class="link">api.customerrelations.pact.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchPact.html" target="apiIFrame">
+                          <span class="name">模糊查询合同表</span>
+                          <span class="link">api.customerrelations.pact.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findPact.html" target="apiIFrame">
+                          <span class="name">高级查询合同表</span>
+                          <span class="link">api.customerrelations.pact.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createPact.html" target="apiIFrame">
+                          <span class="name">创建合同表</span>
+                          <span class="link">api.customerrelations.pact.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updatePact.html" target="apiIFrame">
+                          <span class="name">更新合同表</span>
+                          <span class="link">api.customerrelations.pact.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deletePact.html" target="apiIFrame">
+                          <span class="name">删除合同表</span>
+                          <span class="link">api.customerrelations.pact.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/changeOwner.html" target="apiIFrame">
+                          <span class="name">转移负责人</span>
+                          <span class="link">api.customerrelations.owner.change</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">根据Id获取开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">模糊查询开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">高级查询开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">创建开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">更新开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteInvoiceDetail.html" target="apiIFrame">
+                          <span class="name">删除开票记录表</span>
+                          <span class="link">api.customerrelations.invoiceDetail.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getReceivableDetail.html" target="apiIFrame">
+                          <span class="name">根据Id获取回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchReceivableDetail.html" target="apiIFrame">
+                          <span class="name">模糊查询回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findReceivableDetail.html" target="apiIFrame">
+                          <span class="name">高级查询回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createReceivableDetail.html" target="apiIFrame">
+                          <span class="name">创建回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateReceivableDetail.html" target="apiIFrame">
+                          <span class="name">更新回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteReceivableDetail.html" target="apiIFrame">
+                          <span class="name">删除回款记录表</span>
+                          <span class="link">api.customerrelations.receivableDetail.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getReceivableIssue.html" target="apiIFrame">
+                          <span class="name">根据Id获取回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchReceivableIssue.html" target="apiIFrame">
+                          <span class="name">模糊查询回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findReceivableIssue.html" target="apiIFrame">
+                          <span class="name">高级查询回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createReceivableIssue.html" target="apiIFrame">
+                          <span class="name">创建回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateReceivableIssue.html" target="apiIFrame">
+                          <span class="name">更新回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteReceivableIssue.html" target="apiIFrame">
+                          <span class="name">删除回款期次表</span>
+                          <span class="link">api.customerrelations.receivableIssue.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getReceivablePlan.html" target="apiIFrame">
+                          <span class="name">根据Id获取回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchReceivablePlan.html" target="apiIFrame">
+                          <span class="name">模糊查询回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findReceivablePlan.html" target="apiIFrame">
+                          <span class="name">高级查询回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createReceivablePlan.html" target="apiIFrame">
+                          <span class="name">创建回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateReceivablePlan.html" target="apiIFrame">
+                          <span class="name">更新回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteReceivablePlan.html" target="apiIFrame">
+                          <span class="name">删除回款计划表</span>
+                          <span class="link">api.customerrelations.receivablePlan.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findObjectLog.html" target="apiIFrame">
+                          <span class="name">高级查询对象操作日志表</span>
+                          <span class="link">api.customerrelations.objectLog.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createObjectLog.html" target="apiIFrame">
+                          <span class="name">创建对象操作日志表</span>
+                          <span class="link">api.customerrelations.objectLog.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/batchCreateObjectLog.html" target="apiIFrame">
+                          <span class="name">批量创建对象操作日志表</span>
+                          <span class="link">api.customerrelations.createObjectLog.batch</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/contactChangeOwnerUser.html" target="apiIFrame">
+                          <span class="name">更改联系人负责人</span>
+                          <span class="link">api.customerrelations.changeOwnerUser.contact</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/mergeCustomter.html" target="apiIFrame">
+                          <span class="name">合并客户</span>
+                          <span class="link">api.customerrelations.customter.merge</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/mergeOpportunity.html" target="apiIFrame">
+                          <span class="name">合并销售机会</span>
+                          <span class="link">api.customerrelations.opportunity.merge</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getPriceProduct.html" target="apiIFrame">
+                          <span class="name">根据Id获取价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findPriceProduct.html" target="apiIFrame">
+                          <span class="name">高级查询价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createPriceProduct.html" target="apiIFrame">
+                          <span class="name">创建价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updatePriceProduct.html" target="apiIFrame">
+                          <span class="name">更新价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deletePriceProduct.html" target="apiIFrame">
+                          <span class="name">删除价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/inactivePriceProduct.html" target="apiIFrame">
+                          <span class="name">作废价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.inactive</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activePriceProduct.html" target="apiIFrame">
+                          <span class="name">激活价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.priceProduct.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getPrice.html" target="apiIFrame">
+                          <span class="name">根据Id获取价格表</span>
+                          <span class="link">api.customerrelations.price.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findPrice.html" target="apiIFrame">
+                          <span class="name">高级查询价格表</span>
+                          <span class="link">api.customerrelations.price.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createPrice.html" target="apiIFrame">
+                          <span class="name">创建价格表</span>
+                          <span class="link">api.customerrelations.price.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updatePrice.html" target="apiIFrame">
+                          <span class="name">更新价格表</span>
+                          <span class="link">api.customerrelations.price.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deletePrice.html" target="apiIFrame">
+                          <span class="name">删除价格表</span>
+                          <span class="link">api.customerrelations.price.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/inactivePrice.html" target="apiIFrame">
+                          <span class="name">作废价格表</span>
+                          <span class="link">api.customerrelations.price.inactive</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/activePrice.html" target="apiIFrame">
+                          <span class="name">激活价格表</span>
+                          <span class="link">api.customerrelations.price.active</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/batchCreateOrUpdatePriceProduct.html" target="apiIFrame">
+                          <span class="name">创建价格清单对应产品价格</span>
+                          <span class="link">api.customerrelations.createOrUpdatePriceProduct.batch</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findManagementTeamMember.html" target="apiIFrame">
+                          <span class="name">查找当前用户所在团队的团队成员（除当前用户外）</span>
+                          <span class="link">api.customerrelations.managementTeamMember.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/exportPrice.html" target="apiIFrame">
+                          <span class="name">价格表导出</span>
+                          <span class="link">api.customerrelations.price.export</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getWorkEventDetail.html" target="apiIFrame">
+                          <span class="name">根据Id获取工作圈操作记录表</span>
+                          <span class="link">api.customerrelations.workEventDetail.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findWorkEventDetail.html" target="apiIFrame">
+                          <span class="name">高级查询工作圈操作记录表</span>
+                          <span class="link">api.customerrelations.workEventDetail.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createWorkEventDetail.html" target="apiIFrame">
+                          <span class="name">创建工作圈操作记录表</span>
+                          <span class="link">api.customerrelations.workEventDetail.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateWorkEventDetail.html" target="apiIFrame">
+                          <span class="name">更新工作圈操作记录表</span>
+                          <span class="link">api.customerrelations.workEventDetail.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteWorkEventDetail.html" target="apiIFrame">
+                          <span class="name">删除工作圈操作记录表</span>
+                          <span class="link">api.customerrelations.workEventDetail.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getBusinessDetail.html" target="apiIFrame">
+                          <span class="name">根据Id获取商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/searchBusinessDetail.html" target="apiIFrame">
+                          <span class="name">模糊查询商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.search</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findBusinessDetail.html" target="apiIFrame">
+                          <span class="name">高级查询商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createBusinessDetail.html" target="apiIFrame">
+                          <span class="name">创建商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateBusinessDetail.html" target="apiIFrame">
+                          <span class="name">更新商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteBusinessDetail.html" target="apiIFrame">
+                          <span class="name">删除商机明细表</span>
+                          <span class="link">api.customerrelations.businessDetail.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getSalesStatistic.html" target="apiIFrame">
+                          <span class="name">获取销售漏斗统计</span>
+                          <span class="link">api.customerrelations.salesStatistic.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getSalesSumStatistic.html" target="apiIFrame">
+                          <span class="name">获取销售总额统计</span>
+                          <span class="link">api.customerrelations.salesSumStatistic.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getSalesRankingStatistic.html" target="apiIFrame">
+                          <span class="name">获取销售排行榜统计</span>
+                          <span class="link">api.customerrelations.salesRankingStatistic.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getTaskSchedule.html" target="apiIFrame">
+                          <span class="name">根据Id获取任务日程表</span>
+                          <span class="link">api.customerrelations.taskSchedule.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findTaskSchedule.html" target="apiIFrame">
+                          <span class="name">高级查询任务日程表</span>
+                          <span class="link">api.customerrelations.taskSchedule.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createTaskSchedule.html" target="apiIFrame">
+                          <span class="name">创建任务日程表</span>
+                          <span class="link">api.customerrelations.taskSchedule.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateTaskSchedule.html" target="apiIFrame">
+                          <span class="name">更新任务日程表</span>
+                          <span class="link">api.customerrelations.taskSchedule.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteTaskSchedule.html" target="apiIFrame">
+                          <span class="name">删除任务日程表</span>
+                          <span class="link">api.customerrelations.taskSchedule.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getTaskScheduleUser.html" target="apiIFrame">
+                          <span class="name">根据Id获取参与人员关系表</span>
+                          <span class="link">api.customerrelations.taskScheduleUser.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findTaskScheduleUser.html" target="apiIFrame">
+                          <span class="name">高级查询参与人员关系表</span>
+                          <span class="link">api.customerrelations.taskScheduleUser.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/createTaskScheduleUser.html" target="apiIFrame">
+                          <span class="name">创建参与人员关系表</span>
+                          <span class="link">api.customerrelations.taskScheduleUser.create</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updateTaskScheduleUser.html" target="apiIFrame">
+                          <span class="name">更新参与人员关系表</span>
+                          <span class="link">api.customerrelations.taskScheduleUser.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/deleteTaskScheduleUser.html" target="apiIFrame">
+                          <span class="name">删除参与人员关系表</span>
+                          <span class="link">api.customerrelations.taskScheduleUser.delete</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getSalesTrendStatistic.html" target="apiIFrame">
+                          <span class="name">获取销售趋势</span>
+                          <span class="link">api.customerrelations.salesTrendStatistic.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/getWorkingToday.html" target="apiIFrame">
+                          <span class="name">获取今日工作</span>
+                          <span class="link">api.customerrelations.workingToday.get</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/salesPhaseGetAllList.html" target="apiIFrame">
+                          <span class="name"></span>
+                          <span class="link">api.customerrelations.phaseGetAllList.sales</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/findTaskScheduleRelatedToMe.html" target="apiIFrame">
+                          <span class="name">查询和我有关的任务日程</span>
+                          <span class="link">api.customerrelations.taskScheduleRelatedToMe.find</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/updatePactProductByPactId.html" target="apiIFrame">
+                          <span class="name">编辑合同时更新合同产品数据</span>
+                          <span class="link">api.customerrelations.pactProductByPactId.update</span>
+                      </a>
+                    </li>
+                    <li class="page">
+                      <a class="page-link" href="./method/exportCustomer.html" target="apiIFrame">
+                          <span class="name">客户导出</span>
+                          <span class="link">api.customerrelations.customer.export</span>
+                      </a>
+                    </li>
+              </ul>
+          </div>
+          <div class="api-main">
+              <iframe class="api-iframe" src="" name="apiIFrame"></iframe>
+          </div>
+      </div>
+  </div>
+
+ <script type="application/javascript">
+     var $pageSearch=document.getElementById("pageSearch");
+     var $pageList=document.getElementById("pageList");
+     function filterItem(value) {
+         var inputVal=value.trim();
+         var childrenList=$pageList.children;
+         if(childrenList.length>0){
+             for(var i=0;i<childrenList.length;i++){
+                  var page=childrenList[i];
+                 var name=page.getElementsByClassName("name")[0].innerHTML;
+                 var api=page.getElementsByClassName("link")[0].innerHTML;
+                 if(inputVal){
+                     if(name.indexOf(inputVal)>-1 ||api.indexOf(inputVal)>-1){
+                         childrenList[i].style.display="block"
+                     }else {
+                         childrenList[i].style.display="none"
+                     }
+                 }else {
+                     childrenList[i].style.display="block"
+                 }
+             }
+         }
+     }
+     $pageSearch.addEventListener('keyup',function (e) {
+         filterItem(e.target.value)
+     });
+ </script>
+ </body>
+</html>
