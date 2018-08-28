@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import {routers, theme} from '../../../constants';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -44,7 +44,7 @@ const FooterText = styled.Text`
 useStrict(true);
 
 @observer
-class ReimbursementPlan extends React.Component {
+class ReceivablePlan extends React.Component {
   state = {
     activeIndex: 0,
     amountVisible: false,
@@ -103,7 +103,7 @@ class ReimbursementPlan extends React.Component {
             left={
               <LeftItem {...props} />
             }
-            onPress={() => navigate(routers.reimbursementPlanDetail)}
+            onPress={() => navigate(routers.receivablePlanDetail)}
           />
         }
         right={
@@ -181,7 +181,7 @@ class ReimbursementPlan extends React.Component {
   }
 }
 
-ReimbursementPlan.navigationOptions = ({ navigation, screenProps }) => ({
+ReceivablePlan.navigationOptions = ({ navigation, screenProps }) => ({
   title: '回款计划',
   headerLeft: (
     <LeftBackIcon
@@ -199,9 +199,9 @@ ReimbursementPlan.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-ReimbursementPlan.defaultProps = {};
+ReceivablePlan.defaultProps = {};
 
-ReimbursementPlan.propTypes = {
+ReceivablePlan.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -215,5 +215,5 @@ ReimbursementPlan.propTypes = {
   }).isRequired,
 };
 
-export default ReimbursementPlan;
+export default ReceivablePlan;
 

@@ -117,7 +117,7 @@ export function formatDateNow(value) {
   return `${birthYear}-${birthMonth}-${birthDate}`;
 }
 
-// 格式化会员list
+// 格式化成员list
 export function formatMemberList(list) {
   if (!Array.isArray(list)) {
     throw new Error('params must be array');
@@ -131,7 +131,6 @@ export function formatMemberList(list) {
     } else {
       value.sortLetters = '#';
     }
-    value.dateNow = formatDateNow(value);
     return value;
   });
 }

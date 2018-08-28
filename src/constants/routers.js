@@ -49,13 +49,14 @@ export default {
   internalPriceList: 'app.tabView.root.crm.internalPriceList',
   standardPriceList: 'app.tabView.root.crm.standardPriceList',
   // reimbursementPlan module
-  reimbursementPlan: 'app.tabView.root.crm.reimbursementPlan',
-  reimbursementPlanDetail: 'app.tabView.root.crm.reimbursementPlanDetail',
+  receivablePlan: 'app.tabView.root.crm.receivablePlan',
+  receivablePlanDetail: 'app.tabView.root.crm.receivablePlanDetail',
   // common model
-  queryBusiness: 'app.tabView.root.crm.queryBusiness',
+  queryBusiness: 'app.tabView.root.model.queryBusiness',
   // common card
-  companyDepartment: 'app.tabView.root.crm.companyDepartment',
+  companyDepartment: 'app.tabView.root.card.companyDepartment',
+  teamMembers: 'app.tabView.root.card.teamMembers',
   // demo
-  actionSheetDemo: 'app.tabView.root.actionSheetDemo',
-  mobxDemo: 'app.tabView.root.mobxDemo',
+  actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
+  mobxDemo: 'app.tabView.root.demo.mobxDemo',
 };

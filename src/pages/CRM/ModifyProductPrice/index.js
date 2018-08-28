@@ -92,44 +92,44 @@ class ModifyProductPrice extends React.Component {
       rightText: '¥99999.00',
       rightTextStyle: {
         fontFamily: theme.fontRegular,
-        color: '#AEAEAE'
+        color: '#AEAEAE',
       },
       showNavIcon: false,
-      isLast: false
-    }
+      isLast: false,
+    };
 
     const TableList = [
       {
         leftText: '销售单价',
         inputProps: {
-          placeholder: '请输入销售单价'
-        }
+          placeholder: '请输入销售单价',
+        },
       },
       {
         leftText: '数量',
         inputProps: {
-          placeholder: '请输入商品数量'
-        }
+          placeholder: '请输入商品数量',
+        },
       },
       {
         leftText: '折扣(%)',
         inputProps: {
-          placeholder: '请输入折扣'
-        }
+          placeholder: '请输入折扣',
+        },
       },
       {
         leftText: '总价',
         inputProps: {
-          placeholder: '请输入总价'
-        }
+          placeholder: '请输入总价',
+        },
       },
       {
         leftText: '备注',
         inputProps: {
-          placeholder: '请输入备注，十字以内'
-        }
-      }
-    ]
+          placeholder: '请输入备注，十字以内',
+        },
+      },
+    ];
 
     return (
       <ContainerView>
@@ -137,14 +137,14 @@ class ModifyProductPrice extends React.Component {
         <MainView>
           <HeaderView>
             <ItemView><ItemImage /></ItemView>
-            <TextView style={{marginBottom: moderateScale(5)}}><ItemNameText>电脑主机</ItemNameText></TextView>
+            <TextView style={{ marginBottom: moderateScale(5) }}><ItemNameText>电脑主机</ItemNameText></TextView>
             <TextView><ItemPriceText>标准价格：¥9000.00</ItemPriceText></TextView>
           </HeaderView>
 
           <ListView>
             <NavItem {...navItemProps} />
             {
-              TableList.map((obj, index) => <NavInputItem key={index} {...obj} {...NavInputItemStyle} /> )
+              TableList.map((obj, index) => <NavInputItem key={index} {...obj} {...NavInputItemStyle} />)
             }
           </ListView>
         </MainView>
@@ -157,7 +157,7 @@ ModifyProductPrice.navigationOptions = ({ navigation, screenProps }) => ({
   title: '产品目录',
   headerLeft: (
     <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
     />
   ),
   headerRight: (

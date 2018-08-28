@@ -14,7 +14,10 @@ import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import Accordion from '../../../components/Accordion';
-import MemberItem from '../../../components/Company/MemberItem';
+import MemberItem from '../../../components/MemberList/MemberItem';
+
+// static source
+import HeaderIcon from '../../../img/test/mine_head.png';
 
 const SectionView = styled.View`
    background-color: ${theme.whiteColor};
@@ -24,9 +27,9 @@ class CompanyDepartment extends React.Component {
   state = {
     activeIndex: 0,
     memberList: [
-      { active: false, name: '张三', url: require('../../../img/test/mine_head.png') },
-      { active: false, name: '张三三', url: require('../../../img/test/mine_head.png') },
-      { active: false, name: '三张三', url: require('../../../img/test/mine_head.png') },
+      { active: false, name: '张三', url: HeaderIcon },
+      { active: false, name: '张三三', url: HeaderIcon },
+      { active: false, name: '三张三', url: HeaderIcon },
     ],
   };
   componentDidMount() {

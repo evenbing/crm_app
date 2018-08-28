@@ -1,13 +1,13 @@
 /**
  * @component MemberItem.js
  * @description 成员条目组件
- * @time 2018/8/18
+ * @time 2018/8/28
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
+import { theme } from '../../constants/index';
 
 // components
 import TouchableView from '../TouchableView';
@@ -45,9 +45,12 @@ const MemberItem = ({
   item,
   index,
   onPress,
+  style,
 }) => {
+  console.log(item, index);
   return (
     <ContainerView
+      style={style}
       onPress={() => onPress({ item, index })}
     >
       <LeftIconView>
@@ -70,12 +73,14 @@ MemberItem.defaultProps = {
   item: {},
   index: 0,
   onPress: () => null,
+  style: {},
 };
 
 MemberItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   index: PropTypes.number,
   onPress: PropTypes.func,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 export default MemberItem;

@@ -996,7 +996,7 @@ html.aui-responsive {
 @import './imports/global';
 
 /**
- * AUI Page Header
+ * AUI Page ListHeader
  */
 
 .aui-page-header-inner {
@@ -1170,7 +1170,7 @@ a img {
 }
 /* end main body */
 
-/* Header */
+/* ListHeader */
 #quick-search-submit {
     display: none;
 }
@@ -2966,7 +2966,7 @@ a img {
 }
 /* end main body */
 
-/* Header */
+/* ListHeader */
 #quick-search-submit {
     display: none;
 }
@@ -3633,8 +3633,8 @@ h1.pagetitle img.logo {
     zoom: 1;
 }
 .has-sidebar #content .code {
-    _clear: both; 
-    _overflow: auto; 
+    _clear: both;
+    _overflow: auto;
 }
 .menu-section-list li a:visited,
 .menu-section-list li a:hover {
