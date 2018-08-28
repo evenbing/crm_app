@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { moderateScale } from '../../../utils/scale';
 import OperateIconImage from '../../../img/home/ico_operate_icon.png';
+import { theme } from '../../../constants';
 
 const Divder = styled.View`
   width: ${moderateScale(0.8)};
   height: ${moderateScale(48)};
-  background-color: #F6F6F6;
-  margin: 0px ${moderateScale(10)}px;
+  background-color: ${theme.pageBackColor};
 `;
 
 const Container = styled.View``;

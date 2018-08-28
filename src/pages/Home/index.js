@@ -18,8 +18,8 @@ import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { ActionSheet } from '../../components/Modal';
 import { moderateScale } from '../../utils/scale';
 import CalendarIcon from '../../img/home/ico_header_calendar.png';
-import AddButtonImage from '../../img/home/add.png';
-import { routers } from '../../constants';
+import { routers, theme } from '../../constants';
+import Calendar from './components/Calendar';
 // import TouchableView from '../../components/TouchableView';
 
 const data = [
@@ -85,7 +85,9 @@ const data = [
   },
 ];
 
-const ContainerView = styled.View``;
+const ContainerView = styled.View`
+  background-color: ${theme.pageBackColor};
+`;
 
 const HeaderView = styled.View`
   height: ${moderateScale(134)};
@@ -138,28 +140,14 @@ const HeaderViewRight = styled.View`
   padding-top: ${moderateScale(10)};
 `;
 
-const CalendarView = styled.View`
-  margin: -${moderateScale(30)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
-  background-color: blue;
-  height: ${moderateScale(126)};
-  border-radius: ${moderateScale(4)};
-`;
-
-const AddButton = styled.TouchableOpacity``;
-
-const AddButtonIcon = styled.Image.attrs({
-  source: AddButtonImage,
-})`
-  width: ${moderateScale(30)};
-  height: ${moderateScale(30)};
-  position: absolute;
-  right: ${moderateScale(10)};
-  top: ${moderateScale(10)};
-`;
-
 const List = styled.FlatList`
-  background-color: white;
+  background-color: ${theme.pageBackColor};
   padding: ${moderateScale(10)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
+`;
+
+const ListItemSeparatorComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(10)}px;
 `;
 
 class Home extends React.Component {
@@ -199,6 +187,8 @@ class Home extends React.Component {
       operateList={operateList}
     />);
   }
+
+  renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
 
   render() {
     const {
@@ -256,15 +246,12 @@ class Home extends React.Component {
             </HeaderViewRight>
           </HeaderView>
         </LinearGradient>
-        <CalendarView>
-          <AddButton onPress={this.onToggleTaskVisible}>
-            <AddButtonIcon />
-          </AddButton>
-        </CalendarView>
+        <Calendar />
         <List
           data={data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
+          ItemSeparatorComponent={this.renderItemSeparatorComponent}
         />
       </ContainerView>
     );
