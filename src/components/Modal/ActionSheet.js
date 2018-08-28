@@ -38,7 +38,7 @@ const ItemPressView = styled(TouchableView)`
 `;
 
 const ItemListView = styled.View`
-  background-color: #ffffff;
+  background-color: ${theme.whiteColor};
 `;
 
 const ItemView = styled.View`
@@ -55,7 +55,7 @@ const FooterView = styled(TouchableView)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: ${theme.whiteColor};
 `;
 
 const FooterText = styled.Text`
@@ -132,7 +132,7 @@ class ActionSheet extends React.PureComponent {
           <ItemListView>
             {this.renderItem()}
           </ItemListView>
-          <HorizontalDivider />
+          <HorizontalDivider backgroundColor='transparent' />
           {this.renderFooter()}
         </ContainerView>
       </ModalView>

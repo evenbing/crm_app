@@ -19,6 +19,7 @@ import { registerTopNavigator } from './utils/navigationService';
 // import MemberModel from './logicStores/member';
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
+import TeamMembersScreen from './pages/Card/TeamMembers';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 // root page -> home
@@ -174,11 +175,12 @@ const CrmRouteConfig = {
   [routers.receivablePlan]: { screen: ReimbursementPlanScreen },
   [routers.receivablePlanDetail]: { screen: ReimbursementPlanDetailScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
+  [routers.teamMembers]: { screen: TeamMembersScreen },
 };
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.teamMembers,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
