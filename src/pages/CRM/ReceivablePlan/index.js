@@ -1,14 +1,15 @@
 /**
  * @component index.js
- * @description 联系人页面
+ * @description 回款计划页面
  * @time 2018/8/6
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
-import { SwipeRow } from 'native-base';
+import { SwipeRow, Drawer } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 
@@ -20,7 +21,9 @@ import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/in
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
 import { ActionSheet } from '../../../components/Modal';
+// import Header from '../../../components/Header';
 import LeftItem from './component/LeftItem';
+import SideBar from './component/SideBar';
 
 const FooterView = styled(TouchableView)`
   position: absolute;
@@ -54,6 +57,14 @@ class ReceivablePlan extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
+  onCloseDrawer = () => {
+    StatusBar.setBarStyle('light-content');
+    this.drawer._root.close(); // eslint-disable-line
+  };
+  onOpenDrawer = () => {
+    StatusBar.setBarStyle('dark-content');
+    this.drawer._root.open(); // eslint-disable-line
+  };
   onToggleAmountVisible = () => {
     this.setState({
       amountVisible: !this.state.amountVisible,
@@ -63,8 +74,7 @@ class ReceivablePlan extends React.Component {
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
-      // TODO open drawer
-      alert('isLast');
+      this.onOpenDrawer();
     }
   };
   onRowOpen = (index) => {
@@ -108,7 +118,10 @@ class ReceivablePlan extends React.Component {
         }
         right={
           <ButtonList
-            list={[1, 2]}
+            list={[
+              require('../../../img/crm/buttonList/address.png'),
+              require('../../../img/crm/buttonList/phone.png'),
+            ]}
             onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
           />
         }
@@ -121,6 +134,9 @@ class ReceivablePlan extends React.Component {
         activeIndex,
         amountVisible,
       },
+      // props: {
+      //   navigation,
+      // },
     } = this;
     const amountActionSheetProps = {
       isVisible: amountVisible,
@@ -135,48 +151,85 @@ class ReceivablePlan extends React.Component {
       ],
     };
     return (
-      <ContainerView
-        bottomPadding
+      <Drawer
+        side="right"
+        openDrawerOffset={0.179}
+        ref={(ref) => { this.drawer = ref; }}
+        styles={{
+          drawer: {
+            shadowColor: '#000000',
+            shadowOpacity: 0,
+            shadowRadius: 0,
+            elevation: 5,
+          },
+          mainOverlay: {
+            opacity: 0,
+            backgroundColor: 'rgba(0, 0, 0, .8)',
+            elevation: 8,
+          },
+        }}
+        content={
+          <SideBar
+            gradeList={[]}
+            navigator={this.navigator}
+            labelItem={[]}
+            onFilter={this.onFilter}
+          />
+        }
+        onClose={() => this.onCloseDrawer()}
       >
-        <CommStatusBar />
-        <SearchInput placeholder="输入客户名称" />
-        <ScreenTab
-          data={['跟进时间', '我负责的', '筛选']}
-          activeIndex={activeIndex}
-          onChange={this.onChange}
-        />
-        <FlatListTable
-          data={[
-            {
-              time: '20180909-0001',
-              customer: '客户：西风网络',
-              contract: '合同：西风网络销售合同',
-              returnMoney: '计划回款：¥10,000.00',
-              returnTime: '计划日期：2018-09-09',
-            },
-            {
-              time: '20180909-0002',
-              customer: '客户：阿里巴巴',
-              contract: '合同：西风网络销售合同',
-              returnMoney: '计划回款：¥10,000.00',
-              returnTime: '计划日期：2018-09-09',
-            },
-            {
-              time: '20180909-0003',
-              customer: '客户：字节跳动',
-              contract: '合同：西风网络销售合同',
-              returnMoney: '计划回款：¥10,000.00',
-              returnTime: '计划日期：2018-09-09',
-            },
-          ]}
-          keyExtractor={item => item.time}
-          renderItem={this.renderItem}
-        />
-        <ActionSheet {...amountActionSheetProps} />
-        <FooterView onPress={this.onToggleAmountVisible}>
-          <FooterText>数据合计</FooterText>
-        </FooterView>
-      </ContainerView>
+        <ContainerView
+          bottomPadding
+        >
+          <CommStatusBar />
+          {/*
+          <Header
+            showBackButton
+            onLeftPress={() => navigation.goBack()}
+            center="回款计划"
+            right="新增"
+            onRightPress={this.onPressRight}
+          />
+          */}
+          <SearchInput placeholder="输入客户名称" />
+          <ScreenTab
+            data={['跟进时间', '我负责的', '筛选']}
+            activeIndex={activeIndex}
+            onChange={this.onChange}
+          />
+          <FlatListTable
+            data={[
+              {
+                time: '20180909-0001',
+                customer: '客户：西风网络',
+                contract: '合同：西风网络销售合同',
+                returnMoney: '计划回款：¥10,000.00',
+                returnTime: '计划日期：2018-09-09',
+              },
+              {
+                time: '20180909-0002',
+                customer: '客户：阿里巴巴',
+                contract: '合同：西风网络销售合同',
+                returnMoney: '计划回款：¥10,000.00',
+                returnTime: '计划日期：2018-09-09',
+              },
+              {
+                time: '20180909-0003',
+                customer: '客户：字节跳动',
+                contract: '合同：西风网络销售合同',
+                returnMoney: '计划回款：¥10,000.00',
+                returnTime: '计划日期：2018-09-09',
+              },
+            ]}
+            keyExtractor={item => item.time}
+            renderItem={this.renderItem}
+          />
+          <ActionSheet {...amountActionSheetProps} />
+          <FooterView onPress={this.onToggleAmountVisible}>
+            <FooterText>数据合计</FooterText>
+          </FooterView>
+        </ContainerView>
+      </Drawer>
     );
   }
 }
