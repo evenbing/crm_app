@@ -216,8 +216,8 @@ MemberList.defaultProps = {
   dataList: [],
   renderHeader: () => null,
   headerHeight: 0,
-  rowHeight: 74,
-  sectionHeaderHeight: 20,
+  rowHeight: theme.moderateScale(74),
+  sectionHeaderHeight: theme.moderateScale(20),
   onPressItem: () => null,
 };
 
