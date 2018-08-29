@@ -16,6 +16,8 @@ export default {
   pageBackColor: '#F6F6F6',
   textColor: '#484848',
   textGrayColor: '#A3A3A3',
+  textWeekColor: '#838383',
+  textWeekDayColor: '#5E5E5E',
   listTitleColor: '#4F4F4F',
   listTipColor: '#787878',
   chartLineColor: '#5374C7',

@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { moderateScale, width } from '../../../utils/scale';
-import theme from '../../../constants/theme';
-import LeftArrow from '../../../img/home/ico_left_arrow.png';
-import RightArrow from '../../../img/home/ico_right_arrow.png';
-import CreateIcon from '../../../img/home/create.png';
+import uuidv1 from 'uuid/v1';
 
+import { moderateScale, width } from '../../../../utils/scale';
+import theme from '../../../../constants/theme';
+import LeftArrow from '../../../../img/home/ico_left_arrow.png';
+import RightArrow from '../../../../img/home/ico_right_arrow.png';
+import CreateIcon from '../../../../img/home/create.png';
+import ListItem from './ListItem';
+
+const ListItemWidth = moderateScale(width - 60 - 8) / 7;
 
 const Container = styled.View`
   margin: -${moderateScale(30)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
   background-color: ${theme.whiteColor};
   height: ${moderateScale(126)};
   border-radius: ${moderateScale(4)};
-  padding: ${moderateScale(18)}px ${moderateScale(15)}px ${moderateScale(17)}px ${moderateScale(15)}px;
+  padding: ${moderateScale(18)}px ${moderateScale(15)}px ${moderateScale(8)}px ${moderateScale(15)}px;
 `;
 
 const UpView = styled.View`
@@ -85,7 +89,6 @@ const TodayButtonText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
-
 const CreateButton = styled.TouchableOpacity``;
 
 const CreateButtonIcon = styled.Image.attrs({
@@ -97,16 +100,42 @@ const CreateButtonIcon = styled.Image.attrs({
 
 const MiddleView = styled.View`
   flex-direction: row;
+  height: ${moderateScale(23)}px;
   background-color: ${theme.pageBackColor};
-  border-radius: ${moderateScale(7.5)}px;
+  border-radius: ${moderateScale(11.5)}px;
+  margin-top: ${moderateScale(13)}px;
+`;
+
+const DownView = styled.FlatList`
+  /* width: ${moderateScale((width - 30 - 30 - 2) / 3)}px; */
+  margin-top: ${0 - moderateScale(23)}px;
+  background-color: transparent;
 `;
 
 class Calendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: this.generateDays(20),
     };
   }
+
+  generateDays = (count) => {
+    const days = [];
+    for (let index = 1; index < count; index++) {
+      days.push({
+        key: uuidv1(),
+        selected: false,
+        week: '周一',
+        weekDay: `${index}`,
+      });
+    }
+    return days;
+  }
+
+  generateKeyExtractor = item => item.key;
+
+  renderItem = ListItemWidth => ({ item }) => <ListItem item={item} ListItemWidth={ListItemWidth} />
 
   render() {
     return (
@@ -136,6 +165,13 @@ class Calendar extends Component {
           </UpRightView>
         </UpView>
         <MiddleView />
+        <DownView
+          data={this.state.data}
+          renderItem={this.renderItem(ListItemWidth)}
+          keyExtractor={this.generateKeyExtractor}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
       </Container>
     );
   }
