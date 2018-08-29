@@ -157,7 +157,7 @@ ModifyProductPrice.navigationOptions = ({ navigation, screenProps }) => ({
   title: '产品目录',
   headerLeft: (
     <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      onPress={() => navigation.goBack()}
     />
   ),
   headerRight: (

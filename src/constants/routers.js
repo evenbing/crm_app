@@ -56,6 +56,7 @@ export default {
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
   teamMembers: 'app.tabView.root.card.teamMembers',
+  teamRoles: 'app.tabView.root.card.teamRoles',
   // demo
   actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
   mobxDemo: 'app.tabView.root.demo.mobxDemo',

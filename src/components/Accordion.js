@@ -74,6 +74,7 @@ class Accordion extends React.PureComponent {
       onPress,
       unfoldIcon,
       foldIcon,
+      iconSize,
     } = this.props;
     return (
       <ContainerView>
@@ -86,7 +87,7 @@ class Accordion extends React.PureComponent {
             <RightText>{right}</RightText>
             <RightIcon
               source={showMain ? foldIcon : unfoldIcon}
-              size={14}
+              size={iconSize}
             />
           </RightView>
           <BoardView />
@@ -108,6 +109,7 @@ Accordion.defaultProps = {
   onPress: () => null,
   foldIcon: require('../img/company/fold.png'),
   unfoldIcon: require('../img/company/unfold.png'),
+  iconSize: 14,
 };
 
 Accordion.propTypes = {
@@ -119,6 +121,7 @@ Accordion.propTypes = {
   onPress: PropTypes.func,
   foldIcon: PropTypes.number,
   unfoldIcon: PropTypes.number,
+  iconSize: PropTypes.number,
 };
 
 export default Accordion;

@@ -20,6 +20,7 @@ import { registerTopNavigator } from './utils/navigationService';
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
+import TeamRolesScreen from './pages/Card/TeamRoles';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 // root page -> home
@@ -176,6 +177,7 @@ const CrmRouteConfig = {
   [routers.receivablePlanDetail]: { screen: ReimbursementPlanDetailScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
   [routers.teamMembers]: { screen: TeamMembersScreen },
+  [routers.teamRoles]: { screen: TeamRolesScreen },
 };
 
 const CrmNavigatorConfig = {
@@ -214,7 +216,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

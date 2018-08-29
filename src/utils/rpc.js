@@ -28,7 +28,7 @@ export const isArray = (o) => {
 
 export function getPassportId(){
   return new Promise(function (resolve, reject) {
-    // resolve('1023899338427994112');
+    // resolve('1034738035494883328');
     NativeModules.security.getPassportId().then((result) => {
         resolve(result);
       }
@@ -93,7 +93,7 @@ async function getPostParameter(request) {
     }
     strTemp = strTemp + config.secret;
     param_sign = MD5(strTemp).toString().toUpperCase();
-    post_data = 'sign=' + param_sign.toUpperCase();
+    var post_data = 'sign=' + param_sign.toUpperCase();
     for (var i = 0; i < arrayKeyTemp.length; i++) {
       if (isArray(param_array[arrayKeyTemp[i]])) {
         post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURI(JSON.stringify(param_array[arrayKeyTemp[i]]));

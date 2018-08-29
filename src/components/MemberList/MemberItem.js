@@ -46,19 +46,23 @@ const MemberItem = ({
   index,
   onPress,
   style,
+  hiddenIcon,
 }) => {
-  console.log(item, index);
   return (
     <ContainerView
       style={style}
       onPress={() => onPress({ item, index })}
     >
-      <LeftIconView>
-        <Thumbnail
-          source={item.active ? require('../../img/company/selected.png') : require('../../img/company/unselected.png')}
-          size={20}
-        />
-      </LeftIconView>
+      {
+        hiddenIcon ? null : (
+          <LeftIconView>
+            <Thumbnail
+              source={item.active ? require('../../img/company/selected.png') : require('../../img/company/unselected.png')}
+              size={20}
+            />
+          </LeftIconView>
+        )
+      }
       <Thumbnail
         source={item.url || require('../../img/picture.png')}
         size={60}
@@ -74,6 +78,7 @@ MemberItem.defaultProps = {
   index: 0,
   onPress: () => null,
   style: {},
+  hiddenIcon: false,
 };
 
 MemberItem.propTypes = {
@@ -81,6 +86,7 @@ MemberItem.propTypes = {
   index: PropTypes.number,
   onPress: PropTypes.func,
   style: PropTypes.objectOf(PropTypes.any),
+  hiddenIcon: PropTypes.bool,
 };
 
 export default MemberItem;
