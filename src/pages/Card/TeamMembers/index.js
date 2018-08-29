@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { routers } from '../../../constants';
+import { routers, theme } from '../../../constants';
 import { formatMemberList } from '../../../utils/base';
 
 // components
@@ -73,7 +73,7 @@ class TeamMembers extends React.Component {
         <SearchInput placeholder="输入姓名搜索成员" />
         <MemberList
           renderHeader={this.renderHeader}
-          headerHeight={44}
+          headerHeight={theme.moderateScale(44)}
           dataList={formatMemberList(list)}
           onPressItem={this.onPressItem}
         />
