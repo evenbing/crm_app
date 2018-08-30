@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
-import { SwipeRow, Drawer } from 'native-base';
+import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 
@@ -20,8 +20,7 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
-import { ActionSheet } from '../../../components/Modal';
-// import Header from '../../../components/Header';
+import { ActionSheet, Drawer } from '../../../components/Modal';
 import LeftItem from './component/LeftItem';
 import SideBar from './component/SideBar';
 
@@ -51,6 +50,7 @@ class ReceivablePlan extends React.Component {
   state = {
     activeIndex: 0,
     amountVisible: false,
+    drawerVisible: false,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -59,12 +59,16 @@ class ReceivablePlan extends React.Component {
   }
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
-    this.drawer._root.close(); // eslint-disable-line
+    this.setState({ drawerVisible: false });
   };
   onOpenDrawer = () => {
     StatusBar.setBarStyle('dark-content');
-    this.drawer._root.open(); // eslint-disable-line
+    this.setState({ drawerVisible: true });
   };
+  onFilter = () => {
+    // TODO
+    this.onCloseDrawer();
+  }
   onToggleAmountVisible = () => {
     this.setState({
       amountVisible: !this.state.amountVisible,
@@ -133,10 +137,8 @@ class ReceivablePlan extends React.Component {
       state: {
         activeIndex,
         amountVisible,
+        drawerVisible,
       },
-      // props: {
-      //   navigation,
-      // },
     } = this;
     const amountActionSheetProps = {
       isVisible: amountVisible,
@@ -152,45 +154,43 @@ class ReceivablePlan extends React.Component {
     };
     return (
       <Drawer
-        side="right"
-        openDrawerOffset={0.179}
-        ref={(ref) => { this.drawer = ref; }}
-        styles={{
-          drawer: {
-            shadowColor: '#000000',
-            shadowOpacity: 0,
-            shadowRadius: 0,
-            elevation: 5,
-          },
-          mainOverlay: {
-            opacity: 0,
-            backgroundColor: 'rgba(0, 0, 0, .8)',
-            elevation: 8,
-          },
-        }}
+        isVisible={drawerVisible}
         content={
           <SideBar
-            gradeList={[]}
+            statusList={[{
+              name: '不限',
+            }, {
+              name: '已计划',
+            }, {
+              name: '进行中',
+            }, {
+              name: '已完成',
+            }]}
             navigator={this.navigator}
-            labelItem={[]}
+            timeList={[{
+              name: '不限',
+            }, {
+              name: '已计划',
+            }, {
+              name: '进行中',
+            }, {
+              name: '已完成',
+            }, {
+              name: '本月',
+            }, {
+              name: '本季',
+            }, {
+              name: '本年',
+            }]}
             onFilter={this.onFilter}
           />
         }
-        onClose={() => this.onCloseDrawer()}
+        onPressClose={this.onCloseDrawer}
       >
         <ContainerView
           bottomPadding
         >
           <CommStatusBar />
-          {/*
-          <Header
-            showBackButton
-            onLeftPress={() => navigation.goBack()}
-            center="回款计划"
-            right="新增"
-            onRightPress={this.onPressRight}
-          />
-          */}
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
             data={['跟进时间', '我负责的', '筛选']}

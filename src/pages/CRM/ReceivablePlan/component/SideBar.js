@@ -9,69 +9,65 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Platform } from 'react-native';
 import { theme } from '../../../../constants';
-import { getHeaderPadding, getFooterBottom } from '../../../../utils/utils';
+
+// components
 import TouchableView from '../../../../components/TouchableView';
+import Thumbnail from '../../../../components/Thumbnail';
 
 const ContainerView = styled.View`
-  padding-top: ${getHeaderPadding() || 0};
   background-color: ${theme.whiteColor};
   flex: 1;
   justify-content: space-between;
-  padding-bottom: ${getFooterBottom() || 0};
 `;
 
 const FooterView = styled.View`
-  height: 49px;
+  height: ${theme.moderateScale(49)};
   background-color: #F7F7F7;
-  padding: 0 10px;
+  padding: 0 ${theme.moderateScale(15)}px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 `;
 
-const FooterButtonView = styled.View`
-  width: 136px;
+const FooterButtonView = styled(TouchableView)`
+  width: ${theme.moderateScale(72)}px;
   background: ${theme.primaryColor};
   border-width: 1px;
   border-color: ${theme.primaryColor};
-  border-radius: 4px;
-  height: 30px;
+  border-radius: ${theme.moderateScale(4)}px;
+  height: ${theme.moderateScale(30)}px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   overflow: hidden;
-`;
-
-const FooterButtonGroup = styled(TouchableView)`
-  width: 50%;
+  margin-right: ${props => props.marginRight || 0};
 `;
 
 const FooterButtonText = styled.Text`
   flex: 1;
-  border-top-left-radius: ${props => props.active ? 0 : '4px'};
-  border-bottom-left-radius: ${props => props.active ? 0 : '4px'};
-  border-top-right-radius: ${props => props.active ? '4px' : 0};
-  border-bottom-right-radius:${props => props.active ? '4px' : 0};
-  overflow: hidden;
   color: ${props => props.active ? '#ffffff' : theme.primaryColor};
   font-family: ${theme.fontRegular};
-  font-size: 13px;
+  font-size: ${theme.moderateScale(13)}px;
   height: 100%;
   text-align: center;
   line-height: ${Platform.OS === 'ios' ? '28' : '23'};
-  letter-spacing: -0.44px;
   background-color:  ${props => props.active ? theme.primaryColor : '#ffffff'};
 `;
 
 const HeaderView = styled.ScrollView``;
 
+const TitleText = styled.Text`
+  font-size: ${theme.moderateScale(18)};
+  margin-top: ${theme.moderateScale(15)};
+  color: #373737;
+  padding: 0 ${theme.moderateScale(10)}px;
+`;
+
 const HeaderTitleText = styled.Text`
-  margin-top: ${props => props.marginTop || '34px'};
+  margin-top: ${props => theme.moderateScale(props.marginTop || 17)};
   font-family: ${theme.fontRegular};
-  font-size: 13px;
-  color: #7A7A7A;
-  letter-spacing: -0.44px;
-  padding: 0 10px;
+  font-size: ${theme.moderateScale(16)};
+  color: #7B7B7B;
+  padding: 0 ${theme.moderateScale(10)}px;
 `;
 
 const HeaderLabelView = styled.View`
@@ -80,36 +76,62 @@ const HeaderLabelView = styled.View`
 `;
 
 const HeaderLabelItem = styled.View`
-  padding-left: 5px;
-  padding-right: 5px;
-  height: 22px;
-  background-color: ${props => props.active ? '#DCE5FB' : '#EFEFEF'};
-  border-radius: 4px;
-  margin-left: 7px;
-  margin-top: 15px;
+  padding: 0 ${theme.moderateScale(13)}px;
+  height: ${theme.moderateScale(22)}px;
+  background-color: ${props => props.active ? '#B4E8C4' : '#EFEFEF'};
+  border-radius: ${theme.moderateScale(4)}px;
+  margin-left: ${theme.moderateScale(8)}px;
+  margin-top: ${theme.moderateScale(11)}px;
+  margin-bottom: ${theme.moderateScale(9)}px;
   align-items: center;
   justify-content: center;
 `;
 
 const HeaderLabelText = styled.Text`
   font-family: ${theme.fontRegular};
-  font-size: 13px;
+  font-size: ${theme.moderateScale(13)}px;
   color: ${props => props.active ? theme.primaryColor : '#4D4D4D'};
-  letter-spacing: -0.44px;
+`;
+
+const AddView = styled.View`
+  margin-top: ${theme.moderateScale(31)};
+  padding-left: ${theme.moderateScale(10)};
+  padding-right: ${theme.moderateScale(18)};
+`;
+
+const AddButtonView = styled(TouchableView)`
+  flex: 1;
+  height: ${theme.moderateScale(48)};
+  border: 1px solid ${theme.primaryColor};
+  border-radius: ${theme.moderateScale(4)};
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const AddButtonText = styled.Text`
+  font-size: ${theme.moderateScale(16)};
+  color: ${theme.primaryColor};
+  margin-left: ${theme.moderateScale(10)};
 `;
 
 class SideBar extends React.PureComponent {
   state = {
-    gradeIndex: -1,
-    birthdayList: [{
-      name: '今日',
+    statusIndex: -1,
+    typeList: [{
+      name: '不限',
     }, {
-      name: '本周',
+      name: '已计划',
     }, {
-      name: '本月',
+      name: '进行中',
+    }, {
+      name: '已完成',
+    }, {
+      name: '未完成',
     }],
-    birthdayIndex: -1,
-    labelIndex: -1,
+    typeIndex: -1,
+    timeIndex: -1,
   }
   onToggle = (type, index) => {
     let currIndex = index;
@@ -120,28 +142,28 @@ class SideBar extends React.PureComponent {
   }
   onReset = () => {
     this.setState({
-      gradeIndex: -1,
-      birthdayIndex: -1,
-      labelIndex: -1,
+      statusIndex: -1,
+      typeIndex: -1,
+      timeIndex: -1,
     });
   }
   onSubmit = () => {
     const {
       state: {
-        gradeIndex,
-        birthdayList,
-        birthdayIndex,
-        labelIndex,
+        statusIndex,
+        typeList,
+        typeIndex,
+        timeIndex,
       },
       props: {
-        gradeList,
-        labelItem,
+        statusList,
+        timeList,
       },
     } = this;
     this.props.onFilter({
-      grade: gradeList[gradeIndex],
-      birthday: birthdayList[birthdayIndex],
-      label: labelItem[labelIndex],
+      status: statusList[statusIndex],
+      type: typeList[typeIndex],
+      time: timeList[timeIndex],
     });
   }
   renderLabelItem = (list, state, type) => {
@@ -167,44 +189,53 @@ class SideBar extends React.PureComponent {
   render() {
     const {
       state: {
-        gradeIndex,
-        birthdayList,
-        birthdayIndex,
-        labelIndex,
+        statusIndex,
+        typeList,
+        typeIndex,
+        timeIndex,
       },
       props: {
-        gradeList,
-        labelItem,
+        statusList,
+        timeList,
       },
     } = this;
     return (
       <ContainerView>
         <HeaderView>
-          <HeaderTitleText marginTop={20}>等级</HeaderTitleText>
+          <TitleText>字段筛选</TitleText>
+          <HeaderTitleText marginTop={25}>活动状态</HeaderTitleText>
           <HeaderLabelView>
-            {this.renderLabelItem([...gradeList], gradeIndex, 'gradeIndex')}
+            {this.renderLabelItem([...statusList], statusIndex, 'statusIndex')}
           </HeaderLabelView>
-          <HeaderTitleText>生日</HeaderTitleText>
+          <HeaderTitleText>活动类型</HeaderTitleText>
           <HeaderLabelView>
-            {this.renderLabelItem([...birthdayList], birthdayIndex, 'birthdayIndex')}
+            {this.renderLabelItem([...typeList], typeIndex, 'typeIndex')}
           </HeaderLabelView>
-          <HeaderTitleText>标签</HeaderTitleText>
+          <HeaderTitleText>开始日期</HeaderTitleText>
           <HeaderLabelView>
-            {this.renderLabelItem([...labelItem], labelIndex, 'labelIndex')}
+            {this.renderLabelItem([...timeList], timeIndex, 'timeIndex')}
           </HeaderLabelView>
+          <AddView>
+            <AddButtonView>
+              <Thumbnail
+                source={require('../../../../img/drawer/add.png')}
+                size={19}
+              />
+              <AddButtonText>添加筛选字段</AddButtonText>
+            </AddButtonView>
+          </AddView>
         </HeaderView>
         <FooterView>
-          <FooterButtonView>
-            <FooterButtonGroup
-              onPress={this.onReset}
-            >
-              <FooterButtonText>重置</FooterButtonText>
-            </FooterButtonGroup>
-            <FooterButtonGroup
-              onPress={this.onSubmit}
-            >
-              <FooterButtonText active>确定</FooterButtonText>
-            </FooterButtonGroup>
+          <FooterButtonView
+            onPress={this.onReset}
+            marginRight={20}
+          >
+            <FooterButtonText>重置</FooterButtonText>
+          </FooterButtonView>
+          <FooterButtonView
+            onPress={this.onSubmit}
+          >
+            <FooterButtonText active>确定</FooterButtonText>
           </FooterButtonView>
         </FooterView>
       </ContainerView>
@@ -213,14 +244,14 @@ class SideBar extends React.PureComponent {
 }
 
 SideBar.defaultProps = {
-  gradeList: [],
-  labelItem: [],
+  statusList: [],
+  timeList: [],
   onFilter: () => null,
 };
 
 SideBar.propTypes = {
-  gradeList: PropTypes.arrayOf(PropTypes.any),
-  labelItem: PropTypes.arrayOf(PropTypes.any),
+  statusList: PropTypes.arrayOf(PropTypes.any),
+  timeList: PropTypes.arrayOf(PropTypes.any),
   onFilter: PropTypes.func,
 };
 

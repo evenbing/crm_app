@@ -99,7 +99,7 @@ const HomeRouteConfig = {
 };
 
 const HomeNavigatorConfig = {
-  initialRouteName: routers.mobxDemo,
+  initialRouteName: routers.home,
   cardStyle: { shadowColor: 'transparent' },
   navigationOptions: {
     // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
@@ -129,7 +129,7 @@ const HomeNavigatorConfig = {
   },
 };
 
-export const HomeStack = StackNavigator(HomeRouteConfig, HomeNavigatorConfig);
+const HomeStack = StackNavigator(HomeRouteConfig, HomeNavigatorConfig);
 
 HomeStack.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
@@ -219,7 +219,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

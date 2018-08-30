@@ -12,8 +12,8 @@ import AppService from './service/app';
 
 import XnLoading from './components/xnLoading';
 import Toast from './utils/toast';
-import { HomeStack as Navigator } from './router';
-// import Navigator from './router';
+// import { HomeStack as Navigator } from './router';
+import Navigator from './router';
 import { getFooterBottom } from './utils/utils';
 
 const styles = StyleSheet.create({

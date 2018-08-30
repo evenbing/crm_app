@@ -20,7 +20,6 @@ import { Drawer } from '../../components/Modal';
 const ContainerView = styled.View``;
 const TouchView = styled.TouchableOpacity`
   background-color: red;
-  margin-top: 30px;
   height: 40px;
   width: 100%;
 `;
