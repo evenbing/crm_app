@@ -25,6 +25,8 @@ import TeamRolesScreen from './pages/Card/TeamRoles';
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 // root page -> home
 import HomeScreen from './pages/Home';
+// root page -> home -> SelectYear
+import SelectYear from './pages/Modal/SelectYear';
 // root page -> home -> MessageList
 import MessageList from './pages/Home/MessageList';
 // root page -> home -> UpcomingScheduleList
@@ -85,6 +87,7 @@ const DefaultHeaderView = styled.View`
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
+  [routers.selectYear]: { screen: SelectYear },
   [routers.actionSheetDemo]: { screen: ActionSheetDemoScreen },
   [routers.mobxDemo]: { screen: MobxDemoScreen },
   [routers.messageList]: { screen: MessageList },
@@ -216,7 +219,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.crm,
+  initialRouteName: routers.home,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

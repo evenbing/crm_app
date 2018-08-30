@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
+import { getMonthDays, getDayOfWeek } from '../../../../utils/date';
 import { moderateScale, width } from '../../../../utils/scale';
 import theme from '../../../../constants/theme';
 import LeftArrow from '../../../../img/home/ico_left_arrow.png';
 import RightArrow from '../../../../img/home/ico_right_arrow.png';
 import CreateIcon from '../../../../img/home/create.png';
 import ListItem from './ListItem';
+import { routers } from '../../../../constants';
 
 const ListItemWidth = moderateScale(width - 60 - 8) / 7;
 
@@ -107,7 +109,6 @@ const MiddleView = styled.View`
 `;
 
 const DownView = styled.FlatList`
-  /* width: ${moderateScale((width - 30 - 30 - 2) / 3)}px; */
   margin-top: ${0 - moderateScale(23)}px;
   background-color: transparent;
 `;
@@ -115,18 +116,38 @@ const DownView = styled.FlatList`
 class Calendar extends Component {
   constructor(props) {
     super(props);
+    const curYear = new Date().getFullYear();
+    const curMonth = new Date().getMonth() + 1;
+    const curDay = new Date().getDate();
     this.state = {
-      data: this.generateDays(20),
+      year: curYear,
+      month: curMonth,
+      day: curDay,
+      data: this.generateDays(curYear, curMonth),
     };
   }
 
-  generateDays = (count) => {
+  onItemClick = key => () => {
+    const newData = this.state.data.map(item => ({
+      ...item,
+      selected: item.key === key,
+    }));
+    this.setState({ data: newData });
+  }
+
+  onSelectYear = (year) => {
+    this.setState({ year });
+  }
+
+  generateDays = (year, month) => {
+    const count = getMonthDays(year, month);
     const days = [];
-    for (let index = 1; index < count; index++) {
+    for (let index = 1; index <= count; index++) {
       days.push({
         key: uuidv1(),
+        onPress: this.onItemClick,
         selected: false,
-        week: '周一',
+        week: getDayOfWeek(year, month, index),
         weekDay: `${index}`,
       });
     }
@@ -135,23 +156,50 @@ class Calendar extends Component {
 
   generateKeyExtractor = item => item.key;
 
+  monthSubtracte = () => {
+    if (this.state.month > 1) {
+      this.setState({
+        month: this.state.month - 1,
+      });
+    }
+  }
+
+  monthAdd = () => {
+    if (this.state.month < 12) {
+      this.setState({
+        month: this.state.month + 1,
+      });
+    }
+  }
+
   renderItem = ListItemWidth => ({ item }) => <ListItem item={item} ListItemWidth={ListItemWidth} />
 
   render() {
+    const {
+      year,
+      month,
+    } = this.state;
+    const {
+      navigate,
+    } = this.props;
     return (
       <Container>
         <UpView>
           <UpLeftView>
-            <YearButton>
-              <YearText>2018年</YearText>
+            <YearButton onPress={() => navigate(routers.selectYear, {
+              onSelectYear: this.onSelectYear,
+              selectedYear: year,
+            })}
+            >
+              <YearText>{`${year}年`}</YearText>
             </YearButton>
           </UpLeftView>
           <UpMiddleView>
-            <MonthArrow>
+            <MonthArrow onPress={this.monthSubtracte}>
               <MonthArrowIcon source={LeftArrow} />
             </MonthArrow>
-            <MonthText>5</MonthText>
-            <MonthArrow>
+            <MonthText>{month}</MonthText>
+            <MonthArrow onPress={this.monthAdd}>
               <MonthArrowIcon source={RightArrow} />
             </MonthArrow>
           </UpMiddleView>

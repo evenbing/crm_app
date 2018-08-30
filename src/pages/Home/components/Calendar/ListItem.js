@@ -36,13 +36,16 @@ const ListItem = ({
   ListItemWidth,
 }) => {
   const {
+    key,
     selected,
     week,
     weekDay,
+    onPress,
   } = item;
   return (
     <Container
       ListItemWidth={ListItemWidth}
+      onPress={onPress(key)}
     >
       <WeekText>{week}</WeekText>
       <WeekDayView selected={selected}>

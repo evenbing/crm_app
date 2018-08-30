@@ -246,7 +246,7 @@ class Home extends React.Component {
             </HeaderViewRight>
           </HeaderView>
         </LinearGradient>
-        <Calendar />
+        <Calendar navigate={navigate} />
         <List
           data={data}
           keyExtractor={this.keyExtractor}

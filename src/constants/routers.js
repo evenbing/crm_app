@@ -53,6 +53,7 @@ export default {
   receivablePlanDetail: 'app.tabView.root.crm.receivablePlanDetail',
   // common model
   queryBusiness: 'app.tabView.root.model.queryBusiness',
+  selectYear: 'app.tabView.root.model.selectYear',
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
   teamMembers: 'app.tabView.root.card.teamMembers',

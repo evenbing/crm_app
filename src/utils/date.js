@@ -1,7 +1,7 @@
 /**
  * 计算每个月的天数
  */
-const getMonthDays = (year, month) => {
+export function getMonthDays(year, month) {
   // 判断2月份天数
   let days;
   if (month === 2) {
@@ -14,12 +14,12 @@ const getMonthDays = (year, month) => {
     days = month % 2 === 0 ? 31 : 30;
   }
   return days;
-};
+}
 
 /**
  * 根据日期计算周几
  */
-const getDayOfWeek = (year, month, day) => {
+export function getDayOfWeek(year, month, day) {
   const week = new Date(year, month - 1, day).getDay();
   let weekDay = '';
   switch (week) {
@@ -48,6 +48,4 @@ const getDayOfWeek = (year, month, day) => {
       break;
   }
   return weekDay;
-};
-
-export default { getMonthDays, getDayOfWeek };
+}
