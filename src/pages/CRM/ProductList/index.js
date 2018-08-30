@@ -23,19 +23,19 @@ useStrict(true);
 
 @observer
 class ProductList extends React.Component {
-  onNavHandler = path => {
+  onNavHandler = (path) => {
     // this.props.navigation.navigate(path);
   };
 
   render() {
     const list = [
       {
-        list: [{},{}]
+        list: [{}, {}],
       },
       {
-        list: [{}]
-      }
-    ]
+        list: [{}],
+      },
+    ];
 
     return (
       <ContainerView>

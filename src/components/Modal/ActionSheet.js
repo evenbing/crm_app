@@ -76,7 +76,7 @@ class ActionSheet extends React.PureComponent {
         {node}
       </ItemText>
     );
-  }
+  };
   renderItem = () => {
     const {
       list,
@@ -132,7 +132,7 @@ class ActionSheet extends React.PureComponent {
           <ItemListView>
             {this.renderItem()}
           </ItemListView>
-          <HorizontalDivider backgroundColor='transparent' />
+          <HorizontalDivider backgroundColor="transparent" />
           {this.renderFooter()}
         </ContainerView>
       </ModalView>

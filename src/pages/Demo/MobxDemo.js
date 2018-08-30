@@ -15,15 +15,45 @@ import DemoModel from '../../logicStores/demo';
 // components
 import CommStatusBar from '../../components/Layout/CommStatusBar';
 import LeftBackIcon from '../../components/Layout/LeftBackIcon';
-
+import { Drawer } from '../../components/Modal';
 
 const ContainerView = styled.View``;
+const TouchView = styled.TouchableOpacity`
+  background-color: red;
+  margin-top: 30px;
+  height: 40px;
+  width: 100%;
+`;
+const TextView = styled.Text``;
 
 useStrict(true);
 
 @observer
 class MobxDemo extends React.Component {
+  state = {
+    isVisible: false,
+  };
+  onOpenDrawer = () => {
+    this.setState({ isVisible: true });
+  };
+  onCloseDrawer = () => {
+    this.setState({ isVisible: false });
+  };
   render() {
+    const {
+      state: {
+        isVisible,
+      },
+    } = this;
+    const drawerProps = {
+      isVisible,
+      onPressClose: this.onCloseDrawer,
+      content: (
+        <TouchView onPress={this.onCloseDrawer}>
+          <TextView>Click Demo</TextView>
+        </TouchView>
+      ),
+    };
     return (
       <ContainerView>
         <CommStatusBar />
@@ -31,6 +61,8 @@ class MobxDemo extends React.Component {
         <Text>Total clicks: {DemoModel.total}</Text>
         <Button onPress={DemoModel.increase} title="+" />
         <Button onPress={DemoModel.decrease} title="-" />
+        <Button onPress={this.onOpenDrawer} title="open Drawer" />
+        <Drawer {...drawerProps} />
       </ContainerView>
     );
   }
@@ -40,7 +72,7 @@ MobxDemo.navigationOptions = ({ navigation, screenProps }) => ({
   title: 'MobxDemo',
   headerLeft: (
     <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
+      onPress={() => navigation.goBack()}
     />
   ),
 });

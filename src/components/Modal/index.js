@@ -5,7 +5,9 @@
  * @author JUSTIN XU
  */
 import ActionSheet from './ActionSheet';
+import Drawer from './Drawer';
 
 export {
   ActionSheet,
+  Drawer,
 };
