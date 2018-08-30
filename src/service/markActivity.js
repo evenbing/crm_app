@@ -41,7 +41,7 @@ export function createMarkActivity({
   actualPeopleNumber,
   actualCost,
   executeDetail,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.activity.create',
     name,
@@ -104,7 +104,7 @@ export function updateMarkActivity({
   actualCost,
   actualRevenue,
   executeDetail,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.activity.update',
     sourceType,
@@ -120,3 +120,26 @@ export function updateMarkActivity({
   });
 }
 
+
+/** 转移市场活动负责人
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键id must
+ *   ownerUserId 转移负责人id must
+ *   ownerUserName 转移负责人姓名
+ * }
+ * @return Promise<Object>
+ */
+export function changeOwnerUser({
+  id,
+  ownerUserId,
+  ownerUserName,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.changeOwnerUser.activity',
+    id,
+    ownerUserId,
+    ownerUserName,
+  });
+}

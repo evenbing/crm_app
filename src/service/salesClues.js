@@ -45,7 +45,7 @@ export function createSalesClue({
   postCode,
   source,
   description,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.leads.create',
     name,
@@ -122,7 +122,7 @@ export function updateCustomer({
   activityId,
   departmentId,
   description,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.leads.update',
     id,
@@ -144,3 +144,25 @@ export function updateCustomer({
   });
 }
 
+/** 转移销售线索负责人
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键id must
+ *   ownerUserId 转移负责人id must
+ *   ownerUserName 转移负责人姓名
+ * }
+ * @return Promise<Object>
+ */
+export function changeOwnerUser({
+  id,
+  ownerUserId,
+  ownerUserName,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.leadsOwnerUser.change',
+    id,
+    ownerUserId,
+    ownerUserName,
+  });
+}

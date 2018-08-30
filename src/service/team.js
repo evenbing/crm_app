@@ -22,7 +22,7 @@ export function create({
   userName,
   moduleId,
   moduleType,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.managementTeam.create',
     userId,

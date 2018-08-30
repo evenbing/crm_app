@@ -17,7 +17,7 @@ import { post } from '../utils/rpc';
  */
 export function detail({
   opportunityId,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.businessDetail.find',
     opportunityId,
@@ -35,7 +35,7 @@ export function detail({
  */
 export function create({
   businessDetails,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.businessDetail.create',
     businessDetails,

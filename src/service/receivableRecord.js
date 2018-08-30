@@ -29,7 +29,7 @@ export function createReceivableRecord({
   payType,
   ownerId,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.receivableDetail.create',
     pactId,
@@ -110,7 +110,7 @@ export function updateReceivableRecord({
   payType,
   ownerId,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.receivableDetail.update',
     pactId,

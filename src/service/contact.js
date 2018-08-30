@@ -41,7 +41,7 @@ export function createContact({
   postCode,
   sex,
   birthDate,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.contact.create',
     name,
@@ -114,7 +114,7 @@ export function updateContact({
   postCode,
   departmentName,
   description,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.contact.update',
     id,
@@ -135,3 +135,25 @@ export function updateContact({
   });
 }
 
+/** 转移联系人负责人
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键id must
+ *   ownerUserId 转移负责人id must
+ *   ownerUserName 转移负责人姓名
+ * }
+ * @return Promise<Object>
+ */
+export function changeOwnerUser({
+  id,
+  ownerUserId,
+  ownerUserName,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.changeOwnerUser.contact',
+    id,
+    ownerUserId,
+    ownerUserName,
+  });
+}

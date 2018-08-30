@@ -16,7 +16,7 @@ import { post } from '../utils/rpc';
  */
 export function del({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.invoiceDetail.delete',
     id,
@@ -47,7 +47,7 @@ export function update({
   type,
   invoiceNumber,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.invoiceDetail.update',
     pactId,
@@ -71,7 +71,7 @@ export function update({
  */
 export function detail({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.invoiceDetail.get',
     id,
@@ -91,7 +91,7 @@ export function detail({
 export function find({
   pactId,
   issueId,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.invoiceDetail.find',
     pactId,
@@ -123,7 +123,7 @@ export function create({
   type,
   invoiceNumber,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.invoiceDetail.create',
     pactId,

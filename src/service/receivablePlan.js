@@ -25,7 +25,7 @@ export function createReceivablePlan({
   receivableDate,
   ownerId,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.receivablePlan.create',
     pactId,

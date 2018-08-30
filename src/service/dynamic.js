@@ -20,7 +20,7 @@ export function find({
   moduleType,
   moduleId,
   createBy,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.dynamic.find',
     moduleType,
@@ -45,7 +45,7 @@ export function create({
   moduleId,
   contentType,
   content,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.dynamic.find',
     moduleType,

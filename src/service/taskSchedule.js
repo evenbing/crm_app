@@ -16,7 +16,7 @@ import { post } from '../utils/rpc';
  */
 export function del({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.delete',
     id,
@@ -61,7 +61,7 @@ export function update({
   isPrivate,
   principal,
   userIds,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.update',
     id,
@@ -121,7 +121,7 @@ export function create({
   isPrivate,
   principal,
   userIds,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.create',
     id,
@@ -152,7 +152,7 @@ export function create({
  */
 export function detail({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.get',
     id,
@@ -184,7 +184,7 @@ export function find({
   moduleId,
   startDateId,
   endDateId,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.find',
     principal,

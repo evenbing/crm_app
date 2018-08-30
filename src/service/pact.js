@@ -16,7 +16,7 @@ import { post } from '../utils/rpc';
  */
 export function createReceivableIssue({
   pactId,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.receivableIssue.create',
     pactId,
@@ -42,7 +42,7 @@ export function changeOwnerUser({
   ownerIdAfter,
   ownerNameBefore,
   ownerNameAfter,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.owner.change',
     id,
@@ -64,7 +64,7 @@ export function changeOwnerUser({
  */
 export function del({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pact.delete',
     id,
@@ -102,7 +102,7 @@ export function find({
   startDate,
   endDate,
   pactDate,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pact.find',
     pactParticipateType,
@@ -130,7 +130,7 @@ export function find({
  */
 export function detail({
   id,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pact.get',
     id,
@@ -185,7 +185,7 @@ export function update({
   content,
   pactDate,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pact.update',
     id,
@@ -222,7 +222,7 @@ export function update({
  */
 export function updatePactProductByPactId({
   pactProducts,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pactProduct.create',
     pactProducts,
@@ -276,7 +276,7 @@ export function createPact({
   content,
   pactDate,
   comment,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.pact.create',
     customerId,

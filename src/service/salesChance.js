@@ -33,7 +33,7 @@ export function createSalesOpportunity({
   activityId,
   opportunityType,
   sourceType,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.opportunity.create',
     name,
@@ -98,7 +98,7 @@ export function updateCustomer({
   transmissionDescription,
   departmentId,
   description,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.opportunity.update',
     id,
@@ -117,3 +117,62 @@ export function updateCustomer({
   });
 }
 
+
+/** 合并两个相同销售机会
+ * @add by zhao
+ * @params options
+ * {
+ *   updateId 主记录id must
+ *   deleteId 从记录id must
+ *   name 机会名称
+ *   opportunityType 机会类型 [枚举类型（OpportunityEnum）]
+ *   description 描述
+ *   isLocked 是否锁定 must
+ *   isSubmited 是否提交 must
+ * }
+ * @return Promise<Object>
+ */
+export function mergeOpportunity({
+  updateId,
+  deleteId,
+  name,
+  opportunityType,
+  description,
+  isLocked,
+  isSubmited,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.opportunity.merge',
+    updateId,
+    deleteId,
+    name,
+    opportunityType,
+    description,
+    isLocked,
+    isSubmited,
+  });
+}
+
+
+/** 转移销售机会负责人
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键id must
+ *   ownerUserId 转移负责人id must
+ *   ownerUserName 转移负责人姓名
+ * }
+ * @return Promise<Object>
+ */
+export function changeOwnerUser({
+  id,
+  ownerUserId,
+  ownerUserName,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.changeOwnerUser.opportunity',
+    id,
+    ownerUserId,
+    ownerUserName,
+  });
+}

@@ -55,7 +55,7 @@ export function createCustomer({
   peopleNumber,
   salesNumber,
   industry,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.customer.create',
     contactId,
@@ -133,7 +133,7 @@ export function updateCustomer({
   salesNumber,
   departmentId,
   description,
-}) {
+} = {}) {
   return post({
     method: 'api.customerrelations.customer.update',
     id,
@@ -150,6 +150,101 @@ export function updateCustomer({
     salesNumber,
     departmentId,
     description,
+  });
+}
+
+/** 合并两个相同客户
+ * @add by zhao
+ * @params options
+ * {
+ *   updateId, 主记录id must
+ *   deleteId, 从记录id must
+ *   name, 客户名称 must
+ *   level, 等级
+ *   industry, 行业 枚举类型（IndustryTypeEnum）
+ *   postCode, 邮编
+ *   phone, 电话
+ *   fax, 公司传真
+ *   website, 网址
+ *   weibo, 微博
+ *   peopleNumber, 总人数
+ *   salesNumber, 销售额
+ *   creationTime, 创建日期 must
+ *   lastUpdateTime, 最后修改日期
+ *   description, 备注
+ *   locationId, 地址id must
+ * }
+ * @return Promise<Object>
+ */
+export function mergeCustomter({
+  updateId,
+  deleteId,
+  name,
+  level,
+  industry,
+  postCode,
+  phone,
+  fax,
+  website,
+  weibo,
+  peopleNumber,
+  salesNumber,
+  creationTime,
+  lastUpdateTime,
+  description,
+  locationId,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.customter.merge',
+    updateId,
+    deleteId,
+    name,
+    level,
+    industry,
+    postCode,
+    phone,
+    fax,
+    website,
+    weibo,
+    peopleNumber,
+    salesNumber,
+    creationTime,
+    lastUpdateTime,
+    description,
+    locationId,
+  });
+}
+
+
+/** 转移客户负责人
+ * @add by zhao
+ * @params options
+ * {
+ * id 主键id must
+ * ownerUserId 转移负责人id must
+ * ownerUserName 转移负责人姓名
+ * changeContact 是否转移联系人
+ * changeSale 是否转移销售机会
+ * changePact 是否转移合同
+ * }
+ * @return Promise<Object>
+ */
+export function changeOwnerUser({
+  id,
+  ownerUserId,
+  ownerUserName,
+  changeContact,
+  changeSale,
+  changePact,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.changeOwnerUser.customer',
+    id,
+    ownerUserId,
+    ownerUserName,
+    changeContact,
+    changeSale,
+    changePact,
   });
 }
 
