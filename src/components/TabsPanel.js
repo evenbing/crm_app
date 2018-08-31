@@ -12,9 +12,12 @@ import { theme } from '../constants';
 import BorderShadow from './Shadow/BorderShadow';
 import TouchableView from './TouchableView';
 
-const ContainerView = styled.View``;
-
-const TabsPanelView = styled.View`
+// shadow-opacity: 0.2;
+// shadow-radius: 2px;
+// shadow-color: #999;
+// shadow-offset: 0px 1.5px;
+// elevation: 2;
+const TabsHeaderView = styled.View`
   background: ${theme.whiteColor};
   height: ${theme.moderateScale(44)};
   flex-direction: row;
@@ -47,8 +50,32 @@ const ActiveBoard = styled.View`
   background-color: ${theme.primaryColor};
 `;
 
+const ContainerView = styled.View`
+  flex: 1;
+`;
+
 class TabsPanel extends React.PureComponent {
-  render() {
+  renderHeaderItem = () => {
+    const {
+      list,
+      activeIndex,
+      onChange,
+    } = this.props;
+    if (!list) return null;
+    return list.map((_, index) => (
+      <HeaderContainer
+        key={`header.item.${_}`}
+        onPress={() => {
+          if (index === activeIndex) return;
+          onChange(index);
+        }}
+      >
+        <HeaderText active={activeIndex === index}>{_}</HeaderText>
+        {activeIndex === index && <ActiveBoard />}
+      </HeaderContainer>
+    ));
+  };
+  renderShadow = () => {
     const shadowOpt = {
       width: theme.moderateScale(750),
       color: '#979797',
@@ -59,43 +86,38 @@ class TabsPanel extends React.PureComponent {
     };
 
     const {
-      list,
-      activeIndex,
-      onChange,
       isShadow,
-      children,
     } = this.props;
-    return (
-      <ContainerView>
-        <TabsPanelView>
-          {
-            list.map((_, index) => (
-              <HeaderContainer
-                key={_}
-                onPress={() => {
-                  if (index === activeIndex) return;
-                  onChange(index);
-                }}
-              >
-                <HeaderText active={activeIndex === index}>{_}</HeaderText>
-                {activeIndex === index && <ActiveBoard />}
-              </HeaderContainer>
-            ))
-          }
-
-        </TabsPanelView>
-        {
-          isShadow ? (
-            <BorderShadow setting={shadowOpt} />
-          ) : null
-        }
-        {
-          React.Children.map(children, (_, index) => {
-            if (index === activeIndex) return _;
-          })
-        }
-      </ContainerView>
-    );
+    if (isShadow) {
+      return (
+        <BorderShadow setting={shadowOpt} key="board.shadow" />
+      );
+    }
+    return null;
+  };
+  renderBody = () => {
+    const {
+      children,
+      activeIndex,
+    } = this.props;
+    if (!children) return null;
+    return React.Children.map(children, (_, i) => {
+      if (i === activeIndex) {
+        return (
+          <ContainerView key={`children.${i}`}>{_}</ContainerView>
+        );
+      }
+      return null;
+    });
+  };
+  render() {
+    return ([
+      <TabsHeaderView key="tabs.header.view">
+        {this.renderHeaderItem()}
+      </TabsHeaderView>,
+      this.renderShadow(),
+      this.renderBody(),
+    ]);
   }
 }
 

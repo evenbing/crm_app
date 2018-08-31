@@ -15,7 +15,7 @@ import DemoModel from '../../logicStores/demo';
 // components
 import CommStatusBar from '../../components/Layout/CommStatusBar';
 import LeftBackIcon from '../../components/Layout/LeftBackIcon';
-import { Drawer } from '../../components/Modal';
+import { Drawer } from '../../components/Drawer';
 
 const ContainerView = styled.View``;
 const TouchView = styled.TouchableOpacity`

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -41,7 +42,6 @@
 		2E2BFA1A3B4B431F9BDDF8F6 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 967E6CDD70CD46CD9FD3C290 /* Roboto.ttf */; };
 		31ED6FC997824449BEABADCB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C18BE39D28141A1AD9A0B03 /* Octicons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		6B1C7DA27EF448B4BB3F7EAF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72126FCC3F994A3A87648020 /* Feather.ttf */; };
 		7DB18C5755734A3E86976818 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAAD867C583C4448A94D4B08 /* MaterialIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9C6109E2DE244D0EB236D5ED /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3059AC10410F42F29B838A8C /* MaterialCommunityIcons.ttf */; };
@@ -359,7 +359,6 @@
 		4E136CCF8DEA4B5FBB7D1CD3 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		5C30884FF3484BC59F9F4867 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		72126FCC3F994A3A87648020 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		759810A90C6C452CB077AD92 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -675,7 +674,6 @@
 			children = (
 				F732B0A7C0D74BE3982942FA /* Entypo.ttf */,
 				9FAE9E2F598748FD8EDA5DF2 /* EvilIcons.ttf */,
-				72126FCC3F994A3A87648020 /* Feather.ttf */,
 				759810A90C6C452CB077AD92 /* FontAwesome.ttf */,
 				05A9044DDB1B492CA6686854 /* Foundation.ttf */,
 				B536005EAC7D46C1826ACC1D /* Ionicons.ttf */,
@@ -1127,7 +1125,6 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				BD6B140E5F5543CEA2A3CF2F /* Entypo.ttf in Resources */,
 				B5F243A26A284F1EA3D270A5 /* EvilIcons.ttf in Resources */,
-				6B1C7DA27EF448B4BB3F7EAF /* Feather.ttf in Resources */,
 				0F6B3CD73917449280A33E56 /* FontAwesome.ttf in Resources */,
 				210D3092D526450E8450C2FD /* Foundation.ttf in Resources */,
 				E4CA11FDF07F4DF8A351D8DD /* Ionicons.ttf in Resources */,

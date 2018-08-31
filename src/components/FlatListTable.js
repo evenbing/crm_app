@@ -89,9 +89,7 @@ class FlatListTable extends React.PureComponent {
           onEndReachedThreshold={onEndReachedThreshold}
           ListHeaderComponent={ListHeaderComponent}
           keyExtractor={keyExtractor}
-          style={{
-            ...flatListStyle,
-          }}
+          style={flatListStyle}
           renderItem={
             renderItemElem ?
               (

@@ -20,7 +20,8 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer/index';
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
-import { ActionSheet, Drawer } from '../../../components/Modal';
+import { ActionSheet } from '../../../components/Modal';
+import { Drawer } from '../../../components/Drawer';
 import LeftItem from './component/LeftItem';
 import SideBar from './component/SideBar';
 
