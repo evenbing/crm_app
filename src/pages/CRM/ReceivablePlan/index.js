@@ -12,6 +12,7 @@ import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
+import { getFooterBottom } from '../../../utils/utils';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -30,12 +31,13 @@ const FooterView = styled(TouchableView)`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${theme.moderateScale(49)};
+  height: ${theme.moderateScale(49 + getFooterBottom())};
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background: ${theme.whiteColor};
   border: 1px solid ${theme.borderColor};
+  padding-bottom: ${getFooterBottom()};
 `;
 
 const FooterText = styled.Text`

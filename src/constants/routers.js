@@ -40,6 +40,7 @@ export default {
   contract: 'app.tabView.root.crm.contract',
   contractDetails: 'app.tabView.root.crm.contractDetails',
   contractEditor: 'app.tabView.root.crm.contractEditor',
+  contractEditorMore: 'app.tabView.root.crm.contractEditorMore',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
   createSalesClue: 'app.tabView.root.crm.createSalesClue',

@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../../../constants/theme';
+import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
 // components
@@ -46,6 +46,9 @@ class Editor extends React.Component {
   }
   onPressRight = () => alert('finish');
   render() {
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <ContainerView
         bottomPadding
@@ -57,9 +60,9 @@ class Editor extends React.Component {
         <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
-            leftText="主题"
+            leftText="合同名称"
             inputProps={{
-              'placeholder': '请输入主题',
+              'placeholder': '请输入合同名称',
               fontSize: moderateScale(16),
             }}
             leftTextStyle={{
@@ -114,7 +117,7 @@ class Editor extends React.Component {
         </ListView>
         <HorizontalDivider height={41} />
         <CreateMoreButton
-          onPress={() => alert(1)}
+          onPress={() => navigate(routers.contractEditorMore)}
         />
       </ContainerView>
     );
@@ -132,6 +135,9 @@ Editor.navigationOptions = ({ navigation, screenProps }) => ({
     <RightView
       onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
     />
   ),
 });

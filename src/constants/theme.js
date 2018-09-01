@@ -17,6 +17,7 @@ export default {
   textColor: '#484848',
   textGrayColor: '#A3A3A3',
   textSwipeItemColor: '#2A2A2A',
+  textPlaceholderColor: '#AEAEAE',
   textWeekColor: '#838383',
   textWeekDayColor: '#5E5E5E',
   listTitleColor: '#4F4F4F',

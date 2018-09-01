@@ -20,8 +20,7 @@ import SalesFunnel from './component/SalesFunnel';
 import RankItem from './component/RankItem';
 
 const SectionView = styled.ScrollView`
-  margin-top: ${theme.moderateScale(8)};
-  margin-bottom: ${theme.moderateScale(50)};
+  padding-top: ${theme.moderateScale(8)};
 `;
 
 const DescriptionView = styled.View`

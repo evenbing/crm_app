@@ -50,6 +50,7 @@ import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
 import ContractScreen from './pages/CRM/Contract';
 import ContractDetailsScreen from './pages/CRM/Contract/Details';
 import ContractEditorScreen from './pages/CRM/Contract/Editor';
+import ContractEditorMoreScreen from './pages/CRM/Contract/EditorMore';
 // root page -> CRM -> 销售机会 module
 import SalesChanceScreen from './pages/CRM/SalesChance';
 import CreateSalesChanceScreen from './pages/CRM/SalesChance/CreateSalesChance';
@@ -164,6 +165,7 @@ const CrmRouteConfig = {
   [routers.contract]: { screen: ContractScreen },
   [routers.contractDetails]: { screen: ContractDetailsScreen },
   [routers.contractEditor]: { screen: ContractEditorScreen },
+  [routers.contractEditorMore]: { screen: ContractEditorMoreScreen },
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.createSalesChance]: { screen: CreateSalesChanceScreen },

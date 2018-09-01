@@ -14,7 +14,7 @@ const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
   flex-direction: row;
   align-items: center;
-  background-color: ${props => props.titleBackColor || theme.titleBackColor};
+  background-color: ${props => props.titleBackColor || theme.pageBackColor};
 `;
 
 const HeaderTitleText = styled.Text`
