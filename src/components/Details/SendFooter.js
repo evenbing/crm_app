@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { Input } from 'native-base';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
+import { getFooterBottom } from '../../utils/utils';
 
 // components
 import Thumbnail from '../Thumbnail';
@@ -20,7 +21,8 @@ const ContainerView = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
-  height: ${moderateScale(50)};
+  height: ${moderateScale(50 + getFooterBottom())};
+  padding-bottom: ${getFooterBottom()};
   border-top-width: 1px;
   border-top-color: #F6F6F6;
   background-color: #fff;

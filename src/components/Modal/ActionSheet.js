@@ -10,6 +10,7 @@ import styled, { css } from 'styled-components';
 import Modal from 'react-native-modal';
 import { theme } from '../../constants';
 import { moderateScale } from '../../utils/scale';
+import { getFooterBottom } from '../../utils/utils';
 
 // components
 import TouchableView from '../../components/TouchableView';
@@ -20,7 +21,9 @@ const ModalView = styled(Modal)`
   justify-content: flex-end;
 `;
 
-const ContainerView = styled.View``;
+const ContainerView = styled.View`
+  padding-bottom: ${getFooterBottom() || 0};
+`;
 
 const ItemBasicView = css`
   padding: 0 ${moderateScale(16)}px;

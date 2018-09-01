@@ -1,6 +1,6 @@
 /**
  * @component index.js
- * @description 打包
+ * @description 条目打包
  * @time 2018/8/7
  * @author JUSTIN XU
  */

@@ -16,7 +16,7 @@ import { routers, theme } from '../../../constants';
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/Customer';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
 import LeftItem from './component/LeftItem';

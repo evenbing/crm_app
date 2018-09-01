@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
-import uuidv1 from 'uuid/v1';
 import { nativeGoBack } from '../../utils/base';
 import { moderateScale } from '../../utils/scale';
 
@@ -13,7 +12,6 @@ import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { HeadItem } from '../../components/CRM';
 import NavItem from '../../components/NavItem';
 import { routers } from '../../constants';
-
 
 const ContainerView = styled.ScrollView`
   flex: 1;
@@ -34,19 +32,16 @@ useStrict(true);
 
 const HeadList = [
   {
-    key: uuidv1(),
     icon: require('../../img/crm/customerIcon.png'),
     text: '客户',
     path: routers.customer,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/saleIcon.png'),
     text: '销售机会',
     path: routers.salesChance,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/statisticsIcon.png'),
     text: '业绩统计',
     path: routers.perfStatist,
@@ -55,49 +50,41 @@ const HeadList = [
 
 const NavList = [
   {
-    key: uuidv1(),
     icon: require('../../img/crm/markActivity.png'),
     title: '市场活动',
     path: routers.markActivity,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/salesClues.png'),
     title: '销售线索',
     path: routers.salesClues,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/contacts.png'),
     title: '联系人',
     path: routers.contacts,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/contract.png'),
     title: '合同',
-    path: '',
+    path: routers.contract,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/reimbursementPlan.png'),
     title: '回款计划',
     path: routers.receivablePlan,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/reimbursementOrder.png'),
     title: '回款记录',
     path: routers.receivablePlanDetail,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/product.png'),
     title: '产品',
     path: routers.modifyProductPrice,
   },
   {
-    key: uuidv1(),
     icon: require('../../img/crm/priceList.png'),
     title: '价格表',
     path: routers.priceList,
@@ -120,14 +107,15 @@ class CRM extends React.Component {
           colors={['#98CE5E', '#019D55']}
         >
           <HeaderView>
-            { HeadList.map((item, index) => (
-              <HeadItem
-                key={item.key}
-                isLast={index === HeadList.length - 1}
-                data={item}
-                onPress={() => this.onNavHandler(item.path)}
-              />
-            )) }
+            {
+              HeadList.map((item, index) => (
+                <HeadItem
+                  key={item.text}
+                  isLast={index === HeadList.length - 1}
+                  data={item}
+                  onPress={() => this.onNavHandler(item.path)}
+                />
+            ))}
           </HeaderView>
         </LinearGradient>
 
@@ -137,7 +125,7 @@ class CRM extends React.Component {
               <NavItem
                 leftText={obj.title}
                 icon={obj.icon}
-                key={obj.key}
+                key={obj.title}
                 isLast={index === NavList.length - 1}
                 onPress={() => this.onNavHandler(obj.path)}
               />

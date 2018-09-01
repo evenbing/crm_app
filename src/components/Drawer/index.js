@@ -6,8 +6,12 @@
  */
 import Drawer from './Drawer';
 import FooterGroup from './FooterGroup';
+import AddButton from './AddButton';
+import LabelItem from './LabelItem';
 
 export {
   Drawer,
   FooterGroup,
+  AddButton,
+  LabelItem,
 };

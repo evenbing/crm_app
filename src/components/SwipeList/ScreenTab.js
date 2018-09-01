@@ -8,13 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
-import { theme } from '../../constants/';
+import { theme } from '../../constants';
 
-import BorderShadow from '../Shadow/BorderShadow';
+// components
 import TouchableView from '../TouchableView';
 import Thumbnail from '../Thumbnail';
 
-const TabsPanelView = styled.View`
+const ContainerView = styled.View``;
+
+const HeaderView = styled.View`
   background: ${theme.pageBackColor};
   height: ${theme.moderateScale(44)};
   flex-direction: row;
@@ -24,7 +26,7 @@ const TabsPanelView = styled.View`
   padding-right: ${theme.moderateScale(15)};
 `;
 
-const HeaderContainer = styled(TouchableView)`
+const HeaderItemView = styled(TouchableView)`
   align-items: center;
   flex-direction: row;
 `;
@@ -35,14 +37,45 @@ const HeaderText = styled.Text`
   color: ${props => props.color || '#7A7A7A'};
 `;
 
+const FilterView = HeaderView.extend`
+  justify-content: center;
+`;
+
+const FilterItemView = styled.View`
+  padding: ${theme.moderateScale(3)}px ${theme.moderateScale(8)}px;
+  overflow: hidden;
+  border: 1px solid ${theme.primaryColor};
+  border-radius: ${theme.moderateScale(4)};
+  margin-left: ${props => props.isFirst ? 0 : theme.moderateScale(15)};
+`;
+
+const FilterItemText = styled.Text`
+  color: ${theme.primaryColor};
+  font-size: ${theme.moderateScale(13)};
+`;
+
+const IconStyle = {
+  marginLeft: theme.moderateScale(3),
+};
+
 class ScreenTab extends React.PureComponent {
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
+    if (isLast && active) {
+      return (
+        <Thumbnail
+          source={require('../../img/crm/screenTab/screen-focus.png')}
+          size={18}
+          style={IconStyle}
+        />
+      );
+    }
     if (isLast) {
       return (
         <Thumbnail
           source={require('../../img/crm/screenTab/screen.png')}
           size={18}
+          style={IconStyle}
         />
       );
     }
@@ -51,6 +84,7 @@ class ScreenTab extends React.PureComponent {
         <Thumbnail
           source={require('../../img/crm/screenTab/triangle-focus.png')}
           size={9}
+          style={IconStyle}
         />
       );
     }
@@ -58,6 +92,7 @@ class ScreenTab extends React.PureComponent {
       <Thumbnail
         source={require('../../img/crm/screenTab/triangle.png')}
         size={9}
+        style={IconStyle}
       />
     );
   };
@@ -73,7 +108,7 @@ class ScreenTab extends React.PureComponent {
       const active = activeIndex === index;
       const isLast = dataLen - 1 === index;
       return (
-        <HeaderContainer
+        <HeaderItemView
           onPress={() => onChange({ index, isLast })}
           key={index}
         >
@@ -83,28 +118,43 @@ class ScreenTab extends React.PureComponent {
             )
           }
           {this.renderIcon(_, isLast, active)}
-        </HeaderContainer>
+        </HeaderItemView>
       );
     });
   };
-  render() {
-    const shadowOpt = {
-      width: 750,
-      color: '#CBD5F1',
-      border: 4,
-      opacity: 0.3,
-      side: 'bottom',
-      style: { width: '100%', marginTop: 4 },
-    };
+  renderFilterList = () => {
     const {
-      isShadow,
+      filterList,
     } = this.props;
+    if (!filterList.length) return null;
+    return (
+      <FilterView>
+        {
+          filterList.map((_, i) => (
+            <FilterItemView
+              key={_.name}
+              isFirst={i === 0}
+            >
+              <FilterItemText>{_.name}</FilterItemText>
+            </FilterItemView>
+          ))
+        }
+      </FilterView>
+    );
+  };
+
+  render() {
+    // const {
+    //   isShadow,
+    // } = this.props;
     return (
       <View>
-        <TabsPanelView>
-          {this.renderTab()}
-        </TabsPanelView>
-        { isShadow ? <BorderShadow setting={shadowOpt} /> : null}
+        <ContainerView>
+          <HeaderView>
+            {this.renderTab()}
+          </HeaderView>
+          {this.renderFilterList()}
+        </ContainerView>
       </View>
     );
   }
@@ -113,15 +163,15 @@ class ScreenTab extends React.PureComponent {
 ScreenTab.defaultProps = {
   data: [],
   onChange: () => null,
-  isShadow: false,
   activeIndex: 0,
+  filterList: [],
 };
 
 ScreenTab.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
-  isShadow: PropTypes.bool,
+  filterList: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default ScreenTab;

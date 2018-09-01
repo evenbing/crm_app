@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
 import { theme } from '../../constants/index';
-import { getHeaderPadding, getFooterBottom } from '../../utils/utils';
+import { getHeaderPadding } from '../../utils/utils';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -27,7 +27,6 @@ const ModalWrapperView = styled.View`
   height: 100%;
   flex-direction: row;
   background-color: ${theme.whiteColor};
-  padding-bottom: ${getFooterBottom() || 0};
 `;
 
 class Drawer extends React.PureComponent {

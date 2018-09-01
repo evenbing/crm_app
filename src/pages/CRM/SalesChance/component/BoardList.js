@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 // components
 import Accordion from '../../../../components/Accordion';
-import ListItem from '../../../../components/Customer/ListItem';
+import ListItem from '../../../../components/SwipeList/ListItem';
 import theme from '../../../../constants/theme';
 
 const ContainerView = styled.View``;

@@ -9,14 +9,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Platform } from 'react-native';
 import { theme } from '../../constants';
+import { getFooterBottom } from '../../utils/utils';
 
 // components
 import TouchableView from '../TouchableView';
 
 const ContainerView = styled.View`
-  height: ${theme.moderateScale(49)};
+  height: ${theme.moderateScale(49 + getFooterBottom())};
   background-color: #F7F7F7;
   padding: 0 ${theme.moderateScale(15)}px;
+  padding-bottom: ${getFooterBottom()};
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;

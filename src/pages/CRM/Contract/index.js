@@ -1,63 +1,61 @@
 /**
  * @component index.js
- * @description 回款计划页面
- * @time 2018/8/6
+ * @description 合同页面
+ * @time 2018/9/1
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { routers, theme } from '../../../constants';
+import { theme, routers } from '../../../constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
-import TouchableView from '../../../components/TouchableView';
 import { ActionSheet } from '../../../components/Modal';
+import LeftItem from './components/LeftItem';
 import { Drawer } from '../../../components/Drawer';
-import LeftItem from './component/LeftItem';
-import SideBar from './component/SideBar';
-
-const FooterView = styled(TouchableView)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: ${theme.moderateScale(49)};
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background: ${theme.whiteColor};
-  border: 1px solid ${theme.borderColor};
-`;
-
-const FooterText = styled.Text`
-  color: ${theme.primaryColor};
-  font-size: ${theme.moderateScale(18)};
-  font-family: ${theme.fontMedium};
-`;
+import SideBar from './components/SideBar';
 
 useStrict(true);
 
 @observer
-class ReceivablePlan extends React.Component {
+class Contract extends React.Component {
   state = {
     activeIndex: 0,
     amountVisible: false,
     drawerVisible: false,
+    filterList: [],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.contractEditor);
+  };
+  onChange = ({ index, isLast }) => {
+    this.setState({ activeIndex: index });
+    if (isLast) {
+      this.onOpenDrawer();
+    }
+  };
+  onPressButtonItem = ({ index, item }) => {
+    if (index === 0) {
+      // TODO
+      this.onToggleAmountVisible();
+      return;
+    }
+    alert(`item:${JSON.stringify(item)}, index: ${index}`);
+  };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
@@ -66,26 +64,22 @@ class ReceivablePlan extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = () => {
+  onFilter = (list = []) => {
     // TODO
+    this.setState({
+      filterList: list,
+    });
     this.onCloseDrawer();
   }
-  onToggleAmountVisible = () => {
-    this.setState({
-      amountVisible: !this.state.amountVisible,
-    });
-  };
-  onPressRight = () => alert('right');
-  onChange = ({ index, isLast }) => {
-    this.setState({ activeIndex: index });
-    if (isLast) {
-      this.onOpenDrawer();
-    }
-  };
   onRowOpen = (index) => {
     console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
+  };
+  onToggleAmountVisible = () => {
+    this.setState({
+      amountVisible: !this.state.amountVisible,
+    });
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -101,7 +95,7 @@ class ReceivablePlan extends React.Component {
       <SwipeRow
         disableRightSwipe
         ref={(row) => { this[`rows.${index}`] = row; }}
-        rightOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
+        rightOpenValue={-theme.moderateScale((44 * 3) + 15 + 15)}
         style={{
           paddingTop: 0,
           paddingLeft: 0,
@@ -118,16 +112,17 @@ class ReceivablePlan extends React.Component {
             left={
               <LeftItem {...props} />
             }
-            onPress={() => navigate(routers.receivablePlanDetail)}
+            onPress={() => navigate(routers.contractDetails)}
           />
         }
         right={
           <ButtonList
             list={[
+              require('../../../img/crm/buttonList/follow.png'),
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={this.onPressButtonItem}
           />
         }
       />
@@ -139,6 +134,7 @@ class ReceivablePlan extends React.Component {
         activeIndex,
         amountVisible,
         drawerVisible,
+        filterList,
       },
     } = this;
     const amountActionSheetProps = {
@@ -147,10 +143,8 @@ class ReceivablePlan extends React.Component {
       itemNeedPress: false,
       list: [
         { leftText: '总金额', rightText: '¥100,000,00', rightStyle: { color: theme.dangerColor } },
-        { leftText: '计划回款金额', rightText: '¥90,000,00' },
-        { leftText: '实际回款金额', rightText: '¥70,000,00' },
         { leftText: '未回款金额', rightText: '¥100,000,00' },
-        { leftText: '逾期未回款金额', rightText: '¥100,000,00' },
+        { leftText: '回款金额', rightText: '¥100,000,00' },
       ],
     };
     return (
@@ -158,31 +152,21 @@ class ReceivablePlan extends React.Component {
         isVisible={drawerVisible}
         content={
           <SideBar
-            statusList={[{
-              name: '不限',
-            }, {
-              name: '已计划',
-            }, {
-              name: '进行中',
-            }, {
-              name: '已完成',
-            }]}
-            navigator={this.navigator}
-            timeList={[{
-              name: '不限',
-            }, {
-              name: '已计划',
-            }, {
-              name: '进行中',
-            }, {
-              name: '已完成',
-            }, {
-              name: '本月',
-            }, {
-              name: '本季',
-            }, {
-              name: '本年',
-            }]}
+            firstList={[
+              { name: '执行中' },
+              { name: '结束' },
+              { name: '意外终止' },
+            ]}
+            secondList={[
+              { name: '产品销售' },
+              { name: '服务' },
+              { name: '业务合作' },
+              { name: '代理分销' },
+              { name: '其他' },
+            ]}
+            thirdList={[
+              { name: '西风网络' },
+            ]}
             onFilter={this.onFilter}
           />
         }
@@ -192,51 +176,32 @@ class ReceivablePlan extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
+          <ActionSheet {...amountActionSheetProps} />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
             data={['跟进时间', '我负责的', '筛选']}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            filterList={filterList}
           />
           <FlatListTable
             data={[
-              {
-                time: '20180909-0001',
-                customer: '客户：西风网络',
-                contract: '合同：西风网络销售合同',
-                returnMoney: '计划回款：¥10,000.00',
-                returnTime: '计划日期：2018-09-09',
-              },
-              {
-                time: '20180909-0002',
-                customer: '客户：阿里巴巴',
-                contract: '合同：西风网络销售合同',
-                returnMoney: '计划回款：¥10,000.00',
-                returnTime: '计划日期：2018-09-09',
-              },
-              {
-                time: '20180909-0003',
-                customer: '客户：字节跳动',
-                contract: '合同：西风网络销售合同',
-                returnMoney: '计划回款：¥10,000.00',
-                returnTime: '计划日期：2018-09-09',
-              },
-            ]}
-            keyExtractor={item => item.time}
+            { title: '李总', company: '阿里巴巴', money: '10,000,000.00' },
+            { title: '张总', company: '字节跳动', money: '10,000,000.00' },
+            { title: '何总', company: '腾讯科技', money: '10,000,000.00' },
+          ]}
+            keyExtractor={item => item.title}
             renderItem={this.renderItem}
           />
-          <ActionSheet {...amountActionSheetProps} />
-          <FooterView onPress={this.onToggleAmountVisible}>
-            <FooterText>数据合计</FooterText>
-          </FooterView>
+
         </ContainerView>
       </Drawer>
     );
   }
 }
 
-ReceivablePlan.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '回款计划',
+Contract.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '合同',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -253,9 +218,9 @@ ReceivablePlan.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-ReceivablePlan.defaultProps = {};
+Contract.defaultProps = {};
 
-ReceivablePlan.propTypes = {
+Contract.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -269,5 +234,5 @@ ReceivablePlan.propTypes = {
   }).isRequired,
 };
 
-export default ReceivablePlan;
+export default Contract;
 

@@ -25,12 +25,12 @@ const AvatarImg = styled.Image.attrs({
   border-radius: ${props => (props.round ? getRound(props.size) : getRadius(props.borderRadius))}px;
 `;
 
-const Thumbnail = (props) => {
-  const {
-    imgUri, size, round, borderRadius, source, resizeMode,
-  } = props;
+const Thumbnail = ({
+  imgUri, size, round, borderRadius, source, resizeMode, style,
+}) => {
   return (
     <AvatarImg
+      style={style}
       size={size}
       source={imgUri ? { uri: imgUri } : (source || defaultAvatar)}
       round={round}
@@ -47,6 +47,7 @@ Thumbnail.defaultProps = {
   round: false,
   borderRadius: 0,
   resizeMode: 'contain',
+  style: {},
 };
 
 Thumbnail.propTypes = {
@@ -56,6 +57,7 @@ Thumbnail.propTypes = {
   round: PropTypes.bool,
   borderRadius: PropTypes.number,
   resizeMode: PropTypes.string,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 export default Thumbnail;
