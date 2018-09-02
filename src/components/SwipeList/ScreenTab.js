@@ -132,7 +132,7 @@ class ScreenTab extends React.PureComponent {
         {
           filterList.map((_, i) => (
             <FilterItemView
-              key={_.name}
+              key={`${_.name}.${i}`}
               isFirst={i === 0}
             >
               <FilterItemText>{_.name}</FilterItemText>

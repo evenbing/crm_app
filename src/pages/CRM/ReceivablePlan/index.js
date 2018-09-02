@@ -54,12 +54,16 @@ class ReceivablePlan extends React.Component {
     activeIndex: 0,
     amountVisible: false,
     drawerVisible: false,
+    filterList: [],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.receivablePlanEditor);
+  };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
@@ -68,8 +72,11 @@ class ReceivablePlan extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = () => {
+  onFilter = (list = []) => {
     // TODO
+    this.setState({
+      filterList: list,
+    });
     this.onCloseDrawer();
   }
   onToggleAmountVisible = () => {
@@ -77,7 +84,6 @@ class ReceivablePlan extends React.Component {
       amountVisible: !this.state.amountVisible,
     });
   };
-  onPressRight = () => alert('right');
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
@@ -120,7 +126,7 @@ class ReceivablePlan extends React.Component {
             left={
               <LeftItem {...props} />
             }
-            onPress={() => navigate(routers.receivablePlanDetail)}
+            onPress={() => navigate(routers.receivablePlanDetails)}
           />
         }
         right={
@@ -141,6 +147,7 @@ class ReceivablePlan extends React.Component {
         activeIndex,
         amountVisible,
         drawerVisible,
+        filterList,
       },
     } = this;
     const amountActionSheetProps = {
@@ -160,7 +167,7 @@ class ReceivablePlan extends React.Component {
         isVisible={drawerVisible}
         content={
           <SideBar
-            statusList={[{
+            firstList={[{
               name: '不限',
             }, {
               name: '已计划',
@@ -169,8 +176,14 @@ class ReceivablePlan extends React.Component {
             }, {
               name: '已完成',
             }]}
-            navigator={this.navigator}
-            timeList={[{
+            secondList={[
+              { name: '产品销售' },
+              { name: '服务' },
+              { name: '业务合作' },
+              { name: '代理分销' },
+              { name: '其他' },
+            ]}
+            thirdList={[{
               name: '不限',
             }, {
               name: '已计划',
@@ -199,6 +212,7 @@ class ReceivablePlan extends React.Component {
             data={['跟进时间', '我负责的', '筛选']}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            filterList={filterList}
           />
           <FlatListTable
             data={[

@@ -1,12 +1,13 @@
 /**
  * @component Editor.js
  * @description 编辑资料页面
- * @time 2018/8/13
+ * @time 2018/9/2
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { View } from 'react-native';
 import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
@@ -14,7 +15,7 @@ import { moderateScale } from '../../../utils/scale';
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TitleItem from '../../../components/Details/TitleItem';
+import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 
@@ -68,54 +69,56 @@ class Editor extends React.Component {
       >
         <CommStatusBar />
         <HorizontalDivider
-          height={9}
+          height={12}
         />
-        <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
-            leftText="合同名称"
-            {...this.getLeftStyle('请输入合同名称')}
+            leftText="回款期次"
+            {...this.getLeftStyle('请输入回款期次')}
           />
           <NavInputItem
-            leftText="客户"
-            center={
-              <CenterText>请选择客户</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="总金额"
-            {...this.getLeftStyle('请输入总金额')}
+            leftText="计划回款金额"
+            {...this.getLeftStyle('请输入金额', 110)}
             right={
               <RightText>元</RightText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="开始日期"
+            leftText="计划回款日期"
             center={
-              <CenterText>请选择活动开始日期</CenterText>
+              <CenterText>请选择日期</CenterText>
+            }
+            {...NavItemStyle}
+            leftWidth={moderateScale(110)}
+          />
+          <NavInputItem
+            leftText="负责人"
+            center={
+              <CenterText>请选择负责人</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="结束日期"
-            center={
-              <CenterText>2017-09-09</CenterText>
-            }
-            {...NavItemStyle}
+            leftText="备注"
+            center={<View />}
+            right={<View />}
+            height={44}
           />
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText>请选择所属部门</CenterText>
-            }
-            {...NavItemStyle}
-          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              placeholder="请输入备注说明"
+              placeholderTextColor={theme.textPlaceholderColor}
+            />
+          </TextareaGroup>
         </ListView>
-        <HorizontalDivider height={41} />
+        <HorizontalDivider
+          height={41}
+        />
         <CreateMoreButton
-          onPress={() => navigate(routers.contractEditorMore)}
+          onPress={() => navigate(routers.receivablePlanEditorMore)}
         />
       </ContainerView>
     );
@@ -123,7 +126,7 @@ class Editor extends React.Component {
 }
 
 Editor.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '编辑资料',
+  title: '新增回款计划',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

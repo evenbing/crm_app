@@ -78,10 +78,11 @@ import MidifyProductPriceScreen from './pages/CRM/ModifyProductPrice';
 import PriceListScreen from './pages/CRM/PriceList';
 import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
 import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
-// root page -> CRM -> 回款计划
+// root page -> CRM -> 回款计划 module
 import ReimbursementPlanScreen from './pages/CRM/ReceivablePlan';
-// root page -> CRM -> 回款计划资料
-import ReimbursementPlanDetailScreen from './pages/CRM/ReceivablePlan/Detail';
+import ReimbursementPlanDetailsScreen from './pages/CRM/ReceivablePlan/Details';
+import ReimbursementPlanEditorScreen from './pages/CRM/ReceivablePlan/Editor';
+import ReimbursementPlanEditorMoreScreen from './pages/CRM/ReceivablePlan/EditorMore';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -188,7 +189,9 @@ const CrmRouteConfig = {
   [routers.productList]: { screen: ProductListScreen },
   [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
   [routers.receivablePlan]: { screen: ReimbursementPlanScreen },
-  [routers.receivablePlanDetail]: { screen: ReimbursementPlanDetailScreen },
+  [routers.receivablePlanDetails]: { screen: ReimbursementPlanDetailsScreen },
+  [routers.receivablePlanEditor]: { screen: ReimbursementPlanEditorScreen },
+  [routers.receivablePlanEditorMore]: { screen: ReimbursementPlanEditorMoreScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },

@@ -44,9 +44,9 @@ export default {
   contractEditorMore: 'app.tabView.root.crm.contractEditorMore',
   // salesClues module
   salesClues: 'app.tabView.root.crm.salesClues',
+  salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
   createSalesClue: 'app.tabView.root.crm.createSalesClue',
   createSalesClueMore: 'app.tabView.root.crm.createSalesClueMore',
-  salesClueDetails: 'app.tabView.root.crm.salesClueDetails',
   // productList module
   productList: 'app.tabView.root.crm.productList',
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
@@ -56,7 +56,9 @@ export default {
   standardPriceList: 'app.tabView.root.crm.standardPriceList',
   // reimbursementPlan module
   receivablePlan: 'app.tabView.root.crm.receivablePlan',
-  receivablePlanDetail: 'app.tabView.root.crm.receivablePlanDetail',
+  receivablePlanDetails: 'app.tabView.root.crm.receivablePlanDetail',
+  receivablePlanEditor: 'app.tabView.root.crm.receivablePlanEditor',
+  receivablePlanEditorMore: 'app.tabView.root.crm.receivablePlanEditorMore',
   // common model
   queryBusiness: 'app.tabView.root.model.queryBusiness',
   selectYear: 'app.tabView.root.model.selectYear',

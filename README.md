@@ -27,15 +27,15 @@ java (v1.8.0_172)
       |--TeamMembers                团队成员
       |--TeamRoles                  团队成员2
     |--CRM          CRM tab
-      |--Contacts                   联系人模块
+      |--Contacts                   联系人模块（Justin）
         |--Details.js               联系人详情页面
         |--Editor.js                编辑联系人资料页面
         |--EditorMore.js            编辑更多联系人资料页面
         |--index.js                 列表页面
-      |--Contract                   合同模块
-        |--Details.js               联系人详情页面
-        |--Editor.js                编辑联系人资料页面
-        |--EditorMore.js            编辑更多联系人资料页面
+      |--Contract                   合同模块（Justin）
+        |--Details.js               合同详情页面
+        |--Editor.js                编辑合同资料页面
+        |--EditorMore.js            编辑更多合同资料页面
         |--index.js                 列表页面
       |--Customer                   客户模块
         |--CreateCustomer.js        新建客户页面
@@ -47,13 +47,15 @@ java (v1.8.0_172)
         |--index.js                 列表页面
       |--ModifyProductPrice         修改产品模块
         |--index.js                 列表页面
-      |--PerfStatist                业绩统计模块
+      |--PerfStatist                业绩统计模块（Justin）
         |--index.js                 列表页面
       |--PriceList                  价格表模块
         |--index.js                 列表页面
       |--ProductList                产品目录模块
         |--index.js                 列表页面
-      |--ReimbursementPlan          回款计划模块
+      |--ReimbursementPlan          回款计划模块（Justin）
+        |--Editor.js                编辑回款计划资料页面
+        |--EditorMore.js            编辑更多回款计划资料页面
         |--Details.js               回款计划资料
         |--index.js                 列表页面
       |--SalesChance                销售机会模块
