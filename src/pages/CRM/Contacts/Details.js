@@ -14,7 +14,7 @@ import { theme, routers } from '../../../constants';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
-import DetailsHead from './component/DetailsHead';
+import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
@@ -77,7 +77,7 @@ class Details extends React.Component {
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
-      list: ['动态', '活动详情'],
+      list: ['动态', '详细资料'],
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
@@ -186,7 +186,7 @@ class Details extends React.Component {
             <SendFooter />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactsEditor)}
+                onPress={() => navigate(routers.contactEditor)}
               />
             )
         }

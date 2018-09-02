@@ -52,7 +52,7 @@ class SearchInput extends React.Component {
           underlineColorAndroid="transparent"
           autoCorrect={false}
           autoCapitalize="none"
-          onChangeText={val => onChangeText(val)}
+          onChangeText={onChangeText}
           {...resetProps}
           textPadding={`${moderateScale(10)}px`}
           value={value}

@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
@@ -18,7 +19,9 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
 import FlatListTable from '../../../components/FlatListTable';
-import LeftItem from './component/LeftItem';
+import LeftItem from './components/LeftItem';
+import { Drawer } from '../../../components/Drawer';
+import SideBar from './components/SideBar';
 
 useStrict(true);
 
@@ -26,20 +29,39 @@ useStrict(true);
 class Contacts extends React.Component {
   state = {
     activeIndex: 0,
+    drawerVisible: false,
+    filterList: [],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('right');
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.contactEditor);
+  };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
       // TODO open drawer
-      alert('isLast');
+      this.onOpenDrawer();
     }
   };
+  onCloseDrawer = () => {
+    StatusBar.setBarStyle('light-content');
+    this.setState({ drawerVisible: false });
+  };
+  onOpenDrawer = () => {
+    StatusBar.setBarStyle('dark-content');
+    this.setState({ drawerVisible: true });
+  };
+  onFilter = (list = []) => {
+    // TODO
+    this.setState({
+      filterList: list,
+    });
+    this.onCloseDrawer();
+  }
   onRowOpen = (index) => {
     console.log(index);
     this.safeCloseOpenRow(index);
@@ -93,30 +115,53 @@ class Contacts extends React.Component {
   };
   render() {
     const {
-      state: { activeIndex },
+      state: {
+        activeIndex,
+        drawerVisible,
+        filterList,
+      },
     } = this;
     return (
-      <ContainerView
-        bottomPadding
+      <Drawer
+        isVisible={drawerVisible}
+        content={
+          <SideBar
+            firstList={[
+              { name: '不限' },
+              { name: '本月' },
+              { name: '本季' },
+              { name: '本年' },
+              { name: '已计划' },
+              { name: '进行中' },
+              { name: '已完成' },
+            ]}
+            onFilter={this.onFilter}
+          />
+        }
+        onPressClose={this.onCloseDrawer}
       >
-        <CommStatusBar />
-        <SearchInput placeholder="输入客户名称" />
-        <ScreenTab
-          data={['跟进时间', '我负责的', '筛选']}
-          activeIndex={activeIndex}
-          onChange={this.onChange}
-        />
-        <FlatListTable
-          data={[
+        <ContainerView
+          bottomPadding
+        >
+          <CommStatusBar />
+          <SearchInput placeholder="输入客户名称" />
+          <ScreenTab
+            data={['跟进时间', '我负责的', '筛选']}
+            activeIndex={activeIndex}
+            onChange={this.onChange}
+            filterList={filterList}
+          />
+          <FlatListTable
+            data={[
             { title: '李总', job: '市场总监', company: '阿里巴巴' },
             { title: '张总', job: '销售总监', company: '字节跳动' },
             { title: '何总', job: '人力总监', company: '腾讯科技' },
           ]}
-          keyExtractor={item => item.title}
-          renderItem={this.renderItem}
-        />
-
-      </ContainerView>
+            keyExtractor={item => item.title}
+            renderItem={this.renderItem}
+          />
+        </ContainerView>
+      </Drawer>
     );
   }
 }

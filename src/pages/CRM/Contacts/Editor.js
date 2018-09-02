@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../../../constants/theme';
+import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
 // components
@@ -17,6 +17,7 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+import ScanCard from '../../../components/Create/ScanCard';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -41,54 +42,72 @@ class Editor extends React.Component {
     });
   }
   onPressRight = () => alert('finish');
+  getLeftStyle = (placeholder, width = 80) => {
+    return {
+      inputProps: {
+        placeholder,
+        fontSize: moderateScale(16),
+      },
+      leftTextStyle: {
+        color: '#373737',
+        width: moderateScale(width),
+      },
+      height: 44,
+    };
+  };
   render() {
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
       <ContainerView
         bottomPadding
+        backgroundColor={theme.whiteColor}
       >
         <CommStatusBar />
-        <HorizontalDivider
-          height={9}
+        <ScanCard
+          onPress={() => alert(1)}
         />
         <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
-            leftText="活动名称"
-            inputProps={{
-              'placeholder': '请输入活动名称',
-              fontSize: moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: moderateScale(80),
-            }}
-            height={44}
+            leftText="姓名"
+            {...this.getLeftStyle('请输入姓名')}
           />
           <NavInputItem
-            leftText="开始日期"
+            leftText="公司名称"
             center={
-              <CenterText>请选择活动开始日期</CenterText>
+              <CenterText>请选择公司名称</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="结束日期"
-            center={
-              <CenterText>2017-09-09</CenterText>
-            }
-            {...NavItemStyle}
+            leftText="职务"
+            {...this.getLeftStyle('请输入职务')}
           />
           <NavInputItem
-            leftText="所属部门"
+            leftText="电话"
+            {...this.getLeftStyle('请输入电话')}
+          />
+          <NavInputItem
+            leftText="手机"
+            {...this.getLeftStyle('请输入手机')}
+          />
+          <NavInputItem
+            leftText="部门"
             center={
               <CenterText>请选择所属部门</CenterText>
             }
+            isLast
             {...NavItemStyle}
           />
         </ListView>
-        <HorizontalDivider height={41} />
+        <HorizontalDivider
+          height={41}
+          backgroundColor={theme.whiteColor}
+        />
         <CreateMoreButton
-          onPress={() => alert(1)}
+          onPress={() => navigate(routers.contactEditorMore)}
         />
       </ContainerView>
     );
@@ -96,7 +115,7 @@ class Editor extends React.Component {
 }
 
 Editor.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '编辑资料',
+  title: '新增联系人',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -106,6 +125,9 @@ Editor.navigationOptions = ({ navigation, screenProps }) => ({
     <RightView
       onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
     />
   ),
 });
