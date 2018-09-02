@@ -1,23 +1,23 @@
 /**
- * @component EditorMore.js
- * @description 编辑更多资料页面
- * @time 2018/8/13
+ * @component Editor.js
+ * @description 编辑资料页面
+ * @time 2018/9/2
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
-import theme from '../../../constants/theme';
+import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
+import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -34,19 +34,19 @@ const RightText = CenterText.extend`
 `;
 
 const NavItemStyle = {
-  leftWidth: moderateScale(113),
+  leftWidth: moderateScale(83),
   height: 44,
   showNavIcon: true,
 };
 
-class EditorMore extends React.Component {
+class Editor extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
   onPressRight = () => alert('finish');
-  getLeftStyle = (placeholder, width = 110) => {
+  getLeftStyle = (placeholder, width = 80) => {
     return {
       inputProps: {
         placeholder,
@@ -60,8 +60,11 @@ class EditorMore extends React.Component {
     };
   };
   render() {
+    const {
+      navigation: { navigate },
+    } = this.props;
     return (
-      <ContainerScrollView
+      <ContainerView
         bottomPadding
       >
         <CommStatusBar />
@@ -71,87 +74,36 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...this.getLeftStyle('请输入回款期次')}
-          />
-          <NavInputItem
-            leftText="计划回款金额"
-            {...this.getLeftStyle('请输入金额')}
-            right={
-              <RightText>元</RightText>
-            }
-          />
-          <NavInputItem
-            leftText="计划回款日期"
-            {...this.getLeftStyle('请选择计划回款日期')}
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="负责人"
-            {...this.getLeftStyle('请输入负责人')}
-          />
-          <NavInputItem
-            leftText="合同"
-            {...this.getLeftStyle('请输入合同')}
-          />
-          <NavInputItem
-            leftText="客户名称"
-            {...this.getLeftStyle('请输入客户名称')}
+            {...this.getLeftStyle('请输入期次')}
           />
           <NavInputItem
             leftText="实际回款金额"
-            {...this.getLeftStyle('请输入金额')}
-          />
-          <NavInputItem
-            leftText="本期回款状态"
-            center={
-              <CenterText>请选择回款状态</CenterText>
+            {...this.getLeftStyle('请输入金额', 110)}
+            right={
+              <RightText>元</RightText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
-            leftText="本期逾期状态"
+            leftText="实际回款日期"
             center={
-              <CenterText>请选择逾期状态</CenterText>
+              <CenterText>请选择日期</CenterText>
             }
             {...NavItemStyle}
+            leftWidth={moderateScale(110)}
           />
           <NavInputItem
-            leftText="所属部门"
+            leftText="实付款方式"
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText>请选择方式</CenterText>
             }
             {...NavItemStyle}
+            leftWidth={moderateScale(110)}
           />
           <NavInputItem
             leftText="负责人"
-            {...this.getLeftStyle('请输入负责人')}
-          />
-          <NavInputItem
-            leftText="所属部门"
             center={
-              <CenterText>请选择所属部门</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="创建人"
-            {...this.getLeftStyle('请输入创建人')}
-          />
-          <NavInputItem
-            leftText="创建时间"
-            center={
-              <CenterText>请选择创建时间</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="最近修改人"
-            {...this.getLeftStyle('请输入修改人')}
-          />
-          <NavInputItem
-            leftText="最近时间"
-            center={
-              <CenterText>请选择最近时间</CenterText>
+              <CenterText>请选择负责人</CenterText>
             }
             {...NavItemStyle}
           />
@@ -159,6 +111,7 @@ class EditorMore extends React.Component {
             leftText="备注"
             center={<View />}
             right={<View />}
+            height={44}
           />
           <TextareaGroup>
             <TextareaView
@@ -169,14 +122,19 @@ class EditorMore extends React.Component {
             />
           </TextareaGroup>
         </ListView>
-        <HorizontalDivider height={20} />
-      </ContainerScrollView>
+        <HorizontalDivider
+          height={41}
+        />
+        <CreateMoreButton
+          onPress={() => navigate(routers.receivableRecordEditorMore)}
+        />
+      </ContainerView>
     );
   }
 }
 
-EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '回款计划详情',
+Editor.navigationOptions = ({ navigation, screenProps }) => ({
+  title: '新增回款记录',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -193,9 +151,9 @@ EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-EditorMore.defaultProps = {};
+Editor.defaultProps = {};
 
-EditorMore.propTypes = {
+Editor.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -209,4 +167,4 @@ EditorMore.propTypes = {
   }).isRequired,
 };
 
-export default EditorMore;
+export default Editor;

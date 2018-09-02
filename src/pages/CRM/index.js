@@ -77,7 +77,7 @@ const NavList = [
   {
     icon: require('../../img/crm/reimbursementOrder.png'),
     title: '回款记录',
-    path: routers.receivablePlanDetails,
+    path: routers.receivableRecord,
   },
   {
     icon: require('../../img/crm/product.png'),

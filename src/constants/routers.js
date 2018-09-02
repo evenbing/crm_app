@@ -54,11 +54,16 @@ export default {
   priceList: 'app.tabView.root.crm.priceList',
   internalPriceList: 'app.tabView.root.crm.internalPriceList',
   standardPriceList: 'app.tabView.root.crm.standardPriceList',
-  // reimbursementPlan module
+  // receivablePlan module
   receivablePlan: 'app.tabView.root.crm.receivablePlan',
   receivablePlanDetails: 'app.tabView.root.crm.receivablePlanDetail',
   receivablePlanEditor: 'app.tabView.root.crm.receivablePlanEditor',
   receivablePlanEditorMore: 'app.tabView.root.crm.receivablePlanEditorMore',
+  // receivableRecord module
+  receivableRecord: 'app.tabView.root.crm.receivableRecord',
+  receivableRecordDetails: 'app.tabView.root.crm.receivableRecordDetail',
+  receivableRecordEditor: 'app.tabView.root.crm.receivableRecordEditor',
+  receivableRecordEditorMore: 'app.tabView.root.crm.receivableRecordEditorMore',
   // common model
   queryBusiness: 'app.tabView.root.model.queryBusiness',
   selectYear: 'app.tabView.root.model.selectYear',

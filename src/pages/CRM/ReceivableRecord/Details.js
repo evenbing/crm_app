@@ -1,6 +1,6 @@
 /**
  * @component Details.js
- * @description 回款计划详情页面
+ * @description 回款记录详情页面
  * @time 2018/8/12
  * @author JUSTIN XU
  */
@@ -48,7 +48,7 @@ const TitleText = styled.Text`
 
 class Details extends React.Component {
   state = {
-    tabIndex: 0,
+    tabIndex: 1,
   };
   onTabChange = (index) => {
     this.setState({ tabIndex: index });

@@ -1,7 +1,7 @@
 /**
  * @component EditorMore.js
  * @description 编辑更多资料页面
- * @time 2018/8/13
+ * @time 2018/9/2
  * @author JUSTIN XU
  */
 import React from 'react';
@@ -74,14 +74,14 @@ class EditorMore extends React.Component {
             {...this.getLeftStyle('请输入回款期次')}
           />
           <NavInputItem
-            leftText="计划回款金额"
+            leftText="实际回款金额"
             {...this.getLeftStyle('请输入金额')}
             right={
               <RightText>元</RightText>
             }
           />
           <NavInputItem
-            leftText="计划回款日期"
+            leftText="实际回款日期"
             {...this.getLeftStyle('请选择计划回款日期')}
             {...NavItemStyle}
           />
@@ -98,22 +98,12 @@ class EditorMore extends React.Component {
             {...this.getLeftStyle('请输入客户名称')}
           />
           <NavInputItem
+            leftText="付款方式"
+            {...this.getLeftStyle('请输入付款方式')}
+          />
+          <NavInputItem
             leftText="实际回款金额"
             {...this.getLeftStyle('请输入金额')}
-          />
-          <NavInputItem
-            leftText="本期回款状态"
-            center={
-              <CenterText>请选择回款状态</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="本期逾期状态"
-            center={
-              <CenterText>请选择逾期状态</CenterText>
-            }
-            {...NavItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
@@ -176,7 +166,7 @@ class EditorMore extends React.Component {
 }
 
 EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '回款计划详情',
+  title: '回款记录详情',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

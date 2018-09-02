@@ -79,10 +79,15 @@ import PriceListScreen from './pages/CRM/PriceList';
 import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
 import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
 // root page -> CRM -> 回款计划 module
-import ReimbursementPlanScreen from './pages/CRM/ReceivablePlan';
-import ReimbursementPlanDetailsScreen from './pages/CRM/ReceivablePlan/Details';
-import ReimbursementPlanEditorScreen from './pages/CRM/ReceivablePlan/Editor';
-import ReimbursementPlanEditorMoreScreen from './pages/CRM/ReceivablePlan/EditorMore';
+import ReceivablePlanPlanScreen from './pages/CRM/ReceivablePlan';
+import ReceivablePlanPlanDetailsScreen from './pages/CRM/ReceivablePlan/Details';
+import ReceivablePlanPlanEditorScreen from './pages/CRM/ReceivablePlan/Editor';
+import ReceivablePlanPlanEditorMoreScreen from './pages/CRM/ReceivablePlan/EditorMore';
+// root page -> CRM -> 回款记录 module
+import ReceivableRecordScreen from './pages/CRM/ReceivableRecord';
+import ReceivableRecordDetailsScreen from './pages/CRM/ReceivableRecord/Details';
+import ReceivableRecordEditorScreen from './pages/CRM/ReceivableRecord/Editor';
+import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/EditorMore';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -160,39 +165,56 @@ HomeStack.navigationOptions = ({ navigation }) => ({
 
 const CrmRouteConfig = {
   [routers.crm]: { screen: CRMScreen },
+
   [routers.customer]: { screen: CustomerScreen },
   [routers.createCustomer]: { screen: CreateCustomerScreen },
   [routers.createCustomerMore]: { screen: CustomerDetailsMoreScreen },
   [routers.customerDetails]: { screen: CustomerDetailsScreen },
+
   [routers.contract]: { screen: ContractScreen },
   [routers.contractDetails]: { screen: ContractDetailsScreen },
   [routers.contractEditor]: { screen: ContractEditorScreen },
   [routers.contractEditorMore]: { screen: ContractEditorMoreScreen },
+
+
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.createSalesChance]: { screen: CreateSalesChanceScreen },
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
+
   [routers.perfStatist]: { screen: PerfStatistScreen },
+
   [routers.markActivity]: { screen: MarkActivityScreen },
   [routers.markActivityDetails]: { screen: MarkActivityDetailsScreen },
+
   [routers.salesClues]: { screen: SalesCluesScreen },
   [routers.createSalesClue]: { screen: CreateSalesClueScreen },
   [routers.createSalesClueMore]: { screen: CreateSalesClueMoreScreen },
   [routers.salesClueDetails]: { screen: SalesClueDetailsScreen },
+
   [routers.contacts]: { screen: ContactsScreen },
   [routers.contactDetails]: { screen: ContactDetailsScreen },
   [routers.contactEditor]: { screen: ContactEditorScreen },
   [routers.contactEditorMore]: { screen: ContactEditorMoreScreen },
+
   [routers.priceList]: { screen: PriceListScreen },
   [routers.internalPriceList]: { screen: InternalPriceList },
   [routers.standardPriceList]: { screen: StandardPriceList },
   [routers.productList]: { screen: ProductListScreen },
   [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
-  [routers.receivablePlan]: { screen: ReimbursementPlanScreen },
-  [routers.receivablePlanDetails]: { screen: ReimbursementPlanDetailsScreen },
-  [routers.receivablePlanEditor]: { screen: ReimbursementPlanEditorScreen },
-  [routers.receivablePlanEditorMore]: { screen: ReimbursementPlanEditorMoreScreen },
+
+  [routers.receivablePlan]: { screen: ReceivablePlanPlanScreen },
+  [routers.receivablePlanDetails]: { screen: ReceivablePlanPlanDetailsScreen },
+  [routers.receivablePlanEditor]: { screen: ReceivablePlanPlanEditorScreen },
+  [routers.receivablePlanEditorMore]: { screen: ReceivablePlanPlanEditorMoreScreen },
+
+  [routers.receivableRecord]: { screen: ReceivableRecordScreen },
+  [routers.receivableRecordDetails]: { screen: ReceivableRecordDetailsScreen },
+  [routers.receivableRecordEditor]: { screen: ReceivableRecordEditorScreen },
+  [routers.receivableRecordEditorMore]: { screen: ReceivableRecordEditorMoreScreen },
+
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
+
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
 };

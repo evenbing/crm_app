@@ -49,21 +49,18 @@ class ActivityDetailsItem extends React.PureComponent {
     return (
       <ContainerView>
         {this.renderBasicItem('回款期次', '4')}
-        {this.renderBasicItem('计划回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-        {this.renderBasicItem('计划回款日期', '2018-09-09')}
+        {this.renderBasicItem('实际回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
+        {this.renderBasicItem('实际回款日期', '2018-09-09')}
         {this.renderBasicItem('负责人', '张三')}
         {this.renderBasicItem('合同', '西风网络合同')}
         {this.renderBasicItem('客户名称', '西风网络')}
-        {this.renderBasicItem('实际回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-        {this.renderBasicItem('本期回款状态', '未完成')}
-        {this.renderBasicItem('本期逾期状态', '已逾期')}
+        {this.renderBasicItem('付款方式', '现金')}
         {this.renderBasicItem('所属部门', '市场部')}
         {this.renderBasicItem('负责人', '张三')}
         {this.renderBasicItem('所属部门', '市场部')}
         {this.renderBasicItem('创建人', '张三')}
         {this.renderBasicItem('创建时间', '2018-09-09')}
         {this.renderBasicItem('最近修改人', '张三')}
-        {this.renderBasicItem('最近时间', '2018-09-01')}
         <TitleItemComponent
           text="备注"
           color="#373737"
