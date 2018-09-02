@@ -54,7 +54,7 @@ ProductList.navigationOptions = ({ navigation, screenProps }) => ({
   title: '产品目录',
   headerLeft: (
     <LeftBackIcon
-      onPress={navigation.state.params ? navigation.state.params._close : null}
+      onPress={() => navigation.goBack()}
     />
   ),
 });

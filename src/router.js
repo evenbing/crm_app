@@ -72,8 +72,7 @@ import CreateSalesClueScreen from './pages/CRM/SalesClues/CreateSalesClue';
 import CreateSalesClueMoreScreen from './pages/CRM/SalesClues/CreateSalesClueMore';
 // root page -> CRM -> 产品目录
 import ProductListScreen from './pages/CRM/ProductList';
-// root page -> CRM -> 修改产品报价
-import MidifyProductPriceScreen from './pages/CRM/ModifyProductPrice';
+import ModifyProductPriceScreen from './pages/CRM/ProductList/ModifyProductPrice';
 // root page -> CRM -> 价格表
 import PriceListScreen from './pages/CRM/PriceList';
 import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
@@ -176,8 +175,8 @@ const CrmRouteConfig = {
   [routers.contractEditor]: { screen: ContractEditorScreen },
   [routers.contractEditorMore]: { screen: ContractEditorMoreScreen },
 
-
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
+
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.createSalesChance]: { screen: CreateSalesChanceScreen },
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
@@ -200,8 +199,9 @@ const CrmRouteConfig = {
   [routers.priceList]: { screen: PriceListScreen },
   [routers.internalPriceList]: { screen: InternalPriceList },
   [routers.standardPriceList]: { screen: StandardPriceList },
+
   [routers.productList]: { screen: ProductListScreen },
-  [routers.modifyProductPrice]: { screen: MidifyProductPriceScreen },
+  [routers.modifyProductPrice]: { screen: ModifyProductPriceScreen },
 
   [routers.receivablePlan]: { screen: ReceivablePlanPlanScreen },
   [routers.receivablePlanDetails]: { screen: ReceivablePlanPlanDetailsScreen },

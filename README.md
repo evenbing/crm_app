@@ -51,11 +51,18 @@ java (v1.8.0_172)
         |--index.js                 列表页面
       |--PriceList                  价格表模块
         |--index.js                 列表页面
+        |--InternalPriceList.js     内部价格表页面 ( 两个价格表一样, 需要优化 )
+        |--StandardPriceList.js     标准价格表页面
       |--ProductList                产品目录模块
         |--index.js                 列表页面
-      |--ReimbursementPlan          回款计划模块（Justin）
+      |--ReceivablePlan             回款计划模块（Justin）
         |--Editor.js                编辑回款计划资料页面
         |--EditorMore.js            编辑更多回款计划资料页面
+        |--Details.js               回款计划资料
+        |--index.js                 列表页面
+      |--ReceivableRecord           回款记录模块（Justin）
+        |--Editor.js                编辑回款记录资料页面
+        |--EditorMore.js            编辑更多回款记录资料页面
         |--Details.js               回款计划资料
         |--index.js                 列表页面
       |--SalesChance                销售机会模块
@@ -70,14 +77,10 @@ java (v1.8.0_172)
     |--Home        Home tab
     |--Modal       共用modal
       |--QueryBusiness              工商信息查询
-    |--跟进统计(顺数第18个, 未完成。19-27 为列表筛选相关，待需求确定)
-       名片识别（未完成）
-       编辑资料（未完成，待需求确定详情是否一致）
-       添加产品（未完成）
-       回款   （未完成）
-       相关文档（未完成）
-       内部价格表
-       关联业务（未完成）
+    |-- 未完成
+       添加产品
+       相关文档
+       关联业务
   |--service        服务API
   |--utils          工具文件夹
   |--app.js         

@@ -8,12 +8,12 @@ import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
 
-import NavItem from '../../../components/NavItem';
-import NavInputItem from '../../../components/NavInputItem';
+import NavItem from '../../../components/NavItem/index';
+import NavInputItem from '../../../components/NavInputItem/index';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { theme } from '../../../constants';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
+import { theme } from '../../../constants/index';
 
 const ContainerView = styled.ScrollView`
   flex: 1;

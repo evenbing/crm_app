@@ -12,21 +12,21 @@ const products = [
     key: uuidv1(),
     image: productImg,
     title: '电脑主机',
-    price: '内部价格：¥7000',
+    price: '标准价格：¥7000',
     status: '已启用',
   },
   {
     key: uuidv1(),
     image: productImg,
     title: '电脑主机',
-    price: '内部价格：¥7000',
+    price: '标准价格：¥7000',
     status: '已启用',
   },
   {
     key: uuidv1(),
     image: productImg,
     title: '电脑主机',
-    price: '内部价格：¥7000',
+    price: '标准价格：¥7000',
     status: '已启用',
   },
 ];
@@ -80,7 +80,7 @@ class StandardPriceList extends Component {
 }
 
 StandardPriceList.navigationOptions = () => ({
-  title: '内部报价表',
+  title: '标准报价表',
   headerLeft: (
     <LeftBackIcon />
   ),

@@ -82,7 +82,7 @@ const NavList = [
   {
     icon: require('../../img/crm/product.png'),
     title: '产品',
-    path: routers.modifyProductPrice,
+    path: routers.productList,
   },
   {
     icon: require('../../img/crm/priceList.png'),
