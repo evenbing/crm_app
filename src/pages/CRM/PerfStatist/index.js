@@ -13,11 +13,11 @@ import { theme } from '../../../constants';
 import TabsPanel from '../../../components/TabsPanel';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
-import TotalList from './component/TotalList';
-import TitleHeader from './component/TitleHeader';
+import TotalList from './components/TotalList';
+import TitleHeader from './components/TitleHeader';
 import LineChart from '../../../components/LineChart';
-import SalesFunnel from './component/SalesFunnel';
-import RankItem from './component/RankItem';
+import SalesFunnel from './components/SalesFunnel';
+import RankItem from './components/RankItem';
 
 const SectionView = styled.ScrollView`
   padding-top: ${theme.moderateScale(8)};

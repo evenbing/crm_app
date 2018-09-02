@@ -15,7 +15,7 @@ import { moderateScale } from '../../../utils/scale';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import DetailsHead from './component/DetailsHead';
+import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';

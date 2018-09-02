@@ -8,9 +8,9 @@ import { ContainerScrollView, ContainerView } from '../../../components/Styles/L
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import ProductItem from './component/ProductItem';
+import ProductItem from './components/ProductItem';
 import productImage from '../../../img/crm/ico_product.png';
-import AddProduct from './component/AddProduct';
+import AddProduct from './components/AddProduct';
 
 const products = [
   {

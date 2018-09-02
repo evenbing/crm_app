@@ -19,8 +19,8 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
-import LeftItem from './component/LeftItem';
-import BoardList from './component/BoardList';
+import LeftItem from './components/LeftItem';
+import BoardList from './components/BoardList';
 
 const DashboardView = styled(TouchableView)`
   width: ${theme.moderateScale(20)};

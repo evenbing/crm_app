@@ -23,8 +23,8 @@ import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
 import { ActionSheet } from '../../../components/Modal';
 import { Drawer } from '../../../components/Drawer';
-import LeftItem from './component/LeftItem';
-import SideBar from './component/SideBar';
+import LeftItem from './components/LeftItem';
+import SideBar from './components/SideBar';
 
 const FooterView = styled(TouchableView)`
   position: absolute;

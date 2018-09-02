@@ -30,6 +30,7 @@ java (v1.8.0_172)
       |--Contacts                   联系人模块
         |--Details.js               联系人详情页面
         |--Editor.js                编辑联系人资料页面
+        |--EditorMore.js            编辑更多联系人资料页面
         |--index.js                 列表页面
       |--Contract                   合同模块
         |--Details.js               联系人详情页面

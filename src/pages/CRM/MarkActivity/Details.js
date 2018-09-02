@@ -15,13 +15,13 @@ import { theme, routers } from '../../../constants';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import DetailsHead from './component/DetailsHead';
+import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-import MarkActivityDetailsItem from './component/MarkActivityDetailsItem';
+import MarkActivityDetailsItem from './components/MarkActivityDetailsItem';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};

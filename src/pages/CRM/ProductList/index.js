@@ -7,7 +7,7 @@ import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import ProductItemList from './component/ProductItemList';
+import ProductItemList from './components/ProductItemList';
 
 const ContainerView = styled.ScrollView`
   flex: 1;

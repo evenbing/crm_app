@@ -14,7 +14,7 @@ import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layo
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import NavInputItem from '../../../components/NavInputItem';
-import QueryHead from './component/QueryHead';
+import QueryHead from './components/QueryHead';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
