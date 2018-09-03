@@ -22,67 +22,17 @@ import { routers, theme } from '../../constants';
 import Calendar from './components/Calendar';
 // import TouchableView from '../../components/TouchableView';
 
-const data = [
-  {
-    key: '1',
-    duration: '20:00-22:00',
-    type: '日程',
-    title: '拜访李总',
-    time: '2小时',
-    operateList: [
-      { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-      { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-      { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-    ],
-  },
-  {
-    key: '2',
-    duration: '20:00-22:00',
-    type: '任务',
-    title: '讲解产品信息',
-    time: '2小时',
-    operateList: [
-      { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-      { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-      { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-    ],
-  },
-  {
-    key: '3',
-    duration: '20:00-22:00',
-    type: '日程',
-    title: '拜访李总',
-    time: '2小时',
-    operateList: [
-      { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-      { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-      { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-    ],
-  },
-  {
-    key: '4',
-    duration: '20:00-22:00',
-    type: '日程',
-    title: '拜访李总',
-    time: '2小时',
-    operateList: [
-      { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-      { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-      { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-    ],
-  },
-  {
-    key: '5',
-    duration: '20:00-22:00',
-    type: '日程',
-    title: '拜访李总',
-    time: '2小时',
-    operateList: [
-      { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-      { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-      { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-    ],
-  },
+const createTypes = [
+  { leftText: '新建日程' },
+  { leftText: '新建任务' },
+];
+
+const delayTypes = [
+  { leftText: '1小时以后' },
+  { leftText: '3小时以后' },
+  { leftText: '明天' },
+  { leftText: '后天' },
+  { leftText: '自定义' },
 ];
 
 const ContainerView = styled.View`
@@ -152,14 +102,46 @@ const ListItemSeparatorComponent = styled.View`
 
 class Home extends React.Component {
   state = {
-    isVisible: false,
+    createActionSheetVisible: false,
+    delayActionSheetVisible: false,
   };
 
-  onToggleTaskVisible = () => {
-    this.setState({
-      isVisible: !this.state.isVisible,
-    });
-  };
+  onSelectCreateType = ({ item }) => {
+    const { navigate } = this.props.navigation;
+    switch (item.leftText) {
+      case '新建日程':
+        navigate(routers.addSchedule);
+        break;
+      case '新建任务':
+        navigate(routers.addTask);
+        break;
+      default:
+        break;
+    }
+  }
+
+  onSelectDelayType = ({ item }) => {
+    const { navigate } = this.props.navigation;
+    switch (item.leftText) {
+      case '1小时之后':
+        navigate(routers.addSchedule);
+        break;
+      case '3小时之后':
+        navigate(routers.addTask);
+        break;
+      case '明天':
+        navigate(routers.addTask);
+        break;
+      case '后天':
+        navigate(routers.addTask);
+        break;
+      case '自定义':
+        navigate(routers.addTask);
+        break;
+      default:
+        break;
+    }
+  }
 
   showMessage = () => {
     const {
@@ -169,10 +151,37 @@ class Home extends React.Component {
     navigate(routers.messageList);
   }
 
+  generateData = () => {
+    const data = [];
+    for (let index = 0; index < 10; index++) {
+      data.push({
+        key: index,
+        duration: '20:00-22:00',
+        type: '日程',
+        title: '拜访李总',
+        time: '2小时',
+        operateList: [
+          { key: uuidv1(), text: '下一步', onPress: this.selectCreateType },
+          { key: uuidv1(), text: '延时', onPress: this.selectDelayType },
+          { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
+        ],
+      });
+    }
+    return data;
+  }
+
   keyExtractor = item => item.key;
 
-  createNew = () => {
-    this.setState({ isVisible: !this.state.isVisible });
+  selectCreateType = () => {
+    this.setState({
+      createActionSheetVisible: !this.state.createActionSheetVisible,
+    });
+  }
+
+  selectDelayType = () => {
+    this.setState({
+      delayActionSheetVisible: !this.state.delayActionSheetVisible,
+    });
   }
 
   renderItem = ({ item }) => {
@@ -197,7 +206,8 @@ class Home extends React.Component {
   render() {
     const {
       state: {
-        isVisible,
+        createActionSheetVisible,
+        delayActionSheetVisible,
       },
       props: {
         navigation: {
@@ -205,30 +215,23 @@ class Home extends React.Component {
         },
       },
     } = this;
-    const taskActionSheetProps = {
-      isVisible,
-      onPressClose: this.onToggleTaskVisible,
-      onPressItem: ({ item }) => {
-        switch (item.leftText) {
-          case '新建日程':
-            navigate(routers.addSchedule);
-            break;
-          case '新建任务':
-            navigate(routers.addTask);
-            break;
-          default:
-            break;
-        }
-      },
-      list: [
-        { leftText: '新建日程' },
-        { leftText: '新建任务' },
-      ],
+    const createActionSheetProps = {
+      isVisible: createActionSheetVisible,
+      onPressClose: this.selectCreateType,
+      onPressItem: this.onSelectCreateType,
+      list: createTypes,
+    };
+    const delayActionSheetProps = {
+      isVisible: delayActionSheetVisible,
+      onPressClose: this.selectDelayType,
+      onPressItem: this.onSelectDelayType,
+      list: delayTypes,
     };
     return (
       <ContainerView>
         <CommStatusBar />
-        <ActionSheet {...taskActionSheetProps} />
+        <ActionSheet {...createActionSheetProps} />
+        <ActionSheet {...delayActionSheetProps} />
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 1.0, y: 1.0 }}
@@ -252,10 +255,10 @@ class Home extends React.Component {
         </LinearGradient>
         <Calendar
           navigate={navigate}
-          createNew={this.createNew}
+          selectCreateType={this.selectCreateType}
         />
         <List
-          data={data}
+          data={this.generateData()}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           ItemSeparatorComponent={this.renderItemSeparatorComponent}

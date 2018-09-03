@@ -181,7 +181,7 @@ class Calendar extends Component {
     } = this.state;
     const {
       navigate,
-      createNew,
+      selectCreateType,
     } = this.props;
     return (
       <Container>
@@ -208,7 +208,7 @@ class Calendar extends Component {
             <TodayButton>
               <TodayButtonText>今</TodayButtonText>
             </TodayButton>
-            <CreateButton onPress={createNew}>
+            <CreateButton onPress={selectCreateType}>
               <CreateButtonIcon />
             </CreateButton>
           </UpRightView>

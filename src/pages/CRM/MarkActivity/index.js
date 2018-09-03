@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import {routers, theme} from '../../../constants';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -145,7 +145,7 @@ SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
   ),
   headerRight: (
     <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      onPress={() => { navigation.navigate(routers.markActivityEditor); }}
       right="新增"
       rightStyle={{
         color: theme.primaryColor,

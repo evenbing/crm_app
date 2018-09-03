@@ -32,6 +32,8 @@ export default {
   // markActivity module
   markActivity: 'app.tabView.root.crm.markActivity',
   markActivityDetails: 'app.tabView.root.crm.markActivityDetails',
+  markActivityEditor: 'app.tabView.root.crm.markActivityDetails.editor',
+  markActivityEditorMore: 'app.tabView.root.crm.markActivityDetails.editorMore',
   // contacts module
   contacts: 'app.tabView.root.crm.contacts',
   contactDetails: 'app.tabView.root.crm.contactDetails',
