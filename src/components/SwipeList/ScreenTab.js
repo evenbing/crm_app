@@ -7,12 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import { theme } from '../../constants';
+// import { deviceHeight, deviceWidth } from '../../utils/utils';
+import { getHeaderHeight, getHeaderPadding } from '../../utils/utils';
 
 // components
 import TouchableView from '../TouchableView';
 import Thumbnail from '../Thumbnail';
+import FilterList from '../Modal/FilterList';
 
 const ContainerView = styled.View``;
 
@@ -59,6 +62,24 @@ const IconStyle = {
 };
 
 class ScreenTab extends React.PureComponent {
+  state = {
+    isVisible: false,
+    selectedIndex: 0,
+  };
+  onToggleVisible = () => {
+    this.setState({
+      isVisible: !this.state.isVisible,
+    });
+  };
+  onPressItem = ({ index, isLast }) => {
+    if (!isLast) {
+      this.onToggleVisible();
+    }
+    this.props.onChange({ index, isLast });
+  };
+  onPressFilterItem = ({ index, item }) => {
+    this.setState({ selectedIndex: index });
+  };
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
     if (isLast && active) {
@@ -100,7 +121,6 @@ class ScreenTab extends React.PureComponent {
     const {
       data,
       activeIndex,
-      onChange,
     } = this.props;
     if (!(data && data.length)) return null;
     const dataLen = data.length;
@@ -109,7 +129,7 @@ class ScreenTab extends React.PureComponent {
       const isLast = dataLen - 1 === index;
       return (
         <HeaderItemView
-          onPress={() => onChange({ index, isLast })}
+          onPress={() => this.onPressItem({ index, isLast })}
           key={index}
         >
           {
@@ -142,20 +162,33 @@ class ScreenTab extends React.PureComponent {
       </FilterView>
     );
   };
-
   render() {
-    // const {
-    //   isShadow,
-    // } = this.props;
+    const {
+      state: {
+        isVisible,
+        selectedIndex,
+      },
+    } = this;
     return (
-      <View>
-        <ContainerView>
-          <HeaderView>
-            {this.renderTab()}
-          </HeaderView>
-          {this.renderFilterList()}
-        </ContainerView>
-      </View>
+      <ContainerView>
+        <FilterList
+          isVisible={isVisible}
+          onPressClose={this.onToggleVisible}
+          selectedIndex={selectedIndex}
+          onPressItem={this.onPressFilterItem}
+          marginTop={getHeaderHeight() + getHeaderPadding() + 88}
+          // marginBottom={}
+          // flexDirection="column-reverse"
+          list={[
+            { leftText: '跟进时间' },
+            { leftText: '跟进时间2' },
+          ]}
+        />
+        <HeaderView>
+          {this.renderTab()}
+        </HeaderView>
+        {this.renderFilterList()}
+      </ContainerView>
     );
   }
 }

@@ -5,7 +5,9 @@
  * @author JUSTIN XU
  */
 import ActionSheet from './ActionSheet';
+import FilterList from './FilterList';
 
 export {
   ActionSheet,
+  FilterList,
 };
