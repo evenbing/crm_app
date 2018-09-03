@@ -171,6 +171,10 @@ class Home extends React.Component {
 
   keyExtractor = item => item.key;
 
+  createNew = () => {
+    this.setState({ isVisible: !this.state.isVisible });
+  }
+
   renderItem = ({ item }) => {
     const {
       duration,
@@ -246,7 +250,10 @@ class Home extends React.Component {
             </HeaderViewRight>
           </HeaderView>
         </LinearGradient>
-        <Calendar navigate={navigate} />
+        <Calendar
+          navigate={navigate}
+          createNew={this.createNew}
+        />
         <List
           data={data}
           keyExtractor={this.keyExtractor}
