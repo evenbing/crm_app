@@ -184,7 +184,7 @@ class PerfStatist extends React.Component {
   }
 }
 
-PerfStatist.navigationOptions = ({ navigation, screenProps }) => ({
+PerfStatist.navigationOptions = ({ navigation }) => ({
   title: '业绩统计',
   headerLeft: (
     <LeftBackIcon

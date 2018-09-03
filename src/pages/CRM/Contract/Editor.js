@@ -12,11 +12,11 @@ import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+import { ContainerScrollView } from '../../../components/Styles/Layout';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -63,7 +63,7 @@ class Editor extends React.Component {
       navigation: { navigate },
     } = this.props;
     return (
-      <ContainerView
+      <ContainerScrollView
         bottomPadding
       >
         <CommStatusBar />
@@ -117,12 +117,12 @@ class Editor extends React.Component {
         <CreateMoreButton
           onPress={() => navigate(routers.contractEditorMore)}
         />
-      </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
 
-Editor.navigationOptions = ({ navigation, screenProps }) => ({
+Editor.navigationOptions = ({ navigation }) => ({
   title: '编辑资料',
   headerLeft: (
     <LeftBackIcon

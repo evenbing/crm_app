@@ -27,6 +27,7 @@ export default {
   salesChance: 'app.tabView.root.crm.salesChance',
   createSalesChance: 'app.tabView.root.crm.createSalesChance',
   salesChanceDetails: 'app.tabView.root.crm.salesChanceDetails',
+  salesChanceEditorMore: 'app.tabView.root.crm.salesChanceDetails.salesChanceEditorMore',
   // perfStatist module
   perfStatist: 'app.tabView.root.crm.perfStatist',
   // markActivity module

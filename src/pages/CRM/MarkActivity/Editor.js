@@ -30,9 +30,9 @@ const CenterText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
+// const RightText = CenterText.extend`
+//   color: ${theme.textColor};
+// `;
 
 const NavItemStyle = {
   leftWidth: moderateScale(83),

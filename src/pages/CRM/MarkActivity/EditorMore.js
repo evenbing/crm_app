@@ -1,9 +1,3 @@
-/**
- * @component EditorMore.js
- * @description 编辑更多资料页面
- * @time 2018/8/13
- * @author JUSTIN XU
- */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -229,7 +223,7 @@ class EditorMore extends React.Component {
   }
 }
 
-EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
+EditorMore.navigationOptions = ({ navigation }) => ({
   title: '市场活动详情',
   headerLeft: (
     <LeftBackIcon

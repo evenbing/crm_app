@@ -75,12 +75,12 @@ class CreateSalesChance extends Component {
           bottomPadding
         >
           <CommStatusBar />
-          <TitleItem
-            text="必填信息"
-            fontSize={16}
-            titleBackColor="transparent"
-          />
           <ListView>
+            <TitleItem
+              text="基本信息"
+              fontSize={16}
+              titleBackColor="transparent"
+            />
             <NavInputItem
               leftText="姓名"
               inputProps={{
@@ -124,7 +124,7 @@ class CreateSalesChance extends Component {
             height={20}
           />
           <CreateMoreButton
-            onPress={() => navigate(routers.createCustomerMore)}
+            onPress={() => navigate(routers.salesChanceEditorMore)}
           />
           <HorizontalDivider
             height={40}

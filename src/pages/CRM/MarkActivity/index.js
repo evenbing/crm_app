@@ -136,7 +136,7 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
+SalesClues.navigationOptions = ({ navigation }) => ({
   title: '市场活动',
   headerLeft: (
     <LeftBackIcon

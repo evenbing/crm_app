@@ -12,7 +12,7 @@ import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
@@ -60,7 +60,7 @@ class Editor extends React.Component {
       navigation: { navigate },
     } = this.props;
     return (
-      <ContainerView
+      <ContainerScrollView
         bottomPadding
         backgroundColor={theme.whiteColor}
       >
@@ -109,12 +109,12 @@ class Editor extends React.Component {
         <CreateMoreButton
           onPress={() => navigate(routers.contactEditorMore)}
         />
-      </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
 
-Editor.navigationOptions = ({ navigation, screenProps }) => ({
+Editor.navigationOptions = ({ navigation }) => ({
   title: '新增联系人',
   headerLeft: (
     <LeftBackIcon
