@@ -8,10 +8,12 @@ import Drawer from './Drawer';
 import FooterGroup from './FooterGroup';
 import AddButton from './AddButton';
 import LabelItem from './LabelItem';
+import UpdateFieldSideBar from './UpdateFieldSideBar';
 
 export {
   Drawer,
   FooterGroup,
   AddButton,
   LabelItem,
+  UpdateFieldSideBar,
 };

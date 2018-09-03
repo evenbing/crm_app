@@ -26,26 +26,26 @@ flex-direction: row;
 width: ${moderateScale(50)};
 margin-right: ${moderateScale(3)};
 align-items: baseline;
-`
+`;
 const MonthText = styled.Text`
 font-family: ${theme.fontRegular};
 font-size:${moderateScale(12)};
 color: #494949;
 background-color: transparent;
-`
+`;
 const DayText = styled.Text`
 font-family: ${theme.fontMedium};
 font-size: ${moderateScale(16)};
 color: #1F1F1F;
 background-color: transparent;
-`
+`;
 const RightView = styled.View`
 flex: 1;
-`
+`;
 
 class DynamicList extends React.PureComponent {
   render() {
-    const { onPress, data, isFrist } = this.props
+    const { onPress, data, isFrist } = this.props;
     return (
       <ContainerView onPress={onPress} isFrist={isFrist}>
         {

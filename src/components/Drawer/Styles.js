@@ -24,6 +24,7 @@ export const TopTitleText = styled.Text`
 
 export const HeaderTitleText = styled.Text`
   margin-top: ${props => theme.moderateScale(props.marginTop || 17)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
   font-family: ${theme.fontRegular};
   font-size: ${theme.moderateScale(16)};
   color: #7B7B7B;

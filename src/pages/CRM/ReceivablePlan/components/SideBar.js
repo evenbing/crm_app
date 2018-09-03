@@ -83,6 +83,7 @@ class SideBar extends React.PureComponent {
         firstList,
         secondList,
         thirdList,
+        onPressAdd,
       },
     } = this;
     return (
@@ -102,7 +103,7 @@ class SideBar extends React.PureComponent {
             {this.renderLabelItem([...thirdList], thirdIndex, 'thirdIndex')}
           </HeaderLabelView>
           <AddButton
-            onPress={() => alert(1)}
+            onPress={onPressAdd}
           />
         </HeaderView>
         <FooterGroup
@@ -119,6 +120,7 @@ SideBar.defaultProps = {
   secondList: [],
   thirdList: [],
   onFilter: () => null,
+  onPressAdd: () => null,
 };
 
 SideBar.propTypes = {
@@ -126,6 +128,7 @@ SideBar.propTypes = {
   secondList: PropTypes.arrayOf(PropTypes.any),
   thirdList: PropTypes.arrayOf(PropTypes.any),
   onFilter: PropTypes.func,
+  onPressAdd: PropTypes.func,
 };
 
 export default SideBar;

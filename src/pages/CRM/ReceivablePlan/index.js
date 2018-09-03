@@ -22,7 +22,7 @@ import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/i
 import FlatListTable from '../../../components/FlatListTable';
 import TouchableView from '../../../components/TouchableView';
 import { ActionSheet } from '../../../components/Modal';
-import { Drawer } from '../../../components/Drawer';
+import { Drawer, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 import SideBar from './components/SideBar';
 
@@ -55,6 +55,7 @@ class ReceivablePlan extends React.Component {
     amountVisible: false,
     drawerVisible: false,
     filterList: [],
+    sideBarType: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -141,6 +142,66 @@ class ReceivablePlan extends React.Component {
       />
     );
   };
+  renderSideBar = () => {
+    const {
+      state: {
+        sideBarType,
+      },
+    } = this;
+    if (sideBarType === 0) {
+      return (
+        <SideBar
+          firstList={[{
+            name: '不限',
+          }, {
+            name: '已计划',
+          }, {
+            name: '进行中',
+          }, {
+            name: '已完成',
+          }]}
+          secondList={[
+            { name: '产品销售' },
+            { name: '服务' },
+            { name: '业务合作' },
+            { name: '代理分销' },
+            { name: '其他' },
+          ]}
+          thirdList={[{
+            name: '不限',
+          }, {
+            name: '已计划',
+          }, {
+            name: '进行中',
+          }, {
+            name: '已完成',
+          }, {
+            name: '本月',
+          }, {
+            name: '本季',
+          }, {
+            name: '本年',
+          }]}
+          onFilter={this.onFilter}
+          onPressAdd={() => this.setState({ sideBarType: 1 })}
+        />
+      );
+    }
+    return (
+      <UpdateFieldSideBar
+        selectedList={[
+          '回款状态',
+          '客户',
+          '逾期状态',
+        ]}
+        optionalList={[
+          '计划回款金额',
+          '计划回款日期',
+          '合同',
+        ]}
+      />
+    );
+  };
   render() {
     const {
       state: {
@@ -165,42 +226,7 @@ class ReceivablePlan extends React.Component {
     return (
       <Drawer
         isVisible={drawerVisible}
-        content={
-          <SideBar
-            firstList={[{
-              name: '不限',
-            }, {
-              name: '已计划',
-            }, {
-              name: '进行中',
-            }, {
-              name: '已完成',
-            }]}
-            secondList={[
-              { name: '产品销售' },
-              { name: '服务' },
-              { name: '业务合作' },
-              { name: '代理分销' },
-              { name: '其他' },
-            ]}
-            thirdList={[{
-              name: '不限',
-            }, {
-              name: '已计划',
-            }, {
-              name: '进行中',
-            }, {
-              name: '已完成',
-            }, {
-              name: '本月',
-            }, {
-              name: '本季',
-            }, {
-              name: '本年',
-            }]}
-            onFilter={this.onFilter}
-          />
-        }
+        content={this.renderSideBar()}
         onPressClose={this.onCloseDrawer}
       >
         <ContainerView
