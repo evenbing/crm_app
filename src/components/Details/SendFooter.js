@@ -15,6 +15,7 @@ import { getFooterBottom } from '../../utils/utils';
 // components
 import Thumbnail from '../Thumbnail';
 import TouchableView from '../TouchableView';
+import { FilterList } from '../Modal';
 
 const ContainerView = styled.View`
   position: absolute;
@@ -29,6 +30,8 @@ const ContainerView = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+const RecordType = styled.TouchableOpacity``;
 
 const RecordText = styled.Text`
   font-family: ${theme.fontRegular};
@@ -73,10 +76,52 @@ const IconView = styled.View`
 `;
 
 class SendFooter extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: false,
+      selectedIndex: 0,
+    };
+  }
+
+  onPressFilterItem = ({ index, item }) => {
+    const { onSelectRecordType } = this.props;
+    onSelectRecordType && onSelectRecordType(item);
+    this.setState({ selectedIndex: index });
+  };
+
+  selectRecordType= () => {
+    this.setState({
+      isVisible: !this.state.isVisible,
+    });
+  }
+
   render() {
+    const {
+      isVisible,
+      selectedIndex,
+    } = this.state;
+    const {
+      recordTypeList = [
+        { leftText: '跟进时间' },
+        { leftText: '开始时间' },
+      ],
+    } = this.props;
     return (
       <ContainerView>
-        <RecordText>记录类型</RecordText>
+        <FilterList
+          isVisible={isVisible}
+          onPressClose={this.selectRecordType}
+          selectedIndex={selectedIndex}
+          onPressItem={this.onPressFilterItem}
+          // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
+          marginBottom={moderateScale(50 + getFooterBottom())}
+          flexDirection="column-reverse"
+          list={recordTypeList}
+        />
+        <RecordType onPress={this.selectRecordType}>
+          <RecordText>记录类型</RecordText>
+        </RecordType>
         <Thumbnail
           source={require('../../img/crm/details/triangleUp.png')}
           size={8}
