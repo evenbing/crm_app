@@ -8,54 +8,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { theme } from '../../../../constants';
 import { moderateScale } from '../../../../utils/scale';
-import ProductItem from './ProductItem'
+
+// components
+import Thumbnail from '../../../../components/Thumbnail';
+import ProductItem from './ProductItem';
 
 const ContainerView = styled(View)`
-padding: 0 ${moderateScale(15)}px;
-background-color: #fff;
-margin-bottom: ${moderateScale(10)};
+  padding: 0 ${moderateScale(15)}px;
+  background-color: #fff;
+  margin-bottom: ${moderateScale(10)};
 `;
 
 const HeadView = styled(View)`
-height: ${moderateScale(44)};
-alignItems: center;
-justifyContent: space-between;
-flexDirection: row;
-`
+  height: ${moderateScale(44)};
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+`;
 const LeftView = styled(View)`
 
 `;
 
 const LeftText = styled(Text)`
-font-family: ${theme.fontMedium};
-font-size: ${moderateScale(16)};
-color: #18B548;
-`
-
-const RightView = styled(View)`
-flexDirection: row;
+  font-family: ${theme.fontMedium};
+  font-size: ${moderateScale(16)};
+  color: ${theme.primaryColor};
 `;
 
-const ItemView = styled(View)`
-flexDirection: row;
-`
-const ItemIcon = styled(Image)`
+const RightView = styled.View`
+  flex-direction: row;
+`;
 
-`
-const ItemText = styled(Text)`
-font-family: ${theme.fontMedium};
-font-size: ${moderateScale(14)};
-color: #18B548;
-background-color: transparent;
-margin-left: ${moderateScale(5)};
-`
-const ListView = styled(View)``
+const ItemView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ItemText = styled.Text`
+  font-family: ${theme.fontMedium};
+  font-size: ${moderateScale(14)};
+  color: #18B548;
+  background-color: transparent;
+  margin-left: ${moderateScale(5)};
+`;
+const ListView = styled.View``;
 
 class ProductItemList extends React.PureComponent {
-
   render() {
     const { list } = this.props.data;
     return (
@@ -64,11 +65,17 @@ class ProductItemList extends React.PureComponent {
           <LeftView><LeftText>耗材（{list.length}）</LeftText></LeftView>
           <RightView>
             <ItemView>
-              <ItemIcon />
+              <Thumbnail
+                source={require('../../../../img/productList/next.png')}
+                size={16}
+              />
               <ItemText>消耗</ItemText>
             </ItemView>
-            <ItemView style={{marginLeft: moderateScale(20)}}>
-              <ItemIcon />
+            <ItemView style={{ marginLeft: moderateScale(20) }}>
+              <Thumbnail
+                source={require('../../../../img/productList/prev.png')}
+                size={16}
+              />
               <ItemText>单品</ItemText>
             </ItemView>
           </RightView>
@@ -82,13 +89,12 @@ class ProductItemList extends React.PureComponent {
 }
 
 ProductItemList.defaultProps = {
-  data: {},
   isLast: false,
   onPress: () => null,
 };
 
 ProductItemList.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
   isLast: PropTypes.bool,
   onPress: PropTypes.func,
 };

@@ -144,20 +144,23 @@ class ScreenTab extends React.PureComponent {
   };
   renderFilterList = () => {
     const {
-      filterList,
+      selectedList,
     } = this.props;
-    if (!filterList.length) return null;
+    if (!selectedList.length) return null;
     return (
       <FilterView>
         {
-          filterList.map((_, i) => (
-            <FilterItemView
-              key={`${_.name}.${i}`}
-              isFirst={i === 0}
-            >
-              <FilterItemText>{_.name}</FilterItemText>
-            </FilterItemView>
-          ))
+          selectedList.map((_, i) => {
+            if (!_.name) return null;
+            return (
+              <FilterItemView
+                key={`${_.name}.${i}`}
+                isFirst={i === 0}
+              >
+                <FilterItemText>{_.name}</FilterItemText>
+              </FilterItemView>
+            );
+          })
         }
       </FilterView>
     );
@@ -197,14 +200,14 @@ ScreenTab.defaultProps = {
   data: [],
   onChange: () => null,
   activeIndex: 0,
-  filterList: [],
+  selectedList: [],
 };
 
 ScreenTab.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
-  filterList: PropTypes.arrayOf(PropTypes.any),
+  selectedList: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default ScreenTab;

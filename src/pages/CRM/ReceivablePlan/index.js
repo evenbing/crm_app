@@ -6,45 +6,24 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
-import { getFooterBottom } from '../../../utils/utils';
+import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
+import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList/index';
 import FlatListTable from '../../../components/FlatListTable';
-import TouchableView from '../../../components/TouchableView';
 import { ActionSheet } from '../../../components/Modal';
-import { Drawer, UpdateFieldSideBar } from '../../../components/Drawer';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
-import SideBar from './components/SideBar';
 
-const FooterView = styled(TouchableView)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: ${theme.moderateScale(49 + getFooterBottom())};
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background: ${theme.whiteColor};
-  border: 1px solid ${theme.borderColor};
-  padding-bottom: ${getFooterBottom()};
-`;
-
-const FooterText = styled.Text`
-  color: ${theme.primaryColor};
-  font-size: ${theme.moderateScale(18)};
-  font-family: ${theme.fontMedium};
-`;
+import { FilterList } from './_fieldCfg';
 
 useStrict(true);
 
@@ -54,7 +33,8 @@ class ReceivablePlan extends React.Component {
     activeIndex: 0,
     amountVisible: false,
     drawerVisible: false,
-    filterList: [],
+    filterList: FilterList,
+    selectedList: [],
     sideBarType: 0,
   };
   componentDidMount() {
@@ -73,13 +53,36 @@ class ReceivablePlan extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = (list = []) => {
-    // TODO
+  onToggleItem = ({ type, currIndex, pareIndex, value }) => {
+    const list = drawerUtils.handleToggleItem({
+      list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
+      value,
+    });
     this.setState({
       filterList: list,
     });
+  };
+  onResetItem = () => {
+    const list = drawerUtils.handleRestItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onFilter = () => {
+    // TODO
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      selectedList: list,
+    });
     this.onCloseDrawer();
-  }
+  };
   onToggleAmountVisible = () => {
     this.setState({
       amountVisible: !this.state.amountVisible,
@@ -146,43 +149,16 @@ class ReceivablePlan extends React.Component {
     const {
       state: {
         sideBarType,
+        filterList,
       },
     } = this;
     if (sideBarType === 0) {
       return (
-        <SideBar
-          firstList={[{
-            name: '不限',
-          }, {
-            name: '已计划',
-          }, {
-            name: '进行中',
-          }, {
-            name: '已完成',
-          }]}
-          secondList={[
-            { name: '产品销售' },
-            { name: '服务' },
-            { name: '业务合作' },
-            { name: '代理分销' },
-            { name: '其他' },
-          ]}
-          thirdList={[{
-            name: '不限',
-          }, {
-            name: '已计划',
-          }, {
-            name: '进行中',
-          }, {
-            name: '已完成',
-          }, {
-            name: '本月',
-          }, {
-            name: '本季',
-          }, {
-            name: '本年',
-          }]}
+        <FilterSideBar
+          list={filterList}
           onFilter={this.onFilter}
+          onToggle={this.onToggleItem}
+          onReset={this.onResetItem}
           onPressAdd={() => this.setState({ sideBarType: 1 })}
         />
       );
@@ -199,6 +175,7 @@ class ReceivablePlan extends React.Component {
           '计划回款日期',
           '合同',
         ]}
+        onFilter={() => this.setState({ sideBarType: 0 })}
       />
     );
   };
@@ -208,7 +185,7 @@ class ReceivablePlan extends React.Component {
         activeIndex,
         amountVisible,
         drawerVisible,
-        filterList,
+        selectedList,
       },
     } = this;
     const amountActionSheetProps = {
@@ -238,7 +215,7 @@ class ReceivablePlan extends React.Component {
             data={['跟进时间', '我负责的', '筛选']}
             activeIndex={activeIndex}
             onChange={this.onChange}
-            filterList={filterList}
+            selectedList={selectedList}
           />
           <FlatListTable
             data={[
@@ -268,9 +245,7 @@ class ReceivablePlan extends React.Component {
             renderItem={this.renderItem}
           />
           <ActionSheet {...amountActionSheetProps} />
-          <FooterView onPress={this.onToggleAmountVisible}>
-            <FooterText>数据合计</FooterText>
-          </FooterView>
+          <FooterTotal onPress={this.onToggleAmountVisible} />
         </ContainerView>
       </Drawer>
     );

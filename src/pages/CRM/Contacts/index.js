@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -20,8 +20,9 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
 import FlatListTable from '../../../components/FlatListTable';
 import LeftItem from './components/LeftItem';
-import { Drawer } from '../../../components/Drawer';
-import SideBar from './components/SideBar';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+
+import { FilterList } from './_fieldCfg';
 
 useStrict(true);
 
@@ -30,7 +31,9 @@ class Contacts extends React.Component {
   state = {
     activeIndex: 0,
     drawerVisible: false,
-    filterList: [],
+    filterList: FilterList,
+    selectedList: [],
+    sideBarType: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -55,13 +58,36 @@ class Contacts extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = (list = []) => {
-    // TODO
+  onToggleItem = ({ type, currIndex, pareIndex, value }) => {
+    const list = drawerUtils.handleToggleItem({
+      list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
+      value,
+    });
     this.setState({
       filterList: list,
     });
+  };
+  onResetItem = () => {
+    const list = drawerUtils.handleRestItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onFilter = () => {
+    // TODO
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      selectedList: list,
+    });
     this.onCloseDrawer();
-  }
+  };
   onRowOpen = (index) => {
     console.log(index);
     this.safeCloseOpenRow(index);
@@ -113,31 +139,52 @@ class Contacts extends React.Component {
       />
     );
   };
+  renderSideBar = () => {
+    const {
+      state: {
+        sideBarType,
+        filterList,
+      },
+    } = this;
+    if (sideBarType === 0) {
+      return (
+        <FilterSideBar
+          list={filterList}
+          onFilter={this.onFilter}
+          onToggle={this.onToggleItem}
+          onReset={this.onResetItem}
+          onPressAdd={() => this.setState({ sideBarType: 1 })}
+        />
+      );
+    }
+    return (
+      <UpdateFieldSideBar
+        selectedList={[
+          '回款状态',
+          '客户',
+          '逾期状态',
+        ]}
+        optionalList={[
+          '计划回款金额',
+          '计划回款日期',
+          '合同',
+        ]}
+        onFilter={() => this.setState({ sideBarType: 0 })}
+      />
+    );
+  };
   render() {
     const {
       state: {
         activeIndex,
         drawerVisible,
-        filterList,
+        selectedList,
       },
     } = this;
     return (
       <Drawer
         isVisible={drawerVisible}
-        content={
-          <SideBar
-            firstList={[
-              { name: '不限' },
-              { name: '本月' },
-              { name: '本季' },
-              { name: '本年' },
-              { name: '已计划' },
-              { name: '进行中' },
-              { name: '已完成' },
-            ]}
-            onFilter={this.onFilter}
-          />
-        }
+        content={this.renderSideBar()}
         onPressClose={this.onCloseDrawer}
       >
         <ContainerView
@@ -149,7 +196,7 @@ class Contacts extends React.Component {
             data={['跟进时间', '我负责的', '筛选']}
             activeIndex={activeIndex}
             onChange={this.onChange}
-            filterList={filterList}
+            selectedList={selectedList}
           />
           <FlatListTable
             data={[

@@ -6,11 +6,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { useStrict } from 'mobx';
+import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import {routers, theme} from '../../../constants';
+import { routers, theme } from '../../../constants';
+import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -18,6 +19,9 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+
+import { FilterList } from './_fieldCfg';
 
 useStrict(true);
 
@@ -25,6 +29,10 @@ useStrict(true);
 class Customer extends React.Component {
   state = {
     activeIndex: 0,
+    drawerVisible: false,
+    filterList: FilterList,
+    selectedList: [],
+    sideBarType: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -38,8 +46,46 @@ class Customer extends React.Component {
     this.setState({ activeIndex: index });
     if (isLast) {
       // TODO open drawer
-      alert('isLast');
+      this.onOpenDrawer();
     }
+  };
+  onCloseDrawer = () => {
+    StatusBar.setBarStyle('light-content');
+    this.setState({ drawerVisible: false });
+  };
+  onOpenDrawer = () => {
+    StatusBar.setBarStyle('dark-content');
+    this.setState({ drawerVisible: true });
+  };
+  onToggleItem = ({ type, currIndex, pareIndex, value }) => {
+    const list = drawerUtils.handleToggleItem({
+      list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
+      value,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onResetItem = () => {
+    const list = drawerUtils.handleRestItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onFilter = () => {
+    // TODO
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      selectedList: list,
+    });
+    this.onCloseDrawer();
   };
   onRowOpen = (index) => {
     console.log(index);
@@ -90,32 +136,76 @@ class Customer extends React.Component {
       />
     );
   };
+  renderSideBar = () => {
+    const {
+      state: {
+        sideBarType,
+        filterList,
+      },
+    } = this;
+    if (sideBarType === 0) {
+      return (
+        <FilterSideBar
+          list={filterList}
+          onFilter={this.onFilter}
+          onToggle={this.onToggleItem}
+          onReset={this.onResetItem}
+          onPressAdd={() => this.setState({ sideBarType: 1 })}
+        />
+      );
+    }
+    return (
+      <UpdateFieldSideBar
+        selectedList={[
+          '回款状态',
+          '客户',
+          '逾期状态',
+        ]}
+        optionalList={[
+          '计划回款金额',
+          '计划回款日期',
+          '合同',
+        ]}
+        onFilter={() => this.setState({ sideBarType: 0 })}
+      />
+    );
+  };
   render() {
     const {
-      state: { activeIndex },
+      state: {
+        activeIndex,
+        drawerVisible,
+        selectedList,
+      },
     } = this;
     return (
-      <ContainerView
-        bottomPadding
+      <Drawer
+        isVisible={drawerVisible}
+        content={this.renderSideBar()}
+        onPressClose={this.onCloseDrawer}
       >
-        <CommStatusBar />
-        <SearchInput placeholder="输入客户名称" />
-        <ScreenTab
-          data={['跟进时间', '我负责的', '筛选']}
-          activeIndex={activeIndex}
-          onChange={this.onChange}
-        />
-        <FlatListTable
-          data={[
+        <ContainerView
+          bottomPadding
+        >
+          <CommStatusBar />
+          <SearchInput placeholder="输入客户名称" />
+          <ScreenTab
+            data={['跟进时间', '我负责的', '筛选']}
+            activeIndex={activeIndex}
+            onChange={this.onChange}
+            selectedList={selectedList}
+          />
+          <FlatListTable
+            data={[
             { title: '李总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
             { title: '张总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
             { title: '何总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
           ]}
-          keyExtractor={item => item.title}
-          renderItem={this.renderItem}
-        />
-
-      </ContainerView>
+            keyExtractor={item => item.title}
+            renderItem={this.renderItem}
+          />
+        </ContainerView>
+      </Drawer>
     );
   }
 }

@@ -8,6 +8,7 @@ import Drawer from './Drawer';
 import FooterGroup from './FooterGroup';
 import AddButton from './AddButton';
 import LabelItem from './LabelItem';
+import FilterSideBar from './FilterSideBar';
 import UpdateFieldSideBar from './UpdateFieldSideBar';
 
 export {
@@ -15,5 +16,6 @@ export {
   FooterGroup,
   AddButton,
   LabelItem,
+  FilterSideBar,
   UpdateFieldSideBar,
 };

@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -20,9 +20,10 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { ActionSheet } from '../../../components/Modal';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
-import { Drawer } from '../../../components/Drawer';
-import SideBar from './components/SideBar';
+
+import { FilterList } from './_fieldCfg';
 
 useStrict(true);
 
@@ -32,7 +33,9 @@ class Contract extends React.Component {
     activeIndex: 0,
     amountVisible: false,
     drawerVisible: false,
-    filterList: [],
+    filterList: FilterList,
+    selectedList: [],
+    sideBarType: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -64,13 +67,36 @@ class Contract extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = (list = []) => {
-    // TODO
+  onToggleItem = ({ type, currIndex, pareIndex, value }) => {
+    const list = drawerUtils.handleToggleItem({
+      list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
+      value,
+    });
     this.setState({
       filterList: list,
     });
+  };
+  onResetItem = () => {
+    const list = drawerUtils.handleRestItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onFilter = () => {
+    // TODO
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      selectedList: list,
+    });
     this.onCloseDrawer();
-  }
+  };
   onRowOpen = (index) => {
     console.log(index);
     this.safeCloseOpenRow(index);
@@ -128,13 +154,47 @@ class Contract extends React.Component {
       />
     );
   };
+  renderSideBar = () => {
+    const {
+      state: {
+        sideBarType,
+        filterList,
+      },
+    } = this;
+    if (sideBarType === 0) {
+      return (
+        <FilterSideBar
+          list={filterList}
+          onFilter={this.onFilter}
+          onToggle={this.onToggleItem}
+          onReset={this.onResetItem}
+          onPressAdd={() => this.setState({ sideBarType: 1 })}
+        />
+      );
+    }
+    return (
+      <UpdateFieldSideBar
+        selectedList={[
+          '回款状态',
+          '客户',
+          '逾期状态',
+        ]}
+        optionalList={[
+          '计划回款金额',
+          '计划回款日期',
+          '合同',
+        ]}
+        onFilter={() => this.setState({ sideBarType: 0 })}
+      />
+    );
+  };
   render() {
     const {
       state: {
         activeIndex,
         amountVisible,
         drawerVisible,
-        filterList,
+        selectedList,
       },
     } = this;
     const amountActionSheetProps = {
@@ -150,26 +210,7 @@ class Contract extends React.Component {
     return (
       <Drawer
         isVisible={drawerVisible}
-        content={
-          <SideBar
-            firstList={[
-              { name: '执行中' },
-              { name: '结束' },
-              { name: '意外终止' },
-            ]}
-            secondList={[
-              { name: '产品销售' },
-              { name: '服务' },
-              { name: '业务合作' },
-              { name: '代理分销' },
-              { name: '其他' },
-            ]}
-            thirdList={[
-              { name: '西风网络' },
-            ]}
-            onFilter={this.onFilter}
-          />
-        }
+        content={this.renderSideBar()}
         onPressClose={this.onCloseDrawer}
       >
         <ContainerView
@@ -182,7 +223,7 @@ class Contract extends React.Component {
             data={['跟进时间', '我负责的', '筛选']}
             activeIndex={activeIndex}
             onChange={this.onChange}
-            filterList={filterList}
+            selectedList={selectedList}
           />
           <FlatListTable
             data={[

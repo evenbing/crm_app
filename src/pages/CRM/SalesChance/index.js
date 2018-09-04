@@ -7,10 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
+import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -18,9 +20,12 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import TouchableView from '../../../components/TouchableView';
 import LeftItem from './components/LeftItem';
 import BoardList from './components/BoardList';
+
+import { FilterList } from './_fieldCfg';
 
 const DashboardView = styled(TouchableView)`
   width: ${theme.moderateScale(20)};
@@ -35,6 +40,10 @@ class SalesChance extends React.Component {
   state = {
     activeIndex: 0,
     isBoard: false,
+    drawerVisible: false,
+    filterList: FilterList,
+    selectedList: [],
+    sideBarType: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -49,8 +58,46 @@ class SalesChance extends React.Component {
     this.setState({ activeIndex: index });
     if (isLast) {
       // TODO open drawer
-      alert('isLast');
+      this.onOpenDrawer();
     }
+  };
+  onCloseDrawer = () => {
+    StatusBar.setBarStyle('light-content');
+    this.setState({ drawerVisible: false });
+  };
+  onOpenDrawer = () => {
+    StatusBar.setBarStyle('dark-content');
+    this.setState({ drawerVisible: true });
+  };
+  onToggleItem = ({ type, currIndex, pareIndex, value }) => {
+    const list = drawerUtils.handleToggleItem({
+      list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
+      value,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onResetItem = () => {
+    const list = drawerUtils.handleRestItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      filterList: list,
+    });
+  };
+  onFilter = () => {
+    // TODO
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    this.setState({
+      selectedList: list,
+    });
+    this.onCloseDrawer();
   };
   onRowOpen = (index) => {
     console.log(index);
@@ -156,28 +203,73 @@ class SalesChance extends React.Component {
       <BoardList />
     );
   };
+  renderSideBar = () => {
+    const {
+      state: {
+        sideBarType,
+        filterList,
+      },
+    } = this;
+    if (sideBarType === 0) {
+      return (
+        <FilterSideBar
+          list={filterList}
+          onFilter={this.onFilter}
+          onToggle={this.onToggleItem}
+          onReset={this.onResetItem}
+          onPressAdd={() => this.setState({ sideBarType: 1 })}
+        />
+      );
+    }
+    return (
+      <UpdateFieldSideBar
+        selectedList={[
+          '回款状态',
+          '客户',
+          '逾期状态',
+        ]}
+        optionalList={[
+          '计划回款金额',
+          '计划回款日期',
+          '合同',
+        ]}
+        onFilter={() => this.setState({ sideBarType: 0 })}
+      />
+    );
+  };
   render() {
     const {
-      state: { activeIndex },
+      state: {
+        activeIndex,
+        drawerVisible,
+        selectedList,
+      },
     } = this;
     return (
-      <ContainerView
-        bottomPadding
+      <Drawer
+        isVisible={drawerVisible}
+        content={this.renderSideBar()}
+        onPressClose={this.onCloseDrawer}
       >
-        <CommStatusBar />
-        <SearchInput placeholder="输入客户名称" />
-        <ScreenTab
-          data={[
+        <ContainerView
+          bottomPadding
+        >
+          <CommStatusBar />
+          <SearchInput placeholder="输入客户名称" />
+          <ScreenTab
+            data={[
             '销售金额',
             '我负责的',
             this.renderBoard(),
             '筛选',
           ]}
-          activeIndex={activeIndex}
-          onChange={this.onChange}
-        />
-        {this.renderSection()}
-      </ContainerView>
+            activeIndex={activeIndex}
+            onChange={this.onChange}
+            selectedList={selectedList}
+          />
+          {this.renderSection()}
+        </ContainerView>
+      </Drawer>
     );
   }
 }

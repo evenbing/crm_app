@@ -42,36 +42,6 @@ const ListRightView = styled.View`
 `;
 
 class UpdateFieldSideBar extends React.PureComponent {
-  state = {
-    firstIndex: -1,
-  };
-  onToggle = (type, index) => {
-    let currIndex = index;
-    if (this.state[type] === index) {
-      currIndex = -1;
-    }
-    this.setState({ [type]: currIndex });
-  };
-  onReset = () => {
-    this.setState({
-      firstIndex: -1,
-    });
-  };
-  onSubmit = () => {
-    const {
-      state: {
-        firstIndex,
-      },
-      props: {
-        firstList,
-      },
-    } = this;
-    const arr = [];
-    if (firstIndex !== -1) {
-      arr.push(firstList[firstIndex]);
-    }
-    this.props.onFilter(arr);
-  };
   renderSelectedItem = () => {
     const {
       props: {
@@ -128,6 +98,12 @@ class UpdateFieldSideBar extends React.PureComponent {
     ));
   };
   render() {
+    const {
+      props: {
+        onReset,
+        onFilter,
+      },
+    } = this;
     return (
       <ContainerView>
         <HeaderView>
@@ -148,8 +124,8 @@ class UpdateFieldSideBar extends React.PureComponent {
           {this.renderOptionalItem()}
         </HeaderView>
         <FooterGroup
-          onReset={this.onReset}
-          onSubmit={this.onSubmit}
+          onReset={onReset}
+          onSubmit={onFilter}
         />
       </ContainerView>
     );
@@ -159,12 +135,14 @@ class UpdateFieldSideBar extends React.PureComponent {
 UpdateFieldSideBar.defaultProps = {
   selectedList: [],
   optionalList: [],
+  onReset: () => null,
   onFilter: () => null,
 };
 
 UpdateFieldSideBar.propTypes = {
   selectedList: PropTypes.arrayOf(PropTypes.any),
   optionalList: PropTypes.arrayOf(PropTypes.any),
+  onReset: PropTypes.func,
   onFilter: PropTypes.func,
 };
 

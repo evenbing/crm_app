@@ -7,9 +7,11 @@
 import ScreenTab from './ScreenTab';
 import ListItem from './ListItem';
 import ButtonList from './ButtonList';
+import FooterTotal from './FooterTotal';
 
 export {
   ScreenTab,
   ListItem,
   ButtonList,
+  FooterTotal,
 };
