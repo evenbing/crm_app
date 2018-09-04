@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Root } from 'native-base';
 import { Image } from 'react-native';
@@ -145,24 +146,30 @@ const HomeNavigatorConfig = {
 
 const HomeStack = StackNavigator(HomeRouteConfig, HomeNavigatorConfig);
 
+const homeTabBarIcon = ({ focused }) => (
+  focused ? (
+    <Image
+      source={require('./img/rootTabBar/home-focus.png')}
+      style={{ width: moderateScale(24), height: moderateScale(22) }}
+      resizeMode="contain"
+    />
+  ) : (
+    <Image
+      source={require('./img/rootTabBar/home.png')}
+      style={{ width: moderateScale(24), height: moderateScale(22) }}
+      resizeMode="contain"
+    />
+  )
+);
+
+homeTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
+};
+
 HomeStack.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
   tabBarLabel: '主页',
-  tabBarIcon: ({ focused }) => (
-    focused ? (
-      <Image
-        source={require('./img/rootTabBar/home-focus.png')}
-        style={{ width: moderateScale(24), height: moderateScale(22) }}
-        resizeMode="contain"
-      />
-    ) : (
-      <Image
-        source={require('./img/rootTabBar/home.png')}
-        style={{ width: moderateScale(24), height: moderateScale(22) }}
-        resizeMode="contain"
-      />
-    )
-  ),
+  tabBarIcon: homeTabBarIcon,
 });
 
 const CrmRouteConfig = {
@@ -232,26 +239,32 @@ const CrmNavigatorConfig = {
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 
+const crmTabBarIcon = ({ focused }) => (
+  focused ? (
+    <Image
+      source={require('./img/rootTabBar/rank-focus.png')}
+      style={{ width: 22, height: 20 }}
+      resizeMode="contain"
+    />
+  ) : (
+    <Image
+      source={require('./img/rootTabBar/rank.png')}
+      style={{ width: 22, height: 20 }}
+      resizeMode="contain"
+    />
+  )
+);
+
+crmTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
+};
+
 CrmStack.navigationOptions = ({ navigation }) => {
   const { index, params } = navigation.state;
   return {
     tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
     tabBarLabel: 'CRM',
-    tabBarIcon: ({ focused }) => (
-      focused ? (
-        <Image
-          source={require('./img/rootTabBar/rank-focus.png')}
-          style={{ width: 22, height: 20 }}
-          resizeMode="contain"
-        />
-      ) : (
-        <Image
-          source={require('./img/rootTabBar/rank.png')}
-          style={{ width: 22, height: 20 }}
-          resizeMode="contain"
-        />
-      )
-    ),
+    tabBarIcon: crmTabBarIcon,
   };
 };
 
