@@ -1,10 +1,65 @@
 /**
- * @component contact.js
+ * @component contacts.js
  * @description 联系人 service
  * @time 2018/8/27
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+
+/** 查询联系人列表
+ * @params options
+ * {
+ *   my 我负责的
+ *   myParticipate 我参与的
+ *   sevenDaysUninvolved 7天未跟进的
+ *   all 全部
+ *   name  姓名
+ *   followTimeType 跟进时间范围
+ *   companyName 公司名称
+ *   departmentId 部门id
+ *   departmentName 部门
+ *   jobTitle 职务
+ *   phoneNumber 电话
+ *   mobilePhone 手机
+ *   email 性别
+ *   sortColumn 表头排序
+ * }
+ * @return Promise<ArrayList>
+ */
+export function getContactList({
+  my,
+  myParticipate,
+  sevenDaysUninvolved,
+  all,
+  name,
+  followTimeType,
+  companyName,
+  departmentId,
+  departmentName,
+  jobTitle,
+  phoneNumber,
+  mobilePhone,
+  email,
+  sortColumn,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.contact.find',
+    my,
+    myParticipate,
+    sevenDaysUninvolved,
+    all,
+    name,
+    followTimeType,
+    companyName,
+    departmentId,
+    departmentName,
+    jobTitle,
+    phoneNumber,
+    mobilePhone,
+    email,
+    sortColumn,
+  });
+}
 
 /** 新增联系人
  * @params options
@@ -68,7 +123,7 @@ export function createContact({
  * }
  * @return Promise<ArrayList>
  */
-export function getContact({
+export function getContactDetails({
   id,
 } = {}) {
   return post({
