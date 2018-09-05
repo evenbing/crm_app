@@ -30,7 +30,7 @@ const TotalView = styled.View`
   border: 1px solid ${theme.borderColor};
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
@@ -61,10 +61,14 @@ class Details extends React.Component {
   };
   renderTotalItem = () => {
     const list = [
-      { title: '文档', text: '12' },
+      {
+        title: '文档',
+        text: '12',
+        onPress: () => { this.props.navigation.navigate(routers.relatedDocs); },
+      },
     ];
     return list.map(_ => (
-      <ItemView key={_.title}>
+      <ItemView key={_.title} onPress={_.onPress} >
         <NumberText>{_.text}</NumberText>
         <TitleText>{_.title}</TitleText>
       </ItemView>
@@ -191,8 +195,8 @@ class Details extends React.Component {
   }
 }
 
-Details.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '回款计划资料',
+Details.navigationOptions = ({ navigation }) => ({
+  title: '回款记录资料',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

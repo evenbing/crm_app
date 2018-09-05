@@ -91,6 +91,8 @@ import ReceivableRecordScreen from './pages/CRM/ReceivableRecord';
 import ReceivableRecordDetailsScreen from './pages/CRM/ReceivableRecord/Details';
 import ReceivableRecordEditorScreen from './pages/CRM/ReceivableRecord/Editor';
 import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/EditorMore';
+// root page -> Card -> RelatedDocs
+import RelatedDocs from './pages/Card/RelatedDocs';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -227,6 +229,8 @@ const CrmRouteConfig = {
   [routers.receivableRecordEditorMore]: { screen: ReceivableRecordEditorMoreScreen },
 
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
+
+  [routers.relatedDocs]: { screen: RelatedDocs },
 
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },

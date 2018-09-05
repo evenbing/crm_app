@@ -28,7 +28,7 @@ import { FilterList } from './_fieldCfg';
 useStrict(true);
 
 @observer
-class ReceivablePlan extends React.Component {
+class ReceivableRecord extends React.Component {
   state = {
     activeIndex: 0,
     amountVisible: false,
@@ -130,7 +130,7 @@ class ReceivablePlan extends React.Component {
             left={
               <LeftItem {...props} />
             }
-            onPress={() => navigate(routers.receivablePlanDetails)}
+            onPress={() => navigate(routers.receivableRecordDetails)}
           />
         }
         right={
@@ -252,7 +252,7 @@ class ReceivablePlan extends React.Component {
   }
 }
 
-ReceivablePlan.navigationOptions = ({ navigation, screenProps }) => ({
+ReceivableRecord.navigationOptions = ({ navigation }) => ({
   title: '回款记录',
   headerLeft: (
     <LeftBackIcon
@@ -270,9 +270,11 @@ ReceivablePlan.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-ReceivablePlan.defaultProps = {};
+ReceivableRecord.defaultProps = {
+  index: '',
+};
 
-ReceivablePlan.propTypes = {
+ReceivableRecord.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -284,7 +286,7 @@ ReceivablePlan.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.string,
 };
 
-export default ReceivablePlan;
-
+export default ReceivableRecord;
