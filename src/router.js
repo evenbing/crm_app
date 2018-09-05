@@ -149,19 +149,14 @@ const HomeNavigatorConfig = {
 const HomeStack = StackNavigator(HomeRouteConfig, HomeNavigatorConfig);
 
 const homeTabBarIcon = ({ focused }) => (
-  focused ? (
-    <Image
-      source={require('./img/rootTabBar/home-focus.png')}
-      style={{ width: moderateScale(24), height: moderateScale(22) }}
-      resizeMode="contain"
-    />
-  ) : (
-    <Image
-      source={require('./img/rootTabBar/home.png')}
-      style={{ width: moderateScale(24), height: moderateScale(22) }}
-      resizeMode="contain"
-    />
-  )
+  <Image
+    source={focused ?
+      require('./img/rootTabBar/home-focus.png') :
+      require('./img/rootTabBar/home.png')
+    }
+    style={{ width: 24, height: 22 }}
+    resizeMode="contain"
+  />
 );
 
 homeTabBarIcon.propTypes = {
@@ -244,19 +239,14 @@ const CrmNavigatorConfig = {
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
 
 const crmTabBarIcon = ({ focused }) => (
-  focused ? (
-    <Image
-      source={require('./img/rootTabBar/rank-focus.png')}
-      style={{ width: 22, height: 20 }}
-      resizeMode="contain"
-    />
-  ) : (
-    <Image
-      source={require('./img/rootTabBar/rank.png')}
-      style={{ width: 22, height: 20 }}
-      resizeMode="contain"
-    />
-  )
+  <Image
+    source={focused ?
+      require('./img/rootTabBar/rank-focus.png') :
+      require('./img/rootTabBar/rank.png')
+    }
+    style={{ width: 22, height: 20 }}
+    resizeMode="contain"
+  />
 );
 
 crmTabBarIcon.propTypes = {

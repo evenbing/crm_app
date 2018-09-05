@@ -23,6 +23,7 @@ import LeftItem from './components/LeftItem';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
+import ContactsModel from '../../../logicStores/contacts';
 
 useStrict(true);
 
@@ -39,6 +40,7 @@ class Contacts extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    ContactsModel.getContactListReq();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.contactEditor);

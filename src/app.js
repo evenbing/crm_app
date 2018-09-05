@@ -37,42 +37,42 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: true,
     };
   }
   componentWillMount() {
-    // this.initApp();
+    this.initApp();
   }
   initApp = async () => {
     try {
       const config = await getConfig();
       init(config);
       // const id = '1015609398284128256'; // dev env passportId
-      const id = await getPassportId();
-      const {
-        errors: pwdErrors,
-        passport: { tenantId, userId } = {},
-      } = await AppService.getPassportInfo({ id });
-      if (pwdErrors == null || pwdErrors.length > 0) {
-        throw new Error(pwdErrors[0].message);
-      }
-      global.tenantId = tenantId;
-      global.userId = userId;
-      const {
-        errors: userErrors,
-        result = [],
-      } = await AppService.getShoppingGuideInfo({
-        userId,
-        tenantId,
-      });
-      if (userErrors == null || userErrors.length > 0) {
-        throw new Error(userErrors[0].message);
-      }
-      const { id: guideUserId } = result[0] || {};
-      if (!guideUserId) {
-        throw new Error('没有此导购信息');
-      }
-      global.guideUserId = guideUserId;
+      // const id = await getPassportId();
+      // const {
+      //   errors: pwdErrors,
+      //   passport: { tenantId, userId } = {},
+      // } = await AppService.getPassportInfo({ id });
+      // if (pwdErrors == null || pwdErrors.length > 0) {
+      //   throw new Error(pwdErrors[0].message);
+      // }
+      // global.tenantId = tenantId;
+      // global.userId = userId;
+      // const {
+      //   errors: userErrors,
+      //   result = [],
+      // } = await AppService.getShoppingGuideInfo({
+      //   userId,
+      //   tenantId,
+      // });
+      // if (userErrors == null || userErrors.length > 0) {
+      //   throw new Error(userErrors[0].message);
+      // }
+      // const { id: guideUserId } = result[0] || {};
+      // if (!guideUserId) {
+      //   throw new Error('没有此导购信息');
+      // }
+      // global.guideUserId = guideUserId;
       this.setState({ loading: false });
     } catch (e) {
       Toast.showError(e.message);
