@@ -41,6 +41,8 @@ export function getContactList({
   mobilePhone,
   email,
   sortColumn,
+  pageNumber = 1,
+  pageSize = 15,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.find',
@@ -58,6 +60,8 @@ export function getContactList({
     mobilePhone,
     email,
     sortColumn,
+    pageNumber,
+    pageSize,
   });
 }
 

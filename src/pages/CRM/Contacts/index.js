@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StatusBar } from 'react-native';
-import { useStrict } from 'mobx';
+import { useStrict, toJS } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
@@ -23,7 +23,7 @@ import LeftItem from './components/LeftItem';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
-// import ContactsModel from '../../../logicStores/contacts';
+import ContactsModel from '../../../logicStores/contacts';
 
 // screenTab
 import {
@@ -49,7 +49,7 @@ class Contacts extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-    // ContactsModel.getContactListReq();
+    this.getData();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.contactEditor);
@@ -61,10 +61,11 @@ class Contacts extends React.Component {
       this.onOpenDrawer();
     }
   };
-  onPressFilterItem = ({ index }) => {
+  onPressFilterItem = async ({ index }) => {
     const { screenTabList, activeIndex } = this.state;
     screenTabList[activeIndex].selectedIndex = index;
-    this.setState({ screenTabList });
+    await this.setState({ screenTabList });
+    this.getData();
   };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
@@ -108,6 +109,25 @@ class Contacts extends React.Component {
     console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
+  };
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = ContactsModel.contactList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    const { screenTabList } = this.state;
+    const obj = { pageNumber };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
+    });
+    // ContactsModel.getContactListReq(obj);
+    ContactsModel.getContactListReq({ pageNumber });
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -198,6 +218,23 @@ class Contacts extends React.Component {
         screenTabList,
       },
     } = this;
+    const {
+      contactList: { list, refreshing, loadingMore },
+    } = ContactsModel;
+    const flatProps = {
+      //   data={[
+      //   { name: '李总', jobTitle: '市场总监', companyName: '阿里巴巴' },
+      // ]}
+      data: toJS(list),
+      keyExtractor: item => `${item.name}.${item.jobTitle}`,
+      renderItem: this.renderItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -217,13 +254,8 @@ class Contacts extends React.Component {
             selectedList={selectedList}
           />
           <FlatListTable
-            data={[
-            { title: '李总', job: '市场总监', company: '阿里巴巴' },
-            { title: '张总', job: '销售总监', company: '字节跳动' },
-            { title: '何总', job: '人力总监', company: '腾讯科技' },
-          ]}
-            keyExtractor={item => item.title}
-            renderItem={this.renderItem}
+            {...flatProps}
+
           />
         </ContainerView>
       </Drawer>

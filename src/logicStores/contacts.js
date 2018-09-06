@@ -17,25 +17,45 @@ useStrict(true);
 
 @autobind
 class ContactStore {
-  // 详情
+  // 列表
   @observable contactList = {
-
+    pageNumber: 1,
+    refreshing: false,
+    loadingMore: false,
+    list: [],
+    total: 0,
   };
   @observable contactDetails = {};
 
   // 列表
-  @action async getContactListReq(options = {}) {
+  @action async getContactListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      if (pageNumber === 1) {
+        this.contactList.refreshing = true;
+      } else {
+        this.contactList.loadingMore = true;
+      }
       const {
         result = [],
         totalCount = 0,
-      } = await getContactList(options);
-      // debugger;
+      } = await getContactList({ pageNumber, ...restProps });
       runInAction(() => {
-        this.contactList = { list: result, totalCount };
+        this.contactList.total = totalCount;
+        this.contactList.pageNumber = pageNumber;
+
+        if (pageNumber === 1) {
+          this.contactList.list = [...result];
+        } else {
+          this.contactList.list = this.contactList.list.concat(result);
+        }
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.contactList.refreshing = false;
+        this.contactList.loadingMore = false;
+      });
     }
   }
 
