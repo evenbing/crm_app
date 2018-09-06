@@ -28,10 +28,11 @@ class ContactStore {
     try {
       const {
         result = [],
+        totalCount = 0,
       } = await getContactList(options);
-      debugger;
+      // debugger;
       runInAction(() => {
-        this.contactList = { list: result };
+        this.contactList = { list: result, totalCount };
       });
     } catch (e) {
       Toast.showError(e.message);

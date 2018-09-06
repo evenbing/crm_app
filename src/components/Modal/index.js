@@ -6,8 +6,10 @@
  */
 import ActionSheet from './ActionSheet';
 import FilterList from './FilterList';
+import SendFilterList from './SendFilterList';
 
 export {
   ActionSheet,
   FilterList,
+  SendFilterList,
 };

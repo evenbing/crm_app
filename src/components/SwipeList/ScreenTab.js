@@ -64,21 +64,53 @@ const IconStyle = {
 class ScreenTab extends React.PureComponent {
   state = {
     isVisible: false,
-    selectedIndex: 0,
+    headerList: [], // 头部显示List
+    filterMap: {}, // 下拉菜单Map
   };
-  onToggleVisible = () => {
+  componentWillReceiveProps(nextProps) {
+    const { list, activeIndex } = nextProps;
+    if (list.length && activeIndex !== -1) {
+      let filterMap = {};
+      const headerList = [];
+      list.forEach((_, i) => {
+        const { selectedIndex = 0, list = [] } = _;
+        if (!list.length) return;
+        if (activeIndex === i) {
+          filterMap = _;
+        }
+        headerList.push(list[selectedIndex].name);
+      });
+      if (activeIndex === list.length - 1) {
+        filterMap = {};
+      }
+      this.setState({
+        headerList,
+        filterMap,
+      });
+    }
+  }
+  onHideVisible = () => {
     this.setState({
-      isVisible: !this.state.isVisible,
+      isVisible: false,
+    });
+  };
+  onShowVisible = () => {
+    this.setState({
+      isVisible: true,
     });
   };
   onPressItem = ({ index, isLast }) => {
-    if (!isLast) {
-      this.onToggleVisible();
-    }
+    const { activeIndex } = this.props;
+    const { isVisible } = this.state;
     this.props.onChange({ index, isLast });
-  };
-  onPressFilterItem = ({ index, item }) => {
-    this.setState({ selectedIndex: index });
+    if (activeIndex !== index) {
+      isVisible ? this.onShowVisible() : this.onHideVisible();
+    }
+    if (isLast) {
+      this.onHideVisible();
+    } else {
+      this.onShowVisible();
+    }
   };
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
@@ -119,12 +151,16 @@ class ScreenTab extends React.PureComponent {
   };
   renderTab = () => {
     const {
-      data,
-      activeIndex,
-    } = this.props;
-    if (!(data && data.length)) return null;
-    const dataLen = data.length;
-    return data.map((_, index) => {
+      state: {
+        headerList,
+      },
+      props: {
+        activeIndex,
+      },
+    } = this;
+    if (!(headerList && headerList.length)) return null;
+    const dataLen = headerList.length;
+    return headerList.map((_, index) => {
       const active = activeIndex === index;
       const isLast = dataLen - 1 === index;
       return (
@@ -169,23 +205,21 @@ class ScreenTab extends React.PureComponent {
     const {
       state: {
         isVisible,
-        selectedIndex,
+        filterMap: { selectedIndex, list },
+      },
+      props: {
+        onPressFilterItem,
       },
     } = this;
     return (
       <ContainerView>
         <FilterList
           isVisible={isVisible}
-          onPressClose={this.onToggleVisible}
+          onPressClose={this.onHideVisible}
           selectedIndex={selectedIndex}
-          onPressItem={this.onPressFilterItem}
-          marginTop={getHeaderHeight() + getHeaderPadding() + 88}
-          // marginBottom={}
-          // flexDirection="column-reverse"
-          list={[
-            { leftText: '跟进时间' },
-            { leftText: '跟进时间2' },
-          ]}
+          onPressItem={onPressFilterItem}
+          position={getHeaderHeight() + getHeaderPadding() + 88}
+          list={list}
         />
         <HeaderView>
           {this.renderTab()}
@@ -197,16 +231,17 @@ class ScreenTab extends React.PureComponent {
 }
 
 ScreenTab.defaultProps = {
-  data: [],
   onChange: () => null,
+  onPressFilterItem: () => null,
   activeIndex: 0,
   selectedList: [],
 };
 
 ScreenTab.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.any),
+  list: PropTypes.arrayOf(PropTypes.any).isRequired,
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
+  onPressFilterItem: PropTypes.func,
   selectedList: PropTypes.arrayOf(PropTypes.any),
 };
 

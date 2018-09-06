@@ -23,7 +23,14 @@ import LeftItem from './components/LeftItem';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
-import ContactsModel from '../../../logicStores/contacts';
+// import ContactsModel from '../../../logicStores/contacts';
+
+// screenTab
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 
 useStrict(true);
 
@@ -35,12 +42,14 @@ class Contacts extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    // screenTab
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-    ContactsModel.getContactListReq();
+    // ContactsModel.getContactListReq();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.contactEditor);
@@ -51,6 +60,11 @@ class Contacts extends React.Component {
       // TODO open drawer
       this.onOpenDrawer();
     }
+  };
+  onPressFilterItem = ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    this.setState({ screenTabList });
   };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
@@ -181,6 +195,7 @@ class Contacts extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        screenTabList,
       },
     } = this;
     return (
@@ -195,9 +210,10 @@ class Contacts extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            data={['跟进时间', '我负责的', '筛选']}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
           <FlatListTable
