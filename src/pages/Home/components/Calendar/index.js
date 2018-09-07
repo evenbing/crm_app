@@ -69,7 +69,6 @@ const MonthText = styled.Text`
 `;
 
 const UpRightView = styled.View`
-  /* width: ${moderateScale((width - 30 - 30 - 2) / 3)}px; */
   flex: 1;
   height: ${moderateScale(26)}px;
   flex-direction: row;
@@ -108,7 +107,10 @@ const MiddleView = styled.View`
   margin-top: ${moderateScale(13)}px;
 `;
 
-const DownView = styled.FlatList`
+const DownView = styled.FlatList.attrs({
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+})`
   margin-top: ${0 - moderateScale(23)}px;
   background-color: transparent;
 `;
@@ -291,19 +293,13 @@ class Calendar extends Component {
           </UpRightView>
         </UpView>
         <MiddleView />
-        <FlatList
-          ref={(ref) => { this.flatListRef = ref; }}
-          style={{
-            marginTop: 0 - moderateScale(23),
-            backgroundColor: 'transparent'
-          }}
+        <DownView
+          innerRef={(ref) => { this.flatListRef = ref; }}
           data={this.state.data}
           renderItem={this.renderItem(ListItemWidth)}
           keyExtractor={this.generateKeyExtractor}
           getItemLayout={this.getItemLayout}
           initialScrollIndex={this.getInitialScrollIndex(this.state.day)}
-          horizontal
-          showsHorizontalScrollIndicator={false}
         />
       </Container>
     );
