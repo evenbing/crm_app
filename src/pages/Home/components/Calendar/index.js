@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FlatList } from 'react-native';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
@@ -11,7 +12,7 @@ import CreateIcon from '../../../../img/home/create.png';
 import ListItem from './ListItem';
 import { routers } from '../../../../constants';
 
-const ListItemWidth = moderateScale(width - 60 - 8) / 7;
+const ListItemWidth = (width - moderateScale(60)) / 7;
 
 const Container = styled.View`
   margin: -${moderateScale(30)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
@@ -101,7 +102,6 @@ const CreateButtonIcon = styled.Image.attrs({
 `;
 
 const MiddleView = styled.View`
-  flex-direction: row;
   height: ${moderateScale(23)}px;
   background-color: ${theme.pageBackColor};
   border-radius: ${moderateScale(11.5)}px;
@@ -123,30 +123,107 @@ class Calendar extends Component {
       year: curYear,
       month: curMonth,
       day: curDay,
-      data: this.generateDays(curYear, curMonth),
+      data: this.generateDays(curYear, curMonth, curDay),
     };
   }
 
-  onItemClick = key => () => {
+  componentDidMount() {
+    // this.scrollToIndex(10);
+  }
+
+  onSelectDay = key => () => {
     const newData = this.state.data.map(item => ({
       ...item,
       selected: item.key === key,
     }));
-    this.setState({ data: newData });
+    const weekDay = this.state.data.filter(item => item.key === key)[0].weekDay;
+    this.setState({
+      data: newData,
+      day: weekDay,
+    });
+    const { onSelectedDayChange } = this.props;
+    const { year, month } = this.state;
+    onSelectedDayChange && onSelectedDayChange(`${year}-${month}-${weekDay}`);
   }
 
   onSelectYear = (year) => {
-    this.setState({ year });
+    if (year !== this.state.year) {
+      const { onSelectedDayChange } = this.props;
+      onSelectedDayChange && onSelectedDayChange(`${year}-01-01`);
+
+      this.setState({
+        year,
+        month: 1,
+        day: 1,
+        data: this.generateDays(year, 1),
+      }, () => { this.scrollToIndex(0) });
+    }
   }
 
-  generateDays = (year, month) => {
+  monthSubtracte = () => {
+    if (this.state.month > 1) {
+      const { onSelectedDayChange } = this.props;
+      const { year } = this.state;
+      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month - 1}-01`);
+
+      this.setState({
+        month: this.state.month - 1,
+        day: 1,
+        data: this.generateDays(this.state.year, this.state.month - 1),
+      }, () => { this.scrollToIndex(0) });
+    }
+  }
+
+  monthAdd = () => {
+    if (this.state.month < 12) {
+      const { onSelectedDayChange } = this.props;
+      const { year } = this.state;
+      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month + 1}-01`);
+
+      this.setState({
+        month: this.state.month + 1,
+        day: 1,
+        data: this.generateDays(this.state.year, this.state.month + 1),
+      }, () => { this.scrollToIndex(0) });
+    }
+  }
+
+  scrollToIndex = (index) => {
+    this.flatListRef.scrollToIndex({ 
+      animated: true, 
+      index,
+      viewOffset: 0,
+      viewPosition: 0.5,
+    });
+  }
+
+  goToday = () => {
+    const curYear = new Date().getFullYear();
+    const curMonth = new Date().getMonth() + 1;
+    const curDay = new Date().getDate();
+    if(curYear === this.state.year && curMonth === this.state.month && curDay === this.state.day) {
+      this.scrollToIndex(curDay - 1);
+    } else {
+      const { onSelectedDayChange } = this.props;
+      onSelectedDayChange && onSelectedDayChange(`${curYear}-${curMonth}-${curDay}`);
+
+      this.setState({
+        year: curYear,
+        month: curMonth,
+        day: curDay,
+        data: this.generateDays(curYear, curMonth, curDay),
+      }, () => { this.scrollToIndex(curDay - 1); });
+    }
+  }
+
+  generateDays = (year, month, selectedDay = 1) => {
     const count = getMonthDays(year, month);
     const days = [];
     for (let index = 1; index <= count; index++) {
       days.push({
         key: uuidv1(),
-        onPress: this.onItemClick,
-        selected: false,
+        onPress: this.onSelectDay,
+        selected: selectedDay === index,
         week: getDayOfWeek(year, month, index),
         weekDay: `${index}`,
       });
@@ -156,23 +233,23 @@ class Calendar extends Component {
 
   generateKeyExtractor = item => item.key;
 
-  monthSubtracte = () => {
-    if (this.state.month > 1) {
-      this.setState({
-        month: this.state.month - 1,
-      });
+  getItemLayout = (data, index) => (
+    { length: ListItemWidth, offset: ListItemWidth * index, index }
+  )
+
+  getInitialScrollIndex = (day) => {
+    if(day > 4) {
+      return day - 4;
     }
+    return 0;
   }
 
-  monthAdd = () => {
-    if (this.state.month < 12) {
-      this.setState({
-        month: this.state.month + 1,
-      });
-    }
-  }
-
-  renderItem = ListItemWidth => ({ item }) => <ListItem item={item} ListItemWidth={ListItemWidth} />
+  renderItem = ListItemWidth => ({ item }) => (
+    <ListItem 
+      item={item} 
+      ListItemWidth={ListItemWidth} 
+    />
+  )
 
   render() {
     const {
@@ -205,7 +282,7 @@ class Calendar extends Component {
             </MonthArrow>
           </UpMiddleView>
           <UpRightView>
-            <TodayButton>
+            <TodayButton onPress={this.goToday}>
               <TodayButtonText>今</TodayButtonText>
             </TodayButton>
             <CreateButton onPress={selectCreateType}>
@@ -214,10 +291,17 @@ class Calendar extends Component {
           </UpRightView>
         </UpView>
         <MiddleView />
-        <DownView
+        <FlatList
+          ref={(ref) => { this.flatListRef = ref; }}
+          style={{
+            marginTop: 0 - moderateScale(23),
+            backgroundColor: 'transparent'
+          }}
           data={this.state.data}
           renderItem={this.renderItem(ListItemWidth)}
           keyExtractor={this.generateKeyExtractor}
+          getItemLayout={this.getItemLayout}
+          initialScrollIndex={this.getInitialScrollIndex(this.state.day)}
           horizontal
           showsHorizontalScrollIndicator={false}
         />

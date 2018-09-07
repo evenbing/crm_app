@@ -8,10 +8,11 @@ const Container = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const WeekText = styled.Text`
+const WeekText = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   height: ${moderateScale(23)}px;
   text-align: center;
-  line-height: 20;
   margin-bottom: ${moderateScale(15)}px;
   color: ${theme.textWeekColor};
   font-size: ${moderateScale(14)}px;
@@ -26,7 +27,9 @@ const WeekDayView = styled.View`
   align-items: center;
 `;
 
-const WeekDayText = styled.Text`
+const WeekDayText = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   font-size: ${moderateScale(14)}px;
   color: ${theme.textWeekDayColor};
 `;
