@@ -190,13 +190,22 @@ class Calendar extends Component {
     }
   }
 
-  scrollToIndex = (index) => {
+  scrollToIndex = (index, viewPosition = 0.5) => {
     this.flatListRef.scrollToIndex({ 
       animated: true, 
       index,
       viewOffset: 0,
-      viewPosition: 0.5,
+      viewPosition,
     });
+  }
+
+  getIndex = (endX) => {
+    const yushu = endX % ListItemWidth;
+    const count = parseInt(endX / ListItemWidth);
+    if (yushu >= (ListItemWidth * 0.4)) {
+      return count + 1;
+    }
+    return count;
   }
 
   goToday = () => {
@@ -300,6 +309,9 @@ class Calendar extends Component {
           keyExtractor={this.generateKeyExtractor}
           getItemLayout={this.getItemLayout}
           initialScrollIndex={this.getInitialScrollIndex(this.state.day)}
+          onScrollEndDrag={(event) => {
+            this.scrollToIndex(this.getIndex(event.nativeEvent.contentOffset.x), 0);
+          }}
         />
       </Container>
     );
