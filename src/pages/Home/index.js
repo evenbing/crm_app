@@ -48,8 +48,8 @@ const HeaderView = styled.View`
   padding-top: ${moderateScale(9)};
   padding-bottom: ${moderateScale(30)};
   flex-direction: row;
-  padding-left: ${moderateScale(9)};
-  padding-right: ${moderateScale(18)};
+  padding-left: ${moderateScale(15)};
+  padding-right: ${moderateScale(15)};
 `;
 
 const HeaderViewLeft = styled.View`
@@ -59,22 +59,26 @@ const HeaderViewLeft = styled.View`
 const HeaderCalendarIcon = styled.Image.attrs({
   source: CalendarIcon,
 })`
-  width: ${moderateScale(79)};
-  height: ${moderateScale(79)};
+  width: ${moderateScale(79)}px;
+  height: ${moderateScale(79)}px;
 `;
 
-const HeaderCalendarText = styled.Text`
+const HeaderCalendarText = styled.Text.attrs({
+  numberOfLines: 1,
+})`
+  width: ${moderateScale(79)}px;
   color: white;
   background-color: transparent;
   position: absolute;
-  bottom: ${moderateScale(25)};
-  left: ${moderateScale(22)};
-  font-size: ${moderateScale(26)};
+  text-align: center;
+  bottom: ${moderateScale(20)};
+  font-size: ${moderateScale(35)};
 `;
 
 const HeaderViewMiddle = styled.View`
   flex: 1;
   margin-top: ${moderateScale(19)};
+  margin-left: ${moderateScale(12)}px;
 `;
 
 const YearAndMonth = styled.Text`
