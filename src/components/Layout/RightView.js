@@ -60,6 +60,7 @@ class RightView extends React.Component {
 RightView.defaultProps = {
   onPress: () => null,
   right: null,
+  rightStyle: {},
 };
 
 RightView.propTypes = {
@@ -69,6 +70,7 @@ RightView.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
+  rightStyle: PropTypes.instanceOf(PropTypes.object),
 };
 
 export default RightView;
