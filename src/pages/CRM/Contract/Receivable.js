@@ -44,7 +44,7 @@ class Receivable extends Component {
     return (
       <ContainerView>
         <CommStatusBar />
-        <ReceivableTitle />
+        <ReceivableTitle progress={0.5} />
         <HorizontalDivider height={moderateScale(10)} />
         <ReceivableList
           data={data}

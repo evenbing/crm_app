@@ -64,7 +64,7 @@ const ReceivableTitle = ({ progress }) => {
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
-      end={{ x: 1.0, y: 1.0 }}
+      end={{ x: 1.0, y: 0 }}
       colors={['#169C58', '#8EC963']}
     >
       <ReceivableTitleView>
@@ -88,7 +88,7 @@ ReceivableTitle.propTypes = {
 };
 
 ReceivableTitle.defaultProps = {
-  progress: 0,
+  progress: 0.3,
 };
 
 export default ReceivableTitle;
