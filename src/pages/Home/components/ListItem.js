@@ -3,19 +3,21 @@ import styled from 'styled-components';
 import { moderateScale } from '../../../utils/scale';
 import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { theme } from '../../../constants';
+import { HorizontalDivider } from '../../../components/Styles/Divider';
 
 const Divder = styled.View`
-  width: ${moderateScale(0.8)};
-  height: ${moderateScale(48)};
+  width: ${moderateScale(1)}px;
+  height: ${moderateScale(39)}px;
   background-color: ${theme.pageBackColor};
 `;
 
 const Container = styled.View``;
 
-const Up = styled.View`
-  background-color: white;
+const Up = styled.TouchableOpacity`
+  background-color: ${theme.whiteColor};;
   padding: ${moderateScale(15)}px 0px;
   flex-direction: row;
+  align-items: center;
 `;
 
 const Lace = styled.View`
@@ -26,51 +28,69 @@ const Lace = styled.View`
   `;
 
 const TimeView = styled.View`
-    align-items: center;
-    padding-top: ${moderateScale(10)};
-  `;
+  align-items: center;
+  padding-top: ${moderateScale(10)}px;
+  margin-right: ${moderateScale(9)}px;
+`;
 
-const Duration = styled.Text`
-    color: #26B34E;
-    font-size: ${moderateScale(18)};
-  `;
+const Duration = styled.Text.attrs({
+  numberOfLines: 1,
+})`
+  color: #26B34E;
+  font-size: ${moderateScale(18)};
+`;
 
-const Type = styled.Text`
+const Type = styled.Text.attrs({
+  numberOfLines: 1,
+})`
+    height: ${moderateScale(17)}px;
     color: grey;
-    font-size: ${moderateScale(13)};
+    font-size: ${moderateScale(12)}px;
+    line-height: ${moderateScale(17)}px;
   `;
 
 const Theme = styled.View`
     flex: 1;
-    padding-top: ${moderateScale(10)};
+    padding-top: ${moderateScale(10)}px;
+    margin-left: ${moderateScale(8)}px;
   `;
 
-const Title = styled.Text`
+const Title = styled.Text.attrs({
+  numberOfLines: 1,
+})`
     color: black;
     font-size: ${moderateScale(18)};
   `;
 
-const Time = styled.Text`
+const Time = styled.Text.attrs({
+  numberOfLines: 1,
+})`
+    height: ${moderateScale(17)}px;
     color: grey;
-    font-size: ${moderateScale(13)};
+    font-size: ${moderateScale(12)}px;
+    line-height: ${moderateScale(17)}px;
   `;
 
-const Operate = styled.TouchableOpacity`
-    padding-top: ${moderateScale(10)};
-  `;
+const Operate = styled.View`
+  align-items: center;
+  padding: 0px ${moderateScale(12)}px;
+`;
 
 const OperateIcon = styled.Image.attrs({
   source: OperateIconImage,
 })`
-    width: ${moderateScale(22)};
-    height: ${moderateScale(22)};
-  `;
+  width: ${moderateScale(22)};
+  height: ${moderateScale(22)};
+`;
 
 const OperateView = styled.View`
-  height: ${props => props.showOperateView ? moderateScale(36) : '0px'};
-  border-top-width: ${moderateScale(1)};
-  border-top-color: #F6F6F6;
+  height: ${props => props.showOperateView ? moderateScale(37) : '0px'};
+  background-color: ${theme.whiteColor};
+`;
+
+const OperateItemView = styled.View`
   flex-direction: row;
+  background-color: ${theme.whiteColor};
 `;
 
 const OperateItem = styled.TouchableOpacity`
@@ -108,7 +128,7 @@ class ListItem extends Component {
     const { showOperateView } = this.state;
     return (
       <Container>
-        <Up>
+        <Up onPress={this.onToggleOperateView}>
           <Lace />
           <TimeView>
             <Duration>{duration}</Duration>
@@ -120,23 +140,26 @@ class ListItem extends Component {
             <Time>{time}</Time>
           </Theme>
           <Divder />
-          <Operate onPress={this.onToggleOperateView}>
+          <Operate>
             <OperateIcon />
           </Operate>
         </Up>
         <OperateView showOperateView={showOperateView}>
-          {operateList.map((item) => {
-            const {
-              key,
-              text,
-              onPress,
-            } = item;
-            return (
-              <OperateItem onPress={onPress} key={key}>
-                <OperateText>{text}</OperateText>
-              </OperateItem>
-            );
-          })}
+          <HorizontalDivider height={moderateScale(1)} />
+          <OperateItemView>
+            {operateList.map((item) => {
+              const {
+                key,
+                text,
+                onPress,
+              } = item;
+              return (
+                <OperateItem onPress={onPress} key={key}>
+                  <OperateText>{text}</OperateText>
+                </OperateItem>
+              );
+            })}
+          </OperateItemView>
         </OperateView>
       </Container>
     );

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
@@ -158,45 +157,8 @@ class Calendar extends Component {
         month: 1,
         day: 1,
         data: this.generateDays(year, 1),
-      }, () => { this.scrollToIndex(0) });
+      }, () => { this.scrollToIndex(0); });
     }
-  }
-
-  monthSubtracte = () => {
-    if (this.state.month > 1) {
-      const { onSelectedDayChange } = this.props;
-      const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month - 1}-01`);
-
-      this.setState({
-        month: this.state.month - 1,
-        day: 1,
-        data: this.generateDays(this.state.year, this.state.month - 1),
-      }, () => { this.scrollToIndex(0) });
-    }
-  }
-
-  monthAdd = () => {
-    if (this.state.month < 12) {
-      const { onSelectedDayChange } = this.props;
-      const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month + 1}-01`);
-
-      this.setState({
-        month: this.state.month + 1,
-        day: 1,
-        data: this.generateDays(this.state.year, this.state.month + 1),
-      }, () => { this.scrollToIndex(0) });
-    }
-  }
-
-  scrollToIndex = (index, viewPosition = 0.5) => {
-    this.flatListRef.scrollToIndex({ 
-      animated: true, 
-      index,
-      viewOffset: 0,
-      viewPosition,
-    });
   }
 
   getIndex = (endX) => {
@@ -208,11 +170,22 @@ class Calendar extends Component {
     return count;
   }
 
+  getItemLayout = (data, index) => (
+    { length: ListItemWidth, offset: ListItemWidth * index, index }
+  )
+
+  getInitialScrollIndex = (day) => {
+    if (day > 4) {
+      return day - 4;
+    }
+    return 0;
+  }
+
   goToday = () => {
     const curYear = new Date().getFullYear();
     const curMonth = new Date().getMonth() + 1;
     const curDay = new Date().getDate();
-    if(curYear === this.state.year && curMonth === this.state.month && curDay === this.state.day) {
+    if (curYear === this.state.year && curMonth === this.state.month && curDay === this.state.day) {
       this.scrollToIndex(curDay - 1);
     } else {
       const { onSelectedDayChange } = this.props;
@@ -244,21 +217,47 @@ class Calendar extends Component {
 
   generateKeyExtractor = item => item.key;
 
-  getItemLayout = (data, index) => (
-    { length: ListItemWidth, offset: ListItemWidth * index, index }
-  )
+  monthSubtracte = () => {
+    if (this.state.month > 1) {
+      const { onSelectedDayChange } = this.props;
+      const { year } = this.state;
+      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month - 1}-01`);
 
-  getInitialScrollIndex = (day) => {
-    if(day > 4) {
-      return day - 4;
+      this.setState({
+        month: this.state.month - 1,
+        day: 1,
+        data: this.generateDays(this.state.year, this.state.month - 1),
+      }, () => { this.scrollToIndex(0); });
     }
-    return 0;
+  }
+
+  monthAdd = () => {
+    if (this.state.month < 12) {
+      const { onSelectedDayChange } = this.props;
+      const { year } = this.state;
+      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month + 1}-01`);
+
+      this.setState({
+        month: this.state.month + 1,
+        day: 1,
+        data: this.generateDays(this.state.year, this.state.month + 1),
+      }, () => { this.scrollToIndex(0); });
+    }
+  }
+
+  scrollToIndex = (index, viewPosition = 0.5) => {
+    this.flatListRef.scrollToIndex({
+      animated: true,
+      index,
+      viewOffset: 0,
+      viewPosition,
+    });
   }
 
   renderItem = ListItemWidth => ({ item }) => (
-    <ListItem 
-      item={item} 
-      ListItemWidth={ListItemWidth} 
+    <ListItem
+      item={item}
+      ListItemWidth={ListItemWidth}
     />
   )
 
@@ -284,11 +283,17 @@ class Calendar extends Component {
             </YearButton>
           </UpLeftView>
           <UpMiddleView>
-            <MonthArrow onPress={this.monthSubtracte}>
+            <MonthArrow
+              onPress={this.monthSubtracte}
+              disabled={month === 1}
+            >
               <MonthArrowIcon source={LeftArrow} />
             </MonthArrow>
             <MonthText>{month}</MonthText>
-            <MonthArrow onPress={this.monthAdd}>
+            <MonthArrow
+              onPress={this.monthAdd}
+              disabled={month === 12}
+            >
               <MonthArrowIcon source={RightArrow} />
             </MonthArrow>
           </UpMiddleView>

@@ -13,6 +13,7 @@ const WeekText = styled.Text.attrs({
 })`
   height: ${moderateScale(23)}px;
   text-align: center;
+  line-height: ${moderateScale(18)}px;
   margin-bottom: ${moderateScale(15)}px;
   color: ${theme.textWeekColor};
   font-size: ${moderateScale(14)}px;
