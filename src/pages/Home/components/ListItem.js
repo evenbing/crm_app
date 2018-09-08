@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { moderateScale } from '../../../utils/scale';
 import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { theme } from '../../../constants';
@@ -165,4 +166,15 @@ class ListItem extends Component {
     );
   }
 }
+
+ListItem.propTypes = {
+  duration: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  operateList: PropTypes.arrayOf(PropTypes.oneOf([
+    PropTypes.object,
+  ])).isRequired,
+};
+
 export default ListItem;

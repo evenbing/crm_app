@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import uuidv1 from 'uuid/v1';
 
 import { getMonthDays, getDayOfWeek } from '../../../../utils/date';
@@ -137,7 +138,7 @@ class Calendar extends Component {
       ...item,
       selected: item.key === key,
     }));
-    const weekDay = this.state.data.filter(item => item.key === key)[0].weekDay;
+    const { weekDay } = this.state.data.filter(item => item.key === key)[0];
     this.setState({
       data: newData,
       day: weekDay,
@@ -163,7 +164,7 @@ class Calendar extends Component {
 
   getIndex = (endX) => {
     const yushu = endX % ListItemWidth;
-    const count = parseInt(endX / ListItemWidth);
+    const count = parseInt(endX / ListItemWidth, 10);
     if (yushu >= (ListItemWidth * 0.4)) {
       return count + 1;
     }
@@ -322,5 +323,11 @@ class Calendar extends Component {
     );
   }
 }
+
+Calendar.propTypes = {
+  navigate: PropTypes.func.isRequired,
+  selectCreateType: PropTypes.func.isRequired,
+  onSelectedDayChange: PropTypes.func.isRequired,
+};
 
 export default Calendar;

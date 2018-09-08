@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { moderateScale } from '../../../../utils/scale';
 import { theme } from '../../../../constants';
 
@@ -57,6 +58,11 @@ const ListItem = ({
       </WeekDayView>
     </Container>
   );
+};
+
+ListItem.propTypes = {
+  item: PropTypes.instanceOf(PropTypes.object).isRequired,
+  ListItemWidth: PropTypes.number.isRequired,
 };
 
 export default ListItem;
