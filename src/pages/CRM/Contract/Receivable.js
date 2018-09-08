@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
+import styled from 'styled-components';
 
 import { ContainerView } from '../../../components/Styles/Layout';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { moderateScale } from '../../../utils/scale';
 import ReceivableTitle from './components/ReceivableTitle';
 import ReceivableList from './components/ReceivableList';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
+import { theme, routers } from '../../../constants';
 
 const data = [
   {
@@ -35,6 +37,10 @@ const data = [
   },
 ];
 
+const RightViews = styled.View`
+  flex-direction: row;
+`;
+
 class Receivable extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +66,32 @@ Receivable.navigationOptions = ({ navigation }) => ({
     <LeftBackIcon
       onPress={() => navigation.goBack()}
     />
+  ),
+  headerRight: (
+    <RightViews>
+      <RightView
+        onPress={() => { navigation.navigate(routers.receivablePlanEditor); }}
+        right="增加计划"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+        rightViewStyle={{
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
+      />
+      <RightView
+        onPress={() => { navigation.navigate(routers.receivableRecordEditor); }}
+        right="增加记录"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+        rightViewStyle={{
+          paddingLeft: moderateScale(8),
+          paddingRight: moderateScale(15),
+        }}
+      />
+    </RightViews>
   ),
 });
 

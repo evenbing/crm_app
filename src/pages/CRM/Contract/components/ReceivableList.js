@@ -58,6 +58,7 @@ const AmountText = styled.Text`
 
 const RightView = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const StatusText = styled.Text`

@@ -38,7 +38,7 @@ class RightView extends React.Component {
   };
   render() {
     const {
-      props: { onPress },
+      props: { onPress, rightViewStyle },
     } = this;
     return (
       <ContainerView>
@@ -48,6 +48,7 @@ class RightView extends React.Component {
             paddingLeft: theme.moderateScale(15),
             paddingRight: theme.moderateScale(15),
             justifyContent: 'center',
+            ...rightViewStyle,
           }}
         >
           {this.renderText()}
@@ -61,6 +62,7 @@ RightView.defaultProps = {
   onPress: () => null,
   right: null,
   rightStyle: {},
+  rightViewStyle: {},
 };
 
 RightView.propTypes = {
@@ -70,7 +72,8 @@ RightView.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  rightStyle: PropTypes.instanceOf(PropTypes.object),
+  rightStyle: PropTypes.oneOf(PropTypes.object),
+  rightViewStyle: PropTypes.oneOf(PropTypes.object),
 };
 
 export default RightView;
