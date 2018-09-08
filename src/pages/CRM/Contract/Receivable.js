@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { Bar as ReceivableProgress } from 'react-native-progress';
-import styled from 'styled-components';
+import uuidv1 from 'uuid/v1';
 
 import { ContainerView } from '../../../components/Styles/Layout';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { moderateScale, width } from '../../../utils/scale';
-import { theme } from '../../../constants';
+import { moderateScale } from '../../../utils/scale';
 import ReceivableTitle from './components/ReceivableTitle';
+import ReceivableList from './components/ReceivableList';
+import { HorizontalDivider } from '../../../components/Styles/Divider';
 
-const SectionList = styled.SectionList`
-
-`;
+const data = [
+  {
+    data: [
+      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+    ],
+    title: '第一期',
+  },
+  {
+    data: [
+      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+    ],
+    title: '第二期',
+  },
+  {
+    data: [
+      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
+    ],
+    title: '第三期',
+  },
+];
 
 class Receivable extends Component {
   constructor(props) {
@@ -24,17 +45,10 @@ class Receivable extends Component {
       <ContainerView>
         <CommStatusBar />
         <ReceivableTitle />
-        <SectionList
-          renderItem={({ item }) => <Text> {item} </Text>}
-          renderSectionHeader={({ section }) => <Text>{section.title} </Text>}
-          keyExtractor={item => item.title}
-          sections={[ // homogenous rendering between sections
-            { data: ['data...'], title: 'title...1' },
-            { data: ['data...'], title: 'title...2' },
-            { data: ['data...'], title: 'title...3' },
-          ]}
+        <HorizontalDivider height={moderateScale(10)} />
+        <ReceivableList
+          data={data}
         />
-
       </ContainerView>
     );
   }

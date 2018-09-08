@@ -172,9 +172,11 @@ ListItem.propTypes = {
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
-  operateList: PropTypes.arrayOf(PropTypes.oneOf([
-    PropTypes.object,
-  ])).isRequired,
+  operateList: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
+    text: PropTypes.string,
+    onPress: PropTypes.func,
+  })).isRequired,
 };
 
 export default ListItem;

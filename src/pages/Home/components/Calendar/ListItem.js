@@ -61,7 +61,16 @@ const ListItem = ({
 };
 
 ListItem.propTypes = {
-  item: PropTypes.instanceOf(PropTypes.object).isRequired,
+  item: PropTypes.shape({
+    key: PropTypes.string,
+    selected: PropTypes.bool,
+    week: PropTypes.string,
+    weekDay: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    onPress: PropTypes.func,
+  }).isRequired,
   ListItemWidth: PropTypes.number.isRequired,
 };
 

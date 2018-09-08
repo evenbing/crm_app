@@ -68,7 +68,7 @@ class ScreenTab extends React.PureComponent {
     filterMap: {}, // 下拉菜单Map
   };
   componentWillReceiveProps(nextProps) {
-    const { list, activeIndex } = nextProps;
+    const { list = [], activeIndex } = nextProps;
     if (list.length && activeIndex !== -1) {
       let filterMap = {};
       const headerList = [];

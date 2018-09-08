@@ -3,7 +3,6 @@ import PropType from 'prop-types';
 import LinearGradient from 'react-native-linear-gradient';
 import { Bar as ReceivableProgress } from 'react-native-progress';
 import styled from 'styled-components';
-import { LeftBackIcon } from '../../../../components/Layout';
 import { moderateScale, width } from '../../../../utils/scale';
 import { theme } from '../../../../constants';
 
@@ -83,15 +82,6 @@ const ReceivableTitle = ({ progress }) => {
     </LinearGradient>
   );
 };
-
-ReceivableTitle.navigationOptions = ({ navigation }) => ({
-  title: '回款',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-});
 
 ReceivableTitle.propTypes = {
   progress: PropType.number,

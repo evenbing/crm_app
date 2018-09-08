@@ -152,6 +152,8 @@ class Home extends React.Component {
     }
   }
 
+  onSelectedDayChange = () => {}
+
   showMessage = () => {
     const {
       navigation: { navigate },

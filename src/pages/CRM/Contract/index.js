@@ -241,7 +241,7 @@ class Contract extends React.Component {
   }
 }
 
-Contract.navigationOptions = ({ navigation, screenProps }) => ({
+Contract.navigationOptions = ({ navigation }) => ({
   title: '合同',
   headerLeft: (
     <LeftBackIcon
@@ -273,6 +273,7 @@ Contract.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default Contract;
