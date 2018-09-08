@@ -4,12 +4,13 @@
  * @time 2018/9/5
  * @author JUSTIN XU
  */
-import { action, observable, runInAction, useStrict } from 'mobx';
+import { action, observable, runInAction, useStrict } from 'mobx/lib/mobx';
 import autobind from 'autobind-decorator';
 import {
   getContactList,
   createContact,
   getContactDetails,
+  updateContact,
 } from '../service/contacts';
 import Toast from '../utils/toast';
 
@@ -64,11 +65,10 @@ class ContactStore {
     try {
       if (!id) throw new Error('id 不为空');
       const {
-        result = {},
+        contact = {},
       } = await getContactDetails({ id });
-      debugger;
       runInAction(() => {
-        this.contactDetails = { ...result };
+        this.contactDetails = { ...contact };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -83,6 +83,23 @@ class ContactStore {
       } = await createContact(options);
       debugger;
       runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 编辑
+  @action async updateContactReq(options) {
+    try {
+      const {
+        result = {},
+      } = await updateContact(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
         this.contactDetails = { ...result };
       });
     } catch (e) {

@@ -16,7 +16,7 @@ class DemoStore {
     reaction(() => this.counter, this.increaseTotal);
   }
 
-  // async action, must use runInAction before fetch
+  // async action, must use runInAction after fetch
   // @action async getRedPacketListReq() {
   //   try {
   //     const {

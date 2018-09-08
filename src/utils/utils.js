@@ -38,9 +38,9 @@ export function isIphoneX() {
 }
 
 // 获取头部填充高度
-export function getHeaderPadding() {
+export function getHeaderPadding(androidBar = false) {
   if (Platform.OS === 'android') {
-    return StatusBar.currentHeight;
+    return androidBar ? StatusBar.currentHeight : 0;
   }
   if (Platform.OS === 'ios') {
     if (isIphoneX()) {
@@ -57,9 +57,9 @@ export function getHeaderHeight() {
   }
   if (Platform.OS === 'ios') {
     if (isIphoneX()) {
-      return 88 - getHeaderPadding();
+      return 88;
     }
-    return 64 - getHeaderPadding();
+    return 64;
   }
 }
 

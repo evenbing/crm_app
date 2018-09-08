@@ -9,6 +9,8 @@ import { post } from '../utils/rpc';
 /** 查询联系人列表
  * @params options
  * {
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
  *   my 我负责的 boolean
  *   myParticipate 我参与的 boolean
  *   sevenDaysUninvolved 7天未跟进的 boolean
@@ -22,11 +24,13 @@ import { post } from '../utils/rpc';
  *   phoneNumber 电话
  *   mobilePhone 手机
  *   email 性别
- *   sortColumn 表头排序
+ *   sortColumn 表头排序 目前不支持
  * }
  * @return Promise<ArrayList>
  */
 export function getContactList({
+  pageNumber = 1,
+  pageSize = 15,
   my,
   myParticipate,
   sevenDaysUninvolved,
@@ -41,11 +45,11 @@ export function getContactList({
   mobilePhone,
   email,
   sortColumn,
-  pageNumber = 1,
-  pageSize = 15,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.find',
+    pageNumber,
+    pageSize,
     my,
     myParticipate,
     sevenDaysUninvolved,
@@ -60,8 +64,6 @@ export function getContactList({
     mobilePhone,
     email,
     sortColumn,
-    pageNumber,
-    pageSize,
   });
 }
 

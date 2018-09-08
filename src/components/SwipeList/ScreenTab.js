@@ -218,7 +218,7 @@ class ScreenTab extends React.PureComponent {
           onPressClose={this.onHideVisible}
           selectedIndex={selectedIndex}
           onPressItem={onPressFilterItem}
-          position={getHeaderHeight() + getHeaderPadding() + 88}
+          position={getHeaderHeight() + 88}
           list={list}
         />
         <HeaderView>

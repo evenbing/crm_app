@@ -7,8 +7,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
+import { contactsEnum } from '../../../constants/form';
 import { moderateScale } from '../../../utils/scale';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -18,6 +21,8 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import ScanCard from '../../../components/Create/ScanCard';
+
+import ContactsModel from '../../../logicStores/contacts';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -35,17 +40,52 @@ const NavItemStyle = {
   showNavIcon: true,
 };
 
+@observer
 class Editor extends React.Component {
+  state = {
+    name: null,
+    companyName: null,
+    jobTitle: null,
+    phoneNumber: null,
+    mobilePhone: null,
+    departmentId: null,
+    departmentName: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
-  getLeftStyle = (placeholder, width = 80) => {
+  onPressRight = () => {
+    const {
+      name,
+      companyName,
+      jobTitle,
+      phoneNumber,
+      mobilePhone,
+      departmentId,
+      departmentName,
+    } = this.state;
+    try {
+      if (!name) throw new Error(contactsEnum.name);
+      if (!companyName) throw new Error(contactsEnum.companyName);
+      ContactsModel.createContactReq({
+        name,
+        companyName,
+        jobTitle,
+        phoneNumber,
+        mobilePhone,
+        departmentId,
+        departmentName,
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  };
+  getLeftStyle = (inputProps, width = 80) => {
     return {
       inputProps: {
-        placeholder,
+        ...inputProps,
         fontSize: moderateScale(16),
       },
       leftTextStyle: {
@@ -57,8 +97,19 @@ class Editor extends React.Component {
   };
   render() {
     const {
-      navigation: { navigate },
-    } = this.props;
+      props: {
+        navigation: { navigate },
+      },
+      state: {
+        name,
+        companyName,
+        jobTitle,
+        phoneNumber,
+        mobilePhone,
+        departmentId,
+        departmentName,
+      },
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
@@ -72,31 +123,53 @@ class Editor extends React.Component {
         <ListView>
           <NavInputItem
             leftText="姓名"
-            {...this.getLeftStyle('请输入姓名')}
+            {...this.getLeftStyle({
+              placeholder: contactsEnum.name,
+              value: name,
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <NavInputItem
             leftText="公司名称"
             center={
-              <CenterText>请选择公司名称</CenterText>
+              <CenterText>
+                { companyName ? null : contactsEnum.companyName }
+              </CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="职务"
-            {...this.getLeftStyle('请输入职务')}
+            {...this.getLeftStyle({
+              placeholder: contactsEnum.companyName,
+              value: jobTitle,
+              onChangeText: jobTitle => this.setState({ jobTitle }),
+            })}
           />
           <NavInputItem
             leftText="电话"
-            {...this.getLeftStyle('请输入电话')}
+            {...this.getLeftStyle({
+              placeholder: contactsEnum.phoneNumber,
+              value: phoneNumber,
+              onChangeText: phoneNumber => this.setState({ phoneNumber }),
+            })}
           />
           <NavInputItem
             leftText="手机"
-            {...this.getLeftStyle('请输入手机')}
+            {...this.getLeftStyle({
+              placeholder: contactsEnum.mobilePhone,
+              value: mobilePhone,
+              onChangeText: mobilePhone => this.setState({ mobilePhone }),
+            })}
           />
           <NavInputItem
             leftText="部门"
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText>
+                {
+                  (departmentId && departmentName) ? null : contactsEnum.departmentName
+                }
+              </CenterText>
             }
             isLast
             {...NavItemStyle}

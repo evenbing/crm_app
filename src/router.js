@@ -123,10 +123,10 @@ const HomeNavigatorConfig = {
   navigationOptions: {
     // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
     headerStyle: {
-      paddingTop: getHeaderPadding(),
+      paddingTop: getHeaderPadding(true),
       backgroundColor: '#333238',
       elevation: 0, // 去掉阴影
-      height: getHeaderHeight(),
+      height: getHeaderHeight() - getHeaderPadding(),
     },
     // 设置导航条文字样式。安卓上如果要设置文字居中，只要添加alignSelf:'center'就可以了
     headerTitleStyle: {
@@ -271,7 +271,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

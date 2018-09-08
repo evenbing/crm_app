@@ -1,5 +1,5 @@
 /**
- * @component MobxDemo.js
+ * @component Home.js
  * @description 首页
  * @time 2018/8/5
  * @author JUSTIN XU

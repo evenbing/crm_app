@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StatusBar } from 'react-native';
-import { useStrict, toJS } from 'mobx';
+import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
@@ -42,6 +42,7 @@ class Contacts extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
     // screenTab
     screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
@@ -117,8 +118,11 @@ class Contacts extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList } = this.state;
-    const obj = { pageNumber };
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
     // query header tab
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
@@ -134,8 +138,8 @@ class Contacts extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-  renderItem = (props) => {
-    const { index } = props;
+  renderItem = (itemProps) => {
+    const { index, item } = itemProps;
     const {
       navigation: { navigate },
     } = this.props;
@@ -155,12 +159,12 @@ class Contacts extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
+            {...itemProps}
             right="hidden"
             left={
-              <LeftItem {...props} />
+              <LeftItem {...itemProps} />
             }
-            onPress={() => navigate(routers.contactDetails)}
+            onPress={() => navigate(routers.contactDetails, { item })}
           />
         }
         right={
@@ -215,6 +219,7 @@ class Contacts extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        searchValue,
         screenTabList,
       },
     } = this;
@@ -225,7 +230,7 @@ class Contacts extends React.Component {
       //   data={[
       //   { name: '李总', jobTitle: '市场总监', companyName: '阿里巴巴' },
       // ]}
-      data: toJS(list),
+      data: list,
       keyExtractor: item => `${item.name}.${item.jobTitle}`,
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
@@ -245,7 +250,12 @@ class Contacts extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入客户名称"
+            value={searchValue}
+            onChangeText={searchValue => this.setState({ searchValue })}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
             list={screenTabList}
             activeIndex={activeIndex}
@@ -263,7 +273,7 @@ class Contacts extends React.Component {
   }
 }
 
-Contacts.navigationOptions = ({ navigation, screenProps }) => ({
+Contacts.navigationOptions = ({ navigation }) => ({
   title: '联系人',
   headerLeft: (
     <LeftBackIcon

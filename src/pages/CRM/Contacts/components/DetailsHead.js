@@ -60,6 +60,7 @@ const PersonText = NameText.extend`
 
 class DetailsHead extends React.PureComponent {
   render() {
+    const { item } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
@@ -71,16 +72,16 @@ class DetailsHead extends React.PureComponent {
             <PhoneText>电话联系</PhoneText>
           </PhoneView>
           <ItemView>
-            <NameText>李总</NameText>
+            <NameText>{item.name}</NameText>
           </ItemView>
           <ItemView marginTop={2}>
-            <CompanyText>西风网络</CompanyText>
+            <CompanyText>{item.companyName}</CompanyText>
           </ItemView>
           <ItemView
             marginTop={12}
             marginBottom={41}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={require('../../../../img/crm/details/principalGo.png')}
               size={15}

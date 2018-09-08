@@ -11,7 +11,7 @@ import TextInput from './TextInput';
 import TouchableView from './TouchableView';
 import { moderateScale } from '../utils/scale';
 
-const SearcherView = styled.View`
+const SearchView = styled.View`
   width: ${props => props.width ? moderateScale(props.width) : '100%'};
   flex-direction: row;
   justify-content: space-between;
@@ -24,9 +24,15 @@ const SearcherView = styled.View`
 const SuffixImage = styled.Image`
   width: ${moderateScale(13)};
   height: ${moderateScale(13)};
+`;
+
+const SearchButtonView = styled(TouchableView)`
   position: absolute;
-  bottom: ${moderateScale(-7)};
+  bottom: ${moderateScale(7)};
   right: ${moderateScale(13)};
+  height: 98%;
+  width: ${moderateScale(18)};
+  justify-content: center;
 `;
 
 class SearchInput extends React.Component {
@@ -40,7 +46,7 @@ class SearchInput extends React.Component {
       ...resetProps
     } = this.props;
     return (
-      <SearcherView
+      <SearchView
         width={searchWidth}
         style={searchStyle}
       >
@@ -57,12 +63,12 @@ class SearchInput extends React.Component {
           textPadding={`${moderateScale(10)}px`}
           value={value}
         />
-        <TouchableView onPress={onSearch}>
+        <SearchButtonView onPress={onSearch}>
           <SuffixImage
             source={require('../img/search.png')}
           />
-        </TouchableView>
-      </SearcherView>
+        </SearchButtonView>
+      </SearchView>
     );
   }
 }

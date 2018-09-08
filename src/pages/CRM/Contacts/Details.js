@@ -8,8 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
-// import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -21,7 +21,8 @@ import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-// import TouchableView from '../../../components/TouchableView';
+
+import ContactsModel from '../../../logicStores/contacts';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -48,10 +49,14 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+@observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
+  componentDidMount() {
+    this.getData();
+  }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
@@ -60,6 +65,10 @@ class Details extends React.Component {
   };
   onEndReached = () => {
     //
+  };
+  getData = () => {
+    const { item } = this.props.navigation.state.params;
+    ContactsModel.getContactDetailsReq(item);
   };
   renderTotalItem = () => {
     const list = [
@@ -81,9 +90,10 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const { contactDetails } = ContactsModel;
     return (
       <View>
-        <DetailsHead />
+        <DetailsHead item={contactDetails} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
