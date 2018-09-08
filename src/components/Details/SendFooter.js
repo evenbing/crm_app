@@ -15,7 +15,7 @@ import { getFooterBottom } from '../../utils/utils';
 // components
 import Thumbnail from '../Thumbnail';
 import TouchableView from '../TouchableView';
-import { FilterList } from '../Modal';
+import { SendFilterList } from '../Modal';
 
 const ContainerView = styled.View`
   position: absolute;
@@ -109,7 +109,7 @@ class SendFooter extends React.PureComponent {
     } = this.props;
     return (
       <ContainerView>
-        <FilterList
+        <SendFilterList
           isVisible={isVisible}
           onPressClose={this.selectRecordType}
           selectedIndex={selectedIndex}

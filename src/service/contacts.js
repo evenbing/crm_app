@@ -9,10 +9,10 @@ import { post } from '../utils/rpc';
 /** 查询联系人列表
  * @params options
  * {
- *   my 我负责的
- *   myParticipate 我参与的
- *   sevenDaysUninvolved 7天未跟进的
- *   all 全部
+ *   my 我负责的 boolean
+ *   myParticipate 我参与的 boolean
+ *   sevenDaysUninvolved 7天未跟进的 boolean
+ *   all 全部 boolean
  *   name  姓名
  *   followTimeType 跟进时间范围
  *   companyName 公司名称
@@ -41,6 +41,8 @@ export function getContactList({
   mobilePhone,
   email,
   sortColumn,
+  pageNumber = 1,
+  pageSize = 15,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.find',
@@ -58,6 +60,8 @@ export function getContactList({
     mobilePhone,
     email,
     sortColumn,
+    pageNumber,
+    pageSize,
   });
 }
 

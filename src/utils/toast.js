@@ -16,7 +16,7 @@ import errorIcon from '../img/error.png';
 
 const ContainerView = styled.View`
   width: ${moderateScale(181)};
-  height: ${moderateScale(105)};
+  min-height: ${moderateScale(105)};
   justify-content: center;
   align-items: center;
 `;

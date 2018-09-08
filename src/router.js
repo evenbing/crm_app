@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import RootModal from 'js-root-toast';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Root } from 'native-base';
 import { Image } from 'react-native';
@@ -270,7 +271,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.crm,
+  initialRouteName: routers.home,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
@@ -313,6 +314,8 @@ class Routers extends React.Component {
               // MemberModel.getMemberDataReq();
               return false;
             }
+            // 有坑
+            global.$RootToast && RootModal.hide(global.$RootToast);
           }}
         />
       </Root>

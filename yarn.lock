@@ -3539,9 +3539,9 @@ js-rn-echarts@^0.1.0:
   dependencies:
     echarts "3.2.3"
 
-js-root-toast@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/js-root-toast/-/js-root-toast-0.1.1.tgz#be11618b187d2d25e4b654283dd7a22edf368f8b"
+js-root-toast@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.npmjs.org/js-root-toast/-/js-root-toast-0.1.4.tgz#11dc9db673cd295cfe78ff756ed49d40897b6107"
   dependencies:
     react-native-root-siblings "2.2.0"
 

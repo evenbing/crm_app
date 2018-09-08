@@ -23,6 +23,7 @@ import { moderateScale } from '../../utils/scale';
 import CalendarIcon from '../../img/home/ico_header_calendar.png';
 import { routers, theme } from '../../constants';
 import Calendar from './components/Calendar';
+import { getDayOfWeek } from '../../utils/date';
 // import TouchableView from '../../components/TouchableView';
 
 const createTypes = [
@@ -235,6 +236,9 @@ class Home extends React.Component {
       onPressItem: this.onSelectDelayType,
       list: delayTypes,
     };
+    const curYear = new Date().getFullYear();
+    const curMonth = new Date().getMonth() + 1;
+    const curDay = new Date().getDate();
     return (
       <ContainerView>
         <CommStatusBar />
@@ -249,12 +253,12 @@ class Home extends React.Component {
             <HeaderViewLeft>
               <HeaderCalendarIcon />
               <HeaderCalendarText>
-                25
+                {curDay}
               </HeaderCalendarText>
             </HeaderViewLeft>
             <HeaderViewMiddle>
-              <YearAndMonth>2012年5月</YearAndMonth>
-              <WeekDay>星期四</WeekDay>
+              <YearAndMonth>{`${curYear}年${curMonth}月`}</YearAndMonth>
+              <WeekDay> {getDayOfWeek(curYear, curMonth, curDay, '星期')} </WeekDay>
             </HeaderViewMiddle>
             <HeaderViewRight>
               <NoticeView yes onPress={this.showMessage} />
@@ -264,6 +268,7 @@ class Home extends React.Component {
         <Calendar
           navigate={navigate}
           selectCreateType={this.selectCreateType}
+          onSelectedDayChange={this.onSelectedDayChange}
         />
         <List
           data={this.generateData()}

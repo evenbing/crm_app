@@ -40,10 +40,10 @@ class LeftItem extends React.PureComponent {
     return (
       <ContainerView>
         <TitleView>
-          <TitleText>{item.title}</TitleText>
-          <JobText>{item.job}</JobText>
+          <TitleText>{item.name}</TitleText>
+          <JobText>{item.jobTitle}</JobText>
         </TitleView>
-        <TipText>{item.company}</TipText>
+        <TipText>{item.companyName}</TipText>
       </ContainerView>
     );
   }
