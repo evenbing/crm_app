@@ -30,7 +30,7 @@ const TotalView = styled.View`
   border: 1px solid ${theme.borderColor};
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
@@ -60,12 +60,17 @@ class Details extends React.Component {
     //
   };
   renderTotalItem = () => {
+    const {
+      navigation: {
+        navigate,
+      },
+    } = this.props;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '3' },
+      { title: '文档', text: '12', onPress: () => {} },
+      { title: '合同', text: '3', onPress: () => { navigate(routers.receivable); } },
     ];
     return list.map(_ => (
-      <ItemView key={_.title}>
+      <ItemView key={_.title} onPress={_.onPress} >
         <NumberText>{_.text}</NumberText>
         <TitleText>{_.title}</TitleText>
       </ItemView>
@@ -192,7 +197,7 @@ class Details extends React.Component {
   }
 }
 
-Details.navigationOptions = ({ navigation, screenProps }) => ({
+Details.navigationOptions = ({ navigation }) => ({
   title: '合同资料',
   headerLeft: (
     <LeftBackIcon

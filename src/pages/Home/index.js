@@ -5,13 +5,16 @@
  * @author JUSTIN XU
  */
 import React from 'react';
+import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
 import uuidv1 from 'uuid/v1';
+
 import Toast from '../../utils/toast';
 import ListItem from './components/ListItem';
 import NoticeView from './components/NotiveView';
+import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
@@ -100,11 +103,16 @@ const ListItemSeparatorComponent = styled.View`
   height: ${moderateScale(10)}px;
 `;
 
+@observer
 class Home extends React.Component {
   state = {
     createActionSheetVisible: false,
     delayActionSheetVisible: false,
   };
+
+  componentDidMount() {
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq();
+  }
 
   onSelectCreateType = ({ item }) => {
     const { navigate } = this.props.navigation;

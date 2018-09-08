@@ -4808,6 +4808,12 @@ react-native-modal@^6.5.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
+react-native-progress@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.npmjs.org/react-native-progress/-/react-native-progress-3.5.0.tgz#d1ccc7f96dc17c609aedb43b2e6695d67deae0ec"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-native-root-siblings@2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/react-native-root-siblings/-/react-native-root-siblings-2.2.0.tgz#57bb2f7b0a5399c48e14b36d5f3ae7015cd3fb95"
