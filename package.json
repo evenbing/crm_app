@@ -7,6 +7,8 @@
   "setup": "yarn install && react-native link",
   "start": "node node_modules/react-native/local-cli/cli.js start",
   "android": "react-native run-android",
+  "devMenu": "adb shell input keyevent 82",
+  "reload": "adb shell input text 'RR'",
   "ios": "react-native run-ios",
   "iPhone8": "react-native run-ios --simulator 'iPhone 8'",
   "iPhoneX": "react-native run-ios --simulator 'iPhone X'",

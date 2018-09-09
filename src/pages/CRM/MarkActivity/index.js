@@ -187,7 +187,24 @@ class SalesClues extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            data={['跟进时间', '我负责的', '筛选']}
+            list={[
+              {
+                key: 'my',
+                name: '我负责的',
+              },
+              {
+                key: 'myParticipate',
+                name: '我参与的',
+              },
+              {
+                key: 'sevenDaysUninvolved',
+                name: '7天未跟进的',
+              },
+              {
+                key: 'all',
+                name: '全部',
+              },
+            ]}
             activeIndex={activeIndex}
             onChange={this.onChange}
             selectedList={selectedList}

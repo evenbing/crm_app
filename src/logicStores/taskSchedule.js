@@ -2,13 +2,13 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-06 22:15:31
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-06 22:27:30
+ * @Last Modified time: 2018-09-09 20:02:13
  */
 
 import { action, reaction, observable, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find,
+  find, create, update,
 } from '../service/taskSchedule';
 import Toast from '../utils/toast';
 
@@ -21,12 +21,52 @@ class TaskScheduleStore {
   constructor() {
     // reaction(() => this.totalCount);
   }
-  findTaskScheduleRelatedToMe
-  @action async getTaskScheduleRelatedToMeReq() {
+
+  /**
+   * 查询任务或日程
+   */
+  @action async getTaskScheduleRelatedToMeReq(options) {
     try {
       const {
         result = [],
-      } = await find();
+        errors = [],
+      } = await find(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        console.log({ result });
+        this.taskScheduleList = [...result];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  /**
+   *  创建 任务或日程
+   */
+  @action async createTaskScheduleRelatedToMeReq() {
+    try {
+      const {
+        result = [],
+      } = await create();
+      runInAction(() => {
+        console.log({ result });
+
+        this.taskScheduleList = [...result];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  /**
+   *  修改 任务或日程
+   */
+  @action async updateTaskScheduleRelatedToMeReq() {
+    try {
+      const {
+        result = [],
+      } = await update();
       runInAction(() => {
         console.log({ result });
 
