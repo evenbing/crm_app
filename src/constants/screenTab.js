@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 
+// 联系人
 export const ResponsibFilterMap = {
   selectedIndex: 0,
   list: [
@@ -41,6 +42,7 @@ export const TimeFilterMap = {
   ],
 };
 
+// 侧边栏筛选
 export const DrawerFilterMap = {
   selectedIndex: 0,
   list: [
@@ -51,3 +53,31 @@ export const DrawerFilterMap = {
   ],
 };
 
+// 回款
+export const ReceivablePlanTimeType = {
+  selectedIndex: 0,
+  list: [
+    {
+      key: 'CHARGE',
+      name: '计划回款时间',
+    },
+    {
+      key: 'ALL',
+      name: '实际回款时间',
+    },
+  ],
+};
+
+export const ParticipateType = {
+  selectedIndex: 0,
+  list: [
+    {
+      key: 'CHARGE',
+      name: '我负责的',
+    },
+    {
+      key: 'ALL',
+      name: '全部',
+    },
+  ],
+};

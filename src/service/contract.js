@@ -76,21 +76,25 @@ export function del({
  * @add by zhao
  * @params options
  * {
- * pactParticipateType 参与类型 must
- * status 合同状态
- * customerId 客户ID
- * opportunityId 机会ID
- * type 合同类型
- * payType 付款方式
- * number 合同编号
- * ourContractId 我方签约人ID
- * startDate 开始日期
- * endDate 结束日期
- * pactDate 签约日期
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
+ *   pactParticipateType 参与类型 must
+ *   status 合同状态
+ *   customerId 客户ID
+ *   opportunityId 机会ID
+ *   type 合同类型
+ *   payType 付款方式
+ *   number 合同编号
+ *   ourContractId 我方签约人ID
+ *   startDate 开始日期
+ *   endDate 结束日期
+ *   pactDate 签约日期
  * }
  * @return Promise<ArrayList>
  */
 export function getContractList({
+  pageNumber = 1,
+  pageSize = 15,
   pactParticipateType,
   status,
   customerId,
@@ -105,6 +109,8 @@ export function getContractList({
 } = {}) {
   return post({
     method: 'api.customerrelations.pact.find',
+    pageNumber,
+    pageSize,
     pactParticipateType,
     status,
     customerId,

@@ -4,7 +4,7 @@
  * @time 2018/9/9
  * @author JUSTIN XU
  */
-import { action, observable, runInAction, useStrict } from 'mobx/lib/mobx';
+import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getContractList,

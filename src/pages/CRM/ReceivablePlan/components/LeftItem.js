@@ -7,7 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants/index';
+import moment from 'moment';
+import { theme } from '../../../../constants';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -44,15 +45,15 @@ class LeftItem extends React.PureComponent {
     return (
       <ContainerView>
         <TitleView>
-          <TitleText>{item.time}</TitleText>
+          <TitleText>{item.code}</TitleText>
         </TitleView>
         <TipView>
-          <TipText>{item.customer}</TipText>
-          <TipText>{item.contract}</TipText>
+          <TipText>客户：{item.issueId}</TipText>
+          <TipText>合同：{item.pactId}</TipText>
         </TipView>
         <TipView>
-          <TipText>{item.returnMoney}</TipText>
-          <TipText>{item.returnTime}</TipText>
+          <TipText>计划回款：¥{item.receivablePrice}</TipText>
+          <TipText>计划日期：{item.receivableDate ? moment(Number(item.receivableDate)).format('YYYY-MM-DD') : '--'}</TipText>
         </TipView>
       </ContainerView>
     );

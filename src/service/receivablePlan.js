@@ -56,6 +56,8 @@ export function getReceivableIssue({
 /** 高级查询回款计划
  * @params options
  * {
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
  *   pactId 合同ID
  *   issueId 回款期次ID
  *   participateType 参与类型 [ CHARGE-我负责的，ALL-全部 ]
@@ -64,6 +66,8 @@ export function getReceivableIssue({
  * @return Promise<ArrayList>
  */
 export function getReceivablePlanList({
+  pageNumber = 1,
+  pageSize = 15,
   pactId,
   issueId,
   participateType,
@@ -71,6 +75,8 @@ export function getReceivablePlanList({
 } = {}) {
   return post({
     method: 'api.customerrelations.receivablePlan.find',
+    pageNumber,
+    pageSize,
     pactId,
     issueId,
     participateType,
@@ -85,7 +91,7 @@ export function getReceivablePlanList({
  * }
  * @return Promise<Object>
  */
-export function getReceivablePlan({
+export function getReceivablePlanDetails({
   id,
 } = {}) {
   return post({

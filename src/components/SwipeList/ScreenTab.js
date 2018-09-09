@@ -67,26 +67,13 @@ class ScreenTab extends React.PureComponent {
     headerList: [], // 头部显示List
     filterMap: {}, // 下拉菜单Map
   };
+  componentDidMount() {
+    this.initState(this.props);
+  }
   componentWillReceiveProps(nextProps) {
     const { list = [], activeIndex } = nextProps;
     if (list.length && activeIndex !== -1) {
-      let filterMap = {};
-      const headerList = [];
-      list.forEach((_, i) => {
-        const { selectedIndex = 0, list = [] } = _;
-        if (!list.length) return;
-        if (activeIndex === i) {
-          filterMap = _;
-        }
-        headerList.push(list[selectedIndex].name);
-      });
-      if (activeIndex === list.length - 1) {
-        filterMap = {};
-      }
-      this.setState({
-        headerList,
-        filterMap,
-      });
+      this.initState(nextProps);
     }
   }
   onHideVisible = () => {
@@ -111,6 +98,26 @@ class ScreenTab extends React.PureComponent {
     } else {
       this.onShowVisible();
     }
+  };
+  initState = (props) => {
+    const { list = [], activeIndex } = props;
+    let filterMap = {};
+    const headerList = [];
+    list.forEach((_, i) => {
+      const { selectedIndex = 0, list = [] } = _;
+      if (!list.length) return;
+      if (activeIndex === i) {
+        filterMap = _;
+      }
+      headerList.push(list[selectedIndex].name);
+    });
+    if (activeIndex === list.length - 1) {
+      filterMap = {};
+    }
+    this.setState({
+      headerList,
+      filterMap,
+    });
   };
   renderIcon = (node, isLast, active) => {
     if (React.isValidElement(node)) return null;
