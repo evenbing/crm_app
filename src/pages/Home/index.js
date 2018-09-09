@@ -18,12 +18,12 @@ import TaskScheduleStore from '../../logicStores/taskSchedule';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { ActionSheet } from '../../components/Modal';
 import { moderateScale } from '../../utils/scale';
-import { routers, theme } from '../../constants';
+import { routers } from '../../constants';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
 import { get2Date } from '../../utils/date';
 import TaskScheduleList from './components/TaskScheduleList';
-// import TouchableView from '../../components/TouchableView';
+import { ContainerView } from '../../components/Styles/Layout';
 
 const createTypes = [
   { leftText: '新建日程' },
@@ -37,10 +37,6 @@ const delayTypes = [
   { leftText: '后天' },
   { leftText: '自定义' },
 ];
-
-const ContainerView = styled.View`
-  background-color: ${theme.pageBackColor};
-`;
 
 const ListItemSeparatorComponent = styled.View`
   background-color: transparent;

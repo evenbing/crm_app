@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-09 21:19:28
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-09 21:44:18
+ * @Last Modified time: 2018-09-09 22:47:12
  */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -15,7 +15,6 @@ import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
 
 const List = styled.FlatList`
-  height: 300;
   background-color: ${theme.pageBackColor};
   padding: ${moderateScale(10)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
 `;

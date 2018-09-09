@@ -6,6 +6,7 @@ import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
 import RemarkInput from '../../components/RemarkInput';
+import NavInputItem from '../../components/NavInputItem';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -34,16 +35,39 @@ class AddSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
     };
   }
 
+  getLeftStyle = (inputProps, width = 80) => {
+    return {
+      inputProps: {
+        ...inputProps,
+        fontSize: moderateScale(16),
+      },
+      leftTextStyle: {
+        color: theme.textFormColor,
+        width: moderateScale(width),
+      },
+      height: 44,
+    };
+  };
+
   render() {
+    const { name } = this.state;
     return (
       <ContainerView>
         <CommStatusBar />
         <ScrollView>
           <Divder height={9} />
-          <NavView leftText="日程主题" rightText="开心句号" />
+          <NavInputItem
+            leftText="日程主题"
+            {...this.getLeftStyle({
+              placeholder: '请输入日程主题',
+              value: name,
+              onChangeText: name => this.setState({ name }),
+            })}
+          />
           <Divder height={10} />
           <NavView leftText="开始时间" rightText="2018-12-12 12:00" />
           <Divder height={1} marginHorizontal={15} />
