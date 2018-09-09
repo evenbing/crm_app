@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
-import { contactsEnum } from '../../../constants/form';
+import { ContactsEnum } from '../../../constants/form';
 import { moderateScale } from '../../../utils/scale';
 import Toast from '../../../utils/toast';
 
@@ -67,8 +67,8 @@ class Editor extends React.Component {
       departmentName,
     } = this.state;
     try {
-      if (!name) throw new Error(contactsEnum.name);
-      if (!companyName) throw new Error(contactsEnum.companyName);
+      if (!name) throw new Error(ContactsEnum.name);
+      if (!companyName) throw new Error(ContactsEnum.companyName);
       ContactsModel.createContactReq({
         name,
         companyName,
@@ -124,7 +124,7 @@ class Editor extends React.Component {
           <NavInputItem
             leftText="姓名"
             {...this.getLeftStyle({
-              placeholder: contactsEnum.name,
+              placeholder: ContactsEnum.name,
               value: name,
               onChangeText: name => this.setState({ name }),
             })}
@@ -133,7 +133,7 @@ class Editor extends React.Component {
             leftText="公司名称"
             center={
               <CenterText>
-                { companyName ? null : contactsEnum.companyName }
+                { companyName ? null : ContactsEnum.companyName }
               </CenterText>
             }
             {...NavItemStyle}
@@ -141,7 +141,7 @@ class Editor extends React.Component {
           <NavInputItem
             leftText="职务"
             {...this.getLeftStyle({
-              placeholder: contactsEnum.companyName,
+              placeholder: ContactsEnum.companyName,
               value: jobTitle,
               onChangeText: jobTitle => this.setState({ jobTitle }),
             })}
@@ -149,7 +149,7 @@ class Editor extends React.Component {
           <NavInputItem
             leftText="电话"
             {...this.getLeftStyle({
-              placeholder: contactsEnum.phoneNumber,
+              placeholder: ContactsEnum.phoneNumber,
               value: phoneNumber,
               onChangeText: phoneNumber => this.setState({ phoneNumber }),
             })}
@@ -157,7 +157,7 @@ class Editor extends React.Component {
           <NavInputItem
             leftText="手机"
             {...this.getLeftStyle({
-              placeholder: contactsEnum.mobilePhone,
+              placeholder: ContactsEnum.mobilePhone,
               value: mobilePhone,
               onChangeText: mobilePhone => this.setState({ mobilePhone }),
             })}
@@ -167,7 +167,7 @@ class Editor extends React.Component {
             center={
               <CenterText>
                 {
-                  (departmentId && departmentName) ? null : contactsEnum.departmentName
+                  (departmentId && departmentName) ? null : ContactsEnum.departmentName
                 }
               </CenterText>
             }

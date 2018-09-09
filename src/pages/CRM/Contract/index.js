@@ -24,6 +24,14 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 import LeftItem from './components/LeftItem';
 
 import { FilterList } from './_fieldCfg';
+import ContractModel from '../../../logicStores/contract';
+
+// screenTab
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 
 useStrict(true);
 
@@ -36,11 +44,15 @@ class Contract extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
+    // screenTab
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.getData();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.contractEditor);
@@ -51,6 +63,11 @@ class Contract extends React.Component {
       this.onOpenDrawer();
     }
   };
+  onToggleAmountVisible = () => {
+    this.setState({
+      amountVisible: !this.state.amountVisible,
+    });
+  };
   onPressButtonItem = ({ index, item }) => {
     if (index === 0) {
       // TODO
@@ -58,6 +75,12 @@ class Contract extends React.Component {
       return;
     }
     alert(`item:${JSON.stringify(item)}, index: ${index}`);
+  };
+  onPressFilterItem = async ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    await this.setState({ screenTabList });
+    this.getData();
   };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
@@ -98,22 +121,38 @@ class Contract extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  onToggleAmountVisible = () => {
-    this.setState({
-      amountVisible: !this.state.amountVisible,
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = ContractModel.contractList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
     });
+    // ContractModel.getContactListReq(obj);
+    ContractModel.getContractListReq({ pageNumber });
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-  renderItem = (props) => {
-    const { index } = props;
+  renderItem = (itemProps) => {
+    const { index, item } = itemProps;
     const {
       navigation: { navigate },
     } = this.props;
@@ -133,12 +172,12 @@ class Contract extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
+            {...itemProps}
             right="hidden"
             left={
-              <LeftItem {...props} />
+              <LeftItem {...itemProps} />
             }
-            onPress={() => navigate(routers.contractDetails)}
+            onPress={() => navigate(routers.contractDetails, { item })}
           />
         }
         right={
@@ -195,6 +234,8 @@ class Contract extends React.Component {
         amountVisible,
         drawerVisible,
         selectedList,
+        searchValue,
+        screenTabList,
       },
     } = this;
     const amountActionSheetProps = {
@@ -207,6 +248,20 @@ class Contract extends React.Component {
         { leftText: '回款金额', rightText: '¥100,000,00' },
       ],
     };
+    const {
+      contractList: { list, refreshing, loadingMore },
+    } = ContractModel;
+    const flatProps = {
+      data: list,
+      keyExtractor: item => `${item.customerName}.${item.departmentId}`,
+      renderItem: this.renderItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -218,23 +273,20 @@ class Contract extends React.Component {
         >
           <CommStatusBar />
           <ActionSheet {...amountActionSheetProps} />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入客户名称"
+            value={searchValue}
+            onChangeText={searchValue => this.setState({ searchValue })}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
-            data={['跟进时间', '我负责的', '筛选']}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
-          <FlatListTable
-            data={[
-            { title: '李总', company: '阿里巴巴', money: '10,000,000.00' },
-            { title: '张总', company: '字节跳动', money: '10,000,000.00' },
-            { title: '何总', company: '腾讯科技', money: '10,000,000.00' },
-          ]}
-            keyExtractor={item => item.title}
-            renderItem={this.renderItem}
-          />
-
+          <FlatListTable {...flatProps} />
         </ContainerView>
       </Drawer>
     );
@@ -273,7 +325,6 @@ Contract.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  index: PropTypes.number.isRequired,
 };
 
 export default Contract;

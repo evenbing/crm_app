@@ -6,10 +6,10 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
 import styled from 'styled-components';
+import { View } from 'react-native';
+import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
-// import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -21,6 +21,8 @@ import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
+
+import ContractModel from '../../../logicStores/contract';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -46,10 +48,14 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+@observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
+  componentDidMount() {
+    this.getData();
+  }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
@@ -58,6 +64,10 @@ class Details extends React.Component {
   };
   onEndReached = () => {
     //
+  };
+  getData = () => {
+    const { item } = this.props.navigation.state.params;
+    ContractModel.getContractDetailsReq(item);
   };
   renderTotalItem = () => {
     const {

@@ -236,7 +236,7 @@ const CrmRouteConfig = {
 
 const CrmNavigatorConfig = {
   ...HomeNavigatorConfig,
-  initialRouteName: routers.crm,
+  initialRouteName: routers.contract,
 };
 
 const CrmStack = StackNavigator(CrmRouteConfig, CrmNavigatorConfig);
@@ -314,7 +314,7 @@ class Routers extends React.Component {
               // MemberModel.getMemberDataReq();
               return false;
             }
-            // 有坑
+            // 插件toast
             global.$RootToast && RootModal.hide(global.$RootToast);
           }}
         />

@@ -45,13 +45,13 @@ class LeftItem extends React.PureComponent {
     return (
       <ContainerView>
         <TitleView>
-          <TitleText>{item.title}</TitleText>
+          <TitleText>{item.theme}</TitleText>
         </TitleView>
         <ContentView>
           <JobText>客户：</JobText>
-          <TipText>{item.company || '--'}</TipText>
+          <TipText>{item.customerName || '--'}</TipText>
           <JobText marginLeft={20}>合同金额：</JobText>
-          <TipText>{item.money ? `¥ ${item.money}` : '--'}</TipText>
+          <TipText>{item.totalMoney ? `¥ ${item.totalMoney}` : '--'}</TipText>
         </ContentView>
       </ContainerView>
     );

@@ -6,7 +6,7 @@
  */
 
 // 联系人表单
-export const contactsEnum = {
+export const ContactsEnum = {
   name: '请输入客户名称',
   jobTitle: '请输入职务',
   companyName: '请选择公司名称',

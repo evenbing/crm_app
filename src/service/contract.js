@@ -1,5 +1,5 @@
 /**
- * @component pack.js
+ * @component contract.js
  * @description 合同 service
  * @time 2018/8/28
  * @author zhao
@@ -90,7 +90,7 @@ export function del({
  * }
  * @return Promise<Object>
  */
-export function find({
+export function getContractList({
   pactParticipateType,
   status,
   customerId,
@@ -128,7 +128,7 @@ export function find({
  * }
  * @return Promise<Object>
  */
-export function detail({
+export function getContractDetails({
   id,
 } = {}) {
   return post({

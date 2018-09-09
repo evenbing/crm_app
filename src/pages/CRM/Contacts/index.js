@@ -263,10 +263,7 @@ class Contacts extends React.Component {
             onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
-          <FlatListTable
-            {...flatProps}
-
-          />
+          <FlatListTable {...flatProps} />
         </ContainerView>
       </Drawer>
     );
