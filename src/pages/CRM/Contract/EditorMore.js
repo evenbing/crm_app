@@ -7,9 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+// import { DatePicker } from 'native-base';
 import { View } from 'react-native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
+import { ContractEnum } from '../../../constants/form';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -18,6 +22,8 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+
+import ContractModel from '../../../logicStores/contract';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -39,26 +45,120 @@ const NavItemStyle = {
   showNavIcon: true,
 };
 
+// const PickerStyle = {
+//   paddingLeft: 0,
+//   paddingRight: moderateScale(120),
+//   fontSize: moderateScale(16),
+//   width: '100%',
+// };
+
+@observer
 class EditorMore extends React.Component {
+  state = {
+    name: null,
+    customerId: null,
+    customerName: null,
+    salesOpportunitiesId: null,
+    type: null,
+    status: null,
+    payType: null,
+    totalMoney: null,
+    startDate: null,
+    endDate: null,
+    number: null,
+    pactDate: null,
+    ourContractId: null,
+    customerContractId: null,
+    customerContractName: null,
+    departmentId: null,
+    departmentName: null,
+    content: null,
+    comment: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
-  getLeftStyle = (placeholder, width = 80) => {
+  onPressRight = () => {
+    const {
+      name,
+      customerId,
+      customerName,
+      salesOpportunitiesId,
+      type,
+      status,
+      payType,
+      totalMoney,
+      startDate,
+      endDate,
+      number,
+      pactDate,
+      ourContractId,
+      customerContractId,
+      customerContractName,
+      departmentId,
+      departmentName,
+      content,
+      comment,
+    } = this.state;
+    try {
+      if (!name) throw new Error(ContractEnum.theme);
+      if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
+      if (!totalMoney) throw new Error(ContractEnum.totalMoney);
+      if (!startDate) throw new Error(ContractEnum.startDate);
+      if (!endDate) throw new Error(ContractEnum.endDate);
+      if (!departmentId) throw new Error(ContractEnum.departmentName);
+      ContractModel.updateContractReq({
+        theme: name,
+        customerId,
+        customerName,
+        totalMoney,
+        startDate,
+        endDate,
+        departmentId,
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  };
+  getLeftStyle = (inputProps, width = 80) => {
     return {
       inputProps: {
-        placeholder,
+        ...inputProps,
         fontSize: moderateScale(16),
       },
       leftTextStyle: {
-        color: '#373737',
+        color: theme.textFormColor,
         width: moderateScale(width),
       },
+      height: 44,
     };
   };
   render() {
+    const {
+      state: {
+        name,
+        // customerId,
+        // customerName,
+        // salesOpportunitiesId,
+        // type,
+        // status,
+        // payType,
+        // totalMoney,
+        // startDate,
+        // endDate,
+        number,
+        // pactDate,
+        // ourContractId,
+        // customerContractId,
+        customerContractName,
+        // departmentId,
+        // departmentName,
+        content,
+        comment,
+      },
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
@@ -71,39 +171,54 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同名称"
-            {...this.getLeftStyle('请输入合同名称')}
-            height={44}
+            {...this.getLeftStyle({
+              placeholder: ContractEnum.theme,
+              value: name,
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <NavInputItem
             leftText="客户"
             center={
-              <CenterText>请选择客户</CenterText>
+              <CenterText>{ContractEnum.customerName}</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="销售机会"
-            {...this.getLeftStyle('请输入销售机会')}
+            center={
+              <CenterText>{ContractEnum.salesOpportunities}</CenterText>
+            }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="合同类型"
-            {...this.getLeftStyle('请输入合同类型')}
+            center={
+              <CenterText>{ContractEnum.type}</CenterText>
+            }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="合同状态"
-            {...this.getLeftStyle('请输入合同状态')}
+            center={
+              <CenterText>{ContractEnum.status}</CenterText>
+            }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="付款方式"
-            {...this.getLeftStyle('请输入付款方式')}
+            center={
+              <CenterText>{ContractEnum.payType}</CenterText>
+            }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="总金额"
-            {...this.getLeftStyle('请输入总金额')}
+            {...this.getLeftStyle({
+              placeholder: ContractEnum.totalMoney,
+              value: name,
+              onChangeText: totalMoney => this.setState({ totalMoney }),
+            })}
             right={
               <RightText>元</RightText>
             }
@@ -112,14 +227,14 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="开始日期"
             center={
-              <CenterText>请选择活动开始日期</CenterText>
+              <CenterText>{ContractEnum.startDate}</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="结束日期"
             center={
-              <CenterText>2017-09-09</CenterText>
+              <CenterText>{ContractEnum.endDate}</CenterText>
             }
             isLast
             {...NavItemStyle}
@@ -129,32 +244,39 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同编号"
-            {...this.getLeftStyle('请选择所属部门')}
+            {...this.getLeftStyle({
+              placeholder: ContractEnum.number,
+              value: number,
+              onChangeText: number => this.setState({ number }),
+            })}
             height={44}
           />
           <NavInputItem
             leftText="签约日期"
             center={
-              <CenterText>请选择签约日期</CenterText>
+              <CenterText>{ContractEnum.pactDate}</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="我方签约人"
             center={
-              <CenterText>请选择我方签约人</CenterText>
+              <CenterText>{ContractEnum.ourContract}</CenterText>
             }
             {...NavItemStyle}
           />
           <NavInputItem
             leftText="客户方签约人"
-            {...this.getLeftStyle('请选择客户方签约人', 100)}
-            height={44}
+            center={
+              <CenterText>{ContractEnum.customerContractName}</CenterText>
+            }
+            {...NavItemStyle}
+            leftWidth={110}
           />
           <NavInputItem
             leftText="所属部门"
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText>{ContractEnum.departmentName}</CenterText>
             }
             {...NavItemStyle}
           />
@@ -168,6 +290,8 @@ class EditorMore extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
+              value={content}
+              onChangeText={content => this.setState({ content })}
               placeholder="请输入合同正文"
               placeholderTextColor={theme.textPlaceholderColor}
             />
@@ -182,6 +306,8 @@ class EditorMore extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
               placeholder="请输入备注说明"
               placeholderTextColor={theme.textPlaceholderColor}
             />

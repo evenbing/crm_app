@@ -6,13 +6,11 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/lib/mobx';
 import autobind from 'autobind-decorator';
-// import {
-//   createContact,
-//   updateContact,
-// } from '../service/contacts';
 import {
   getContractList,
   getContractDetails,
+  createContract,
+  updateContract,
 } from '../service/contract';
 import Toast from '../utils/toast';
 
@@ -78,38 +76,38 @@ class ContractStore {
       Toast.showError(e.message);
     }
   }
-  //
-  // // 新增
-  // @action async createContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await createContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
-  //
-  // // 编辑
-  // @action async updateContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await updateContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+
+  // 新增
+  @action async createContractReq(options) {
+    try {
+      const {
+        result = {},
+      } = await createContract(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contractDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 编辑
+  @action async updateContractReq(options) {
+    try {
+      const {
+        result = {},
+      } = await updateContract(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 }
 
 export default new ContractStore();

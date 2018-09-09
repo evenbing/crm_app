@@ -88,7 +88,7 @@ export function del({
  * endDate 结束日期
  * pactDate 签约日期
  * }
- * @return Promise<Object>
+ * @return Promise<ArrayList>
  */
 export function getContractList({
   pactParticipateType,
@@ -164,7 +164,7 @@ export function getContractDetails({
  * }
  * @return Promise<Object>
  */
-export function update({
+export function updateContract({
   id,
   customerId,
   customerName,
@@ -229,7 +229,6 @@ export function updatePactProductByPactId({
   });
 }
 
-
 /** 创建合同
  * @add by zhao
  * @params options
@@ -256,7 +255,7 @@ export function updatePactProductByPactId({
  * }
  * @return Promise<Object>
  */
-export function createPact({
+export function createContract({
   customerId,
   customerName,
   type,

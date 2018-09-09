@@ -135,7 +135,7 @@ class EditorMore extends React.Component {
         fontSize: moderateScale(16),
       },
       leftTextStyle: {
-        color: '#373737',
+        color: theme.textFormColor,
         width: moderateScale(width),
       },
       height: 44,
