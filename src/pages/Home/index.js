@@ -21,6 +21,8 @@ import { moderateScale } from '../../utils/scale';
 import { routers, theme } from '../../constants';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
+import { get2Date } from '../../utils/date';
+import TaskScheduleList from './components/TaskScheduleList';
 // import TouchableView from '../../components/TouchableView';
 
 const createTypes = [
@@ -40,11 +42,6 @@ const ContainerView = styled.View`
   background-color: ${theme.pageBackColor};
 `;
 
-const List = styled.FlatList`
-  background-color: ${theme.pageBackColor};
-  padding: ${moderateScale(10)}px ${moderateScale(15)}px 0px ${moderateScale(15)}px;
-`;
-
 const ListItemSeparatorComponent = styled.View`
   background-color: transparent;
   height: ${moderateScale(10)}px;
@@ -58,7 +55,10 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq();
+    const curYear = new Date().getFullYear();
+    const curMonth = get2Date(new Date().getMonth() + 1);
+    const curDay = get2Date(new Date().getDate());
+    this.getTaskScheduleList(`${curYear}${curMonth}${curDay}`);
   }
 
   onSelectCreateType = ({ item }) => {
@@ -98,7 +98,16 @@ class Home extends React.Component {
     }
   }
 
-  onSelectedDayChange = () => {}
+  onSelectedDayChange = (date) => {
+    this.getTaskScheduleList(date);
+  }
+
+  getTaskScheduleList = (date) => {
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
+      startDateId: date,
+      endDateId: date,
+    });
+  }
 
   showMessageList = () => {
     const {
@@ -107,26 +116,39 @@ class Home extends React.Component {
     navigate(routers.messageList);
   }
 
-  generateData = () => {
-    const data = [];
-    for (let index = 0; index < 10; index++) {
-      data.push({
-        key: index,
-        duration: '20:00-22:00',
-        type: '日程',
-        title: '拜访李总',
-        time: '2小时',
-        operateList: [
-          { key: uuidv1(), text: '下一步', onPress: this.selectCreateType },
-          { key: uuidv1(), text: '延时', onPress: this.selectDelayType },
-          { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-        ],
-      });
+  formatTaskScheduleListData = (item) => {
+    const {
+      id,
+      startTime,
+      endTime,
+      type,
+      name,
+      comment,
+    } = item;
+    let typeText = '';
+    let duration = '';
+    const startDate = new Date(parseInt(startTime, 10));
+    const endDate = new Date(parseInt(endTime, 10));
+    switch (type) {
+      case 'TASK':
+        typeText = '任务';
+        duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
+        break;
+      case 'SCHEDULE':
+        typeText = ' 日程';
+        duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
+        break;
+      default:
+        break;
     }
-    return data;
+    return ({
+      key: id,
+      duration,
+      type: typeText,
+      name,
+      comment,
+    });
   }
-
-  keyExtractor = item => item.key;
 
   selectCreateType = () => {
     this.setState({
@@ -142,18 +164,38 @@ class Home extends React.Component {
 
   renderItem = ({ item }) => {
     const {
-      duration,
+      startTime,
+      endTime,
       type,
-      title,
-      time,
-      operateList,
+      name,
+      comment,
     } = item;
+    let typeText = '';
+    let duration = '';
+    const startDate = new Date(parseInt(startTime, 10));
+    const endDate = new Date(parseInt(endTime, 10));
+    switch (type) {
+      case 'TASK':
+        typeText = '任务';
+        duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
+        break;
+      case 'SCHEDULE':
+        typeText = ' 日程';
+        duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
+        break;
+      default:
+        break;
+    }
     return (<ListItem
       duration={duration}
-      type={type}
-      title={title}
-      time={time}
-      operateList={operateList}
+      type={typeText}
+      name={name}
+      comment={comment}
+      operateList={[
+        { key: uuidv1(), text: '下一步', onPress: this.selectCreateType },
+        { key: uuidv1(), text: '延时', onPress: this.selectDelayType },
+        { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
+      ]}
     />);
   }
 
@@ -183,6 +225,7 @@ class Home extends React.Component {
       onPressItem: this.onSelectDelayType,
       list: delayTypes,
     };
+    const data = TaskScheduleStore.taskScheduleList.map(item => this.formatTaskScheduleListData(item));
     return (
       <ContainerView>
         <CommStatusBar />
@@ -194,12 +237,7 @@ class Home extends React.Component {
           selectCreateType={this.selectCreateType}
           onSelectedDayChange={this.onSelectedDayChange}
         />
-        <List
-          data={this.generateData()}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          ItemSeparatorComponent={this.renderItemSeparatorComponent}
-        />
+        <TaskScheduleList data={data} />
       </ContainerView>
     );
   }

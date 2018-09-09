@@ -32,17 +32,20 @@ const TimeView = styled.View`
   align-items: center;
   padding-top: ${moderateScale(10)}px;
   margin-right: ${moderateScale(9)}px;
+  width: ${moderateScale(96)}px;
 `;
 
 const Duration = styled.Text.attrs({
   numberOfLines: 1,
+  ellipsizeMode: 'tail',
 })`
   color: #26B34E;
-  font-size: ${moderateScale(18)};
+  font-size: ${moderateScale(16)};
 `;
 
 const Type = styled.Text.attrs({
   numberOfLines: 1,
+  ellipsizeMode: 'tail',
 })`
     height: ${moderateScale(17)}px;
     color: grey;
@@ -58,6 +61,7 @@ const Theme = styled.View`
 
 const Title = styled.Text.attrs({
   numberOfLines: 1,
+  ellipsizeMode: 'tail',
 })`
     color: black;
     font-size: ${moderateScale(18)};
@@ -65,6 +69,7 @@ const Title = styled.Text.attrs({
 
 const Time = styled.Text.attrs({
   numberOfLines: 1,
+  ellipsizeMode: 'tail',
 })`
     height: ${moderateScale(17)}px;
     color: grey;
@@ -122,8 +127,8 @@ class ListItem extends Component {
     const {
       duration,
       type,
-      title,
-      time,
+      name,
+      comment,
       operateList = [],
     } = this.props;
     const { showOperateView } = this.state;
@@ -137,8 +142,8 @@ class ListItem extends Component {
           </TimeView>
           <Divder />
           <Theme>
-            <Title>{title}</Title>
-            <Time>{time}</Time>
+            <Title>{name}</Title>
+            <Time>{comment}</Time>
           </Theme>
           <Divder />
           <Operate>
@@ -170,8 +175,8 @@ class ListItem extends Component {
 ListItem.propTypes = {
   duration: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  comment: PropTypes.string.isRequired,
   operateList: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string,
     text: PropTypes.string,

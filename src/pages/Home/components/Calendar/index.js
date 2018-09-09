@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv1 from 'uuid/v1';
 
-import { getMonthDays, getDayOfWeek } from '../../../../utils/date';
+import { getMonthDays, getDayOfWeek, get2Date } from '../../../../utils/date';
 import { moderateScale, width } from '../../../../utils/scale';
 import theme from '../../../../constants/theme';
 import LeftArrow from '../../../../img/home/ico_left_arrow.png';
@@ -145,7 +145,7 @@ class Calendar extends Component {
     });
     const { onSelectedDayChange } = this.props;
     const { year, month } = this.state;
-    onSelectedDayChange && onSelectedDayChange(`${year}-${month}-${weekDay}`);
+    onSelectedDayChange && onSelectedDayChange(`${year}${get2Date(month)}${get2Date(weekDay)}`);
   }
 
   onSelectYear = (year) => {

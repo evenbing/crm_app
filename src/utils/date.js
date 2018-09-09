@@ -19,7 +19,7 @@ export function getMonthDays(year, month) {
 /**
  * 根据日期计算周几
  */
-export function getDayOfWeek(year, month, day, type='周') {
+export function getDayOfWeek(year, month, day, type = '周') {
   const week = new Date(year, month - 1, day).getDay();
   let weekDay = '';
   switch (week) {
@@ -48,4 +48,11 @@ export function getDayOfWeek(year, month, day, type='周') {
       break;
   }
   return weekDay;
+}
+
+export function get2Date(day) {
+  if (`${day}`.length === 2) {
+    return `${day}`;
+  }
+  return `0${day}`;
 }
