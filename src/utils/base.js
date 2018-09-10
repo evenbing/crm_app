@@ -52,9 +52,9 @@ export function formatDate(date, fmt) {
   return fmt;
 }
 
-// 获取导购id
-export function getGuideUserId() {
-  return global.guideUserId;
+// 获取用户id
+export function getUserId() {
+  return global.userId;
 }
 
 // 获取承租人ID

@@ -6,10 +6,9 @@
  */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-// import { init, getPassportId } from './utils/rpc';
-import { init } from './utils/rpc';
+import { init, getPassportId } from './utils/rpc';
 import getConfig from './config';
-// import AppService from './service/app';
+import { getPassportInfo } from './service/app';
 
 import XnLoading from './components/xnLoading';
 import Toast from './utils/toast';
@@ -48,17 +47,16 @@ class App extends React.Component {
     try {
       const config = await getConfig();
       init(config);
-      // const id = '1015609398284128256'; // dev env passportId
-      // const id = await getPassportId();
-      // const {
-      //   errors: pwdErrors,
-      //   passport: { tenantId, userId } = {},
-      // } = await AppService.getPassportInfo({ id });
-      // if (pwdErrors == null || pwdErrors.length > 0) {
-      //   throw new Error(pwdErrors[0].message);
-      // }
-      // global.tenantId = tenantId;
-      // global.userId = userId;
+      const id = await getPassportId();
+      const {
+        errors: pwdErrors,
+        passport: { tenantId, userId } = {},
+      } = await getPassportInfo({ id });
+      if (pwdErrors == null || pwdErrors.length > 0) {
+        throw new Error(pwdErrors[0].message);
+      }
+      global.tenantId = tenantId;
+      global.userId = userId;
       // const {
       //   errors: userErrors,
       //   result = [],

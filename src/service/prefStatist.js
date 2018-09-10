@@ -1,26 +1,30 @@
 /**
- * @component home.js
- * @description 首页 service
+ * @component prefStatist.js
+ * @description 统计 service
  * @time 2018/8/28
  * @author zhao
  */
 import { post } from '../utils/rpc';
+import { getUserId } from '../utils/base';
 
-/** 员工销售排行榜
+/** 销售总额数据统计
  * @add by zhao
  * @params options
  * {
+ *   ownerUserId 负责人userId must
  *   dateIdFrom 开始日期Id must 20180821
  *   dateIdTo 结束日期Id must 20180821
  * }
  * @return Promise<Object>
  */
-export function querySalesRanking({
+export function getSalesSum({
+  ownerUserId = getUserId(),
   dateIdFrom,
   dateIdTo,
 } = {}) {
   return post({
-    method: 'api.customerrelations.salesRankingStatistic.get',
+    method: 'api.customerrelations.salesSumStatistic.get',
+    ownerUserId,
     dateIdFrom,
     dateIdTo,
   });
@@ -33,38 +37,17 @@ export function querySalesRanking({
  * {
  *   ownerUserId 负责人userId must
  *   dateIdFrom 开始日期Id must 20180821
- * }
- * @return Promise<Object>
- */
-export function querySalesTrend({
-  ownerUserId,
-  dateIdFrom,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.salesTrendStatistic.get',
-    ownerUserId,
-    dateIdFrom,
-  });
-}
-
-
-/** 销售总额数据统计
- * @add by zhao
- * @params options
- * {
- *   ownerUserId 负责人userId must
- *   dateIdFrom 开始日期Id must 20180821
  *   dateIdTo 结束日期Id must 20180821
  * }
  * @return Promise<Object>
  */
-export function querySalesSum({
-  ownerUserId,
+export function getSalesTrend({
+  ownerUserId = getUserId(),
   dateIdFrom,
   dateIdTo,
 } = {}) {
   return post({
-    method: 'api.customerrelations.salesSumStatistic.get',
+    method: 'api.customerrelations.salesTrendStatistic.get',
     ownerUserId,
     dateIdFrom,
     dateIdTo,
@@ -81,14 +64,34 @@ export function querySalesSum({
  * }
  * @return Promise<Object>
  */
-export function querySalesEchart({
-  ownerUserId,
+export function getSalesEchart({
+  ownerUserId = getUserId(),
   dateIdFrom,
   dateIdTo,
 } = {}) {
   return post({
     method: 'api.customerrelations.salesStatistic.get',
     ownerUserId,
+    dateIdFrom,
+    dateIdTo,
+  });
+}
+
+/** 员工销售排行榜
+ * @add by zhao
+ * @params options
+ * {
+ *   dateIdFrom 开始日期Id must 20180821
+ *   dateIdTo 结束日期Id must 20180821
+ * }
+ * @return Promise<ArrayList>
+ */
+export function getSalesRankingList({
+  dateIdFrom,
+  dateIdTo,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.salesRankingStatistic.get',
     dateIdFrom,
     dateIdTo,
   });
@@ -101,8 +104,7 @@ export function querySalesEchart({
  * }
  * @return Promise<Object>
  */
-export function getWorkingToday({
-} = {}) {
+export function getWorkingToday() {
   return post({
     method: 'api.customerrelations.workingToday.get',
   });
@@ -117,7 +119,7 @@ export function getWorkingToday({
  * @return Promise<Object>
  */
 export function findWorkEventDetail({
-  ownerUserId,
+  ownerUserId = getUserId(),
 } = {}) {
   return post({
     method: 'api.customerrelations.workEventDetail.find',

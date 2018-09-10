@@ -51,7 +51,7 @@ const ActiveBoard = styled.View`
 `;
 
 const ContainerView = styled.View`
-  flex: ${props => props.flex};
+  flex: ${props => props.flex || 'none'};
 `;
 
 class TabsPanel extends React.PureComponent {
@@ -73,7 +73,7 @@ class TabsPanel extends React.PureComponent {
       children,
     } = this.props;
     return (
-      <ContainerView flex={children ? 1 : 'none'}>
+      <ContainerView flex={children ? 1 : null}>
         <TabsHeaderView>
           {
             list.map((_, index) => (
@@ -114,7 +114,10 @@ TabsPanel.defaultProps = {
 };
 
 TabsPanel.propTypes = {
-  list: PropTypes.arrayOf(PropTypes.any).isRequired,
+  list: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]).isRequired,
   activeIndex: PropTypes.number,
   onChange: PropTypes.func,
   isShadow: PropTypes.bool,

@@ -117,13 +117,13 @@ class RankItem extends React.PureComponent {
                 size={52}
                 round
               />
-              <NameText>{item.shoppingGuideName}</NameText>
+              <NameText>{item.ownerName}</NameText>
             </LeftItem>
             <RightItem>
               <RightText
                 front={index < 2}
               >
-                {item.achievement}
+                {item.completedTotalMoney || 0}元
               </RightText>
             </RightItem>
           </CardItemWrapper>

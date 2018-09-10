@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StatusBar } from 'react-native';
-import { useStrict } from 'mobx';
+import { useStrict } from 'mobx/';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';

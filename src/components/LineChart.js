@@ -24,6 +24,7 @@ class LineChart extends React.PureComponent {
       grid: {
         top: 15,
         bottom: 37,
+        x: '17%',
       },
       xAxis: [
         {
@@ -98,7 +99,10 @@ LineChart.defaultProps = {
 };
 
 LineChart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.any),
+  data: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]),
   name: PropTypes.string.isRequired,
 };
 

@@ -33,7 +33,7 @@ class TaskScheduleStore {
       } = await find(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        console.log({ result });
+        // console.log({ result });
         this.taskScheduleList = [...result];
       });
     } catch (e) {

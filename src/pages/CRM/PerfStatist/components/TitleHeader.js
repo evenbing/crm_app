@@ -53,8 +53,8 @@ class TitleHeader extends React.PureComponent {
 TitleHeader.defaultProps = {
   containerStyle: {},
   titleStyle: {},
-  imageSize: 24,
-  imageSource: require('../../../../img/crm/perfStatist/statistics.png'),
+  imageSize: 18,
+  imageSource: null,
   title: null,
 };
 

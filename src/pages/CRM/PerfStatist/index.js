@@ -7,6 +7,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
 import { theme } from '../../../constants';
 
 // components
@@ -18,6 +19,8 @@ import TitleHeader from './components/TitleHeader';
 import LineChart from '../../../components/LineChart';
 import SalesFunnel from './components/SalesFunnel';
 import RankItem from './components/RankItem';
+
+import PrefStatistModel from '../../../logicStores/prefStatist';
 
 const SectionView = styled.ScrollView`
   padding-top: ${theme.moderateScale(8)};
@@ -35,41 +38,35 @@ const DescriptionText = styled.Text`
   color: ${props => props.color || theme.textGrayColor};
 `;
 
-const TextView = styled.Text``;
 
-const TabList = ['本月', '本季', '本年'];
-
+@observer
 class PerfStatist extends React.Component {
-  state = {
-    tabIndex: 0,
-  };
-  onChangeTab = (index) => {
-    this.setState({ tabIndex: index });
-  };
+  componentDidMount() {
+    PrefStatistModel.getData();
+  }
+
   renderRankItem = () => {
-    const rankList = [
-      { avatar: null, shoppingGuideName: '张三', achievement: '999元' },
-      { avatar: null, shoppingGuideName: '张三三', achievement: '888元' },
-      { avatar: null, shoppingGuideName: '李四', achievement: '777元' },
-      { avatar: null, shoppingGuideName: '王五', achievement: '666元' },
-      { avatar: null, shoppingGuideName: '李雷', achievement: '555元' },
-      { avatar: null, shoppingGuideName: '韩梅梅', achievement: '444元' },
-    ];
-    return rankList.map((_, i) => (
+    const {
+      salesRankMap: { list = [] },
+    } = PrefStatistModel;
+    // const rankList = [
+    //   { avatar: null, shoppingGuideName: '张三', achievement: '999元' },
+    // ];
+    return list.map((_, i) => (
       <RankItem
-        key={_.shoppingGuideName}
+        key={_.ownerName}
         item={_}
         index={i}
-        isLast={i === rankList.length - 1}
+        isLast={i === list.length - 1}
       />
     ));
   };
   renderSection = () => {
     const {
-      state: {
-        tabIndex,
-      },
-    } = this;
+      tabMap: { list, selectedIndex },
+      salesRankingList,
+      salesRankMap: { total, averAmount },
+    } = PrefStatistModel;
     const salesTotalProps = {
       list: [
         { title: '漏斗总值', text: '34567890.00元' },
@@ -79,10 +76,11 @@ class PerfStatist extends React.Component {
     };
     const rankTotalProps = {
       list: [
-        { title: '总人数', text: '6' },
-        { title: '平均完成额', text: '34567890.00元' },
+        { title: '总人数', text: total },
+        { title: '平均完成额', text: `${averAmount}元` },
       ],
     };
+    const nowYear = new Date().getFullYear();
     return (
       <SectionView>
         <TotalList {...salesTotalProps} />
@@ -94,7 +92,6 @@ class PerfStatist extends React.Component {
           titleStyle={{
             marginLeft: 7,
           }}
-          imageSize={23}
           title="销售趋势"
         />
         <DescriptionView>
@@ -104,25 +101,12 @@ class PerfStatist extends React.Component {
           <DescriptionText
             color={theme.primaryColor}
           >
-            2018年
+            {nowYear}年
           </DescriptionText>
         </DescriptionView>
         <LineChart
-          data={[
-            { dateId: '01', achievement: 10 },
-            { dateId: '02', achievement: 13 },
-            { dateId: '03', achievement: 5 },
-            { dateId: '04', achievement: 25 },
-            { dateId: '05', achievement: 35 },
-            { dateId: '06', achievement: 15 },
-            { dateId: '07', achievement: 20 },
-            { dateId: '08', achievement: 45 },
-            { dateId: '09', achievement: 8 },
-            { dateId: '10', achievement: 13 },
-            { dateId: '11', achievement: 34 },
-            { dateId: '12', achievement: 15 },
-          ]}
-          name={TabList[tabIndex]}
+          data={salesRankingList}
+          name={list[selectedIndex]}
         />
         <TitleHeader
           containerStyle={{
@@ -132,7 +116,6 @@ class PerfStatist extends React.Component {
           titleStyle={{
             marginLeft: 5,
           }}
-          imageSize={24}
           title="销售漏斗"
         />
         <SalesFunnel />
@@ -144,8 +127,8 @@ class PerfStatist extends React.Component {
           titleStyle={{
             marginLeft: 5,
           }}
-          imageSize={24}
           title="业绩排行"
+          imageSource={require('../../../img/rootTabBar/rank-focus.png')}
         />
         <TotalList {...rankTotalProps} />
         {this.renderRankItem()}
@@ -154,10 +137,8 @@ class PerfStatist extends React.Component {
   };
   render() {
     const {
-      state: {
-        tabIndex,
-      },
-    } = this;
+      tabMap: { list, selectedIndex },
+    } = PrefStatistModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -165,20 +146,11 @@ class PerfStatist extends React.Component {
       >
         <CommStatusBar />
         <TabsPanel
-          list={TabList}
-          activeIndex={tabIndex}
-          onChange={this.onChangeTab}
-        >
-          {this.renderSection()}
-          <SectionView>
-            <TotalList />
-            <TextView>second page</TextView>
-          </SectionView>
-          <SectionView>
-            <TotalList />
-            <TextView>third page</TextView>
-          </SectionView>
-        </TabsPanel>
+          list={list}
+          activeIndex={selectedIndex}
+          onChange={PrefStatistModel.onToggleTabSelectIndex}
+        />
+        {this.renderSection()}
       </ContainerView>
     );
   }
