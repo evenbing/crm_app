@@ -6,6 +6,65 @@
  */
 import { post } from '../utils/rpc';
 
+
+/** 查询客户
+ * @params options
+ * {
+ *  my  我负责的  否必填
+ *  myFollow  我关注的  否必填
+ *  objectType  关注对象类型  否必填
+ *  myParticipate 我参与的  否必填
+ *  sevenDaysUninvolved 7天未跟进的 否必填
+ *  all 全部  否必填
+ *  level 级别  否必填
+ *  industry  行业  否必填
+ *  name  客户名称  否必填
+ *  locationId  地址id  否必填
+ *  postCode  邮编  否必填
+ *  phone 电话  否必填
+ *  departmentId  部门id  否必填
+ *  followTimeType  跟进时间范围  否必填
+ *  sortColumn  表头排序  否必填
+ * }
+ * @return Promise<Object>
+ */
+export function getCustomerList({
+  my,
+  myFollow,
+  objectType,
+  myParticipate,
+  sevenDaysUninvolved,
+  all,
+  level,
+  industry,
+  name,
+  locationId,
+  postCode,
+  phone,
+  departmentId,
+  followTimeType,
+  sortColumn,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.customer.find',
+    my,
+    myFollow,
+    objectType,
+    myParticipate,
+    sevenDaysUninvolved,
+    all,
+    level,
+    industry,
+    name,
+    locationId,
+    postCode,
+    phone,
+    departmentId,
+    followTimeType,
+    sortColumn,
+  });
+}
+
 /** 新增客户
  * @params options
  * {
