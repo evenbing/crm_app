@@ -2,7 +2,7 @@
  * @Author: Edmond.Shi 
  * @Date: 2018-09-11 10:26:48 
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 10:38:17
+ * @Last Modified time: 2018-09-11 11:36:39
  */
 
  import {action, observable, runInAction, useStrict } from 'mobx/';
@@ -13,6 +13,7 @@
   getMarkActivityDetail,
   updateMarkActivity,
   changeOwnerUser,
+  batchCreateFollow,
  } from '../service/markActivity';
 
  useStrict(true);
@@ -144,4 +145,19 @@
      }
    }
 
+   // 关注
+   @action async batchCreateFollowReq(options) {
+     try {
+       const {
+         result = {},
+       } = await batchCreateFollow(options);
+       debugger;
+       runInAction(() => {
+         // TODO next
+        //  this.markActivityDetail = { ...result };
+       });
+     } catch (e) {
+       Toast.showError(e.message);
+     }
+   }
  }

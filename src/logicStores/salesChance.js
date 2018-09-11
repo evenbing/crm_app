@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 10:43:14
+ * @Last Modified time: 2018-09-11 11:35:13
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -31,36 +31,36 @@ class SalesChanceStore {
   };
 
   // 客户详情
-  @observable salesChanceDetails = {};
+  @observable salesChanceDetail = {};
 
   // 列表
   @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
-        this.contractList.refreshing = true;
+        this.salesChanceList.refreshing = true;
       } else {
-        this.contractList.loadingMore = true;
+        this.salesChanceList.loadingMore = true;
       }
       const {
         result = [],
         totalCount = 0,
       } = await getSalesChanceList({ pageNumber, ...restProps });
       runInAction(() => {
-        this.contractList.total = totalCount;
-        this.contractList.pageNumber = pageNumber;
+        this.salesChanceList.total = totalCount;
+        this.salesChanceList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.contractList.list = [...result];
+          this.salesChanceList.list = [...result];
         } else {
-          this.contractList.list = this.contractList.list.concat(result);
+          this.salesChanceList.list = this.salesChanceList.list.concat(result);
         }
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
-        this.contractList.refreshing = false;
-        this.contractList.loadingMore = false;
+        this.salesChanceList.refreshing = false;
+        this.salesChanceList.loadingMore = false;
       });
     }
   }
@@ -75,7 +75,7 @@ class SalesChanceStore {
       } = await getSalesChance({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.contactDetails = { ...result };
+        this.salesChanceDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -91,7 +91,7 @@ class SalesChanceStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contractDetails = { ...result };
+        this.salesChanceDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -107,14 +107,14 @@ class SalesChanceStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.salesChanceDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   }
 
-  // 合并相同的客户
+  // 合并相同项
   @action async mergeSalesChanceReq(options) {
     try {
       const {
@@ -123,7 +123,7 @@ class SalesChanceStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.salesChanceDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -139,7 +139,7 @@ class SalesChanceStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.salesChanceDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);

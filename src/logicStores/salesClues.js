@@ -2,7 +2,7 @@
  * @Author: Edmond.Shi 
  * @Date: 2018-09-11 10:20:55 
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 10:26:55
+ * @Last Modified time: 2018-09-11 11:25:42
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -30,36 +30,36 @@ class SalesClueStore {
   };
 
   // 详情
-  @observable salesClueDetails = {};
+  @observable salesClueDetail = {};
 
   // 获取列表
   @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
-        this.contractList.refreshing = true;
+        this.salesClueList.refreshing = true;
       } else {
-        this.contractList.loadingMore = true;
+        this.salesClueList.loadingMore = true;
       }
       const {
         result = [],
         totalCount = 0,
       } = await getSalesClueList({ pageNumber, ...restProps });
       runInAction(() => {
-        this.contractList.total = totalCount;
-        this.contractList.pageNumber = pageNumber;
+        this.salesClueList.total = totalCount;
+        this.salesClueList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.contractList.list = [...result];
+          this.salesClueList.list = [...result];
         } else {
-          this.contractList.list = this.contractList.list.concat(result);
+          this.salesClueList.list = this.salesClueList.list.concat(result);
         }
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
-        this.contractList.refreshing = false;
-        this.contractList.loadingMore = false;
+        this.salesClueList.refreshing = false;
+        this.salesClueList.loadingMore = false;
       });
     }
   }
@@ -74,7 +74,7 @@ class SalesClueStore {
       } = await getSalesClue({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.contactDetails = { ...result };
+        this.salesClueDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -90,7 +90,7 @@ class SalesClueStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contractDetails = { ...result };
+        this.salesClueDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -106,7 +106,7 @@ class SalesClueStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.salesClueDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -122,7 +122,7 @@ class SalesClueStore {
   //     debugger;
   //     runInAction(() => {
   //       // TODO next
-  //       this.contactDetails = { ...result };
+  //       this.salesClueDetail = { ...result };
   //     });
   //   } catch (e) {
   //     Toast.showError(e.message);
@@ -138,7 +138,7 @@ class SalesClueStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.salesClueDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
