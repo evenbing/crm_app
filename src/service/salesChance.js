@@ -6,6 +6,17 @@
  */
 import { post } from '../utils/rpc';
 
+
+export function getSalesChanceList({
+
+} = {}) {
+  return post({
+    method: 'api.customerrelations.opportunity.find',
+    
+  });
+}
+
+
 /** 新增销售机会
  * @params options
  * {
@@ -22,7 +33,7 @@ import { post } from '../utils/rpc';
  * }
  * @return Promise<Object>
  */
-export function createSalesOpportunity({
+export function createSalesChance({
   name,
   customerId,
   planAmount,
@@ -49,14 +60,14 @@ export function createSalesOpportunity({
   });
 }
 
-/** 查看销售机会 (没接口)
+/** 查看销售机会详情 (没接口)
  * @params options
  * {
  *   id 主键id must
  * }
  * @return Promise<ArrayList>
  */
-export function getSalesOpportunity({
+export function getSalesChanceDetail({
   id,
 } = {}) {
   return post({
@@ -84,7 +95,7 @@ export function getSalesOpportunity({
  * }
  * @return Promise<Object>
  */
-export function updateCustomer({
+export function updateSalesChance({
   id,
   name,
   customerId,
@@ -132,7 +143,7 @@ export function updateCustomer({
  * }
  * @return Promise<Object>
  */
-export function mergeOpportunity({
+export function mergeSalesChance({
   updateId,
   deleteId,
   name,

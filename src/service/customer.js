@@ -148,7 +148,7 @@ export function createCustomer({
  * }
  * @return Promise<ArrayList>
  */
-export function getCustomer({
+export function getCustomerDetail({
   id,
 } = {}) {
   return post({

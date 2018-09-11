@@ -1,3 +1,5 @@
+
+
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
@@ -8,21 +10,21 @@
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
-  getCustomerList,
-  createCustomer,
-  updateCustomer,
-  getCustomerDetail,
-  mergeCustomter,
+  getSalesChanceList,
+  getSalesChanceDetail,
+  createSalesChance,
+  updateSalesChance,
+  mergeSalesChance,
   changeOwnerUser,
-} from '../service/customer';
+} from '../service/salesChance';
 import Toast from '../utils/toast';
 
 useStrict(true);
 
 @autobind
-class CustomerStore {
+class SalesChanceStore {
   // 列表
-  @observable customerList = {
+  @observable salesChanceList = {
     pageNumber: 1,
     refreshing: false,
     loadingMore: false,
@@ -31,10 +33,10 @@ class CustomerStore {
   };
 
   // 客户详情
-  @observable customerDetails = {};
+  @observable salesChanceDetails = {};
 
   // 列表
-  @action async getCustomerListReq({ pageNumber = 1, ...restProps } = {}) {
+  @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
         this.contractList.refreshing = true;
@@ -44,7 +46,7 @@ class CustomerStore {
       const {
         result = [],
         totalCount = 0,
-      } = await getCustomerList({ pageNumber, ...restProps });
+      } = await etSalesChanceList({ pageNumber, ...restProps });
       runInAction(() => {
         this.contractList.total = totalCount;
         this.contractList.pageNumber = pageNumber;
@@ -66,13 +68,13 @@ class CustomerStore {
   }
 
   // 详情
-  @action async getCustomerDetailReq({ id }) {
+  @action async getSalesChanceReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
       const {
         result = {},
         errors = [],
-      } = await getCustomerDetail({ id });
+      } = await getSalesChance({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.contactDetails = { ...result };
@@ -83,11 +85,11 @@ class CustomerStore {
   }
 
   // 新增
-  @action async createCustomerReq(options) {
+  @action async createSalesChanceReq(options) {
     try {
       const {
         result = {},
-      } = await createCustomer(options);
+      } = await createSalesChance(options);
       debugger;
       runInAction(() => {
         // TODO next
@@ -99,11 +101,11 @@ class CustomerStore {
   }
 
   // 编辑
-  @action async updateCustomerReq(options) {
+  @action async updateSalesChanceReq(options) {
     try {
       const {
         result = {},
-      } = await updateCustomer(options);
+      } = await updateSalesChance(options);
       debugger;
       runInAction(() => {
         // TODO next
@@ -115,11 +117,11 @@ class CustomerStore {
   }
 
   // 合并相同的客户
-  @action async mergeCustomterReq(options) {
+  @action async mergeSalesChanceReq(options) {
     try {
       const {
         result = {},
-      } = await mergeCustomter(options);
+      } = await mergeSalesChance(options);
       debugger;
       runInAction(() => {
         // TODO next
