@@ -13,19 +13,14 @@ import {
   updateContact,
 } from '../service/contacts';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ContactStore {
   // 列表
-  @observable contactList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable contactList = initFlatList;
   @observable contactDetails = {};
 
   // 列表

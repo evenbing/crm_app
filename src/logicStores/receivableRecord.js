@@ -10,19 +10,14 @@ import {
   getReceivableRecordList,
 } from '../service/receivableRecord';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ReceivableRecordStore {
   // 列表
-  @observable receivableRecordList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable receivableRecordList = initFlatList;
   // @observable contactDetails = {};
 
   // 列表

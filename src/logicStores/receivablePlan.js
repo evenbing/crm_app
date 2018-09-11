@@ -10,19 +10,14 @@ import {
   getReceivablePlanList,
 } from '../service/receivablePlan';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ReceivablePlanStore {
   // 列表
-  @observable receivablePlanList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable receivablePlanList = initFlatList;
   // @observable contactDetails = {};
 
   // 列表

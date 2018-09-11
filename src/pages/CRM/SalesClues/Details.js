@@ -110,7 +110,6 @@ class Details extends React.Component {
     ];
     const { refreshing = false, loadingMore = false } = {};
     const flatProps = {
-      keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDynamicItem,
@@ -140,7 +139,6 @@ class Details extends React.Component {
     ];
     const { refreshing = false, loadingMore = false } = {};
     const flatProps = {
-      keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,

@@ -16,19 +16,14 @@ import {
   changeOwnerUser,
 } from '../service/customer';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class CustomerStore {
   // 列表
-  @observable customerList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable customerList = initFlatList;
 
   // 客户详情
   @observable customerDetails = {};
@@ -147,4 +142,4 @@ class CustomerStore {
   }
 }
 
-export default new ContractStore();
+export default new CustomerStore();

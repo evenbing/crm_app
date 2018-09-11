@@ -253,7 +253,6 @@ class Contract extends React.Component {
     } = ContractModel;
     const flatProps = {
       data: list,
-      keyExtractor: item => `${item.customerName}.${item.departmentId}`,
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
       onRefresh: this.getData,

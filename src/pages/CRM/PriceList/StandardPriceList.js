@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
+import { observer } from 'mobx-react/native';
 
 import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
 import { moderateScale } from '../../../utils/scale';
 import productImg from '../../../img/crm/ico_product.png';
 import ProductItem from './components/ProductItem';
+import FlatListTable from '../../../components/FlatListTable';
+
+// model
+import PriceListModel from '../../../logicStores/priceList';
 
 const products = [
   {
@@ -36,44 +41,38 @@ const ContainerView = styled.View`
   background-color: white;
 `;
 
-const ProductList = styled.FlatList`
-  background-color: white;
-  padding: 0px ${moderateScale(15)}px;
-`;
-
+@observer
 class StandardPriceList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
+  componentDidMount() {
+    PriceListModel.getStandardPriceListReq();
   }
 
-  keyExtractor = item => item.key;
-
-  renderItem = ({ item }) => {
-    const {
-      image,
-      title,
-      price,
-      status,
-    } = item;
-    return (<ProductItem
-      image={image}
-      title={title}
-      price={price}
-      status={status}
-    />);
-  }
+  renderItem = ({ item }) => (
+    <ProductItem {...item} />
+  );
 
   render() {
+    const {
+      standardPriceList: { list, refreshing, loadingMore },
+    } = PriceListModel;
+    const flatProps = {
+      data: products,
+      renderItem: this.renderItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+      flatListStyle: {
+        paddingLeft: moderateScale(15),
+        paddingRight: moderateScale(15),
+      },
+    };
     return (
       <ContainerView>
         <CommStatusBar />
-        <ProductList
-          data={products}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }

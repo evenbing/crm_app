@@ -9,7 +9,7 @@ import { pinyin } from './pinyin';
 
 // nav go back
 export function nativeGoBack() {
-  NativeModules.system.navTo('BACK');
+  NativeModules.system && NativeModules.system.navTo('BACK');
 }
 
 /** 根据数组对象排序 默认升序

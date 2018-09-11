@@ -54,7 +54,7 @@ class PerfStatist extends React.Component {
     // ];
     return list.map((_, i) => (
       <RankItem
-        key={_.ownerName}
+        key={`${_.ownerName}.${_.completedTotalMoney}`}
         item={_}
         index={i}
         isLast={i === list.length - 1}

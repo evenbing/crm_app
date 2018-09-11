@@ -4,6 +4,7 @@
  * @time 2018/9/9
  * @author JUSTIN XU
  */
+import moment from 'moment';
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
@@ -13,19 +14,19 @@ import {
   getSalesRankingList,
 } from '../service/prefStatist';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
+
+function getMonth(month) {
+  if (month < 10) return `0${month}`;
+  return month;
+}
 
 @autobind
 class PrefStatistStore {
   // 列表
-  @observable receivablePlanList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable receivablePlanList = initFlatList;
 
   @observable tabMap = {
     selectedIndex: 0,
@@ -57,16 +58,21 @@ class PrefStatistStore {
     const {
       selectedIndex,
     } = this.tabMap;
+    const year = moment().year();
+    const month = moment().month() + 1;
+    const quarter = moment().quarter();
     const obj = {};
     if (selectedIndex === 0) {
-      obj.dateIdFrom = '20180810';
-      obj.dateIdTo = '20180910';
+      obj.dateIdFrom = `${year}${getMonth(month)}01`;
+      obj.dateIdTo = `${year}${getMonth(month)}${new Date(year, month, 0).getDate()}`;
     } else if (selectedIndex === 1) {
-      obj.dateIdFrom = '20180810';
-      obj.dateIdTo = '20181110';
+      const startMonth = (3 * (quarter - 1)) + 1;
+      const endMonth = startMonth + 2;
+      obj.dateIdFrom = `${year}${getMonth(startMonth)}01`;
+      obj.dateIdTo = `${year}${getMonth(endMonth)}${new Date(year, endMonth, 0).getDate()}`;
     } else if (selectedIndex === 2) {
-      obj.dateIdFrom = '20180810';
-      obj.dateIdTo = '20191110';
+      obj.dateIdFrom = `${year}0101`;
+      obj.dateIdTo = `${year}1231`;
     }
     // this.getSalesSumReq(obj);
     this.getSalesTrendReq(obj);

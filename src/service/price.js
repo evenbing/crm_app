@@ -81,8 +81,7 @@ export function delPriceProduct({
  * }
  * @return Promise<Object>
  */
-export function createPriceProduct({
-}) {
+export function createPriceProduct() {
   return post({
     method: 'api.customerrelations.priceProduct.create',
   });
@@ -195,7 +194,7 @@ export function create({
  * }
  * @return Promise<Object>
  */
-export function find({
+export function getPriceList({
   isMyDuty,
   isMyFollow,
   isActive,

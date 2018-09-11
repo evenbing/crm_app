@@ -240,7 +240,6 @@ class ReceivablePlan extends React.Component {
     };
     const flatProps = {
       data: list,
-      keyExtractor: item => `${item.id}.${item.issueId}`,
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
       onRefresh: this.getData,

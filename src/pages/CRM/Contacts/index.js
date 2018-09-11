@@ -231,7 +231,6 @@ class Contacts extends React.Component {
       //   { name: '李总', jobTitle: '市场总监', companyName: '阿里巴巴' },
       // ]}
       data: list,
-      keyExtractor: item => `${item.name}.${item.jobTitle}`,
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
       onRefresh: this.getData,

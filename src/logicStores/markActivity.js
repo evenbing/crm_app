@@ -1,39 +1,36 @@
 /*
- * @Author: Edmond.Shi 
- * @Date: 2018-09-11 10:26:48 
+ * @Author: Edmond.Shi
+ * @Date: 2018-09-11 10:26:48
  * @Last Modified by: Edmond.Shi
  * @Last Modified time: 2018-09-11 11:36:39
  */
 
- import {action, observable, runInAction, useStrict } from 'mobx/';
- import autobind from 'autobind-decorator';
- import {
+import { action, observable, runInAction, useStrict } from 'mobx/';
+import autobind from 'autobind-decorator';
+import {
   getMarkActivityList,
   createMarkActivity,
   getMarkActivityDetail,
   updateMarkActivity,
   changeOwnerUser,
   batchCreateFollow,
- } from '../service/markActivity';
+} from '../service/markActivity';
+import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
- useStrict(true);
 
- @autobind
- class MarkActivity {
+useStrict(true);
+
+@autobind
+class MarkActivityStore {
   // 列表
-  @observable markActivityList = {
-    pageNumer: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable markActivityList = initFlatList;
 
   // 详情
   @observable markActivityDetail = {}
 
   // 列表
-  @action async getMarkActivityListReq({ pageNumer = 1, ...restProps } = {}) {
+  @action async getMarkActivityListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
         this.markActivityList.refreshing = true;
@@ -66,20 +63,20 @@
 
    // 详情
    @action async getMarkActivityDetailReq({ id }) {
-     try {
-       if (!id) throw new Error('id 不为空');
-       const {
-         result = {},
-         errors = [],
-       } = await getMarkActivityDetail({ id });
-       if (errors.length) throw new Error(errors[0].message);
-       runInAction(() => {
-         this.markActivityDetail = { ...result };
-       });
-     } catch (e) {
-       Toast.showError(e.message);
-     }
-   }
+    try {
+      if (!id) throw new Error('id 不为空');
+      const {
+        result = {},
+        errors = [],
+      } = await getMarkActivityDetail({ id });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.markActivityDetail = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 
    // 新增
    @action async createMarkActivityReq(options) {
@@ -113,21 +110,21 @@
      }
    }
 
-  //  // 合并相同的客户
-  //  @action async mergeSalesChanceReq(options) {
-  //    try {
-  //      const {
-  //        result = {},
-  //      } = await mergeSalesChance(options);
-  //      debugger;
-  //      runInAction(() => {
-  //        // TODO next
-  //        this.markActivityDetail = { ...result };
-  //      });
-  //    } catch (e) {
-  //      Toast.showError(e.message);
-  //    }
-  //  }
+   //  // 合并相同的客户
+   //  @action async mergeSalesChanceReq(options) {
+   //    try {
+   //      const {
+   //        result = {},
+   //      } = await mergeSalesChance(options);
+   //      debugger;
+   //      runInAction(() => {
+   //        // TODO next
+   //        this.markActivityDetail = { ...result };
+   //      });
+   //    } catch (e) {
+   //      Toast.showError(e.message);
+   //    }
+   //  }
 
    // 转移客户负责人
    @action async changeOwnerUserReq(options) {
@@ -154,10 +151,12 @@
        debugger;
        runInAction(() => {
          // TODO next
-        //  this.markActivityDetail = { ...result };
+         //  this.markActivityDetail = { ...result };
        });
      } catch (e) {
        Toast.showError(e.message);
      }
    }
- }
+}
+
+export default new MarkActivityStore();

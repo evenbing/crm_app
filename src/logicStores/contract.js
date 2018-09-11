@@ -13,19 +13,14 @@ import {
   updateContract,
 } from '../service/contract';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ContractStore {
   // 列表
-  @observable contractList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable contractList = initFlatList;
   @observable contractDetails = {};
 
   // 列表

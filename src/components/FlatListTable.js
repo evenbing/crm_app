@@ -127,6 +127,7 @@ class FlatListTable extends React.PureComponent {
 
 FlatListTable.defaultProps = {
   renderHeader: null,
+  keyExtractor: item => JSON.stringify(item),
   flatListStyle: null,
   tableBodyStyle: null,
   ItemSeparatorComponent: null,
@@ -153,7 +154,7 @@ FlatListTable.propTypes = {
   ]).isRequired,
   renderHeader: PropTypes.element,
   renderItem: PropTypes.func,
-  keyExtractor: PropTypes.func.isRequired,
+  keyExtractor: PropTypes.func,
   renderItemElem: PropTypes.element,
   ItemSeparatorComponent: PropTypes.func,
   flatListStyle: PropTypes.objectOf(PropTypes.any),
