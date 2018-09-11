@@ -22,6 +22,7 @@ import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
+import CustomerStore from '../../../logicStores/customer';
 
 useStrict(true);
 
@@ -38,6 +39,8 @@ class Customer extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+
+    CustomerStore.getCustomerListReq();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.createCustomer);
