@@ -6,6 +6,22 @@
  */
 import { post } from '../utils/rpc';
 
+/** 查询市场活动列表
+ * 
+ * @param options
+ * {
+ *  
+ * } param0 
+ */
+export function getMarkActivityList({
+
+} = {}) {
+  return post({
+    method: 'api.customerrelations.activity.find',
+    
+  });
+}
+
 /** 新增市场活动
  * @params options
  * {
@@ -68,7 +84,7 @@ export function createMarkActivity({
  * }
  * @return Promise<ArrayList>
  */
-export function getMarkActivity({
+export function getMarkActivityDetail({
   id,
 } = {}) {
   return post({

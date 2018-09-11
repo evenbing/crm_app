@@ -6,6 +6,22 @@
  */
 import { post } from '../utils/rpc';
 
+/** 查询销售线索列表
+ * 
+ * @param options
+ * {
+ *  
+ * } 
+ */
+export function getSalesClueList({
+
+} = {}) {
+  return post({
+    method: 'api.customerrelations.leads.find',
+
+  });
+}
+
 /** 新增销售线索
  * @params options
  * {
@@ -74,7 +90,7 @@ export function createSalesClue({
  * }
  * @return Promise<ArrayList>
  */
-export function getSalesClue({
+export function getSalesClueDetail({
   id,
 } = {}) {
   return post({
@@ -105,7 +121,7 @@ export function getSalesClue({
  * }
  * @return Promise<Object>
  */
-export function updateCustomer({
+export function updateSalesClue({
   id,
   name,
   sex,

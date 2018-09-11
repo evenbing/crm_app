@@ -1,28 +1,27 @@
 /*
- * @Author: ShiQuan
- * @Date: 2018-09-11 01:10:41
+ * @Author: Edmond.Shi 
+ * @Date: 2018-09-11 10:20:55 
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 10:43:14
+ * @Last Modified time: 2018-09-11 10:26:55
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
-  getSalesChanceList,
-  getSalesChanceDetail,
-  createSalesChance,
-  updateSalesChance,
-  mergeSalesChance,
+  getSalesClueList,
+  createSalesClue,
+  getSalesClueDetail,
+  updateSalesClue,
   changeOwnerUser,
-} from '../service/salesChance';
+} from '../service/salesClues';
 import Toast from '../utils/toast';
 
 useStrict(true);
 
 @autobind
-class SalesChanceStore {
+class SalesClueStore {
   // 列表
-  @observable salesChanceList = {
+  @observable salesClueList = {
     pageNumber: 1,
     refreshing: false,
     loadingMore: false,
@@ -30,11 +29,11 @@ class SalesChanceStore {
     total: 0,
   };
 
-  // 客户详情
-  @observable salesChanceDetails = {};
+  // 详情
+  @observable salesClueDetails = {};
 
-  // 列表
-  @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
+  // 获取列表
+  @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
         this.contractList.refreshing = true;
@@ -44,7 +43,7 @@ class SalesChanceStore {
       const {
         result = [],
         totalCount = 0,
-      } = await getSalesChanceList({ pageNumber, ...restProps });
+      } = await getSalesClueList({ pageNumber, ...restProps });
       runInAction(() => {
         this.contractList.total = totalCount;
         this.contractList.pageNumber = pageNumber;
@@ -66,13 +65,13 @@ class SalesChanceStore {
   }
 
   // 详情
-  @action async getSalesChanceReq({ id }) {
+  @action async getSalesClueReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
       const {
         result = {},
         errors = [],
-      } = await getSalesChance({ id });
+      } = await getSalesClue({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.contactDetails = { ...result };
@@ -83,11 +82,11 @@ class SalesChanceStore {
   }
 
   // 新增
-  @action async createSalesChanceReq(options) {
+  @action async createSalesClueReq(options) {
     try {
       const {
         result = {},
-      } = await createSalesChance(options);
+      } = await createSalesClue(options);
       debugger;
       runInAction(() => {
         // TODO next
@@ -99,11 +98,11 @@ class SalesChanceStore {
   }
 
   // 编辑
-  @action async updateSalesChanceReq(options) {
+  @action async updateSalesClueReq(options) {
     try {
       const {
         result = {},
-      } = await updateSalesChance(options);
+      } = await updateSalesClue(options);
       debugger;
       runInAction(() => {
         // TODO next
@@ -115,22 +114,22 @@ class SalesChanceStore {
   }
 
   // 合并相同的客户
-  @action async mergeSalesChanceReq(options) {
-    try {
-      const {
-        result = {},
-      } = await mergeSalesChance(options);
-      debugger;
-      runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
+  // @action async mergeSalesClueReq(options) {
+  //   try {
+  //     const {
+  //       result = {},
+  //     } = await mergeSalesClue(options);
+  //     debugger;
+  //     runInAction(() => {
+  //       // TODO next
+  //       this.contactDetails = { ...result };
+  //     });
+  //   } catch (e) {
+  //     Toast.showError(e.message);
+  //   }
+  // }
 
-  // 转移客户负责人
+  // 转移负责人
   @action async changeOwnerUserReq(options) {
     try {
       const {
