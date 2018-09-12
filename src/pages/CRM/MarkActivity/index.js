@@ -22,6 +22,13 @@ import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
+import MarkActivityStore from '../../../logicStores/markActivity';
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import { formatDate } from '../../../utils/date';
 
 useStrict(true);
 
@@ -33,11 +40,13 @@ class SalesClues extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.getData();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.markActivityEditor);
@@ -97,6 +106,33 @@ class SalesClues extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
+
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = MarkActivityStore.markActivityList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
+    });
+    // ContractModel.getContactListReq(obj);
+    MarkActivityStore.getMarkActivityListReq({ pageNumber });
+  };
+
+  keyExtractor = (item) => item.key;
+
   renderItem = (props) => {
     const { index } = props;
     const {
@@ -173,8 +209,38 @@ class SalesClues extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        screenTabList,
       },
     } = this;
+    const {
+      markActivityList: { list, refreshing, loadingMore },
+    } = MarkActivityStore;
+    const data = list.map(item => {
+      const { 
+        id, 
+        name, 
+        beginDate, 
+        endDate = '1535990400000', 
+        status = 0,
+      } = item;
+      return ({
+        key: id,
+        title: name,
+        tipList: [`开始时间：${formatDate(beginDate)}`, `结束时间：${formatDate(endDate)}`],
+        status,
+      })
+    });
+    const flatProps = {
+      data,
+      renderItem: this.renderItem,
+      keyExtractor: this.keyExtractor,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -187,58 +253,12 @@ class SalesClues extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            list={[
-              {
-                key: 'my',
-                name: '我负责的',
-              },
-              {
-                key: 'myParticipate',
-                name: '我参与的',
-              },
-              {
-                key: 'sevenDaysUninvolved',
-                name: '7天未跟进的',
-              },
-              {
-                key: 'all',
-                name: '全部',
-              },
-            ]}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
             selectedList={selectedList}
           />
-          <FlatListTable
-            data={[
-            {
-              title: '网络会议',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 0,
-            },
-            {
-              title: '安放展会',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 1,
-            },
-            {
-              title: '电话会议',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 0,
-            },
-          ]}
-            keyExtractor={item => item.title}
-            renderItem={this.renderItem}
-          />
+          <FlatListTable {...flatProps}/>
         </ContainerView>
       </Drawer>
     );

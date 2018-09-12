@@ -17,10 +17,8 @@ import { post } from '../utils/rpc';
  *  all	全部	否	关注对象类型必须传参
  *  status	活动状态	否
  *  sourceType	活动类型	否
- *  beginDateType	开始日期范围	否
- *  TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
- *  endDateType	结束日期范围	否
- *  TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *  beginDateType	开始日期范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *  endDateType	结束日期范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *  budgetPeopleNumber	预计人数	否
  *  actualPeopleNumber	实际人数	否
  *  budgetCost	预计成本	否
@@ -39,9 +37,7 @@ export function getMarkActivityList({
   status,
   sourceType,
   beginDateType,
-  TODAY,
   endDateType,
-  TODAY,
   budgetPeopleNumber,
   actualPeopleNumber,
   budgetCost,
@@ -60,9 +56,7 @@ export function getMarkActivityList({
     status,
     sourceType,
     beginDateType,
-    TODAY,
     endDateType,
-    TODAY,
     budgetPeopleNumber,
     actualPeopleNumber,
     budgetCost,

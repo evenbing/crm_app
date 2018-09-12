@@ -50,9 +50,29 @@ export function getDayOfWeek(year, month, day, type = '周') {
   return weekDay;
 }
 
+/** 如果为一位数，则在前面加0
+ * 
+ * @param 
+ * {
+ *    日期
+ * } day 
+ */
 export function get2Date(day) {
   if (`${day}`.length === 2) {
     return `${day}`;
   }
   return `0${day}`;
+}
+
+/** 根据时间戳 返回对应的 年-月-日
+ * 
+ * @param {时间戳} timestamp 
+ */
+export function formatDate(timestamp) {
+  const t = parseInt(timestamp, 10);
+  const date = new Date(t);
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  return `${year}-${get2Date(month)}-${get2Date(day)}`;
 }
