@@ -27,8 +27,8 @@ import ContactsModel from '../../../logicStores/contacts';
 
 // screenTab
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  ContactsTimeTypeFilterMap,
+  ContactsResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -44,7 +44,11 @@ class Contacts extends React.Component {
     sideBarType: 0,
     searchValue: null,
     // screenTab
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      ContactsTimeTypeFilterMap,
+      ContactsResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({

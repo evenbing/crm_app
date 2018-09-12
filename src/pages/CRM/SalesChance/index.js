@@ -28,8 +28,8 @@ import BoardList from './components/BoardList';
 import { FilterList } from './_fieldCfg';
 import SalesChanceStore from '../../../logicStores/salesChance';
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  SalesChanceAmountTypeFilterMap,
+  SalesChanceResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -50,7 +50,11 @@ class SalesChance extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      SalesChanceAmountTypeFilterMap,
+      SalesChanceResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -112,11 +116,6 @@ class SalesChance extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  safeCloseOpenRow = (index) => {
-    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
-      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
-    }
-  };
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = SalesChanceStore.salesChanceList;
     if (list.length < total && loadingMore === false) {
@@ -140,7 +139,14 @@ class SalesChance extends React.Component {
     SalesChanceStore.getSalesChanceListReq({ pageNumber });
   };
 
-  keyExtractor = (item) => item.key;
+  safeCloseOpenRow = (index) => {
+    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
+    }
+  };
+
+  keyExtractor = item => item.key;
+
   renderBoard = () => {
     if (this.state.isBoard) {
       return (
@@ -197,47 +203,31 @@ class SalesChance extends React.Component {
     );
   };
   renderSection = () => {
+    const {
+      salesChanceList: { list, refreshing, loadingMore },
+    } = SalesChanceStore;
+    const data = list.map((item) => {
+      const { id, name, pinyin } = item;
+      return ({
+        key: id,
+        title: name,
+        tipList: [`最近跟进时间：${pinyin}`],
+      });
+    });
+    const flatProps = {
+      data,
+      renderItem: this.renderItem,
+      keyExtractor: this.keyExtractor,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     if (!this.state.isBoard) {
       return (
-        <FlatListTable
-          // data,
-          // renderItem: this.renderItem,
-          // keyExtractor: this.keyExtractor,
-          // ItemSeparatorComponent: null,
-          // onRefresh: this.getData,
-          // onEndReached: this.onEndReached,
-          // refreshing,
-          // noDataBool: !refreshing && list.length === 0,
-          //   loadingMore,
-          data={[
-            {
-              title: '网络会议',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 0,
-            },
-            {
-              title: '安放展会',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 1,
-            },
-            {
-              title: '电话会议',
-              tipList: [
-                '开始时间：2018-09-09 12:00',
-                '结束时间：2018-09-010 12:00',
-              ],
-              status: 0,
-            },
-          ]}
-          keyExtractor={item => item.title}
-          renderItem={this.renderItem}
-        />
+        <FlatListTable {...flatProps} />
       );
     }
     return (
@@ -329,7 +319,9 @@ SalesChance.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-SalesChance.defaultProps = {};
+SalesChance.defaultProps = {
+  index: '',
+};
 
 SalesChance.propTypes = {
   navigation: PropTypes.shape({
@@ -343,7 +335,7 @@ SalesChance.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default SalesChance;
-

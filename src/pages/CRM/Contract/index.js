@@ -28,8 +28,8 @@ import ContractModel from '../../../logicStores/contract';
 
 // screenTab
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  ContractTimeTypeFilterMap,
+  ResponsibResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -46,7 +46,11 @@ class Contract extends React.Component {
     sideBarType: 0,
     searchValue: null,
     // screenTab
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      ContractTimeTypeFilterMap,
+      ResponsibResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({

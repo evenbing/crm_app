@@ -24,8 +24,8 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 import { FilterList } from './_fieldCfg';
 import MarkActivityStore from '../../../logicStores/markActivity';
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  MarkActivityTimeTypeFilterMap,
+  MarkActivityResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 import { formatDate } from '../../../utils/date';
@@ -40,7 +40,11 @@ class SalesClues extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      MarkActivityTimeTypeFilterMap,
+      MarkActivityResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -101,11 +105,6 @@ class SalesClues extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  safeCloseOpenRow = (index) => {
-    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
-      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
-    }
-  };
 
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = MarkActivityStore.markActivityList;
@@ -131,7 +130,13 @@ class SalesClues extends React.Component {
     MarkActivityStore.getMarkActivityListReq({ pageNumber });
   };
 
-  keyExtractor = (item) => item.key;
+  safeCloseOpenRow = (index) => {
+    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
+    }
+  };
+
+  keyExtractor = item => item.key;
 
   renderItem = (props) => {
     const { index } = props;
@@ -215,12 +220,12 @@ class SalesClues extends React.Component {
     const {
       markActivityList: { list, refreshing, loadingMore },
     } = MarkActivityStore;
-    const data = list.map(item => {
-      const { 
-        id, 
-        name, 
-        beginDate, 
-        endDate = '1535990400000', 
+    const data = list.map((item) => {
+      const {
+        id,
+        name,
+        beginDate,
+        endDate = '1535990400000',
         status = 0,
       } = item;
       return ({
@@ -228,7 +233,7 @@ class SalesClues extends React.Component {
         title: name,
         tipList: [`开始时间：${formatDate(beginDate)}`, `结束时间：${formatDate(endDate)}`],
         status,
-      })
+      });
     });
     const flatProps = {
       data,
@@ -258,7 +263,7 @@ class SalesClues extends React.Component {
             onChange={this.onChange}
             selectedList={selectedList}
           />
-          <FlatListTable {...flatProps}/>
+          <FlatListTable {...flatProps} />
         </ContainerView>
       </Drawer>
     );
@@ -283,7 +288,9 @@ SalesClues.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-SalesClues.defaultProps = {};
+SalesClues.defaultProps = {
+  index: '',
+};
 
 SalesClues.propTypes = {
   navigation: PropTypes.shape({
@@ -297,6 +304,7 @@ SalesClues.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default SalesClues;

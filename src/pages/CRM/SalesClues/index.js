@@ -24,8 +24,8 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 import { FilterList } from './_fieldCfg';
 import SalesCluesStore from '../../../logicStores/salesClues';
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  SalesCluesTimeTypeFilterMap,
+  SalesCluesResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 import { formatDate } from '../../../utils/date';
@@ -40,7 +40,11 @@ class SalesClues extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      SalesCluesTimeTypeFilterMap,
+      SalesCluesResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -101,11 +105,6 @@ class SalesClues extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  safeCloseOpenRow = (index) => {
-    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
-      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
-    }
-  };
 
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = SalesCluesStore.salesClueList;
@@ -131,7 +130,13 @@ class SalesClues extends React.Component {
     SalesCluesStore.getSalesClueListReq({ pageNumber });
   };
 
-  keyExtractor = (item) => item.key;
+  safeCloseOpenRow = (index) => {
+    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
+    }
+  };
+
+  keyExtractor = item => item.key;
 
   renderItem = (props) => {
     const { index } = props;
@@ -216,18 +221,20 @@ class SalesClues extends React.Component {
     const {
       salesClueList: { list, refreshing, loadingMore },
     } = SalesCluesStore;
-    const data = list.map(item => {
+    const data = list.map((item) => {
       const {
         id,
         name,
+        beginDate,
+        endDate = '1535990400000',
         status = 0,
       } = item;
       return ({
         key: id,
         title: name,
-        tipList: [name],
+        tipList: [`开始时间：${formatDate(beginDate)}`, `结束时间：${formatDate(endDate)}`],
         status,
-      })
+      });
     });
     const flatProps = {
       data,
@@ -264,7 +271,7 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
+SalesClues.navigationOptions = ({ navigation }) => ({
   title: '销售线索',
   headerLeft: (
     <LeftBackIcon
@@ -282,7 +289,9 @@ SalesClues.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-SalesClues.defaultProps = {};
+SalesClues.defaultProps = {
+  index: '',
+};
 
 SalesClues.propTypes = {
   navigation: PropTypes.shape({
@@ -296,6 +305,7 @@ SalesClues.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default SalesClues;

@@ -28,8 +28,8 @@ import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 
 // screenTab
 import {
-  ReceivablePlanTimeType,
-  ParticipateType,
+  ReceivableRecordTimeTypeFilterMap,
+  ReceivableRecordResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -46,7 +46,11 @@ class ReceivableRecord extends React.Component {
     sideBarType: 0,
     searchValue: null,
     // screenTab
-    screenTabList: [ReceivablePlanTimeType, ParticipateType, DrawerFilterMap],
+    screenTabList: [
+      ReceivableRecordTimeTypeFilterMap,
+      ReceivableRecordResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -308,9 +312,7 @@ ReceivableRecord.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-ReceivableRecord.defaultProps = {
-  index: '',
-};
+ReceivableRecord.defaultProps = {};
 
 ReceivableRecord.propTypes = {
   navigation: PropTypes.shape({

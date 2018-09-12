@@ -103,6 +103,8 @@ class ScreenTab extends React.PureComponent {
     const { list = [], activeIndex } = props;
     let filterMap = {};
     const headerList = [];
+    console.log({ list });
+
     list.forEach((_, i) => {
       const { selectedIndex = 0, list = [] } = _;
       if (!list.length) return;

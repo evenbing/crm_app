@@ -24,8 +24,8 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 import { FilterList } from './_fieldCfg';
 import CustomerStore from '../../../logicStores/customer';
 import {
-  ResponsibFilterMap,
-  TimeFilterMap,
+  CustomerTimeTypeFilterMap,
+  CustomerResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -39,7 +39,11 @@ class Customer extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
-    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
+    screenTabList: [
+      CustomerTimeTypeFilterMap,
+      CustomerResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -100,17 +104,14 @@ class Customer extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-  safeCloseOpenRow = (index) => {
-    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
-      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
-    }
-  };
+
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = CustomerStore.customerList;
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
   };
+
   getData = (pageNumber = 1) => {
     const { screenTabList, searchValue } = this.state;
     const obj = {
@@ -128,7 +129,13 @@ class Customer extends React.Component {
     CustomerStore.getCustomerListReq({ pageNumber });
   };
 
-  keyExtractor = (item) => item.key;
+  safeCloseOpenRow = (index) => {
+    if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      this[`rows.${this.prevNodeIndex}`]._root.closeRow();
+    }
+  };
+
+  keyExtractor = item => item.key;
 
   renderItem = (props) => {
     const { index } = props;
@@ -173,7 +180,7 @@ class Customer extends React.Component {
     const {
       state: {
         sideBarType,
-        filterList, 
+        filterList,
       },
     } = this;
     if (sideBarType === 0) {
@@ -215,13 +222,13 @@ class Customer extends React.Component {
     const {
       customerList: { list, refreshing, loadingMore },
     } = CustomerStore;
-    const data = list.map(item => {
+    const data = list.map((item) => {
       const { id, name, pinyin } = item;
       return ({
         key: id,
         title: name,
         tipList: [`最近跟进时间：${pinyin}`],
-      })
+      });
     });
     const flatProps = {
       data,
@@ -258,7 +265,7 @@ class Customer extends React.Component {
   }
 }
 
-Customer.navigationOptions = ({ navigation, screenProps }) => ({
+Customer.navigationOptions = ({ navigation }) => ({
   title: '客户',
   headerLeft: (
     <LeftBackIcon
@@ -276,7 +283,9 @@ Customer.navigationOptions = ({ navigation, screenProps }) => ({
   ),
 });
 
-Customer.defaultProps = {};
+Customer.defaultProps = {
+  index: '',
+};
 
 Customer.propTypes = {
   navigation: PropTypes.shape({
@@ -290,7 +299,7 @@ Customer.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default Customer;
-

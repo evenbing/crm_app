@@ -28,8 +28,8 @@ import ReceivablePlanModel from '../../../logicStores/receivablePlan';
 
 // screenTab
 import {
-  ReceivablePlanTimeType,
-  ParticipateType,
+  ReceivablePlanTimeTypeFilterMap,
+  ReceivablePlanResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 
@@ -46,7 +46,11 @@ class ReceivablePlan extends React.Component {
     sideBarType: 0,
     searchValue: null,
     // screenTab
-    screenTabList: [ReceivablePlanTimeType, ParticipateType, DrawerFilterMap],
+    screenTabList: [
+      ReceivablePlanTimeTypeFilterMap,
+      ReceivablePlanResponsibilityTypeFilterMap,
+      DrawerFilterMap,
+    ],
   };
   componentDidMount() {
     this.props.navigation.setParams({
