@@ -22,6 +22,13 @@ import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import { FilterList } from './_fieldCfg';
+import SalesCluesStore from '../../../logicStores/salesClues';
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import { formatDate } from '../../../utils/date';
 
 useStrict(true);
 
@@ -33,11 +40,13 @@ class SalesClues extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.getData();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.createSalesClue);
@@ -97,6 +106,33 @@ class SalesClues extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
+
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = SalesCluesStore.salesClueList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
+    });
+    // ContractModel.getContactListReq(obj);
+    SalesCluesStore.getSalesClueListReq({ pageNumber });
+  };
+
+  keyExtractor = (item) => item.key;
+
   renderItem = (props) => {
     const { index } = props;
     const {
@@ -174,8 +210,36 @@ class SalesClues extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        screenTabList,
       },
     } = this;
+    const {
+      salesClueList: { list, refreshing, loadingMore },
+    } = SalesCluesStore;
+    const data = list.map(item => {
+      const {
+        id,
+        name,
+        status = 0,
+      } = item;
+      return ({
+        key: id,
+        title: name,
+        tipList: [name],
+        status,
+      })
+    });
+    const flatProps = {
+      data,
+      renderItem: this.renderItem,
+      keyExtractor: this.keyExtractor,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -188,20 +252,12 @@ class SalesClues extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            data={['跟进时间', '我负责的', '筛选']}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
             selectedList={selectedList}
           />
-          <FlatListTable
-            data={[
-            { title: '李总', tipList: ['西风网络'], status: 0 },
-            { title: '张总', tipList: ['阿里巴巴'], status: 1 },
-            { title: '何总', tipList: ['字体跳动'], status: 0 },
-          ]}
-            keyExtractor={item => item.title}
-            renderItem={this.renderItem}
-          />
+          <FlatListTable {...flatProps} />
         </ContainerView>
       </Drawer>
     );
