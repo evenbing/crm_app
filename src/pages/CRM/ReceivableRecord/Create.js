@@ -7,9 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+import { DatePicker } from 'native-base';
 import { View } from 'react-native';
 import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
+import { ReceivablePlanEnum } from '../../../constants/form';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -18,6 +22,8 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+
+import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -33,36 +39,62 @@ const RightText = CenterText.extend`
   color: ${theme.textColor};
 `;
 
-const NavItemStyle = {
-  leftWidth: moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
+const LeftViewWidth = moderateScale(110);
 
+@observer
 class Create extends React.Component {
+  state = {
+    pactId: null,
+    issueId: null,
+    receivablePrice: null,
+    receivableDate: null,
+    ownerId: null,
+    comment: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
-  getLeftStyle = (placeholder, width = 80) => {
-    return {
-      inputProps: {
-        placeholder,
-        fontSize: moderateScale(16),
-      },
-      leftTextStyle: {
-        color: '#373737',
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
+  onPressRight = () => {
+    const {
+      pactId,
+      issueId,
+      receivablePrice,
+      receivableDate,
+      ownerId,
+      comment,
+    } = this.state;
+    try {
+      if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
+      if (!issueId) throw new Error(ReceivablePlanEnum.issue);
+      if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
+      if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
+      if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
+      ReceivableRecordModel.createReceivableRecordReq({
+        pactId,
+        issueId,
+        receivablePrice,
+        receivableDate,
+        ownerId,
+        comment,
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
   };
   render() {
     const {
-      navigation: { navigate },
-    } = this.props;
+      state: {
+        issueId,
+        receivablePrice,
+        ownerId,
+        comment,
+      },
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
     return (
       <ContainerView
         bottomPadding
@@ -74,38 +106,65 @@ class Create extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...this.getLeftStyle('请输入期次')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入期次',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="实际回款金额"
-            {...this.getLeftStyle('请输入金额', 110)}
+            {...theme.getLeftStyle({
+              placeholder: '请输入金额',
+              value: issueId,
+              onChangeText: receivablePrice => this.setState({ receivablePrice }),
+            }, 110)}
             right={
               <RightText>元</RightText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="实际回款日期"
             center={
-              <CenterText>请选择日期</CenterText>
+              <DatePicker
+                defaultDate={new Date(2018, 4, 4)}
+                minimumDate={new Date(2018, 1, 1)}
+                maximumDate={new Date(2018, 12, 31)}
+                locale="cn"
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                placeHolderText={ReceivablePlanEnum.receivableDate}
+                textStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textColor,
+                }}
+                placeHolderTextStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textPlaceholderColor,
+                }}
+                onDateChange={receivableDate => this.setState({ receivableDate })}
+              />
             }
-            {...NavItemStyle}
-            leftWidth={moderateScale(110)}
+            {...theme.navItemStyle}
+            leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="实付款方式"
             center={
               <CenterText>请选择方式</CenterText>
             }
-            {...NavItemStyle}
-            leftWidth={moderateScale(110)}
+            {...theme.navItemStyle}
+            leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="负责人"
             center={
               <CenterText>请选择负责人</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="备注"
@@ -117,7 +176,9 @@ class Create extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
-              placeholder="请输入备注说明"
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder={ReceivablePlanEnum.comment}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>
@@ -133,7 +194,7 @@ class Create extends React.Component {
   }
 }
 
-Create.navigationOptions = ({ navigation, screenProps }) => ({
+Create.navigationOptions = ({ navigation }) => ({
   title: '新增回款记录',
   headerLeft: (
     <LeftBackIcon

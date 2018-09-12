@@ -9,6 +9,7 @@ import autobind from 'autobind-decorator';
 import {
   getReceivableRecordList,
   createReceivableRecord,
+  updateReceivableRecord,
 } from '../service/receivableRecord';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -83,22 +84,22 @@ class ReceivableRecordStore {
       Toast.showError(e.message);
     }
   }
-  //
-  // // 编辑
-  // @action async updateContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await updateContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+
+  // 编辑
+  @action async updateReceivableRecordReq(options) {
+    try {
+      const {
+        result = {},
+      } = await updateReceivableRecord(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 }
 
 export default new ReceivableRecordStore();

@@ -93,6 +93,7 @@ class PerfStatist extends React.Component {
             marginLeft: 7,
           }}
           title="销售趋势"
+          imageSource={require('../../../img/crm/perfStatist/chart.png')}
         />
         <DescriptionView>
           <DescriptionText>
@@ -117,6 +118,7 @@ class PerfStatist extends React.Component {
             marginLeft: 5,
           }}
           title="销售漏斗"
+          imageSource={require('../../../img/crm/perfStatist/funnel.png')}
         />
         <SalesFunnel />
         <TitleHeader

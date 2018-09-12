@@ -9,6 +9,7 @@ import autobind from 'autobind-decorator';
 import {
   getReceivablePlanList,
   createReceivablePlan,
+  updateReceivablePlan,
 } from '../service/receivablePlan';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -83,22 +84,22 @@ class ReceivablePlanStore {
       Toast.showError(e.message);
     }
   }
-  //
-  // // 编辑
-  // @action async updateContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await updateContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+
+  // 编辑
+  @action async updateReceivablePlanReq(options) {
+    try {
+      const {
+        result = {},
+      } = await updateReceivablePlan(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 }
 
 export default new ReceivablePlanStore();

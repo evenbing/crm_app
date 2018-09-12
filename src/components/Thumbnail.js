@@ -57,7 +57,10 @@ Thumbnail.propTypes = {
   round: PropTypes.bool,
   borderRadius: PropTypes.number,
   resizeMode: PropTypes.string,
-  style: PropTypes.objectOf(PropTypes.any),
+  style: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]),
 };
 
 export default Thumbnail;

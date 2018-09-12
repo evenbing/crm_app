@@ -21,23 +21,21 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
-import TouchableView from '../../../components/TouchableView';
 import LeftItem from './components/LeftItem';
 import BoardList from './components/BoardList';
+
+// static source
+import listIcon from '../../../img/crm/screenTab/list.png';
+import boardIcon from '../../../img/crm/screenTab/board.png';
 
 import { FilterList } from './_fieldCfg';
 import SalesChanceStore from '../../../logicStores/salesChance';
 import {
   SalesChanceAmountTypeFilterMap,
   SalesChanceResponsibilityTypeFilterMap,
+  IsBoardTypeMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
-
-const DashboardView = styled(TouchableView)`
-  width: ${theme.moderateScale(20)};
-  height: ${theme.moderateScale(20)};
-  background-color: ${props => props.backgroundColor || 'red'};
-`;
 
 useStrict(true);
 
@@ -53,6 +51,7 @@ class SalesChance extends React.Component {
     screenTabList: [
       SalesChanceAmountTypeFilterMap,
       SalesChanceResponsibilityTypeFilterMap,
+      IsBoardTypeMap,
       DrawerFilterMap,
     ],
   };
@@ -68,6 +67,9 @@ class SalesChance extends React.Component {
   onPressRight = () => alert('right');
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
+    if (index === 2) {
+      this.onToggleType();
+    }
     if (isLast) {
       // TODO open drawer
       this.onOpenDrawer();
@@ -162,15 +164,17 @@ class SalesChance extends React.Component {
       />
     );
   };
-  renderItem = (props) => {
-    const { index } = props;
+
+  keyExtractor = item => item.key;
+  renderItem = (itemProps) => {
+    const { index } = itemProps;
     const {
       navigation: { navigate },
     } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
-        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        ref={(row) => { this[`rows.${itemProps.index}`] = row; }}
         rightOpenValue={-theme.moderateScale(44 + 15 + 15)}
         style={{
           paddingTop: 0,
@@ -183,7 +187,7 @@ class SalesChance extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
+            {...itemProps}
             right="hidden"
             left={
               <LeftItem />
@@ -275,8 +279,11 @@ class SalesChance extends React.Component {
         drawerVisible,
         selectedList,
         screenTabList,
+        isBoard,
       },
     } = this;
+    screenTabList[2].icon = !isBoard ? listIcon : boardIcon;
+    screenTabList[2].focusIcon = !isBoard ? listIcon : boardIcon;
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -319,9 +326,7 @@ SalesChance.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-SalesChance.defaultProps = {
-  index: '',
-};
+SalesChance.defaultProps = {};
 
 SalesChance.propTypes = {
   navigation: PropTypes.shape({
@@ -335,7 +340,6 @@ SalesChance.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  index: PropTypes.string,
 };
 
 export default SalesChance;

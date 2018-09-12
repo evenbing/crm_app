@@ -5,11 +5,45 @@
  * @author JUSTIN XU
  */
 
+import triangleFocusIcon from '../img/crm/screenTab/triangle-focus.png';
+import triangleIcon from '../img/crm/screenTab/triangle.png';
+
+import screenFocusIcon from '../img/crm/screenTab/screen-focus.png';
+import screenIcon from '../img/crm/screenTab/screen.png';
+
+import listIcon from '../img/crm/screenTab/list.png';
+// import boardIcon from '../img/crm/screenTab/board.png';
+
+// 下拉
+const initFilterListMap = {
+  selectedIndex: 0,
+  focusIcon: triangleFocusIcon,
+  icon: triangleIcon,
+  iconSize: 9,
+  showFilter: true,
+};
+
+const initBoardOrListMap = {
+  selectedIndex: 0,
+  focusIcon: listIcon,
+  icon: listIcon,
+  iconSize: 16,
+  showFilter: false,
+};
+
+const initDrawerMap = {
+  selectedIndex: 0,
+  focusIcon: screenFocusIcon,
+  icon: screenIcon,
+  iconSize: 18,
+  showFilter: false,
+};
+
 /**
   * 客户 时间类型
   */
 export const CustomerTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'myParticipate',
@@ -34,7 +68,7 @@ export const CustomerTimeTypeFilterMap = {
   * 客户 责任类型
   */
 export const CustomerResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -59,7 +93,7 @@ export const CustomerResponsibilityTypeFilterMap = {
   *  销售机会 金额类型
   */
 export const SalesChanceAmountTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'salesAmount',
@@ -76,7 +110,7 @@ export const SalesChanceAmountTypeFilterMap = {
   *  销售机会 责任类型
   */
 export const SalesChanceResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'myParticipate',
@@ -98,10 +132,23 @@ export const SalesChanceResponsibilityTypeFilterMap = {
 };
 
 /**
+ *  销售机会 看板/列表切换
+ */
+export const IsBoardTypeMap = {
+  ...initBoardOrListMap,
+  list: [
+    {
+      key: 'CHARGE',
+      name: null,
+    },
+  ],
+};
+
+/**
  * 市场活动 时间类型
  */
 export const MarkActivityTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'createTime',
@@ -118,7 +165,7 @@ export const MarkActivityTimeTypeFilterMap = {
   *  市场活动 责任类型
   */
 export const MarkActivityResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -143,7 +190,7 @@ export const MarkActivityResponsibilityTypeFilterMap = {
  * 市场活动 时间类型
  */
 export const SalesCluesTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'createTime',
@@ -160,7 +207,7 @@ export const SalesCluesTimeTypeFilterMap = {
   *  销售线索 责任类型
   */
 export const SalesCluesResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -185,7 +232,7 @@ export const SalesCluesResponsibilityTypeFilterMap = {
  * 市场活动 时间类型
  */
 export const ContactsTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'createTime',
@@ -200,7 +247,7 @@ export const ContactsTimeTypeFilterMap = {
 
 // 联系人 责任类型
 export const ContactsResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -225,7 +272,7 @@ export const ContactsResponsibilityTypeFilterMap = {
  * 市场活动 时间类型
  */
 export const ContractTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'createTime',
@@ -240,7 +287,7 @@ export const ContractTimeTypeFilterMap = {
 
 // 合同
 export const ResponsibResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -263,7 +310,7 @@ export const ResponsibResponsibilityTypeFilterMap = {
 
 // 回款计划 时间类型
 export const ReceivablePlanTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'ALL',
@@ -278,7 +325,7 @@ export const ReceivablePlanTimeTypeFilterMap = {
 
 // 回款计划
 export const ReceivablePlanResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -294,7 +341,7 @@ export const ReceivablePlanResponsibilityTypeFilterMap = {
 
 // 回款记录 时间类型
 export const ReceivableRecordTimeTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'ALL',
@@ -309,7 +356,7 @@ export const ReceivableRecordTimeTypeFilterMap = {
 
 // 回款记录
 export const ReceivableRecordResponsibilityTypeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',
@@ -323,7 +370,7 @@ export const ReceivableRecordResponsibilityTypeFilterMap = {
 };
 
 export const TimeFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'createTime',
@@ -338,7 +385,7 @@ export const TimeFilterMap = {
 
 // 侧边栏筛选
 export const DrawerFilterMap = {
-  selectedIndex: 0,
+  ...initDrawerMap,
   list: [
     {
       key: 'drawerFilter',
@@ -348,7 +395,7 @@ export const DrawerFilterMap = {
 };
 
 export const ParticipateType = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'CHARGE',
@@ -362,7 +409,7 @@ export const ParticipateType = {
 };
 
 export const ResponsibFilterMap = {
-  selectedIndex: 0,
+  ...initFilterListMap,
   list: [
     {
       key: 'my',

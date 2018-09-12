@@ -1,23 +1,28 @@
 /**
  * @component EditorMore.js
- * @description 编辑更多资料页面
+ * @description 编辑回款记录页面
  * @time 2018/9/2
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+import { DatePicker } from 'native-base';
 import { View } from 'react-native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
+import { ReceivablePlanEnum } from '../../../constants/form';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+
+import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -33,33 +38,59 @@ const RightText = CenterText.extend`
   color: ${theme.textColor};
 `;
 
-const NavItemStyle = {
-  leftWidth: moderateScale(113),
-  height: 44,
-  showNavIcon: true,
-};
+const LeftViewWidth = moderateScale(110);
 
+@observer
 class EditorMore extends React.Component {
+  state = {
+    pactId: null,
+    issueId: null,
+    receivablePrice: null,
+    receivableDate: null,
+    ownerId: null,
+    comment: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
-  getLeftStyle = (placeholder, width = 110) => {
-    return {
-      inputProps: {
-        placeholder,
-        fontSize: moderateScale(16),
-      },
-      leftTextStyle: {
-        color: '#373737',
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
+  onPressRight = () => {
+    const {
+      pactId,
+      issueId,
+      receivablePrice,
+      receivableDate,
+      ownerId,
+      comment,
+    } = this.state;
+    try {
+      if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
+      if (!issueId) throw new Error(ReceivablePlanEnum.issue);
+      if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
+      if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
+      if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
+      ReceivableRecordModel.updateReceivableRecordReq({
+        pactId,
+        issueId,
+        receivablePrice,
+        receivableDate,
+        ownerId,
+        comment,
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
   };
   render() {
+    const {
+      state: {
+        issueId,
+        receivablePrice,
+        ownerId,
+        comment,
+      },
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
@@ -71,79 +102,160 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...this.getLeftStyle('请输入回款期次')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入回款期次',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="实际回款金额"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入金额',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            }, 110)}
             right={
               <RightText>元</RightText>
             }
           />
           <NavInputItem
             leftText="实际回款日期"
-            {...this.getLeftStyle('请选择计划回款日期')}
-            {...NavItemStyle}
+            center={
+              <DatePicker
+                defaultDate={new Date(2018, 4, 4)}
+                minimumDate={new Date(2018, 1, 1)}
+                maximumDate={new Date(2018, 12, 31)}
+                locale="cn"
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                placeHolderText={ReceivablePlanEnum.receivableDate}
+                textStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textColor,
+                }}
+                placeHolderTextStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textPlaceholderColor,
+                }}
+                onDateChange={receivableDate => this.setState({ receivableDate })}
+              />
+            }
+            {...theme.navItemStyle}
+            leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="负责人"
-            {...this.getLeftStyle('请输入负责人')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入负责人',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="合同"
-            {...this.getLeftStyle('请输入合同')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入合同',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="客户名称"
-            {...this.getLeftStyle('请输入客户名称')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入客户名称',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="付款方式"
-            {...this.getLeftStyle('请输入付款方式')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入付款方式',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="实际回款金额"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入金额',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            }, 110)}
           />
           <NavInputItem
             leftText="所属部门"
             center={
               <CenterText>请选择所属部门</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="负责人"
-            {...this.getLeftStyle('请输入负责人')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入负责人',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="所属部门"
             center={
               <CenterText>请选择所属部门</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="创建人"
-            {...this.getLeftStyle('请输入创建人')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入创建人',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="创建时间"
             center={
-              <CenterText>请选择创建时间</CenterText>
+              <DatePicker
+                defaultDate={new Date(2018, 4, 4)}
+                minimumDate={new Date(2018, 1, 1)}
+                maximumDate={new Date(2018, 12, 31)}
+                locale="cn"
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                placeHolderText={ReceivablePlanEnum.receivableDate}
+                textStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textColor,
+                }}
+                placeHolderTextStyle={{
+                  ...theme.pickerStyle,
+                  color: theme.textPlaceholderColor,
+                }}
+                onDateChange={receivableDate => this.setState({ receivableDate })}
+              />
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="最近修改人"
-            {...this.getLeftStyle('请输入修改人')}
+            {...theme.getLeftStyle({
+              placeholder: '请输入修改人',
+              value: issueId,
+              onChangeText: issueId => this.setState({ issueId }),
+            })}
           />
           <NavInputItem
             leftText="最近时间"
             center={
               <CenterText>请选择最近时间</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="备注"
@@ -154,7 +266,9 @@ class EditorMore extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
-              placeholder="请输入备注说明"
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder={ReceivablePlanEnum.comment}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>
@@ -165,8 +279,8 @@ class EditorMore extends React.Component {
   }
 }
 
-EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
-  title: '回款记录详情',
+EditorMore.navigationOptions = ({ navigation }) => ({
+  title: '编辑回款记录',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

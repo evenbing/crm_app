@@ -7,10 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { View } from 'react-native';
 import { theme } from '../../constants';
-// import { deviceHeight, deviceWidth } from '../../utils/utils';
-import { getHeaderHeight, getHeaderPadding } from '../../utils/utils';
+import { getHeaderHeight } from '../../utils/utils';
 
 // components
 import TouchableView from '../TouchableView';
@@ -57,10 +55,6 @@ const FilterItemText = styled.Text`
   font-size: ${theme.moderateScale(13)};
 `;
 
-const IconStyle = {
-  marginLeft: theme.moderateScale(3),
-};
-
 class ScreenTab extends React.PureComponent {
   state = {
     isVisible: false,
@@ -86,32 +80,46 @@ class ScreenTab extends React.PureComponent {
       isVisible: true,
     });
   };
-  onPressItem = ({ index, isLast }) => {
+  onToggleVisible = () => {
+    this.setState({
+      isVisible: !this.state.isVisible,
+    });
+  };
+  onPressItem = ({ index, isLast, item }) => {
     const { activeIndex } = this.props;
-    const { isVisible } = this.state;
-    this.props.onChange({ index, isLast });
-    if (activeIndex !== index) {
-      isVisible ? this.onShowVisible() : this.onHideVisible();
-    }
-    if (isLast) {
-      this.onHideVisible();
-    } else {
+    this.props.onChange({ index, isLast, item });
+    if (item.showFilter) {
       this.onShowVisible();
+    } else {
+      this.onHideVisible();
+    }
+    if (activeIndex === index && item.showFilter) {
+      this.onToggleVisible();
     }
   };
   initState = (props) => {
-    const { list = [], activeIndex } = props;
+    const {
+      list = [],
+      activeIndex,
+    } = props;
     let filterMap = {};
     const headerList = [];
     console.log({ list });
 
     list.forEach((_, i) => {
-      const { selectedIndex = 0, list = [] } = _;
+      const {
+        selectedIndex = 0,
+        list = [],
+        ...restProps
+      } = _;
       if (!list.length) return;
       if (activeIndex === i) {
         filterMap = _;
       }
-      headerList.push(list[selectedIndex].name);
+      headerList.push({
+        name: list[selectedIndex].name,
+        ...restProps,
+      });
     });
     if (activeIndex === list.length - 1) {
       filterMap = {};
@@ -120,43 +128,6 @@ class ScreenTab extends React.PureComponent {
       headerList,
       filterMap,
     });
-  };
-  renderIcon = (node, isLast, active) => {
-    if (React.isValidElement(node)) return null;
-    if (isLast && active) {
-      return (
-        <Thumbnail
-          source={require('../../img/crm/screenTab/screen-focus.png')}
-          size={18}
-          style={IconStyle}
-        />
-      );
-    }
-    if (isLast) {
-      return (
-        <Thumbnail
-          source={require('../../img/crm/screenTab/screen.png')}
-          size={18}
-          style={IconStyle}
-        />
-      );
-    }
-    if (active) {
-      return (
-        <Thumbnail
-          source={require('../../img/crm/screenTab/triangle-focus.png')}
-          size={9}
-          style={IconStyle}
-        />
-      );
-    }
-    return (
-      <Thumbnail
-        source={require('../../img/crm/screenTab/triangle.png')}
-        size={9}
-        style={IconStyle}
-      />
-    );
   };
   renderTab = () => {
     const {
@@ -174,15 +145,17 @@ class ScreenTab extends React.PureComponent {
       const isLast = dataLen - 1 === index;
       return (
         <HeaderItemView
-          onPress={() => this.onPressItem({ index, isLast })}
+          onPress={() => this.onPressItem({ index, isLast, item: _ })}
           key={index}
         >
-          {
-            React.isValidElement(_) ? _ : (
-              <HeaderText color={active && theme.primaryColor}>{_}</HeaderText>
-            )
-          }
-          {this.renderIcon(_, isLast, active)}
+          <HeaderText color={active && theme.primaryColor}>{_.name}</HeaderText>
+          <Thumbnail
+            source={active ? _.focusIcon : _.icon}
+            size={_.iconSize}
+            style={{
+              marginLeft: theme.moderateScale(3),
+            }}
+          />
         </HeaderItemView>
       );
     });
@@ -227,7 +200,7 @@ class ScreenTab extends React.PureComponent {
           onPressClose={this.onHideVisible}
           selectedIndex={selectedIndex}
           onPressItem={onPressFilterItem}
-          position={getHeaderHeight() + 88}
+          position={getHeaderHeight() + theme.moderateScale(88)}
           list={list}
         />
         <HeaderView>

@@ -68,6 +68,7 @@ class Create extends React.Component {
       if (!issueId) throw new Error(ReceivablePlanEnum.issue);
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
+      if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
       ReceivablePlanModel.createReceivablePlanReq({
         pactId,
         issueId,
