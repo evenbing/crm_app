@@ -57,7 +57,7 @@ const RightView = styled.View`
 `;
 
 const RightText = styled.Text`
-  color: ${props => props.color || theme.primaryColor}
+  color: ${props => props.color || theme.primaryColor};
 `;
 
 class ListItem extends React.PureComponent {

@@ -23,6 +23,11 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 
 import { FilterList } from './_fieldCfg';
 import CustomerStore from '../../../logicStores/customer';
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 
 useStrict(true);
 
@@ -34,13 +39,13 @@ class Customer extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-
-    CustomerStore.getCustomerListReq();
+    this.getData();
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.createCustomer);
@@ -100,6 +105,31 @@ class Customer extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = CustomerStore.customerList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
+    });
+    // ContractModel.getContactListReq(obj);
+    CustomerStore.getCustomerListReq({ pageNumber });
+  };
+
+  keyExtractor = (item) => item.key;
+
   renderItem = (props) => {
     const { index } = props;
     const {
@@ -143,7 +173,7 @@ class Customer extends React.Component {
     const {
       state: {
         sideBarType,
-        filterList,
+        filterList, 
       },
     } = this;
     if (sideBarType === 0) {
@@ -179,8 +209,31 @@ class Customer extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        screenTabList,
       },
     } = this;
+    const {
+      customerList: { list, refreshing, loadingMore },
+    } = CustomerStore;
+    const data = list.map(item => {
+      const { id, name, pinyin } = item;
+      return ({
+        key: id,
+        title: name,
+        tipList: [`最近跟进时间：${pinyin}`],
+      })
+    });
+    const flatProps = {
+      data,
+      renderItem: this.renderItem,
+      keyExtractor: this.keyExtractor,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <Drawer
         isVisible={drawerVisible}
@@ -193,20 +246,12 @@ class Customer extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            data={['跟进时间', '我负责的', '筛选']}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
             selectedList={selectedList}
           />
-          <FlatListTable
-            data={[
-            { title: '李总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-            { title: '张总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-            { title: '何总', tipList: ['最近跟进时间：2018-09-09 12:00'] },
-          ]}
-            keyExtractor={item => item.title}
-            renderItem={this.renderItem}
-          />
+          <FlatListTable {...flatProps} />
         </ContainerView>
       </Drawer>
     );

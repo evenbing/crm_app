@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 11:35:13
+ * @Last Modified time: 2018-09-12 14:44:34
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -16,19 +16,14 @@ import {
   changeOwnerUser,
 } from '../service/salesChance';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class SalesChanceStore {
   // 列表
-  @observable salesChanceList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable salesChanceList = initFlatList;
 
   // 客户详情
   @observable salesChanceDetail = {};
@@ -147,4 +142,4 @@ class SalesChanceStore {
   }
 }
 
-export default new ContractStore();
+export default new SalesChanceStore();

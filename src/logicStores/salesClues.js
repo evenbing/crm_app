@@ -2,7 +2,7 @@
  * @Author: Edmond.Shi 
  * @Date: 2018-09-11 10:20:55 
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-11 11:25:42
+ * @Last Modified time: 2018-09-12 14:44:47
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -15,19 +15,14 @@ import {
   changeOwnerUser,
 } from '../service/salesClues';
 import Toast from '../utils/toast';
+import { initFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class SalesClueStore {
   // 列表
-  @observable salesClueList = {
-    pageNumber: 1,
-    refreshing: false,
-    loadingMore: false,
-    list: [],
-    total: 0,
-  };
+  @observable salesClueList = initFlatList;
 
   // 详情
   @observable salesClueDetail = {};
@@ -146,4 +141,4 @@ class SalesClueStore {
   }
 }
 
-export default new ContractStore();
+export default new SalesClueStore();

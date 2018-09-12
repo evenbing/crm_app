@@ -1,8 +1,8 @@
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
- * @Last Modified by: ShiQuan
- * @Last Modified time: 2018-09-12 00:33:21
+ * @Last Modified by: Edmond.Shi
+ * @Last Modified time: 2018-09-12 13:35:17
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -26,36 +26,36 @@ class CustomerStore {
   @observable customerList = initFlatList;
 
   // 客户详情
-  @observable customerDetails = {};
+  @observable customerDetail = {};
 
   // 列表
   @action async getCustomerListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
-        this.contractList.refreshing = true;
+        this.customerList.refreshing = true;
       } else {
-        this.contractList.loadingMore = true;
+        this.customerList.loadingMore = true;
       }
       const {
         result = [],
         totalCount = 0,
       } = await getCustomerList({ pageNumber, ...restProps });
       runInAction(() => {
-        this.contractList.total = totalCount;
-        this.contractList.pageNumber = pageNumber;
+        this.customerList.total = totalCount;
+        this.customerList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.contractList.list = [...result];
+          this.customerList.list = [...result];
         } else {
-          this.contractList.list = this.contractList.list.concat(result);
+          this.customerList.list = this.customerList.list.concat(result);
         }
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
-        this.contractList.refreshing = false;
-        this.contractList.loadingMore = false;
+        this.customerList.refreshing = false;
+        this.customerList.loadingMore = false;
       });
     }
   }
@@ -70,7 +70,7 @@ class CustomerStore {
       } = await getCustomerDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.contactDetails = { ...result };
+        this.customerDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -86,7 +86,7 @@ class CustomerStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contractDetails = { ...result };
+        this.customerDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -102,7 +102,7 @@ class CustomerStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.customerDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -118,7 +118,7 @@ class CustomerStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.customerDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -134,7 +134,7 @@ class CustomerStore {
       debugger;
       runInAction(() => {
         // TODO next
-        this.contactDetails = { ...result };
+        this.customerDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);

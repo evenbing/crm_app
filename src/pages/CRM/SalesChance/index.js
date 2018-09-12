@@ -26,6 +26,12 @@ import LeftItem from './components/LeftItem';
 import BoardList from './components/BoardList';
 
 import { FilterList } from './_fieldCfg';
+import SalesChanceStore from '../../../logicStores/salesChance';
+import {
+  ResponsibFilterMap,
+  TimeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 
 const DashboardView = styled(TouchableView)`
   width: ${theme.moderateScale(20)};
@@ -44,11 +50,13 @@ class SalesChance extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    screenTabList: [ResponsibFilterMap, TimeFilterMap, DrawerFilterMap],
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.getData();
   }
   onToggleType = () => {
     this.setState({ isBoard: !this.state.isBoard });
@@ -109,6 +117,30 @@ class SalesChance extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = SalesChanceStore.salesChanceList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    const { screenTabList, searchValue } = this.state;
+    const obj = {
+      pageNumber,
+      name: searchValue,
+    };
+    // query header tab
+    screenTabList.map((v, i) => {
+      if (i === screenTabList.length - 1 || !v.list.length) return null;
+      return v.list[v.selectedIndex].key;
+    }).filter(_ => !!_).forEach((v) => {
+      obj[v] = true;
+    });
+    // ContractModel.getContactListReq(obj);
+    SalesChanceStore.getSalesChanceListReq({ pageNumber });
+  };
+
+  keyExtractor = (item) => item.key;
   renderBoard = () => {
     if (this.state.isBoard) {
       return (
@@ -168,6 +200,15 @@ class SalesChance extends React.Component {
     if (!this.state.isBoard) {
       return (
         <FlatListTable
+          // data,
+          // renderItem: this.renderItem,
+          // keyExtractor: this.keyExtractor,
+          // ItemSeparatorComponent: null,
+          // onRefresh: this.getData,
+          // onEndReached: this.onEndReached,
+          // refreshing,
+          // noDataBool: !refreshing && list.length === 0,
+          //   loadingMore,
           data={[
             {
               title: '网络会议',
@@ -243,6 +284,7 @@ class SalesChance extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        screenTabList,
       },
     } = this;
     return (
@@ -257,12 +299,7 @@ class SalesChance extends React.Component {
           <CommStatusBar />
           <SearchInput placeholder="输入客户名称" />
           <ScreenTab
-            data={[
-            '销售金额',
-            '我负责的',
-            this.renderBoard(),
-            '筛选',
-          ]}
+            list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
             selectedList={selectedList}

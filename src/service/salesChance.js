@@ -15,52 +15,46 @@ import { post } from '../utils/rpc';
  *    myParticipate	我参与的	否
  *    sevenDaysUninvolved	7天未跟进的	否
  *    all	全部	否
- *    expectedDateTime	结单时间范围	否
- *    TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *    expectedDateTime	结单时间范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *    salesPhaseId	销售阶段	否
  *    customerId	客户	否
  *    name	机会名称	否
  *    planAmount	销售金额	否
  *    sourceType	机会来源	否
- *    followTimeType	跟进时间范围	否
- *    TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *    followTimeType	跟进时间范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *    sortColumn	表头排序	否
  * } options 
  */
 export function getSalesChanceList({
   my,
-  myFollowmy,
-  myParticipatemy,
-  sevenDaysUninvolvedmy,
-  allmy,
-  expectedDateTimemy,
-  TODAYmy,
-  salesPhaseIdmy,
-  customerIdmy,
-  namemy,
-  planAmountmy,
-  sourceTypemy,
-  followTimeTypemy,
-  TODAYmy,
-  sortColumnmy,
+  myFollow,
+  myParticipate,
+  sevenDaysUninvolved,
+  all,
+  expectedDateTime,
+  salesPhaseId,
+  customerId,
+  name,
+  planAmount,
+  sourceType,
+  followTimeType,
+  sortColumn,
 } = {}) {
   return post({
     method: 'api.customerrelations.opportunity.find',
     my,
-    myFollowmy,
-    myParticipatemy,
-    sevenDaysUninvolvedmy,
-    allmy,
-    expectedDateTimemy,
-    TODAYmy,
-    salesPhaseIdmy,
-    customerIdmy,
-    namemy,
-    planAmountmy,
-    sourceTypemy,
-    followTimeTypemy,
-    TODAYmy,
-    sortColumnmy,
+    myFollow,
+    myParticipate,
+    sevenDaysUninvolved,
+    all,
+    expectedDateTime,
+    salesPhaseId,
+    customerId,
+    name,
+    planAmount,
+    sourceType,
+    followTimeType,
+    sortColumn,
   });
 }
 
