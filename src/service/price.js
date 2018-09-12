@@ -187,14 +187,18 @@ export function create({
  * @add by zhao
  * @params options
  * {
- * isMyDuty 是否是我负责的
- * isMyFollow 是否是我关注的
- * isActive 是否有效 must
- * keyword 关键字
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
+ *   isMyDuty 是否是我负责的
+ *   isMyFollow 是否是我关注的
+ *   isActive 是否有效 must
+ *   keyword 关键字
  * }
  * @return Promise<Object>
  */
 export function getPriceList({
+  pageNumber = 1,
+  pageSize = 15,
   isMyDuty,
   isMyFollow,
   isActive,
@@ -202,6 +206,8 @@ export function getPriceList({
 } = {}) {
   return post({
     method: 'api.customerrelations.price.find',
+    pageNumber,
+    pageSize,
     isMyDuty,
     isMyFollow,
     isActive,

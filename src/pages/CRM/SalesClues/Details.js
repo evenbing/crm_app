@@ -183,7 +183,7 @@ class Details extends React.Component {
             <SendFooter />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactEditor)}
+                onPress={() => navigate(routers.contactCreate)}
               />
             )
         }

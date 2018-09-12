@@ -38,12 +38,12 @@ export default {
   // contacts module
   contacts: 'app.tabView.root.crm.contacts',
   contactDetails: 'app.tabView.root.crm.contactDetails',
-  contactEditor: 'app.tabView.root.crm.contactsEditor',
+  contactCreate: 'app.tabView.root.crm.contactCreate',
   contactEditorMore: 'app.tabView.root.crm.contactsEditorMore',
   // contract module
   contract: 'app.tabView.root.crm.contract',
   contractDetails: 'app.tabView.root.crm.contractDetails',
-  contractEditor: 'app.tabView.root.crm.contractEditor',
+  contractCreate: 'app.tabView.root.crm.contractCreate',
   contractEditorMore: 'app.tabView.root.crm.contractEditorMore',
   receivable: 'app.tabView.root.crm.contract.receivable',
   // salesClues module
@@ -61,12 +61,12 @@ export default {
   // receivablePlan module
   receivablePlan: 'app.tabView.root.crm.receivablePlan',
   receivablePlanDetails: 'app.tabView.root.crm.receivablePlanDetail',
-  receivablePlanEditor: 'app.tabView.root.crm.receivablePlanEditor',
+  receivablePlanCreate: 'app.tabView.root.crm.receivablePlanCreate',
   receivablePlanEditorMore: 'app.tabView.root.crm.receivablePlanEditorMore',
   // receivableRecord module
   receivableRecord: 'app.tabView.root.crm.receivableRecord',
   receivableRecordDetails: 'app.tabView.root.crm.receivableRecordDetail',
-  receivableRecordEditor: 'app.tabView.root.crm.receivableRecordEditor',
+  receivableRecordCreate: 'app.tabView.root.crm.receivableRecordCreate',
   receivableRecordEditorMore: 'app.tabView.root.crm.receivableRecordEditorMore',
   // common model
   queryBusiness: 'app.tabView.root.model.queryBusiness',

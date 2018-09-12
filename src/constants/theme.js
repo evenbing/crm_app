@@ -31,4 +31,27 @@ export default {
   headerHeight: 45,
   iconSize: 22,
   moderateScale: (size, factor) => moderateScale(size, factor),
+  // form
+  getLeftStyle: (inputProps, width = 80) => ({
+    inputProps: {
+      ...inputProps,
+      fontSize: moderateScale(16),
+    },
+    leftTextStyle: {
+      color: '#373737',
+      width: moderateScale(width),
+    },
+    height: 44,
+  }),
+  navItemStyle: {
+    leftWidth: moderateScale(83),
+    height: 44,
+    showNavIcon: true,
+  },
+  pickerStyle: {
+    paddingLeft: 0,
+    paddingRight: moderateScale(120),
+    fontSize: moderateScale(16),
+    width: '100%',
+  },
 };

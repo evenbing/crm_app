@@ -4,10 +4,11 @@
  * @time 2018/9/9
  * @author JUSTIN XU
  */
-import { action, observable, runInAction, useStrict } from 'mobx/lib/mobx';
+import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivablePlanList,
+  createReceivablePlan,
 } from '../service/receivablePlan';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -66,22 +67,22 @@ class ReceivablePlanStore {
   //     Toast.showError(e.message);
   //   }
   // }
-  //
-  // // 新增
-  // @action async createContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await createContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+
+  // 新增
+  @action async createReceivablePlanReq(options) {
+    try {
+      const {
+        result = {},
+      } = await createReceivablePlan(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
   //
   // // 编辑
   // @action async updateContactReq(options) {

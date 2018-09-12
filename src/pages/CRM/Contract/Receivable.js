@@ -70,7 +70,7 @@ Receivable.navigationOptions = ({ navigation }) => ({
   headerRight: (
     <RightViews>
       <RightView
-        onPress={() => { navigation.navigate(routers.receivablePlanEditor); }}
+        onPress={() => { navigation.navigate(routers.receivablePlanCreate); }}
         right="增加计划"
         rightStyle={{
           color: theme.primaryColor,
@@ -81,7 +81,7 @@ Receivable.navigationOptions = ({ navigation }) => ({
         }}
       />
       <RightView
-        onPress={() => { navigation.navigate(routers.receivableRecordEditor); }}
+        onPress={() => { navigation.navigate(routers.receivableRecordCreate); }}
         right="增加记录"
         rightStyle={{
           color: theme.primaryColor,

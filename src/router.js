@@ -51,7 +51,7 @@ import CreateCustomerScreen from './pages/CRM/Customer/CreateCustomer';
 // root page -> CRM -> 合同 module
 import ContractScreen from './pages/CRM/Contract';
 import ContractDetailsScreen from './pages/CRM/Contract/Details';
-import ContractEditorScreen from './pages/CRM/Contract/Editor';
+import ContractCreateScreen from './pages/CRM/Contract/Create';
 import ContractEditorMoreScreen from './pages/CRM/Contract/EditorMore';
 import ReceivableScreen from './pages/CRM/Contract/Receivable';
 // root page -> CRM -> 销售机会 module
@@ -69,7 +69,7 @@ import MarkActivityEditorMoreScreen from './pages/CRM/MarkActivity/EditorMore';
 // root page -> CRM -> 联系人 module
 import ContactsScreen from './pages/CRM/Contacts';
 import ContactDetailsScreen from './pages/CRM/Contacts/Details';
-import ContactEditorScreen from './pages/CRM/Contacts/Editor';
+import ContactCreateScreen from './pages/CRM/Contacts/Create';
 import ContactEditorMoreScreen from './pages/CRM/Contacts/EditorMore';
 // root page -> CRM -> 销售线索 module
 import SalesCluesScreen from './pages/CRM/SalesClues';
@@ -86,12 +86,12 @@ import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
 // root page -> CRM -> 回款计划 module
 import ReceivablePlanPlanScreen from './pages/CRM/ReceivablePlan';
 import ReceivablePlanPlanDetailsScreen from './pages/CRM/ReceivablePlan/Details';
-import ReceivablePlanPlanEditorScreen from './pages/CRM/ReceivablePlan/Editor';
+import ReceivablePlanPlanCreateScreen from './pages/CRM/ReceivablePlan/Create';
 import ReceivablePlanPlanEditorMoreScreen from './pages/CRM/ReceivablePlan/EditorMore';
 // root page -> CRM -> 回款记录 module
 import ReceivableRecordScreen from './pages/CRM/ReceivableRecord';
 import ReceivableRecordDetailsScreen from './pages/CRM/ReceivableRecord/Details';
-import ReceivableRecordEditorScreen from './pages/CRM/ReceivableRecord/Editor';
+import ReceivableRecordCreateScreen from './pages/CRM/ReceivableRecord/Create';
 import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/EditorMore';
 // root page -> Card -> RelatedDocs
 import RelatedDocs from './pages/Card/RelatedDocs';
@@ -181,7 +181,7 @@ const CrmRouteConfig = {
 
   [routers.contract]: { screen: ContractScreen },
   [routers.contractDetails]: { screen: ContractDetailsScreen },
-  [routers.contractEditor]: { screen: ContractEditorScreen },
+  [routers.contractCreate]: { screen: ContractCreateScreen },
   [routers.contractEditorMore]: { screen: ContractEditorMoreScreen },
   [routers.receivable]: { screen: ReceivableScreen },
 
@@ -206,7 +206,7 @@ const CrmRouteConfig = {
 
   [routers.contacts]: { screen: ContactsScreen },
   [routers.contactDetails]: { screen: ContactDetailsScreen },
-  [routers.contactEditor]: { screen: ContactEditorScreen },
+  [routers.contactCreate]: { screen: ContactCreateScreen },
   [routers.contactEditorMore]: { screen: ContactEditorMoreScreen },
 
   [routers.priceList]: { screen: PriceListScreen },
@@ -218,12 +218,12 @@ const CrmRouteConfig = {
 
   [routers.receivablePlan]: { screen: ReceivablePlanPlanScreen },
   [routers.receivablePlanDetails]: { screen: ReceivablePlanPlanDetailsScreen },
-  [routers.receivablePlanEditor]: { screen: ReceivablePlanPlanEditorScreen },
+  [routers.receivablePlanCreate]: { screen: ReceivablePlanPlanCreateScreen },
   [routers.receivablePlanEditorMore]: { screen: ReceivablePlanPlanEditorMoreScreen },
 
   [routers.receivableRecord]: { screen: ReceivableRecordScreen },
   [routers.receivableRecordDetails]: { screen: ReceivableRecordDetailsScreen },
-  [routers.receivableRecordEditor]: { screen: ReceivableRecordEditorScreen },
+  [routers.receivableRecordCreate]: { screen: ReceivableRecordCreateScreen },
   [routers.receivableRecordEditorMore]: { screen: ReceivableRecordEditorMoreScreen },
 
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },

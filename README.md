@@ -29,12 +29,12 @@ java (v1.8.0_172)
     |--CRM          CRM tab
       |--Contacts                   联系人模块（Justin）
         |--Details.js               联系人详情页面
-        |--Editor.js                编辑联系人资料页面
+        |--Create.js                编辑联系人资料页面
         |--EditorMore.js            编辑更多联系人资料页面
         |--index.js                 列表页面
       |--Contract                   合同模块（Justin）
         |--Details.js               合同详情页面
-        |--Editor.js                编辑合同资料页面
+        |--Create.js                编辑合同资料页面
         |--EditorMore.js            编辑更多合同资料页面
         |--index.js                 列表页面
       |--Customer                   客户模块
@@ -56,12 +56,12 @@ java (v1.8.0_172)
       |--ProductList                产品目录模块
         |--index.js                 列表页面
       |--ReceivablePlan             回款计划模块（Justin）
-        |--Editor.js                编辑回款计划资料页面
+        |--Create.js                编辑回款计划资料页面
         |--EditorMore.js            编辑更多回款计划资料页面
         |--Details.js               回款计划资料
         |--index.js                 列表页面
       |--ReceivableRecord           回款记录模块（Justin）
-        |--Editor.js                编辑回款记录资料页面
+        |--Create.js                编辑回款记录资料页面
         |--EditorMore.js            编辑更多回款记录资料页面
         |--Details.js               回款计划资料
         |--index.js                 列表页面

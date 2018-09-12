@@ -8,6 +8,7 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivableRecordList,
+  createReceivableRecord,
 } from '../service/receivableRecord';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -66,22 +67,22 @@ class ReceivableRecordStore {
   //     Toast.showError(e.message);
   //   }
   // }
-  //
-  // // 新增
-  // @action async createContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await createContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+
+  // 新增
+  @action async createReceivableRecordReq(options) {
+    try {
+      const {
+        result = {},
+      } = await createReceivableRecord(options);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
   //
   // // 编辑
   // @action async updateContactReq(options) {

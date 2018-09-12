@@ -55,7 +55,7 @@ class ReceivablePlan extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.receivablePlanEditor);
+    this.props.navigation.navigate(routers.receivablePlanCreate);
   };
   onPressFilterItem = async ({ index }) => {
     const { screenTabList, activeIndex } = this.state;

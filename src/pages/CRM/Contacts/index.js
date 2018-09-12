@@ -53,7 +53,7 @@ class Contacts extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.contactEditor);
+    this.props.navigation.navigate(routers.contactCreate);
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });

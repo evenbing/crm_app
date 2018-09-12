@@ -55,7 +55,7 @@ class Contract extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.contractEditor);
+    this.props.navigation.navigate(routers.contractCreate);
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });

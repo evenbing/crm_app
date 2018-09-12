@@ -44,8 +44,19 @@ const ContainerView = styled.View`
 @observer
 class StandardPriceList extends Component {
   componentDidMount() {
-    PriceListModel.getStandardPriceListReq();
+    this.getData();
   }
+
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = PriceListModel.standardPriceList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    PriceListModel.getStandardPriceListReq({ pageNumber });
+  };
 
   renderItem = ({ item }) => (
     <ProductItem {...item} />

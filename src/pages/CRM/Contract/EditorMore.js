@@ -39,19 +39,6 @@ const RightText = CenterText.extend`
   color: ${theme.textColor};
 `;
 
-const NavItemStyle = {
-  leftWidth: moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
-
-// const PickerStyle = {
-//   paddingLeft: 0,
-//   paddingRight: moderateScale(120),
-//   fontSize: moderateScale(16),
-//   width: '100%',
-// };
-
 @observer
 class EditorMore extends React.Component {
   state = {
@@ -152,7 +139,7 @@ class EditorMore extends React.Component {
         // pactDate,
         // ourContractId,
         // customerContractId,
-        customerContractName,
+        // customerContractName,
         // departmentId,
         // departmentName,
         content,
@@ -171,7 +158,7 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同名称"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContractEnum.theme,
               value: name,
               onChangeText: name => this.setState({ name }),
@@ -182,39 +169,39 @@ class EditorMore extends React.Component {
             center={
               <CenterText>{ContractEnum.customerName}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="销售机会"
             center={
               <CenterText>{ContractEnum.salesOpportunities}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="合同类型"
             center={
               <CenterText>{ContractEnum.type}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="合同状态"
             center={
               <CenterText>{ContractEnum.status}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="付款方式"
             center={
               <CenterText>{ContractEnum.payType}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="总金额"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContractEnum.totalMoney,
               value: name,
               onChangeText: totalMoney => this.setState({ totalMoney }),
@@ -222,14 +209,14 @@ class EditorMore extends React.Component {
             right={
               <RightText>元</RightText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="开始日期"
             center={
               <CenterText>{ContractEnum.startDate}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="结束日期"
@@ -237,14 +224,14 @@ class EditorMore extends React.Component {
               <CenterText>{ContractEnum.endDate}</CenterText>
             }
             isLast
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
         </ListView>
         <TitleItem text="其他信息" />
         <ListView>
           <NavInputItem
             leftText="合同编号"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContractEnum.number,
               value: number,
               onChangeText: number => this.setState({ number }),
@@ -256,21 +243,21 @@ class EditorMore extends React.Component {
             center={
               <CenterText>{ContractEnum.pactDate}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="我方签约人"
             center={
               <CenterText>{ContractEnum.ourContract}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="客户方签约人"
             center={
               <CenterText>{ContractEnum.customerContractName}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
             leftWidth={110}
           />
           <NavInputItem
@@ -278,7 +265,7 @@ class EditorMore extends React.Component {
             center={
               <CenterText>{ContractEnum.departmentName}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="合同正文"
@@ -319,7 +306,7 @@ class EditorMore extends React.Component {
   }
 }
 
-EditorMore.navigationOptions = ({ navigation, screenProps }) => ({
+EditorMore.navigationOptions = ({ navigation }) => ({
   title: '合同更多资料',
   headerLeft: (
     <LeftBackIcon

@@ -11,8 +11,9 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { DatePicker } from 'native-base';
 import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
 import { ContactsEnum } from '../../../constants/form';
+import { SexTypeList } from '../../../constants/actionSheet';
+import { moderateScale } from '../../../utils/scale';
 import Toast from '../../../utils/toast';
 
 // components
@@ -35,19 +36,6 @@ const CenterText = styled.Text`
   color: ${props => props.active ? theme.textColor : theme.textPlaceholderColor};
   font-family: ${theme.fontRegular};
 `;
-
-const NavItemStyle = {
-  leftWidth: moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
-
-const PickerStyle = {
-  paddingLeft: 0,
-  paddingRight: moderateScale(120),
-  fontSize: moderateScale(16),
-  width: '100%',
-};
 
 @observer
 class EditorMore extends React.Component {
@@ -128,19 +116,6 @@ class EditorMore extends React.Component {
       sex: { name: leftText, key: index },
     });
   };
-  getLeftStyle = (inputProps, width = 80) => {
-    return {
-      inputProps: {
-        ...inputProps,
-        fontSize: moderateScale(16),
-      },
-      leftTextStyle: {
-        color: theme.textFormColor,
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
-  };
   render() {
     const {
       state: {
@@ -163,10 +138,7 @@ class EditorMore extends React.Component {
       isVisible: sexVisible,
       onPressClose: this.onToggleSexVisible,
       onPressItem: this.onPressSexItem,
-      list: [
-        { leftText: '女' },
-        { leftText: '男' },
-      ],
+      list: SexTypeList,
     };
     return (
       <ContainerScrollView
@@ -181,7 +153,7 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="姓名"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.name,
               value: name,
               onChangeText: name => this.setState({ name }),
@@ -197,7 +169,7 @@ class EditorMore extends React.Component {
                 {sex.name ? sex.name : ContactsEnum.sex}
               </CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="出生日期"
@@ -213,21 +185,21 @@ class EditorMore extends React.Component {
                 androidMode="default"
                 placeHolderText={ContactsEnum.birthDate}
                 textStyle={{
-                  ...PickerStyle,
+                  ...theme.pickerStyle,
                   color: theme.textColor,
                 }}
                 placeHolderTextStyle={{
-                  ...PickerStyle,
+                  ...theme.pickerStyle,
                   color: theme.textPlaceholderColor,
                 }}
                 onDateChange={birthDate => this.setState({ birthDate })}
               />
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="公司名称"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.companyName,
               value: companyName,
               onChangeText: companyName => this.setState({ companyName }),
@@ -242,11 +214,11 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="职务"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.jobTitle,
               value: jobTitle,
               onChangeText: jobTitle => this.setState({ jobTitle }),
@@ -259,7 +231,7 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="电话"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.phoneNumber,
               value: phoneNumber,
               onChangeText: phoneNumber => this.setState({ phoneNumber }),
@@ -267,7 +239,7 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="手机"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.mobilePhone,
               value: mobilePhone,
               onChangeText: mobilePhone => this.setState({ mobilePhone }),
@@ -275,7 +247,7 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="微博"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.weibo,
               value: weibo,
               onChangeText: weibo => this.setState({ weibo }),
@@ -286,11 +258,11 @@ class EditorMore extends React.Component {
             center={
               <CenterText>{ContactsEnum.location}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="地址"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.location,
               value: location,
               onChangeText: location => this.setState({ location }),
@@ -298,7 +270,7 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="邮编"
-            {...this.getLeftStyle({
+            {...theme.getLeftStyle({
               placeholder: ContactsEnum.email,
               value: email,
               onChangeText: email => this.setState({ email }),
@@ -313,7 +285,7 @@ class EditorMore extends React.Component {
             center={
               <CenterText>{ContactsEnum.departmentName}</CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="备注"

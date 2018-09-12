@@ -55,7 +55,7 @@ class ReceivableRecord extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.receivableRecordEditor);
+    this.props.navigation.navigate(routers.receivableRecordCreate);
   };
   onPressFilterItem = async ({ index }) => {
     const { screenTabList, activeIndex } = this.state;

@@ -45,8 +45,19 @@ const ContainerView = styled.View`
 @observer
 class InternalPriceList extends Component {
   componentDidMount() {
-    PriceListModel.getInternalPriceListReq();
+    this.getData();
   }
+
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = PriceListModel.internalPriceList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    PriceListModel.getInternalPriceListReq({ pageNumber });
+  };
 
   renderItem = ({ item }) => (
     <ProductItem {...item} />
