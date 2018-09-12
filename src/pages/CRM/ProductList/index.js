@@ -11,7 +11,7 @@ import ProductItemList from './components/ProductItemList';
 
 const ContainerView = styled.ScrollView`
   flex: 1;
-  background-color: #F6F6F6
+  background-color: #F6F6F6;
 `;
 
 const NavListView = styled.View`
