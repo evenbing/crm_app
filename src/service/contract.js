@@ -78,12 +78,12 @@ export function del({
  * {
  *   pageNumber 页码
  *   pageSize 每页数量 0 通用为全部
- *   pactParticipateType 参与类型 must
+ *   pactParticipateType 参与类型 must ALL-全部，CHARGE-我负责的，JOIN-我参与的
  *   status 合同状态
  *   customerId 客户ID
  *   opportunityId 机会ID
- *   type 合同类型
- *   payType 付款方式
+ *   type 合同类型 PRODUCT_SALES-产品销售,SERVICE-服务,BUSINESS_COOPERRATION-业务合作,AGENT_DISTRIBUTION-代理分销,OTHER-其他
+ *   payType 付款方式 CASH-现金,CHECK-支票,BANK_TRANSFER-银行转账,OTHER-其他
  *   number 合同编号
  *   ourContractId 我方签约人ID
  *   startDate 开始日期

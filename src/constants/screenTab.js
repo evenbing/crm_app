@@ -138,7 +138,7 @@ export const IsBoardTypeMap = {
   ...initBoardOrListMap,
   list: [
     {
-      key: 'CHARGE',
+      key: 'change',
       name: null,
     },
   ],
@@ -290,19 +290,15 @@ export const ResponsibResponsibilityTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'my',
+      key: 'CHARGE',
       name: '我负责的',
     },
     {
-      key: 'myParticipate',
+      key: 'JOIN',
       name: '我参与的',
     },
     {
-      key: 'sevenDaysUninvolved',
-      name: '7天未跟进的',
-    },
-    {
-      key: 'all',
+      key: 'ALL',
       name: '全部',
     },
   ],
@@ -328,11 +324,11 @@ export const ReceivablePlanResponsibilityTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'my',
+      key: 'CHARGE',
       name: '我负责的',
     },
     {
-      key: 'all',
+      key: 'ALL',
       name: '全部',
     },
   ],
@@ -359,11 +355,11 @@ export const ReceivableRecordResponsibilityTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'my',
+      key: 'CHARGE',
       name: '我负责的',
     },
     {
-      key: 'all',
+      key: 'ALL',
       name: '全部',
     },
   ],

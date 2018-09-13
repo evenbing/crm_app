@@ -64,14 +64,15 @@ class PerfStatist extends React.Component {
   renderSection = () => {
     const {
       tabMap: { list, selectedIndex },
+      salesSumMap: { completedSalesSum, expectSalesSum, funnelSalesSum },
       salesRankingList,
       salesRankMap: { total, averAmount },
     } = PrefStatistModel;
     const salesTotalProps = {
       list: [
-        { title: '漏斗总值', text: '34567890.00元' },
-        { title: '预计完成', text: '34567890.00元' },
-        { title: '完成总值', text: '34567890.00元' },
+        { title: '漏斗总值', text: `${funnelSalesSum}元` },
+        { title: '预计完成', text: `${expectSalesSum}元` },
+        { title: '完成总值', text: `${completedSalesSum}元` },
       ],
     };
     const rankTotalProps = {

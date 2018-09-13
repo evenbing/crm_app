@@ -76,6 +76,7 @@ export default {
   teamMembers: 'app.tabView.root.card.teamMembers',
   teamRoles: 'app.tabView.root.card.teamRoles',
   relatedDocs: 'app.tabView.root.card.relatedDocs',
+  selectionDepartment: 'app.tabView.root.card.selectionDepartment',
   // demo
   actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
   mobxDemo: 'app.tabView.root.demo.mobxDemo',

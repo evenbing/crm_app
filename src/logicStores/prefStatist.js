@@ -33,7 +33,11 @@ class PrefStatistStore {
     list: ['本月', '本季', '本年'],
   };
   // 销售总额数据统计
-  @observable salesSumMap = {};
+  @observable salesSumMap = {
+    completedSalesSum: 0,
+    expectSalesSum: 0,
+    funnelSalesSum: 0,
+  };
   // 销售趋势
   @observable salesRankingList = [];
   // 销售漏斗
@@ -74,19 +78,25 @@ class PrefStatistStore {
       obj.dateIdFrom = `${year}0101`;
       obj.dateIdTo = `${year}1231`;
     }
-    // this.getSalesSumReq(obj);
+    this.getSalesSumReq(obj);
     this.getSalesTrendReq(obj);
-    // this.getSalesEchartReq(obj);
+    this.getSalesEchartReq(obj);
     this.getSalesRankingListReq(obj);
   }
 
   @action async getSalesSumReq(obj) {
     try {
       const {
-        result = {},
+        completedSalesSum = 0,
+        expectSalesSum = 0,
+        funnelSalesSum = 0,
       } = await getSalesSum(obj);
       runInAction(() => {
-        this.salesSumMap = { ...result };
+        this.salesSumMap = {
+          completedSalesSum,
+          expectSalesSum,
+          funnelSalesSum,
+        };
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -95,7 +105,6 @@ class PrefStatistStore {
 
   @action async getSalesTrendReq(obj) {
     try {
-      this.salesRankingList = [];
       const {
         salesRankingList = [],
       } = await getSalesTrend(obj);
@@ -114,12 +123,11 @@ class PrefStatistStore {
 
   @action async getSalesEchartReq(obj) {
     try {
-      this.salesStatisMap = {};
       const {
-        result = {},
+        salesStatisticList = {},
       } = await getSalesEchart(obj);
       runInAction(() => {
-        this.salesStatisMap = result;
+        this.salesStatisMap = [...salesStatisticList];
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -128,7 +136,6 @@ class PrefStatistStore {
 
   @action async getSalesRankingListReq(obj) {
     try {
-      this.salesRankingList = [];
       const {
         averageCompletionAmount = 0,
         totalCount = 0,

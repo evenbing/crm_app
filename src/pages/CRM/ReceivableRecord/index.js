@@ -130,11 +130,12 @@ class ReceivableRecord extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 1) {
+        obj.participateType = v;
+      }
     });
-    // ReceivablePlanModel.getReceivablePlanListReq(obj);
-    ReceivableRecordModel.getReceivableRecordListReq({ pageNumber });
+    ReceivableRecordModel.getReceivableRecordListReq(obj);
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -244,16 +245,6 @@ class ReceivableRecord extends React.Component {
     };
     const flatProps = {
       data: list,
-      //     data={[
-      //         {
-      //           time: '20180909-0001',
-      //           customer: '客户：西风网络',
-      //           contract: '合同：西风网络销售合同',
-      //           returnMoney: '实际回款：¥10,000.00',
-      //           returnTime: '实际日期：2018-09-09',
-      //         }
-      // ]}
-      keyExtractor: item => `${item.id}.${item.issueId}`,
       renderItem: this.renderItem,
       ItemSeparatorComponent: null,
       onRefresh: this.getData,

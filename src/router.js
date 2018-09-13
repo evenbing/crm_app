@@ -23,6 +23,7 @@ import { registerTopNavigator } from './utils/navigationService';
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
 import TeamRolesScreen from './pages/Card/TeamRoles';
+import SelectionDepartmentScreen from './pages/Card/SelectionDepartment';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 // root page -> home
@@ -227,9 +228,9 @@ const CrmRouteConfig = {
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
 
   [routers.relatedDocs]: { screen: RelatedDocs },
-
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
+  [routers.selectionDepartment]: { screen: SelectionDepartmentScreen },
 };
 
 const CrmNavigatorConfig = {
