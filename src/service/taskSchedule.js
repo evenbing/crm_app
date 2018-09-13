@@ -1,8 +1,8 @@
-/**
- * @component team.js
- * @description 管理团队 service
- * @time 2018/8/28
- * @author zhao
+/*
+ * @Author: zhao
+ * @Date: 2018-09-14 01:06:51
+ * @Last Modified by:   ShiQuan
+ * @Last Modified time: 2018-09-14 01:06:51
  */
 import { post } from '../utils/rpc';
 
@@ -87,22 +87,16 @@ export function update({
  * @add by zhao
  * @params options
  * {
- * id 任务或者日程的ID
- * type 日程任务的类型 must
- * name 任务名称，日程内容
- * startTime 开始时间
- * endTime 截止时间 must
- * moduleType 业务类型 must
- * moduleId 业务ID must
- * comment 任务描述，日程备注 500字以内
- * needNotice 是否开启提醒 must
- * noticeTime 提醒时间
- * longitudeAndLatitude 位置信息的经纬度
- * locationInfo 位置信息
- * isPrivate 是否私密 must
- * principal 责任人的ID
- * userIds 参与用户的ID的集合（数组格式）
- * }
+ *  type  日程任务的类型  是  任务填“TASK”，日程填“SCHEDULE”
+ *  name  任务名称，日程内容  否  100字以内
+ *  startTime 开始时间  否  当类型是日程时为必填
+ *  endTime 截止时间  是   *  moduleType  业务类型  是  “CUSTOMER”表示客户，“CONTACT”表示联系人，“ACTIVITY”表示市场活动，“LEADS”表示销售线索，“OPPORTUNITY”表示销售机会
+ *  moduleId  业务ID  是   *  comment 任务描述，日程备注  否  500字以内
+ *  needNotice  是否开启提醒  是  true或者false
+ *  noticeTime  提醒时间  否  该值表示分钟数，表示开始前多少分钟开启提醒
+ *  longitudeAndLatitude  位置信息的经纬度  否   *  locationInfo  位置信息  否  位置信息的文字描述
+ *  isPrivate 是否私密  是  true或者false，默认传1，UI上暂时不做
+ *  principal 责任人的ID  否   *  userIds 参与用户的ID的集合（数组格式）  否   * }
  * @return Promise<Object>
  */
 export function create({

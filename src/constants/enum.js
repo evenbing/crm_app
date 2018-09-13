@@ -169,3 +169,53 @@ export const TimeTypes = {
   LAST_YEAR: '上年',
   THIS_YEAR: '本年',
 };
+
+/**
+ * 提醒类型
+ * label：显示的给用户
+ * value：用于上传（单位为分钟）
+ */
+export const RemindTypes = [
+  {
+    label: '准时',
+    value: 0,
+  },
+  {
+    label: '提前10分钟',
+    value: 10,
+  },
+  {
+    label: '提前30分钟',
+    value: 30,
+  },
+  {
+    label: '提前1小时',
+    value: 60,
+  },
+  {
+    label: '提前1天',
+    value: 24 * 60,
+  },
+];
+// export const RemindTypes = {
+//   PUNCTUALITY: {
+//     label: '准时',
+//     value: 0,
+//   },
+//   AHEADOF10MINUTES: {
+//     label: '提前10分钟',
+//     value: 10,
+//   },
+//   AHEADOF30MINUTES: {
+//     label: '提前30分钟',
+//     value: 30,
+//   },
+//   AHEADOF1HOUR: {
+//     label: '提前1小时',
+//     value: 60,
+//   },
+//   AHEADOF1DAY: {
+//     label: '提前1天',
+//     value: 24 * 60,
+//   },
+// };

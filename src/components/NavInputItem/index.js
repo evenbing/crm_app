@@ -22,19 +22,19 @@ const ContainerView = styled(TouchableView)`
 const BorderView = styled.View`
   flex: 1;
   height: 100%;
-  borderTopWidth: 1px;
-  borderTopColor: #F6F6F6;
-  borderBottomWidth: ${props => (props.isLast ? '1px' : 0)};
-  borderBottomColor: #F6F6F6;
-  flexDirection: row;
-  alignItems: center;
-  justifyContent: space-between;
+  border-top-width: 1px;
+  border-top-color: #F6F6F6;
+  border-bottom-width: ${props => (props.isLast ? '1px' : 0)};
+  border-bottom-color: #F6F6F6;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const LeftView = styled.View`
   height: 100%;
-  flexDirection: row;
-  alignItems: center;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const TitleText = styled.Text`
@@ -48,14 +48,14 @@ const TitleText = styled.Text`
 const CenterView = styled.View`
   flex: 1;
   height: 100%;
-  alignItems: center;
-  flexDirection: row;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const RightView = styled.View`
   height: 100%;
-  flexDirection: row;
-  alignItems: center;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const NavIcon = styled.Image`
