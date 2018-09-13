@@ -43,8 +43,8 @@ class LeftItem extends React.PureComponent {
           <TitleText>{item.code}</TitleText>
         </TitleView>
         <TipView>
-          <TipText>客户：{item.issueId}</TipText>
-          <TipText>合同：{item.pactId}</TipText>
+          <TipText>客户：{item.customerName}</TipText>
+          <TipText>合同：{item.pactName}</TipText>
         </TipView>
         <TipView>
           <TipText>实际回款：¥{item.receivablePrice}</TipText>

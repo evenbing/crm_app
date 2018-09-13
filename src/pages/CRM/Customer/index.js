@@ -137,8 +137,8 @@ class Customer extends React.Component {
 
   keyExtractor = item => item.key;
 
-  renderItem = (props) => {
-    const { index } = props;
+  renderItem = (itemProps) => {
+    const { index } = itemProps;
     const {
       navigation: { navigate },
     } = this.props;
@@ -158,7 +158,7 @@ class Customer extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
+            {...itemProps}
             right="hidden"
             onPress={() => navigate(routers.customerDetails)}
           />
@@ -284,7 +284,6 @@ Customer.navigationOptions = ({ navigation }) => ({
 });
 
 Customer.defaultProps = {
-  index: '',
 };
 
 Customer.propTypes = {
@@ -299,7 +298,6 @@ Customer.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  index: PropTypes.string,
 };
 
 export default Customer;

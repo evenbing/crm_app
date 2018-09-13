@@ -16,7 +16,7 @@ import { post } from '../utils/rpc';
  *   sevenDaysUninvolved 7天未跟进的 boolean
  *   all 全部 boolean
  *   name  姓名
- *   followTimeType 跟进时间范围
+ *   followTimeType 跟进时间范围 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *   companyName 公司名称
  *   departmentId 部门id
  *   departmentName 部门

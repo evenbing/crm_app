@@ -130,11 +130,12 @@ class ReceivablePlan extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 1) {
+        obj.participateType = v;
+      }
     });
-    // ReceivablePlanModel.getReceivablePlanListReq(obj);
-    ReceivablePlanModel.getReceivablePlanListReq({ pageNumber });
+    ReceivablePlanModel.getReceivablePlanListReq(obj);
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
