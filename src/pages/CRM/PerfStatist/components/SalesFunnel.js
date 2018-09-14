@@ -5,7 +5,7 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants/index';
 
@@ -88,8 +88,15 @@ class SalesFunnel extends React.PureComponent {
   }
 }
 
-SalesFunnel.defaultProps = {};
+SalesFunnel.defaultProps = {
+  list: [],
+};
 
-SalesFunnel.propTypes = {};
+SalesFunnel.propTypes = {
+  list: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+};
 
 export default SalesFunnel;

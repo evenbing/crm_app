@@ -41,13 +41,14 @@ class PrefStatistStore {
   // 销售趋势
   @observable salesRankingList = [];
   // 销售漏斗
-  @observable salesStatisMap = {};
+  @observable salesStatisticList = [];
   // 销售排行
   @observable salesRankMap = {
     averAmount: 0,
     total: 0,
     list: [],
   };
+  @observable refreshing = false;
 
   @action onToggleTabSelectIndex(index) {
     const {
@@ -62,6 +63,7 @@ class PrefStatistStore {
     const {
       selectedIndex,
     } = this.tabMap;
+    this.refreshing = true;
     const year = moment().year();
     const month = moment().month() + 1;
     const quarter = moment().quarter();
@@ -78,10 +80,15 @@ class PrefStatistStore {
       obj.dateIdFrom = `${year}0101`;
       obj.dateIdTo = `${year}1231`;
     }
-    this.getSalesSumReq(obj);
-    this.getSalesTrendReq(obj);
-    this.getSalesEchartReq(obj);
-    this.getSalesRankingListReq(obj);
+    await Promise.all([
+      this.getSalesSumReq(obj),
+      this.getSalesTrendReq(obj),
+      this.getSalesEchartReq(obj),
+      this.getSalesRankingListReq(obj),
+    ]);
+    runInAction(() => {
+      this.refreshing = false;
+    });
   }
 
   @action async getSalesSumReq(obj) {
@@ -127,7 +134,7 @@ class PrefStatistStore {
         salesStatisticList = {},
       } = await getSalesEchart(obj);
       runInAction(() => {
-        this.salesStatisMap = [...salesStatisticList];
+        this.salesStatisticList = [...salesStatisticList];
       });
     } catch (e) {
       Toast.showError(e.message);

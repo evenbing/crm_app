@@ -16,9 +16,6 @@ import { routers, theme } from './constants';
 import { getHeaderPadding, getHeaderHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
 import { registerTopNavigator } from './utils/navigationService';
-// root model
-// import HomeModel from './logicStores/home';
-// import MemberModel from './logicStores/member';
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
@@ -255,14 +252,11 @@ crmTabBarIcon.propTypes = {
   focused: PropTypes.bool.isRequired,
 };
 
-CrmStack.navigationOptions = ({ navigation }) => {
-  const { index, params } = navigation.state;
-  return {
-    tabBarVisible: (params && params.hide) ? !params.hide : index === 0,
-    tabBarLabel: 'CRM',
-    tabBarIcon: crmTabBarIcon,
-  };
-};
+CrmStack.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
+  tabBarLabel: 'CRM',
+  tabBarIcon: crmTabBarIcon,
+});
 
 const RootRouteConfig = {
   [routers.home]: { screen: HomeStack },
@@ -270,7 +264,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
@@ -304,15 +298,11 @@ class Routers extends React.Component {
         <RootNavigator
           ref={navigatorRef => registerTopNavigator(navigatorRef)}
           onNavigationStateChange={(prevNav, nav, action) => {
-            const { routeName } = action;
-            if (routers.home === routeName) {
-              // HomeModel.getHomeDataReq();
-              return false;
-            }
-            if (routers.crm === routeName) {
-              // MemberModel.getMemberDataReq();
-              return false;
-            }
+            // const { routeName } = action;
+            // if (routers.home === routeName) {
+            //   // HomeModel.getHomeDataReq();
+            //   return false;
+            // }
             // 插件toast
             global.$RootToast && RootModal.hide(global.$RootToast);
           }}

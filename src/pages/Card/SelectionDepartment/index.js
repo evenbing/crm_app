@@ -7,19 +7,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useStrict } from 'mobx/';
+import { observer } from 'mobx-react/native';
 import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
+import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TouchableView from '../../../components/TouchableView';
+import FlatListTable from '../../../components/FlatListTable';
 import Thumbnail from '../../../components/Thumbnail';
 
-const ListView = styled.View`
-  background-color: ${theme.whiteColor};
-  padding: 0 ${theme.moderateScale(14)}px;
-`;
+import OrganizationModel from '../../../logicStores/organization';
 
 const ListItemView = styled(TouchableView)`
   padding: ${theme.moderateScale(11)}px 0;
@@ -34,27 +34,56 @@ const TextView = styled.Text`
   color: ${theme.textColor};
 `;
 
-const list = ['总裁办', '销售部', '设计部', '开发部', '运营部'];
+useStrict(true);
 
+@observer
 class SelectionDepartment extends React.Component {
   state = {
-    selectedIndex: 0,
+    id: null,
   };
-  onPressItem = ({ index }) => {
-    if (this.state.selectedIndex === index) return;
-    this.setState({ selectedIndex: index });
+  componentDidMount() {
+    this.getData();
+    this.initState();
+  }
+  onPressItem = ({ item }) => {
+    const {
+      props: {
+        navigation: { state, goBack },
+      },
+    } = this;
+    state.params.callback(item);
+    goBack();
   };
-  renderItem = () => {
-    const { selectedIndex } = this.state;
-    if (!list.length) return null;
-    return list.map((_, i) => (
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = OrganizationModel.organizationList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    OrganizationModel.getOrganizationListReq({ pageNumber });
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { id } = state.params || {};
+    if (!id) return;
+    this.setState({ id });
+  };
+  renderItem = (itemProps) => {
+    const { id } = this.state;
+    const { item, index } = itemProps;
+    return (
       <ListItemView
-        key={_}
-        onPress={() => this.onPressItem({ index: i })}
+        key={item.id}
+        onPress={() => this.onPressItem({ item, index })}
       >
-        <TextView>{_}</TextView>
+        <TextView>{item.name}</TextView>
         {
-          selectedIndex === i ? (
+          id === item.id ? (
             <Thumbnail
               source={require('../../../img/modal/ok.png')}
               size={16}
@@ -62,19 +91,35 @@ class SelectionDepartment extends React.Component {
           ) : null
         }
       </ListItemView>
-    ));
+    );
   };
   render() {
+    const {
+      organizationList: { list, refreshing, loadingMore },
+    } = OrganizationModel;
+    const flatProps = {
+      data: list,
+      renderItem: this.renderItem,
+      ItemSeparatorComponent: null,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+      flatListStyle: {
+        backgroundColor: theme.whiteColor,
+        paddingLeft: theme.moderateScale(14),
+        paddingRight: theme.moderateScale(14),
+      },
+    };
     return (
-      <ContainerScrollView
+      <ContainerView
         bottomPadding
       >
         <CommStatusBar />
         <HorizontalDivider height={9} />
-        <ListView>
-          {this.renderItem()}
-        </ListView>
-      </ContainerScrollView>
+        <FlatListTable {...flatProps} />
+      </ContainerView>
     );
   }
 }

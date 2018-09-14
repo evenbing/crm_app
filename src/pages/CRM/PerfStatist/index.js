@@ -7,6 +7,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { RefreshControl } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme } from '../../../constants';
 
@@ -67,6 +68,8 @@ class PerfStatist extends React.Component {
       salesSumMap: { completedSalesSum, expectSalesSum, funnelSalesSum },
       salesRankingList,
       salesRankMap: { total, averAmount },
+      refreshing,
+      salesStatisticList,
     } = PrefStatistModel;
     const salesTotalProps = {
       list: [
@@ -83,7 +86,14 @@ class PerfStatist extends React.Component {
     };
     const nowYear = new Date().getFullYear();
     return (
-      <SectionView>
+      <SectionView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={this.getData}
+          />
+        }
+      >
         <TotalList {...salesTotalProps} />
         <TitleHeader
           containerStyle={{
@@ -121,7 +131,9 @@ class PerfStatist extends React.Component {
           title="销售漏斗"
           imageSource={require('../../../img/crm/perfStatist/funnel.png')}
         />
-        <SalesFunnel />
+        <SalesFunnel
+          list={salesStatisticList}
+        />
         <TitleHeader
           containerStyle={{
             marginTop: 36,

@@ -21,22 +21,9 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
+import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 
 import ContractModel from '../../../logicStores/contract';
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
 
 @observer
 class Create extends React.Component {
@@ -120,9 +107,9 @@ class Create extends React.Component {
           <NavInputItem
             leftText="客户"
             center={
-              <CenterText>
+              <CenterText active={customerId && customerName}>
                 {
-                  (customerId && customerName) ? null :
+                  (customerId && customerName) ? customerName :
                     ContractEnum.customerName
                 }
               </CenterText>
@@ -195,10 +182,20 @@ class Create extends React.Component {
           />
           <NavInputItem
             leftText="所属部门"
+            onPress={() => navigate(routers.selectionDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>
+              <CenterText active={departmentId && departmentName}>
                 {
-                  (departmentId && departmentName) ? null :
+                  (departmentId && departmentName) ? departmentName :
                     ContractEnum.departmentName
                 }
               </CenterText>

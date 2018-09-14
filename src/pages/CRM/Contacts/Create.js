@@ -21,18 +21,9 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import ScanCard from '../../../components/Create/ScanCard';
+import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import ContactsModel from '../../../logicStores/contacts';
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
 
 @observer
 class Create extends React.Component {
@@ -113,8 +104,8 @@ class Create extends React.Component {
           <NavInputItem
             leftText="公司名称"
             center={
-              <CenterText>
-                { companyName ? null : ContactsEnum.companyName }
+              <CenterText active={companyName}>
+                { companyName || ContactsEnum.companyName }
               </CenterText>
             }
             {...theme.navItemStyle}
@@ -122,7 +113,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="职务"
             {...theme.getLeftStyle({
-              placeholder: ContactsEnum.companyName,
+              placeholder: ContactsEnum.jobTitle,
               value: jobTitle,
               onChangeText: jobTitle => this.setState({ jobTitle }),
             })}
@@ -145,10 +136,20 @@ class Create extends React.Component {
           />
           <NavInputItem
             leftText="部门"
+            onPress={() => navigate(routers.selectionDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>
+              <CenterText active={departmentId && departmentName}>
                 {
-                  (departmentId && departmentName) ? null : ContactsEnum.departmentName
+                  (departmentId && departmentName) ? departmentName : ContactsEnum.departmentName
                 }
               </CenterText>
             }
