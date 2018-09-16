@@ -7,7 +7,6 @@
 export default {
   // root tabView
   rootTabView: 'app.tabView.root',
-  // common card
   // home module
   home: 'app.tabView.root.home',
   messageList: 'app.tabView.root.home.messageList',
@@ -76,7 +75,7 @@ export default {
   teamMembers: 'app.tabView.root.card.teamMembers',
   teamRoles: 'app.tabView.root.card.teamRoles',
   relatedDocs: 'app.tabView.root.card.relatedDocs',
-  selectionDepartment: 'app.tabView.root.card.selectionDepartment',
+  selectDepartment: 'app.tabView.root.card.selectDepartment',
   // demo
   actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
   mobxDemo: 'app.tabView.root.demo.mobxDemo',

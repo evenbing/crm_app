@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-// import { DatePicker } from 'native-base';
 import { View } from 'react-native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';

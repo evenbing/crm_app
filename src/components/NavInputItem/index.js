@@ -12,7 +12,14 @@ import { moderateScale } from '../../utils/scale';
 import TouchableView from '../TouchableView';
 import TextInput from '../TextInput';
 
-const ContainerView = styled(TouchableView)`
+const ContainerTouchableView = styled(TouchableView)`
+  width: 100%;
+  height: ${props => moderateScale(props.height || 60)};
+  padding-left: ${moderateScale(15)};
+  padding-right: ${moderateScale(15)};
+`;
+
+const ContainerView = styled.View`
   width: 100%;
   height: ${props => moderateScale(props.height || 60)};
   padding-left: ${moderateScale(15)};
@@ -91,33 +98,49 @@ class NavInputItem extends React.PureComponent {
     }
     return null;
   };
-  render() {
+  renderSection = () => {
     const {
       leftText,
       leftTextStyle,
       leftWidth,
-      onPress,
       isLast,
-      height,
     } = this.props;
     return (
-      <ContainerView onPress={onPress} style={{ height }}>
-        <BorderView isLast={isLast}>
-          <LeftView>
-            <TitleText
-              style={leftTextStyle}
-              width={leftWidth}
-            >
-              {leftText}
-            </TitleText>
-          </LeftView>
-          <CenterView>
-            {this.renderCenter()}
-          </CenterView>
-          <RightView>
-            {this.renderRight()}
-          </RightView>
-        </BorderView>
+      <BorderView isLast={isLast}>
+        <LeftView>
+          <TitleText
+            style={leftTextStyle}
+            width={leftWidth}
+          >
+            {leftText}
+          </TitleText>
+        </LeftView>
+        <CenterView>
+          {this.renderCenter()}
+        </CenterView>
+        <RightView>
+          {this.renderRight()}
+        </RightView>
+      </BorderView>
+    );
+  };
+  render() {
+    const {
+      onPress,
+      height,
+      needPress,
+    } = this.props;
+    if (needPress) {
+      return (
+        <ContainerTouchableView onPress={onPress} style={{ height }}>
+          {this.renderSection()}
+        </ContainerTouchableView>
+      );
+    }
+    // 处理当前组件在父组件有事件不能触发
+    return (
+      <ContainerView style={{ height }}>
+        {this.renderSection()}
       </ContainerView>
     );
   }
@@ -134,6 +157,7 @@ NavInputItem.defaultProps = {
   right: null,
   showInput: true,
   showNavIcon: false,
+  needPress: true,
 };
 
 NavInputItem.propTypes = {
@@ -148,6 +172,7 @@ NavInputItem.propTypes = {
   inputProps: PropTypes.objectOf(PropTypes.any),
   showInput: PropTypes.bool,
   showNavIcon: PropTypes.bool,
+  needPress: PropTypes.bool,
 };
 
 export default NavInputItem;

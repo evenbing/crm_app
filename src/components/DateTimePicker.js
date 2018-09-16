@@ -1,30 +1,68 @@
+/**
+ * @component DateTimePicker.js
+ * @description 时间选择组件页面
+ * @time 2018/8/13
+ * @author *
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Picker from 'react-native-modal-datetime-picker';
 
-const DateTimePicker = ({
-  isVisible,
-  mode,
-  confirmTextIOS,
-  cancelTextIOS,
-  titleIOS,
-  onConfirm,
-  onCancel,
-  minimumDate,
-  maximumDate,
-}) => (
-  <Picker
-    isVisible={isVisible}
-    mode={mode}
-    confirmTextIOS={confirmTextIOS}
-    cancelTextIOS={cancelTextIOS}
-    titleIOS={titleIOS}
-    onConfirm={onConfirm}
-    onCancel={onCancel}
-    minimumDate={minimumDate}
-    maximumDate={maximumDate}
-  />
-);
+// components
+import TouchableView from './TouchableView';
+
+const ContainerView = styled.View``;
+
+class DateTimePicker extends React.PureComponent {
+  state = {
+    isVisible: false,
+  };
+  onConfirm = (date) => {
+    this.props.onConfirm(date);
+    this.onHideModal();
+  };
+  onShowModal = () => {
+    this.setState({ isVisible: true });
+  };
+  onHideModal = () => {
+    this.setState({ isVisible: false });
+  };
+  render() {
+    const {
+      state: {
+        isVisible,
+      },
+      props: {
+        mode,
+        confirmTextIOS,
+        cancelTextIOS,
+        titleIOS,
+        minimumDate,
+        maximumDate,
+        children,
+      },
+    } = this;
+    return (
+      <ContainerView>
+        <TouchableView onPress={this.onShowModal}>
+          {children}
+        </TouchableView>
+        <Picker
+          isVisible={isVisible}
+          mode={mode}
+          confirmTextIOS={confirmTextIOS}
+          cancelTextIOS={cancelTextIOS}
+          titleIOS={titleIOS}
+          onConfirm={this.onConfirm}
+          onCancel={this.onHideModal}
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
+        />
+      </ContainerView>
+    );
+  }
+}
 
 DateTimePicker.defaultProps = {
   isVisible: false,
@@ -43,9 +81,9 @@ DateTimePicker.propTypes = {
   cancelTextIOS: PropTypes.string,
   titleIOS: PropTypes.string,
   onConfirm: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
   minimumDate: PropTypes.instanceOf(Date),
   maximumDate: PropTypes.instanceOf(Date),
+  children: PropTypes.node.isRequired,
 };
 
 export default DateTimePicker;

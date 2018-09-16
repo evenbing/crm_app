@@ -34,6 +34,7 @@ TouchableView.defaultProps = {
   onPress: () => null,
   style: {},
   activeOpacity: 0.85,
+  children: null,
 };
 
 TouchableView.propTypes = {
@@ -43,6 +44,7 @@ TouchableView.propTypes = {
     PropTypes.array,
   ]),
   activeOpacity: PropTypes.number,
+  children: PropTypes.node,
 };
 
 export default TouchableView;

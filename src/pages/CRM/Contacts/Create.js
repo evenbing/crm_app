@@ -6,11 +6,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { ContactsEnum } from '../../../constants/form';
-import { moderateScale } from '../../../utils/scale';
 import Toast from '../../../utils/toast';
 
 // components
@@ -136,7 +134,7 @@ class Create extends React.Component {
           />
           <NavInputItem
             leftText="部门"
-            onPress={() => navigate(routers.selectionDepartment, {
+            onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;

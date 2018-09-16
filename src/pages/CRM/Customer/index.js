@@ -11,6 +11,7 @@ import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
+import { SelectType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
@@ -30,6 +31,7 @@ import {
 } from '../../../constants/screenTab';
 
 useStrict(true);
+
 
 @observer
 class Customer extends React.Component {
@@ -100,7 +102,6 @@ class Customer extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
@@ -138,9 +139,9 @@ class Customer extends React.Component {
   keyExtractor = item => item.key;
 
   renderItem = (itemProps) => {
-    const { index } = itemProps;
+    const { index, item } = itemProps;
     const {
-      navigation: { navigate },
+      navigation: { navigate, state, goBack },
     } = this.props;
     return (
       <SwipeRow
@@ -160,7 +161,16 @@ class Customer extends React.Component {
           <ListItem
             {...itemProps}
             right="hidden"
-            onPress={() => navigate(routers.customerDetails)}
+            onPress={() => {
+              // from select customer
+              if (state.params.type === SelectType) {
+                state.params.callback(item);
+                goBack();
+                return;
+              }
+              // form nav page
+              navigate(routers.customerDetails, { item });
+            }}
           />
         }
         right={
@@ -265,23 +275,29 @@ class Customer extends React.Component {
   }
 }
 
-Customer.navigationOptions = ({ navigation }) => ({
-  title: '客户',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+Customer.navigationOptions = ({ navigation }) => {
+  const { onPressRight, type } = navigation.state.params || {};
+  const bool = type === SelectType;
+  return {
+    title: bool ? '选择客户' : '客户',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      bool ? null : (
+        <RightView
+          onPress={onPressRight || null}
+          right="新增"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+        />
+      )
+    ),
+  };
+};
 
 Customer.defaultProps = {
 };
