@@ -164,9 +164,9 @@ class SalesChance extends React.Component {
       />
     );
   };
-
-  keyExtractor = item => item.key;
   renderItem = (itemProps) => {
+    console.log(itemProps);
+
     const { index } = itemProps;
     const {
       navigation: { navigate },
@@ -192,7 +192,10 @@ class SalesChance extends React.Component {
             left={
               <LeftItem />
             }
-            onPress={() => navigate(routers.salesChanceDetails)}
+            onPress={() => navigate(
+              routers.salesChanceDetails,
+              { id: itemProps.item.key },
+            )}
           />
         }
         right={

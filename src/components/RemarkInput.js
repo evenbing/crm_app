@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { moderateScale } from '../utils/scale';
 
@@ -20,10 +21,10 @@ const DescriptionContent = styled.TextInput.attrs({
 `;
 
 const RemarkInput = ({
-  numberOfLines = 6,
-  placeholder = '请输入内容描述',
-  placeholderTextColor = '#c1c1c1',
-  onChangeText = null,
+  numberOfLines,
+  placeholder,
+  placeholderTextColor,
+  onChangeText,
 }) => (
   <DescriptionContent
     numberOfLines={numberOfLines}
@@ -32,5 +33,19 @@ const RemarkInput = ({
     onChangeText={onChangeText}
   />
 );
+
+RemarkInput.defaultProps = {
+  numberOfLines: 6,
+  placeholder: '请输入内容描述',
+  placeholderTextColor: '#c1c1c1',
+  onChangeText: null,
+};
+
+RemarkInput.propTypes = {
+  numberOfLines: PropTypes.number,
+  placeholder: PropTypes.string,
+  placeholderTextColor: PropTypes.string,
+  onChangeText: PropTypes.func,
+};
 
 export default RemarkInput;

@@ -12,7 +12,7 @@ import {
   createCustomer,
   updateCustomer,
   getCustomerDetail,
-  mergeCustomter,
+  mergeCustomer,
   changeOwnerUser,
 } from '../service/customer';
 import Toast from '../utils/toast';
@@ -114,7 +114,7 @@ class CustomerStore {
     try {
       const {
         result = {},
-      } = await mergeCustomter(options);
+      } = await mergeCustomer(options);
       debugger;
       runInAction(() => {
         // TODO next

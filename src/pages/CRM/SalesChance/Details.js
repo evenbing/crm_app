@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { observer } from 'mobx-react/native';
 import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
 // import { moderateScale } from '../../../utils/scale';
@@ -23,6 +24,9 @@ import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 // import TouchableView from '../../../components/TouchableView';
+import SalesChanceStore from '../../../logicStores/salesChance';
+import DynamicStore from '../../../logicStores/dynamic';
+import { ModuleType } from '../../../constants/enum';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -47,19 +51,33 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+@observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
+
+  componentDidMount() {
+    const { id } = this.props.navigation.state.params;
+    SalesChanceStore.getSalesChanceReq({ id });
+    DynamicStore.getDynamicListReq({
+      moduleType: ModuleType.opportunity,
+      moduleId: id,
+    });
+  }
+
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
+
   onRefresh = () => {
     //
   };
+
   onEndReached = () => {
     //
   };
+
   renderTotalItem = () => {
     const list = [
       { title: '日程', text: '12' },
@@ -75,6 +93,7 @@ class Details extends React.Component {
       </ItemView>
     ));
   };
+
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
@@ -97,9 +116,11 @@ class Details extends React.Component {
       </View>
     );
   };
+
   renderDynamicItem = ({ item, index }) => (
     <DynamicList isFrist={index === 0} data={item} />
   );
+
   renderDynamicView = () => {
     const list = [
       {
@@ -137,6 +158,7 @@ class Details extends React.Component {
   renderDetailsItem = props => (
     <ActivityDetailsItem {...props} />
   );
+
   renderDetailsView = () => {
     const list = [
       {
@@ -163,6 +185,7 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
+
   render() {
     const {
       state: {
@@ -199,7 +222,7 @@ class Details extends React.Component {
   }
 }
 
-Details.navigationOptions = ({ navigation, screenProps }) => ({
+Details.navigationOptions = ({ navigation }) => ({
   title: '销售机会',
   headerLeft: (
     <LeftBackIcon
@@ -219,7 +242,9 @@ Details.propTypes = {
     state: PropTypes.shape({
       key: PropTypes.string,
       routeName: PropTypes.string,
-      params: PropTypes.object,
+      params: PropTypes.shape({
+        id: PropTypes.string,
+      }),
     }),
   }).isRequired,
 };

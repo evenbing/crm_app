@@ -170,32 +170,27 @@ export const TimeTypes = {
   THIS_YEAR: '本年',
 };
 
-/**
- * 提醒类型
- * label：显示的给用户
- * value：用于上传（单位为分钟）
- */
+
+// 业务类型
+// label：显示的给用户
+// value：用于上传
+export const ModuleTypes = [
+  { value: 'CUSTOMER', label: '客户' },
+  { value: 'CONTACT', label: '联系人' },
+  { value: 'ACTIVITY', label: '市场活动' },
+  { value: 'LEADS', label: '销售线索' },
+  { value: 'OPPORTUNITY', label: '销售机会' },
+];
+
+// 提醒类型
+// label：显示的给用户
+// value：用于上传（单位为分钟）
 export const RemindTypes = [
-  {
-    label: '准时',
-    value: 0,
-  },
-  {
-    label: '提前10分钟',
-    value: 10,
-  },
-  {
-    label: '提前30分钟',
-    value: 30,
-  },
-  {
-    label: '提前1小时',
-    value: 60,
-  },
-  {
-    label: '提前1天',
-    value: 24 * 60,
-  },
+  { label: '准时', value: 0 },
+  { label: '提前10分钟', value: 10 },
+  { label: '提前30分钟', value: 30 },
+  { label: '提前1小时', value: 60 },
+  { label: '提前1天', value: 24 * 60 },
 ];
 // export const RemindTypes = {
 //   PUNCTUALITY: {

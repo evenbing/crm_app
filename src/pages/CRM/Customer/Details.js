@@ -58,6 +58,16 @@ class Details extends React.Component {
   onEndReached = () => {
     //
   };
+
+  onPressTeamMember = () => {
+    const {
+      navigation: {
+        navigate,
+      },
+    } = this.props;
+    navigate(routers.teamMembers);
+  }
+
   renderTotalItem = () => {
     const list = [
       { title: '日程', text: '12' },
@@ -82,7 +92,7 @@ class Details extends React.Component {
     };
     return (
       <View>
-        <DetailsHead />
+        <DetailsHead onPressTeamMember={this.onPressTeamMember} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>

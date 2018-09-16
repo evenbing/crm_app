@@ -28,7 +28,7 @@ import {
   MarkActivityResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
-import { formatDate } from '../../../utils/date';
+import { formatDate } from '../../../utils/base';
 
 useStrict(true);
 
@@ -231,7 +231,10 @@ class SalesClues extends React.Component {
       return ({
         key: id,
         title: name,
-        tipList: [`开始时间：${formatDate(beginDate)}`, `结束时间：${formatDate(endDate)}`],
+        tipList: [
+          `开始时间：${formatDate(new Date(parseInt(beginDate, 10)), 'yyyy-MM-dd')}`,
+          `结束时间：${formatDate(new Date(parseInt(endDate, 10)), 'yyyy-MM-dd')}`,
+        ],
         status,
       });
     });

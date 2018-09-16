@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-13 23:12:01
  * @Last Modified by: ShiQuan
- * @Last Modified time: 2018-09-14 01:50:20
+ * @Last Modified time: 2018-09-15 10:19:40
  */
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ import RemarkInput from '../../components/RemarkInput';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
 import { ActionSheet } from '../../components/Modal';
-import { RemindTypes } from '../../constants/enum';
+import { RemindTypes, ModuleTypes } from '../../constants/enum';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -43,6 +43,7 @@ const ItemTitle = styled.Text`
 `;
 
 const remindTypeLabels = RemindTypes.map(item => ({ leftText: item.label }));
+const moduleTypeLabels = ModuleTypes.map(item => ({ leftText: item.label }));
 
 @observer
 class AddTask extends Component {
@@ -54,7 +55,10 @@ class AddTask extends Component {
       deadline: '',
       remindActionSheetVisible: false,
       remindType: RemindTypes[0].label,
-      noticeTime: 0,
+      noticeTime: RemindTypes[0].value,
+      moduleActionSheetVisible: false,
+      moduleTypeLabel: ModuleTypes[0].label,
+      moduleType: ModuleTypes[0].value,
     };
   }
 
@@ -71,6 +75,22 @@ class AddTask extends Component {
 
   onCancelDateTimePicker = () => {
     this.setDateTimePickerVisible(false);
+  }
+
+  onShowModuleActionSheet = () => {
+    this.setState({ moduleActionSheetVisible: true });
+  }
+
+  onPressModuleActionSheetItem = ({ item }) => {
+    const { value } = ModuleTypes.filter(type => type.label === item.leftText)[0];
+    this.setState({
+      moduleTypeLabel: item.leftText,
+      moduleType: value,
+    });
+  }
+
+  onPressModuleActionSheetClose = () => {
+    this.setState({ moduleActionSheetVisible: false });
   }
 
   onShowRemindActionSheet = () => {
@@ -100,6 +120,8 @@ class AddTask extends Component {
       deadline,
       remindActionSheetVisible,
       remindType,
+      moduleActionSheetVisible,
+      moduleTypeLabel,
     } = this.state;
 
     const remindActionSheetProps = {
@@ -107,6 +129,13 @@ class AddTask extends Component {
       onPressClose: this.onPressRemindActionSheetClose,
       onPressItem: this.onPressRemindActionSheetItem,
       list: remindTypeLabels,
+    };
+
+    const moduleActionSheetProps = {
+      isVisible: moduleActionSheetVisible,
+      onPressClose: this.onPressModuleActionSheetClose,
+      onPressItem: this.onPressModuleActionSheetItem,
+      list: moduleTypeLabels,
     };
 
     return (
@@ -120,7 +149,7 @@ class AddTask extends Component {
               placeholder: '请输入姓名',
               fontSize: theme.moderateScale(16),
               onChangeText: this.onChangeTaskName,
-              text: name,
+              value: name,
             }}
             leftTextStyle={{
               color: '#373737',
@@ -151,7 +180,12 @@ class AddTask extends Component {
           <Divder height={1} marginHorizontal={15} />
           <NavView leftText="参与人" rightText="无" />
           <Divder height={10} />
-          <NavView leftText="关联业务" rightText="客户" />
+          <NavView
+            leftText="关联业务"
+            rightText={moduleTypeLabel}
+            onPress={this.onShowModuleActionSheet}
+          />
+          <ActionSheet {...moduleActionSheetProps} />
           <Divder height={1} marginHorizontal={15} />
           <ItemTitle>描述</ItemTitle>
           <RemarkInput />

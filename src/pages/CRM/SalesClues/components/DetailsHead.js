@@ -38,7 +38,7 @@ const PhoneText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -76,6 +76,9 @@ const PlanStatusText = styled.Text`
 
 class DetailsHead extends React.PureComponent {
   render() {
+    const {
+      onPressTeamMember,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
@@ -96,6 +99,7 @@ class DetailsHead extends React.PureComponent {
           */}
           <ItemView
             marginTop={23}
+            onPress={onPressTeamMember}
           >
             <PersonText>负责人: 张三</PersonText>
             <Thumbnail

@@ -10,9 +10,9 @@ import { post } from '../utils/rpc';
  * @add by zhao
  * @params options
  * {
- *   moduleType 模块类型 must
- *   moduleId 模块ID must
- *   createBy 创建人ID must
+ *  moduleType  模块类型  是  PRODUCT-产品,PACT-合同,CUSTOMER-客户,CONTACT-联系人,ACTIVITY-市场活动,LEADS-销售线索,OPPORTUNITY-销售机会,PRICE-价格,RECEIVABLE_PLAN-回款计划,RECEIVABLE_DETAIL-回款记录
+ *  moduleId  模块ID  是
+ *  createBy  创建人ID  是
  * }
  * @return Promise<Object>
  */

@@ -1,8 +1,8 @@
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
- * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-12 14:44:34
+ * @Last Modified by: ShiQuan
+ * @Last Modified time: 2018-09-16 08:21:38
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -67,7 +67,7 @@ class SalesChanceStore {
       const {
         result = {},
         errors = [],
-      } = await getSalesChance({ id });
+      } = await getSalesChanceDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesChanceDetail = { ...result };

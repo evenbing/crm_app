@@ -199,7 +199,7 @@ class Details extends React.Component {
   }
 }
 
-Details.navigationOptions = ({ navigation, screenProps }) => ({
+Details.navigationOptions = ({ navigation }) => ({
   title: '市场活动',
   headerLeft: (
     <LeftBackIcon
