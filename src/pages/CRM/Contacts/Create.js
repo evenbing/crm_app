@@ -66,7 +66,9 @@ class Create extends React.Component {
         mobilePhone,
         departmentId,
         departmentName,
-      }, goBack);
+      }, () => {
+        goBack();
+      });
     } catch (e) {
       Toast.showError(e.message);
     }

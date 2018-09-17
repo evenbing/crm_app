@@ -34,7 +34,9 @@ class ContractStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getContractList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.contractList.total = totalCount;
         this.contractList.pageNumber = pageNumber;
@@ -73,7 +75,7 @@ class ContractStore {
   }
 
   // 新增
-  @action async createContractReq(options, goBack) {
+  @action async createContractReq(options, callback) {
     try {
       const {
         errors = [],
@@ -82,7 +84,7 @@ class ContractStore {
       debugger;
       runInAction(() => {
         this.getContractListReq();
-        goBack();
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -94,8 +96,10 @@ class ContractStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateContract(options);
       debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         // TODO next
         this.contactDetails = { ...result };

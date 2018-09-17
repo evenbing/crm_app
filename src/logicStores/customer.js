@@ -39,7 +39,9 @@ class CustomerStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getCustomerList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.customerList.total = totalCount;
         this.customerList.pageNumber = pageNumber;
@@ -82,8 +84,10 @@ class CustomerStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await createCustomer(options);
       debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         // TODO next
         this.customerDetail = { ...result };
@@ -98,7 +102,9 @@ class CustomerStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateCustomer(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next

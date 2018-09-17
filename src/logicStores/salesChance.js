@@ -39,7 +39,9 @@ class SalesChanceStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getSalesChanceList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesChanceList.total = totalCount;
         this.salesChanceList.pageNumber = pageNumber;
@@ -82,8 +84,10 @@ class SalesChanceStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await createSalesChance(options);
       debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         // TODO next
         this.salesChanceDetail = { ...result };
@@ -98,7 +102,9 @@ class SalesChanceStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateSalesChance(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next

@@ -86,7 +86,9 @@ class Create extends React.Component {
         startDate,
         endDate,
         departmentId,
-      }, goBack);
+      }, () => {
+        goBack();
+      });
     } catch (e) {
       Toast.showError(e.message);
     }

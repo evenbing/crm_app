@@ -113,7 +113,7 @@ class RankItem extends React.PureComponent {
                 {this.renderRankItem(index)}
               </RankView>
               <Thumbnail
-                imgUri={item.avatar ? item.avatar.trim() : null}
+                imgUri={item.headImg ? item.headImg.trim() : null}
                 size={52}
                 round
               />

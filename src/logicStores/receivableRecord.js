@@ -33,7 +33,9 @@ class ReceivableRecordStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getReceivableRecordList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.receivableRecordList.total = totalCount;
         this.receivableRecordList.pageNumber = pageNumber;
@@ -74,7 +76,9 @@ class ReceivableRecordStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await createReceivableRecord(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next
@@ -90,7 +94,9 @@ class ReceivableRecordStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateReceivableRecord(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next

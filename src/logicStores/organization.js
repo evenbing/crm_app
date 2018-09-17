@@ -28,7 +28,9 @@ class OrganizationStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getOrganizationList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.organizationList.total = totalCount;
         this.organizationList.pageNumber = pageNumber;

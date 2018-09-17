@@ -11,13 +11,14 @@ import { Switch } from 'react-native';
 import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import NavItem from '../../../components/NavItem';
-import { routers } from '../../../constants';
-import theme from '../../../constants/theme';
+
+import PriceListModel from '../../../logicStores/priceList';
 
 const NavListView = styled.View`
   margin-top: ${moderateScale(15)};
@@ -42,6 +43,9 @@ class PriceList extends React.Component {
     stanValue: false,
     inteValue: false,
   };
+  componentDidMount() {
+    PriceListModel.getPriceReq();
+  }
   render() {
     const {
       state: {

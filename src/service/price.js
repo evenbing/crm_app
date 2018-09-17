@@ -5,6 +5,7 @@
  * @author zhao
  */
 import { post } from '../utils/rpc';
+import { getUserId } from '../utils/base';
 
 /** 分页查询价格表明细列表
  * @add by zhao
@@ -95,8 +96,8 @@ export function createPriceProduct() {
  * }
  * @return Promise<Object>
  */
-export function detail({
-  id,
+export function getPrice({
+  id = getUserId(),
 } = {}) {
   return post({
     method: 'api.customerrelations.price.get',

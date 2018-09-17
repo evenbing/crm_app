@@ -97,7 +97,9 @@ class PrefStatistStore {
         completedSalesSum = 0,
         expectSalesSum = 0,
         funnelSalesSum = 0,
+        errors = [],
       } = await getSalesSum(obj);
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesSumMap = {
           completedSalesSum,
@@ -114,7 +116,9 @@ class PrefStatistStore {
     try {
       const {
         salesRankingList = [],
+        errors = [],
       } = await getSalesTrend(obj);
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         const list = salesRankingList.map((v) => {
           v.dateId = v.monthId;
@@ -132,7 +136,9 @@ class PrefStatistStore {
     try {
       const {
         salesStatisticList = {},
+        errors = [],
       } = await getSalesEchart(obj);
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesStatisticList = [...salesStatisticList];
       });
@@ -147,7 +153,9 @@ class PrefStatistStore {
         averageCompletionAmount = 0,
         totalCount = 0,
         salesRankingList = [],
+        errors = [],
       } = await getSalesRankingList(obj);
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesRankMap = {
           averAmount: averageCompletionAmount,

@@ -33,7 +33,9 @@ class ReceivablePlanStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getReceivablePlanList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.receivablePlanList.total = totalCount;
         this.receivablePlanList.pageNumber = pageNumber;
@@ -74,7 +76,9 @@ class ReceivablePlanStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await createReceivablePlan(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next
@@ -90,7 +94,9 @@ class ReceivablePlanStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateReceivablePlan(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next
