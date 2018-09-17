@@ -71,15 +71,15 @@ class ContactStore {
   }
 
   // 新增
-  @action async createContactReq(options) {
+  @action async createContactReq(options, goBack) {
     try {
       const {
-        result = {},
+        errors = [],
       } = await createContact(options);
-      debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getContactListReq();
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);

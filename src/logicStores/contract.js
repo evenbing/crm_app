@@ -73,15 +73,16 @@ class ContractStore {
   }
 
   // 新增
-  @action async createContractReq(options) {
+  @action async createContractReq(options, goBack) {
     try {
       const {
-        result = {},
+        errors = [],
       } = await createContract(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.contractDetails = { ...result };
+        this.getContractListReq();
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);

@@ -1,6 +1,5 @@
-
 /**
- * @component NavItem.jsm.js
+ * @component NavItem.js
  * @description navItem
  * @time 2018/6/24
  * @author zhao
@@ -8,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { View, Text, Image } from 'react-native';
+import { Image } from 'react-native';
 import theme from '../../constants/theme';
 import { moderateScale } from '../../utils/scale';
 import TouchableView from '../TouchableView';
@@ -19,7 +18,7 @@ const ContainerView = styled(TouchableView)`
   padding: 0 ${moderateScale(15)}px;
 `;
 
-const BorderView = styled(View)`
+const BorderView = styled.View`
   flex: 1;
   height: 100%;
   borderTopWidth: 1px;
@@ -31,14 +30,14 @@ const BorderView = styled(View)`
   justifyContent: space-between;
 `;
 
-const LeftView = styled(View)`
+const LeftView = styled.View`
   flex: 1;
   height: 100%;
   flexDirection: row;
   alignItems: center;
 `;
 
-const IconView = styled(View)`
+const IconView = styled.View`
   width: ${moderateScale(24)};
   height: ${moderateScale(24)};
   alignItems: center;
@@ -46,21 +45,21 @@ const IconView = styled(View)`
   margin-right: ${moderateScale(14)};
 `;
 
-const TitleText = styled(Text)`
+const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
   font-size: ${moderateScale(16)};
   color: #373737;
   background-color: transparent;
 `;
 
-const RightView = styled(View)`
+const RightView = styled.View`
   height: 100%;
   alignItems: center;
   justifyContent: center;
   flexDirection: row;
 `;
 
-const RightText = styled(Text)`
+const RightText = styled.Text`
   font-family: ${theme.fontRegular};
   font-size: ${moderateScale(16)};
   color: #373737;
@@ -74,18 +73,31 @@ const NavIcon = styled.Image`
 `;
 
 class NavItem extends React.PureComponent {
+  renderRight = () => {
+    const {
+      right,
+      rightText,
+      rightTextStyle,
+      showNavIcon,
+      rightSuffix,
+    } = this.props;
+    if (React.isValidElement(right)) return right;
+    return (
+      <RightView>
+        <RightText style={rightTextStyle}>{rightText}</RightText>
+        { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
+        { rightSuffix }
+      </RightView>
+    );
+  };
   render() {
     const {
       leftText,
       leftTextStyle,
       icon,
-      rightText,
-      rightTextStyle,
       onPress,
       isLast,
       height,
-      showNavIcon,
-      rightSuffix,
     } = this.props;
     return (
       <ContainerView onPress={onPress} height={height}>
@@ -94,11 +106,7 @@ class NavItem extends React.PureComponent {
             { icon ? <IconView><Image source={icon} /></IconView> : null }
             <TitleText style={leftTextStyle}>{leftText}</TitleText>
           </LeftView>
-          <RightView>
-            <RightText style={rightTextStyle}>{rightText}</RightText>
-            { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
-            { rightSuffix }
-          </RightView>
+          {this.renderRight()}
         </BorderView>
       </ContainerView>
     );
@@ -115,6 +123,7 @@ NavItem.defaultProps = {
   onPress: () => null,
   showNavIcon: true,
   rightSuffix: null,
+  right: null,
 };
 
 NavItem.propTypes = {
@@ -128,6 +137,7 @@ NavItem.propTypes = {
   onPress: PropTypes.func,
   showNavIcon: PropTypes.bool,
   rightSuffix: PropTypes.node,
+  right: PropTypes.element,
 };
 
 export default NavItem;
