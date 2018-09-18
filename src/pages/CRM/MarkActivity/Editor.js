@@ -41,12 +41,25 @@ const NavItemStyle = {
 };
 
 class Editor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+    };
+  }
+
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
+
   onPressRight = () => alert('finish');
+
+  onChangeActivityName = (name) => {
+    this.setState({ name });
+  }
+
   getLeftStyle = (placeholder, width = 80) => {
     return {
       inputProps: {
@@ -64,6 +77,9 @@ class Editor extends React.Component {
     const {
       navigation: { navigate },
     } = this.props;
+    const {
+      name,
+    } = this.state;
     return (
       <ContainerView
         bottomPadding
@@ -78,6 +94,12 @@ class Editor extends React.Component {
             leftText="活动名称"
             {...this.getLeftStyle('请输入活动名称')}
             {...NavItemStyle}
+            inputProps={{
+              placeholder: '请输入姓名',
+              fontSize: theme.moderateScale(16),
+              onChangeText: this.onChangeActivityName,
+              value: name,
+            }}
           />
           <NavInputItem
             leftText="开始日期"

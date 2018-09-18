@@ -7,25 +7,25 @@
 import { post } from '../utils/rpc';
 
 /** 查询市场活动列表
- * 
+ *
  * @param options
  * {
- *  my	我负责的	否
- *  myFollowed	我关注的	否	关注对象类型必须传参
- *  objectType	关注对象类型	否	当选择为我关注的和全部时必填
- *  myParticipate	我参与的	否
- *  all	全部	否	关注对象类型必须传参
- *  status	活动状态	否
- *  sourceType	活动类型	否
- *  beginDateType	开始日期范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
- *  endDateType	结束日期范围	否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
- *  budgetPeopleNumber	预计人数	否
- *  actualPeopleNumber	实际人数	否
- *  budgetCost	预计成本	否
- *  actualCost	实际成本	否
- *  departmentId	所属部门	否
- *  lastUpdateTime	最近修改日期	否
- *  sortColumn	表头排序	否
+ *  my  我负责的  否
+ *  myFollowed  我关注的  否  关注对象类型必须传参
+ *  objectType  关注对象类型  否  当选择为我关注的和全部时必填
+ *  myParticipate 我参与的  否
+ *  all 全部  否  关注对象类型必须传参
+ *  status  活动状态  否
+ *  sourceType  活动类型  否
+ *  beginDateType 开始日期范围  否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *  endDateType 结束日期范围  否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
+ *  budgetPeopleNumber  预计人数  否
+ *  actualPeopleNumber  实际人数  否
+ *  budgetCost  预计成本  否
+ *  actualCost  实际成本  否
+ *  departmentId  所属部门  否
+ *  lastUpdateTime  最近修改日期  否
+ *  sortColumn  表头排序  否
  * } options
  */
 export function getMarkActivityList({
@@ -206,15 +206,15 @@ export function changeOwnerUser({
 }
 
 /** 关注市场活动
- * 
- * @param 
+ *
+ * @param
  * {
- * followList	关注对象集合	是
+ * followList 关注对象集合  是
  * 其中对象的参数：关注对象类型：objectType-ACTIVITY，关注对象id:objectId-活动id，关注对象名称：objectName-活动名称，关注时间：followTime-当前时间
- * } options 
+ * } options
  */
 export function batchCreateFollow({
-  followList
+  followList,
 } = {}) {
   return post({
     method: 'api.customerrelations.changeOwnerUser.activity',
