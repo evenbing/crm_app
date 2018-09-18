@@ -24,6 +24,8 @@ java (v1.8.0_172)
   |--pages          页面(一个tabBar一个文件夹.)
     |--Card         共用 card
       |--CompanyDepartment          公司部门
+      |--RelatedDocs                相关文档
+      |--SelectDepartment           选择部门
       |--TeamMembers                团队成员
       |--TeamRoles                  团队成员2
     |--CRM          CRM tab
@@ -79,7 +81,6 @@ java (v1.8.0_172)
       |--QueryBusiness              工商信息查询
     |-- 未完成
        添加产品
-       相关文档
        关联业务
   |--service        服务API
   |--utils          工具文件夹

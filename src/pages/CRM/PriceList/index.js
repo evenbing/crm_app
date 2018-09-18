@@ -1,79 +1,104 @@
+/**
+ * @component index.js
+ * @description 价格表页面
+ * @time 2018/8/12
+ * @author JUSTIN XU
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useStrict } from 'mobx';
+import { Switch } from 'react-native';
+import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
+import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { ContainerScrollView } from '../../../components/Styles/Layout';
 import NavItem from '../../../components/NavItem';
-import { routers } from '../../../constants';
 
-const ContainerView = styled.ScrollView`
-  flex: 1;
-  background-color: #fff;
-`;
+import PriceListModel from '../../../logicStores/priceList';
 
 const NavListView = styled.View`
-  margin-top: ${moderateScale(10)};
-  margin-bottom: ${moderateScale(10)};
+  margin-top: ${moderateScale(15)};
+  background-color: #FFFFFF;
 `;
+
+const SwitchProps = {
+  onTintColor: theme.primaryColor,
+  style: {
+    transform: [
+      { scale: 0.8 },
+      { translateX: moderateScale(10) },
+    ],
+  },
+};
 
 useStrict(true);
 
-const NavList = [
-  {
-    leftText: '标准价格表',
-    leftTextStyle: {},
-    rightText: '未启用',
-    rightTextStyle: {
-      color: '#AEAEAE',
-    },
-    height: 44,
-    path: routers.standardPriceList,
-  },
-  {
-    leftText: '内部报价',
-    leftTextStyle: {},
-    rightText: '启用',
-    rightTextStyle: {
-      color: '#18B548',
-    },
-    height: 44,
-    path: routers.internalPriceList,
-  },
-];
-
 @observer
 class PriceList extends React.Component {
-  onNavHandler = (path) => {
-    this.props.navigation.navigate(path);
+  state = {
+    stanValue: false,
+    inteValue: false,
   };
-
+  componentDidMount() {
+    PriceListModel.getPriceReq();
+  }
   render() {
+    const {
+      state: {
+        stanValue,
+        inteValue,
+      },
+      props: {
+        navigation,
+      },
+    } = this;
     return (
-      <ContainerView>
+      <ContainerScrollView
+        bottomPadding
+      >
         <CommStatusBar />
         <NavListView>
-          {
-            NavList.map((item, index) => (<NavItem
-              key={index}
-              {...item}
-              isLast={index === NavList.length - 1}
-              onPress={() => this.onNavHandler(item.path)}
-            />))
-          }
+          <NavItem
+            leftText="标准价格表"
+            height={44}
+            onPress={() => navigation.navigate(routers.standardPriceList)}
+            right={
+              <Switch
+                value={stanValue}
+                onValueChange={stanValue => this.setState({ stanValue })}
+                {...SwitchProps}
+              />
+            }
+          />
+          <NavItem
+            leftText="内部报价"
+            height={44}
+            isLast
+            onPress={() => navigation.navigate(routers.internalPriceList)}
+            right={
+              <Switch
+                value={inteValue}
+                onValueChange={inteValue => this.setState({ inteValue })}
+                {...SwitchProps}
+              />
+            }
+          />
         </NavListView>
-      </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
 
-PriceList.navigationOptions = () => ({
+PriceList.navigationOptions = ({ navigation }) => ({
   title: '价格表',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
   ),
 });
 

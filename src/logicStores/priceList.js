@@ -7,6 +7,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
+  getPrice,
   getPriceList,
 } from '../service/price';
 import Toast from '../utils/toast';
@@ -16,10 +17,29 @@ useStrict(true);
 
 @autobind
 class PriceListStore {
+  // 查看价格表
+  @observable priceMap = {};
   // 价格列表
   @observable internalPriceList = initFlatList;
   @observable standardPriceList = initFlatList;
   // @observable contactDetails = {};
+
+  // 查看价格表
+  @action async getPriceReq() {
+    try {
+      const {
+        result = {},
+        errors = [],
+      } = await getPrice();
+      if (errors.length) throw new Error(errors[0].message);
+      debugger;
+      runInAction(() => {
+        this.priceMap = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 
   // 内部价格表
   @action async getInternalPriceListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -32,8 +52,9 @@ class PriceListStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getPriceList({ pageNumber, ...restProps });
-      // debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.internalPriceList.total = totalCount;
         this.internalPriceList.pageNumber = pageNumber;
@@ -53,6 +74,7 @@ class PriceListStore {
       });
     }
   }
+
   // 标准价格表
   @action async getStandardPriceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
@@ -64,7 +86,9 @@ class PriceListStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getPriceList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       // debugger;
       runInAction(() => {
         this.standardPriceList.total = totalCount;

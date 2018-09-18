@@ -1,3 +1,7 @@
+
+// 客户页面类型
+export const SelectType = 'CUSTOMER/SELECT';
+
 // 模块类型枚举
 export const ModuleType = {
   // 产品模块

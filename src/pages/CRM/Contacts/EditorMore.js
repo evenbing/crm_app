@@ -6,15 +6,13 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
-import { DatePicker } from 'native-base';
 import theme from '../../../constants/theme';
 import { ContactsEnum } from '../../../constants/form';
 import { SexTypeList } from '../../../constants/actionSheet';
-import { moderateScale } from '../../../utils/scale';
 import Toast from '../../../utils/toast';
+import { formatDate } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -24,18 +22,12 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import { ActionSheet } from '../../../components/Modal';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import ContactsModel from '../../../logicStores/contacts';
 
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: ${props => props.active ? theme.textColor : theme.textPlaceholderColor};
-  font-family: ${theme.fontRegular};
-`;
+const formatDateType = 'yyyy-MM-dd hh:mm';
 
 @observer
 class EditorMore extends React.Component {
@@ -123,6 +115,7 @@ class EditorMore extends React.Component {
         sex,
         weibo,
         location,
+        birthDate,
         email,
         companyName,
         jobTitle,
@@ -171,32 +164,25 @@ class EditorMore extends React.Component {
             }
             {...theme.navItemStyle}
           />
-          <NavInputItem
-            leftText="出生日期"
-            center={
-              <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
-                locale="cn"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                placeHolderText={ContactsEnum.birthDate}
-                textStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textColor,
-                }}
-                placeHolderTextStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textPlaceholderColor,
-                }}
-                onDateChange={birthDate => this.setState({ birthDate })}
-              />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  birthDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...theme.navItemStyle}
-          />
+          >
+            <NavInputItem
+              leftText="出生日期"
+              needPress={false}
+              center={
+                <CenterText active={birthDate}>
+                  { birthDate || ContactsEnum.birthDate }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavInputItem
             leftText="公司名称"
             {...theme.getLeftStyle({

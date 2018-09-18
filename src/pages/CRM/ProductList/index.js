@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useStrict } from 'mobx';
+import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
 
@@ -50,7 +50,7 @@ class ProductList extends React.Component {
   }
 }
 
-ProductList.navigationOptions = ({ navigation, screenProps }) => ({
+ProductList.navigationOptions = ({ navigation }) => ({
   title: '产品目录',
   headerLeft: (
     <LeftBackIcon

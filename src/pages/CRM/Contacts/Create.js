@@ -6,12 +6,11 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { ContactsEnum } from '../../../constants/form';
-import { moderateScale } from '../../../utils/scale';
 import Toast from '../../../utils/toast';
+import { SelectType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -43,14 +42,19 @@ class Create extends React.Component {
   }
   onPressRight = () => {
     const {
-      name,
-      companyName,
-      jobTitle,
-      phoneNumber,
-      mobilePhone,
-      departmentId,
-      departmentName,
-    } = this.state;
+      state: {
+        name,
+        companyName,
+        jobTitle,
+        phoneNumber,
+        mobilePhone,
+        departmentId,
+        departmentName,
+      },
+      props: {
+        navigation: { goBack },
+      },
+    } = this;
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
@@ -62,6 +66,8 @@ class Create extends React.Component {
         mobilePhone,
         departmentId,
         departmentName,
+      }, () => {
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -103,6 +109,15 @@ class Create extends React.Component {
           />
           <NavInputItem
             leftText="公司名称"
+            onPress={() => navigate(routers.customer, {
+              type: SelectType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  companyName: item.title,
+                });
+              },
+            })}
             center={
               <CenterText active={companyName}>
                 { companyName || ContactsEnum.companyName }
@@ -136,7 +151,7 @@ class Create extends React.Component {
           />
           <NavInputItem
             leftText="部门"
-            onPress={() => navigate(routers.selectionDepartment, {
+            onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;

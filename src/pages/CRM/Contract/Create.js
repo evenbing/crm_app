@@ -6,13 +6,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { DatePicker } from 'native-base';
 import { routers, theme } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
 import { ContractEnum } from '../../../constants/form';
+import { SelectType, PackType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
+import { formatDate, mapToArray } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -22,8 +21,13 @@ import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
+import DateTimePicker from '../../../components/DateTimePicker';
+import Thumbnail from '../../../components/Thumbnail';
+import { ActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
+
+const formatDateType = 'yyyy-MM-dd hh:mm:ss';
 
 @observer
 class Create extends React.Component {
@@ -36,6 +40,12 @@ class Create extends React.Component {
     endDate: null,
     departmentId: null,
     departmentName: null,
+    typeMap: {
+      key: null,
+      value: null,
+    },
+    typeVisible: false,
+    activityIndex: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -44,33 +54,66 @@ class Create extends React.Component {
   }
   onPressRight = () => {
     const {
-      name,
-      customerId,
-      customerName,
-      totalMoney,
-      startDate,
-      endDate,
-      departmentId,
-    } = this.state;
+      state: {
+        name,
+        customerId,
+        customerName,
+        typeMap: { key: type },
+        totalMoney,
+        startDate,
+        endDate,
+        departmentId,
+      },
+      props: {
+        navigation: { goBack },
+      },
+    } = this;
     try {
       if (!name) throw new Error(ContractEnum.theme);
+      if (!type) throw new Error(ContractEnum.type);
       if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
       if (!totalMoney) throw new Error(ContractEnum.totalMoney);
       if (!startDate) throw new Error(ContractEnum.startDate);
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
+      debugger;
       ContractModel.createContractReq({
         theme: name,
+        type,
         customerId,
         customerName,
         totalMoney,
         startDate,
         endDate,
         departmentId,
+      }, () => {
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);
     }
+  };
+  onToggleVisible = () => {
+    this.setState({
+      typeVisible: !this.state.typeVisible,
+    });
+  };
+  onPressActionSheetItem = ({ item, index }) => {
+    if (this.state.activityIndex === index) return;
+    this.setState({
+      activityIndex: index,
+      typeMap: { key: item.key, value: item.leftText },
+    });
+  };
+  getRightElem = (index) => {
+    const { activityIndex } = this.state;
+    if (activityIndex !== index) return null;
+    return (
+      <Thumbnail
+        source={require('../../../img/modal/ok.png')}
+        size={16}
+      />
+    );
   };
   render() {
     const {
@@ -81,11 +124,25 @@ class Create extends React.Component {
         totalMoney,
         departmentId,
         departmentName,
+        startDate,
+        endDate,
+        typeMap,
+        typeVisible,
       },
       props: {
         navigation: { navigate },
       },
     } = this;
+    const PackTypeList = mapToArray(PackType, 'leftText').map((v, i) => {
+      v.rightText = this.getRightElem(i);
+      return v;
+    });
+    const actionSheetProps = {
+      isVisible: typeVisible,
+      onPressClose: this.onToggleVisible,
+      onPressItem: this.onPressActionSheetItem,
+      list: PackTypeList,
+    };
     return (
       <ContainerScrollView
         bottomPadding
@@ -94,6 +151,7 @@ class Create extends React.Component {
         <HorizontalDivider
           height={9}
         />
+        <ActionSheet {...actionSheetProps} />
         <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
@@ -105,7 +163,27 @@ class Create extends React.Component {
             })}
           />
           <NavInputItem
+            leftText="合同类型"
+            onPress={this.onToggleVisible}
+            center={
+              <CenterText active={typeMap.value}>
+                { typeMap.value || ContractEnum.type }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
             leftText="客户"
+            onPress={() => navigate(routers.customer, {
+              type: SelectType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  customerId: item.key,
+                  customerName: item.title,
+                });
+              },
+            })}
             center={
               <CenterText active={customerId && customerName}>
                 {
@@ -128,61 +206,47 @@ class Create extends React.Component {
             }
             {...theme.navItemStyle}
           />
-          <NavInputItem
-            leftText="开始日期"
-            center={
-              <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
-                locale="cn"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                placeHolderText={ContractEnum.startDate}
-                textStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textColor,
-                }}
-                placeHolderTextStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textPlaceholderColor,
-                }}
-                onDateChange={startDate => this.setState({ startDate })}
-              />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  startDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="结束日期"
-            center={
-              <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
-                locale="cn"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                placeHolderText={ContractEnum.endDate}
-                textStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textColor,
-                }}
-                placeHolderTextStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textPlaceholderColor,
-                }}
-                onDateChange={endDate => this.setState({ endDate })}
-              />
+          >
+            <NavInputItem
+              leftText="开始日期"
+              needPress={false}
+              center={
+                <CenterText active={startDate}>
+                  { startDate || ContractEnum.startDate }
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDate(date, formatDateType)}`,
+                })
+            }
+          >
+            <NavInputItem
+              leftText="结束日期"
+              needPress={false}
+              center={
+                <CenterText active={endDate}>
+                  { endDate || ContractEnum.endDate }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavInputItem
             leftText="所属部门"
-            onPress={() => navigate(routers.selectionDepartment, {
+            onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;

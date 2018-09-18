@@ -34,7 +34,9 @@ class ContactStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getContactList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.contactList.total = totalCount;
         this.contactList.pageNumber = pageNumber;
@@ -61,7 +63,9 @@ class ContactStore {
       if (!id) throw new Error('id 不为空');
       const {
         contact = {},
+        errors = [],
       } = await getContactDetails({ id });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.contactDetails = { ...contact };
       });
@@ -71,15 +75,15 @@ class ContactStore {
   }
 
   // 新增
-  @action async createContactReq(options) {
+  @action async createContactReq(options, callback) {
     try {
       const {
-        result = {},
+        errors = [],
       } = await createContact(options);
-      debugger;
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getContactListReq();
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -91,7 +95,9 @@ class ContactStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateContact(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next

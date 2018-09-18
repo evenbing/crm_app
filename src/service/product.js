@@ -14,9 +14,9 @@ import { post } from '../utils/rpc';
  *   keyword 关键字 must
  *   status 是否有效 must
  * }
- * @return Promise<Object>
+ * @return Promise<ArrayList>
  */
-export function find({
+export function getProductList({
   isMyFollow,
   keyword,
   status,

@@ -50,7 +50,7 @@ export function getReceivableRecord({
   });
 }
 
-/** 创建回款计划
+/** 创建回款记录
  * @params options
  * {
  *   pactId 合同ID must

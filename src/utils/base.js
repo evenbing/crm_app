@@ -42,7 +42,7 @@ export function formatDate(date, fmt) {
     'h+': date.getHours(),
     'm+': date.getMinutes(),
     's+': date.getSeconds(),
-  }
+  };
   for (const k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
       const str = o[k].toString();
@@ -134,3 +134,9 @@ export function formatMemberList(list) {
     return value;
   });
 }
+
+/**
+ * 对象转换成 key value数组
+ * @param {*} obj
+ */
+export const mapToArray = (obj, name = 'name') => Object.keys(obj).map(key => ({ key, [name]: obj[key] }));

@@ -40,7 +40,9 @@ class MarkActivityStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getMarkActivityList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.markActivityList.total = totalCount;
         this.markActivityList.pageNumber = pageNumber;
@@ -83,7 +85,9 @@ class MarkActivityStore {
      try {
        const {
          result = {},
+         errors = [],
        } = await createMarkActivity(options);
+       if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
          // TODO next
@@ -99,7 +103,9 @@ class MarkActivityStore {
      try {
        const {
          result = {},
+         errors = [],
        } = await updateMarkActivity(options);
+       if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
          // TODO next

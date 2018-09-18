@@ -1,6 +1,6 @@
 /*
- * @Author: Edmond.Shi 
- * @Date: 2018-09-11 10:20:55 
+ * @Author: Edmond.Shi
+ * @Date: 2018-09-11 10:20:55
  * @Last Modified by: Edmond.Shi
  * @Last Modified time: 2018-09-12 14:44:47
  */
@@ -38,7 +38,9 @@ class SalesClueStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getSalesClueList({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesClueList.total = totalCount;
         this.salesClueList.pageNumber = pageNumber;
@@ -81,7 +83,9 @@ class SalesClueStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await createSalesClue(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next
@@ -97,7 +101,9 @@ class SalesClueStore {
     try {
       const {
         result = {},
+        errors = [],
       } = await updateSalesClue(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
         // TODO next

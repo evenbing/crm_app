@@ -6,9 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { DatePicker } from 'native-base';
 import { View } from 'react-native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
@@ -20,26 +18,16 @@ import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layo
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-// import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
+import DateTimePicker from '../../../components/DateTimePicker';
+
 
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
+import { formatDate } from '../../../utils/base';
 
 const LeftViewWidth = moderateScale(110);
+const formatDateType = 'yyyy-MM-dd hh:mm';
 
 @observer
 class EditorMore extends React.Component {
@@ -90,6 +78,7 @@ class EditorMore extends React.Component {
         receivablePrice,
         ownerId,
         comment,
+        receivableDate,
       },
     } = this;
     return (
@@ -121,33 +110,26 @@ class EditorMore extends React.Component {
               <RightText>元</RightText>
             }
           />
-          <NavInputItem
-            leftText="计划回款日期"
-            center={
-              <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
-                locale="cn"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                placeHolderText={ReceivablePlanEnum.receivableDate}
-                textStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textColor,
-                }}
-                placeHolderTextStyle={{
-                  ...theme.pickerStyle,
-                  color: theme.textPlaceholderColor,
-                }}
-                onDateChange={receivableDate => this.setState({ receivableDate })}
-              />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  receivableDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...theme.navItemStyle}
-            leftWidth={moderateScale(110)}
-          />
+          >
+            <NavInputItem
+              leftText="计划回款日期"
+              needPress={false}
+              center={
+                <CenterText active={receivableDate}>
+                  { receivableDate || ReceivablePlanEnum.receivableDate }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+              leftWidth={moderateScale(110)}
+            />
+          </DateTimePicker>
           <NavInputItem
             leftText="负责人"
             center={

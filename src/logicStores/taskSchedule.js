@@ -48,7 +48,9 @@ class TaskScheduleStore {
     try {
       const {
         result = [],
+        errors = [],
       } = await create();
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         console.log({ result });
 
@@ -66,7 +68,9 @@ class TaskScheduleStore {
     try {
       const {
         result = [],
+        errors = [],
       } = await update();
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         console.log({ result });
 
