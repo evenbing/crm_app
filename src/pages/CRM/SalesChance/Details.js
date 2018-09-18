@@ -25,8 +25,8 @@ import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 // import TouchableView from '../../../components/TouchableView';
 import SalesChanceStore from '../../../logicStores/salesChance';
-import DynamicStore from '../../../logicStores/dynamic';
-import { ModuleType } from '../../../constants/enum';
+// import DynamicStore from '../../../logicStores/dynamic';
+// import { ModuleType } from '../../../constants/enum';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -60,10 +60,10 @@ class Details extends React.Component {
   componentDidMount() {
     const { id } = this.props.navigation.state.params;
     SalesChanceStore.getSalesChanceReq({ id });
-    DynamicStore.getDynamicListReq({
-      moduleType: ModuleType.opportunity,
-      moduleId: id,
-    });
+    // DynamicStore.getDynamicListReq({
+    //   moduleType: ModuleType.opportunity,
+    //   moduleId: id,
+    // });
   }
 
   onTabChange = (index) => {
@@ -163,7 +163,8 @@ class Details extends React.Component {
     const list = [
       {
         type: 1,
-        list: [{ url: true }, {}, {}],
+        // list: [{ url: true }, {}, {}],
+        data: SalesChanceStore.salesChanceDetail,
       },
     ];
     const { refreshing = false, loadingMore = false } = {};

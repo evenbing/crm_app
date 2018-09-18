@@ -70,7 +70,7 @@ class SalesChanceStore {
       } = await getSalesChanceDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.salesChanceDetail = { ...result };
+        this.salesChanceDetail = { ...result.opportunity };
       });
     } catch (e) {
       Toast.showError(e.message);

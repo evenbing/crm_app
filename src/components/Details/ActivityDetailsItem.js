@@ -30,65 +30,74 @@ const RemarkText = styled.Text`
   color: #AEAEAE;
 `;
 
-class ActivityDetailsItem extends React.PureComponent {
-  renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
-    <NavItemComponent
-      height={44}
-      leftText={leftText}
-      rightText={rightText}
-      showNavIcon={false}
-      isLast={isLast}
-      rightTextStyle={{
-        color: theme.textGrayColor,
-        ...rightStyle,
-      }}
-      rightSuffix={rightSuffix}
+const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
+  <NavItemComponent
+    height={44}
+    leftText={leftText}
+    rightText={rightText}
+    showNavIcon={false}
+    isLast={isLast}
+    rightTextStyle={{
+      color: theme.textGrayColor,
+      ...rightStyle,
+    }}
+    rightSuffix={rightSuffix}
+  />
+);
+
+const ActivityDetailsItem = ({
+  type,
+  data: {
+    expectedDate, // '1536422400000',
+    follow, // false,
+    id, // '1032876348290502657',
+    inActive, // false,
+    lastPhaseUpdateTime, // '1535092474000',
+    name, // '更新机会123',
+    ownerUserId, // '801689539444879360',
+    ownerUserName, // '大佬5',
+    planAmount, // 33,
+    rowVersion, // '3',
+    salesPhaseId, // '3333333333',
+    tenantId, // '801689539428098048',
+  },
+}) => (
+  <ContainerView>
+    <TitleItemComponent
+      text="基本信息"
     />
-  );
-  render() {
-    return (
-      <ContainerView>
-        <TitleItemComponent
-          text="基本信息"
-        />
-        {this.renderBasicItem('姓名', '活动名称')}
-        {this.renderBasicItem('性别', '2018-09-09')}
-        {this.renderBasicItem('公司名称', '2018-09-09')}
-        {this.renderBasicItem('部门', '部门部门部门')}
-        {this.renderBasicItem('职务', '职务职务')}
-        <TitleItemComponent
-          text="联系信息"
-        />
-        {this.renderBasicItem('开始日期', '2018-09-09')}
-        {this.renderBasicItem('结束日期', '2018-09-09')}
-        {this.renderBasicItem('活动成本', '10000', <RightSuffix>元</RightSuffix>)}
-        {this.renderBasicItem('预期收入', '20000', null, { marginRight: theme.moderateScale(25) })}
-        {this.renderBasicItem('邀请人数', '20')}
-        {this.renderBasicItem('预期响应', '37')}
-        {this.renderBasicItem('实际成本', '300000', null, null, true)}
-        <TitleItemComponent
-          text="其他信息"
-        />
-        {this.renderBasicItem('负责人', '张三')}
-        {this.renderBasicItem('所属部门', '所属部门所属部门')}
-        {this.renderBasicItem('创建人', '创建人创建人')}
-        {this.renderBasicItem('创建时间', '2018-09-09 09:00')}
-        {this.renderBasicItem('最近修改时间', '2018-09-09 09:00')}
-        {this.renderBasicItem('最近跟进人', '张三')}
-        {this.renderBasicItem('最近跟进时间', '2018-09-09 09:00', null, null, true)}
-        <TitleItemComponent
-          text="备注"
-          color="#373737"
-        />
-        <RemarkView>
-          <RemarkText>
+    {renderBasicItem('姓名', name)}
+    {renderBasicItem('客户', '2018-09-09')}
+    {renderBasicItem('价格表', '2018-09-09')}
+    {renderBasicItem('机会类型', '部门部门部门')}
+    {renderBasicItem('销售金额', '职务职务', <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('来源', '职务职务')}
+    {renderBasicItem('市场活动', '职务职务')}
+    {renderBasicItem('结单日期', '职务职务')}
+    {renderBasicItem('项目预算', '职务职务', <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('实际花费', '职务职务', <RightSuffix>元</RightSuffix>)}
+    <TitleItemComponent
+      text="其他信息"
+    />
+    {renderBasicItem('负责人', '张三')}
+    {renderBasicItem('所属部门', '所属部门所属部门')}
+    {renderBasicItem('创建人', '创建人创建人')}
+    {renderBasicItem('创建时间', '2018-09-09 09:00')}
+    {renderBasicItem('最近修改时间', '2018-09-09 09:00')}
+    {renderBasicItem('最近跟进人', '张三')}
+    {renderBasicItem('最近跟进时间', '2018-09-09 09:00', null, null, true)}
+    <TitleItemComponent
+      text="备注"
+      color="#373737"
+    />
+    <RemarkView>
+      <RemarkText>
             活动说明，活动说明，活动说明，活动说明，活动说明，活动说明，
-          </RemarkText>
-        </RemarkView>
-      </ContainerView>
-    );
-  }
-}
+      </RemarkText>
+    </RemarkView>
+  </ContainerView>
+);
+
 
 ActivityDetailsItem.defaultProps = {};
 
