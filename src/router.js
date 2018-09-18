@@ -23,6 +23,7 @@ import TeamRolesScreen from './pages/Card/TeamRoles';
 import SelectDepartmentScreen from './pages/Card/SelectDepartment';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
+import TypePickerScreen from './pages/Modal/TypePicker';
 // root page -> home
 import HomeScreen from './pages/Home';
 // root page -> home -> SelectYear
@@ -226,6 +227,8 @@ const CrmRouteConfig = {
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
+
+  [routers.typePicker]: { screen: TypePickerScreen },
 };
 
 const CrmNavigatorConfig = {

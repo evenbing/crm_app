@@ -95,10 +95,6 @@ class Editor extends React.Component {
     }
   }
 
-  onChangeActivityName = (name) => {
-    this.setState({ name });
-  }
-
   getLeftStyle = (placeholder, width = 80) => {
     return {
       inputProps: {
@@ -141,7 +137,7 @@ class Editor extends React.Component {
             inputProps={{
               placeholder: '请输入姓名',
               fontSize: theme.moderateScale(16),
-              onChangeText: this.onChangeActivityName,
+              onChangeText: () => { this.setState({ name }); },
               value: name,
             }}
           />

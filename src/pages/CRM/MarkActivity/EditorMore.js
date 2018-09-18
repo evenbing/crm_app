@@ -34,12 +34,33 @@ const NavItemStyle = {
 };
 
 class EditorMore extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: null,
+      beginDate: null,
+      endDate: null,
+      departmentId: null,
+      status: null,
+      sourceType: null,
+      description: null,
+      budgetCost: null,
+      budgetRevenue: null,
+      budgetPeopleNumber: null,
+      effect: null,
+      actualPeopleNumber: null,
+      actualCost: null,
+      executeDetail: null,
+    };
+  }
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
+
   onPressRight = () => alert('finish');
+
   getLeftStyle = (placeholder, width = 110) => {
     return {
       inputProps: {
@@ -53,7 +74,26 @@ class EditorMore extends React.Component {
       height: 44,
     };
   };
+
   render() {
+    const {
+      state: {
+        name,
+        beginDate,
+        endDate,
+        departmentId,
+        status,
+        sourceType,
+        description,
+        budgetCost,
+        budgetRevenue,
+        budgetPeopleNumber,
+        effect,
+        actualPeopleNumber,
+        actualCost,
+        executeDetail,
+      },
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
@@ -68,6 +108,12 @@ class EditorMore extends React.Component {
             leftText="活动名称"
             {...this.getLeftStyle('请输入活动名称')}
             {...NavItemStyle}
+            inputProps={{
+              placeholder: '请输入姓名',
+              fontSize: theme.moderateScale(16),
+              onChangeText: () => { this.setState({ name }); },
+              value: name,
+            }}
           />
           <NavInputItem
             leftText="活动状态"
