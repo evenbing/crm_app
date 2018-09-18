@@ -56,10 +56,13 @@ const ItemRightText = styled.Text`
   color: #999999;
 `;
 
+const BGColorList = ['#7ADFD6', '#7AD0DF', '#72B3E0', '#7291E0', '#5374C7'];
+
 class SalesFunnel extends React.PureComponent {
   renderFunnelItem = ({ width, backgroundColor, text } = {}) => (
     <FunnelItem
       width={width}
+      key={text}
       backgroundColor={backgroundColor}
     >
       <FunnelText>{text}</FunnelText>
@@ -72,14 +75,22 @@ class SalesFunnel extends React.PureComponent {
     </ItemView>
   );
   render() {
+    const { list } = this.props;
     return (
       <ContainerView>
         <FunnelView>
-          {this.renderFunnelItem({ text: '初步接洽：10000009／1个' })}
-          {this.renderFunnelItem({ width: 260, backgroundColor: '#7AD0DF', text: '需求确认：10000009／1个' })}
-          {this.renderFunnelItem({ width: 220, backgroundColor: '#72B3E0', text: '方案报价：1009／1个' })}
-          {this.renderFunnelItem({ width: 180, backgroundColor: '#7291E0', text: '谈判审：1009／1个' })}
-          {this.renderFunnelItem({ width: 140, backgroundColor: '#5374C7', text: '赢单：1009／1个' })}
+          {
+            list.map((_, i) => this.renderFunnelItem({
+              width: 300 - (i * 40),
+              backgroundColor: BGColorList[i],
+              text: `${_.salesPhaseName}:${_.sumPlanAmount}/${_.salesPhaseCount}个`,
+            }))
+          }
+          {/* {this.renderFunnelItem({ text: '初步接洽：10000009／1个' })} */}
+          {/* {this.renderFunnelItem({ width: 260, backgroundColor: '#7AD0DF', text: '需求确认：10000009／1个' })} */}
+          {/* {this.renderFunnelItem({ width: 220, backgroundColor: '#72B3E0', text: '方案报价：1009／1个' })} */}
+          {/* {this.renderFunnelItem({ width: 180, backgroundColor: '#7291E0', text: '谈判审：1009／1个' })} */}
+          {/* {this.renderFunnelItem({ width: 140, backgroundColor: '#5374C7', text: '赢单：1009／1个' })} */}
         </FunnelView>
         {this.renderNavItem('漏斗总值', '2019029019.00元／4个', 1)}
         {this.renderNavItem('预计完成', '2019029019.00元', 0)}

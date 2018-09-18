@@ -79,8 +79,7 @@ import ProductListScreen from './pages/CRM/ProductList';
 import ModifyProductPriceScreen from './pages/CRM/ProductList/ModifyProductPrice';
 // root page -> CRM -> 价格表
 import PriceListScreen from './pages/CRM/PriceList';
-import InternalPriceList from './pages/CRM/PriceList/InternalPriceList';
-import StandardPriceList from './pages/CRM/PriceList/StandardPriceList';
+import PriceDetailListScreen from './pages/CRM/PriceList/PriceDetailList';
 // root page -> CRM -> 回款计划 module
 import ReceivablePlanPlanScreen from './pages/CRM/ReceivablePlan';
 import ReceivablePlanPlanDetailsScreen from './pages/CRM/ReceivablePlan/Details';
@@ -206,8 +205,7 @@ const CrmRouteConfig = {
   [routers.contactEditorMore]: { screen: ContactEditorMoreScreen },
 
   [routers.priceList]: { screen: PriceListScreen },
-  [routers.internalPriceList]: { screen: InternalPriceList },
-  [routers.standardPriceList]: { screen: StandardPriceList },
+  [routers.priceDetailList]: { screen: PriceDetailListScreen },
 
   [routers.productList]: { screen: ProductListScreen },
   [routers.modifyProductPrice]: { screen: ModifyProductPriceScreen },

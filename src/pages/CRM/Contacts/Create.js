@@ -19,7 +19,7 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import ScanCard from '../../../components/Create/ScanCard';
+// import ScanCard from '../../../components/Create/ScanCard';
 import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import ContactsModel from '../../../logicStores/contacts';
@@ -91,12 +91,12 @@ class Create extends React.Component {
     return (
       <ContainerScrollView
         bottomPadding
-        backgroundColor={theme.whiteColor}
       >
         <CommStatusBar />
-        <ScanCard
+        {/* <ScanCard
           onPress={() => alert(1)}
-        />
+        /> */}
+        <HorizontalDivider height={9} />
         <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
@@ -174,7 +174,6 @@ class Create extends React.Component {
         </ListView>
         <HorizontalDivider
           height={41}
-          backgroundColor={theme.whiteColor}
         />
         <CreateMoreButton
           onPress={() => navigate(routers.contactEditorMore)}

@@ -81,7 +81,6 @@ class ContractStore {
         errors = [],
       } = await createContract(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getContractListReq();
         callback && callback();

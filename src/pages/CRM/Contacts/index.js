@@ -236,7 +236,6 @@ class Contacts extends React.Component {
       // ]}
       data: list,
       renderItem: this.renderItem,
-      ItemSeparatorComponent: null,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,

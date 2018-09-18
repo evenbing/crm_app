@@ -53,7 +53,7 @@ java (v1.8.0_172)
         |--index.js                 列表页面
       |--PriceList                  价格表模块
         |--index.js                 列表页面
-        |--InternalPriceList.js     内部价格表页面 ( 两个价格表一样, 需要优化 )
+        |--PriceDetailLists     内部价格表页面 ( 两个价格表一样, 需要优化 )
         |--StandardPriceList.js     标准价格表页面
       |--ProductList                产品目录模块
         |--index.js                 列表页面

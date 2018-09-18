@@ -55,8 +55,7 @@ export default {
   modifyProductPrice: 'app.tabView.root.crm.modifyProductPrice',
   // priceList module
   priceList: 'app.tabView.root.crm.priceList',
-  internalPriceList: 'app.tabView.root.crm.internalPriceList',
-  standardPriceList: 'app.tabView.root.crm.standardPriceList',
+  priceDetailList: 'app.tabView.root.crm.priceDetailList',
   // receivablePlan module
   receivablePlan: 'app.tabView.root.crm.receivablePlan',
   receivablePlanDetails: 'app.tabView.root.crm.receivablePlanDetail',

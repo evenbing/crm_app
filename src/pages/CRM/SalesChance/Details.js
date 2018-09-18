@@ -141,7 +141,6 @@ class Details extends React.Component {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDynamicItem,
-      ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
       onEndReached: this.onEndReached,
       flatListStyle: {

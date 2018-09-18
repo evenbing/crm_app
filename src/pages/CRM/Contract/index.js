@@ -258,7 +258,6 @@ class Contract extends React.Component {
     const flatProps = {
       data: list,
       renderItem: this.renderItem,
-      ItemSeparatorComponent: null,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,

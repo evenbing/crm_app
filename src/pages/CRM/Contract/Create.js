@@ -76,7 +76,6 @@ class Create extends React.Component {
       if (!startDate) throw new Error(ContractEnum.startDate);
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
-      debugger;
       ContractModel.createContractReq({
         theme: name,
         type,

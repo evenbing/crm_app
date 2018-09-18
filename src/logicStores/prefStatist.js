@@ -23,6 +23,18 @@ function getMonth(month) {
   return month;
 }
 
+const initSalesSumMap = {
+  completedSalesSum: 0,
+  expectSalesSum: 0,
+  funnelSalesSum: 0,
+};
+
+const initSalesRankMap = {
+  averAmount: 0,
+  total: 0,
+  list: [],
+};
+
 @autobind
 class PrefStatistStore {
   // 列表
@@ -33,21 +45,15 @@ class PrefStatistStore {
     list: ['本月', '本季', '本年'],
   };
   // 销售总额数据统计
-  @observable salesSumMap = {
-    completedSalesSum: 0,
-    expectSalesSum: 0,
-    funnelSalesSum: 0,
-  };
+  @observable salesSumMap = initSalesSumMap;
+
   // 销售趋势
   @observable salesRankingList = [];
   // 销售漏斗
   @observable salesStatisticList = [];
   // 销售排行
-  @observable salesRankMap = {
-    averAmount: 0,
-    total: 0,
-    list: [],
-  };
+  @observable salesRankMap = initSalesRankMap;
+
   @observable refreshing = false;
 
   @action onToggleTabSelectIndex(index) {
@@ -93,6 +99,7 @@ class PrefStatistStore {
 
   @action async getSalesSumReq(obj) {
     try {
+      this.salesSumMap = initSalesSumMap;
       const {
         completedSalesSum = 0,
         expectSalesSum = 0,
@@ -114,18 +121,18 @@ class PrefStatistStore {
 
   @action async getSalesTrendReq(obj) {
     try {
+      this.salesRankingList = [];
       const {
         salesRankingList = [],
         errors = [],
       } = await getSalesTrend(obj);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        const list = salesRankingList.map((v) => {
+        this.salesRankingList = salesRankingList.map((v) => {
           v.dateId = v.monthId;
           v.achievement = v.completedTotalMoney;
           return v;
         });
-        this.salesRankingList = list;
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -134,8 +141,9 @@ class PrefStatistStore {
 
   @action async getSalesEchartReq(obj) {
     try {
+      this.salesStatisticList = [];
       const {
-        salesStatisticList = {},
+        salesStatisticList = [],
         errors = [],
       } = await getSalesEchart(obj);
       if (errors.length) throw new Error(errors[0].message);
@@ -149,6 +157,7 @@ class PrefStatistStore {
 
   @action async getSalesRankingListReq(obj) {
     try {
+      this.salesRankMap = initSalesRankMap;
       const {
         averageCompletionAmount = 0,
         totalCount = 0,

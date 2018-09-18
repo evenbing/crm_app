@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+import { getUserId } from '../utils/base';
 
 /** 高级查询回款期次
  * @params options
@@ -14,7 +15,7 @@ import { post } from '../utils/rpc';
  * @return Promise<Object>
  */
 export function getReceivableIssue({
-  pactId,
+  pactId = getUserId(),
 } = {}) {
   return post({
     method: 'api.customerrelations.receivableIssue.find',
