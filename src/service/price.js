@@ -5,7 +5,6 @@
  * @author zhao
  */
 import { post } from '../utils/rpc';
-import { getUserId } from '../utils/base';
 
 /** 分页查询价格表明细列表
  * @add by zhao
@@ -15,14 +14,14 @@ import { getUserId } from '../utils/base';
  * }
  * @return Promise<Object>
  */
-export function queryPriceProduct({
-  priceId,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.priceProduct.find',
-    priceId,
-  });
-}
+// export function queryPriceProduct({
+//   priceId,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.priceProduct.find',
+//     priceId,
+//   });
+// }
 
 /** 编辑价格表明细
  * @add by zhao
@@ -37,24 +36,24 @@ export function queryPriceProduct({
  * }
  * @return Promise<Object>
  */
-export function updatePriceProduct({
-  id,
-  priceId,
-  productId,
-  setPrice,
-  isActive,
-  comment,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.priceProduct.update',
-    id,
-    priceId,
-    productId,
-    setPrice,
-    isActive,
-    comment,
-  });
-}
+// export function updatePriceProduct({
+//   id,
+//   priceId,
+//   productId,
+//   setPrice,
+//   isActive,
+//   comment,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.priceProduct.update',
+//     id,
+//     priceId,
+//     productId,
+//     setPrice,
+//     isActive,
+//     comment,
+//   });
+// }
 
 
 /** 删除价格表明细
@@ -65,46 +64,45 @@ export function updatePriceProduct({
  * }
  * @return Promise<Object>
  */
-export function delPriceProduct({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.priceProduct.delete',
-    id,
-  });
-}
+// export function deletePriceProduct({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.priceProduct.delete',
+//     id,
+//   });
+// }
 
 /** 新增价格表明细
  * @add by zhao
  * @params options
  * {
- * priceProductList 价格表明细集合 未给出 must
+ *   priceProductList 价格表明细集合 未给出 must
  * }
  * @return Promise<Object>
  */
-export function createPriceProduct() {
-  return post({
-    method: 'api.customerrelations.priceProduct.create',
-  });
-}
+// export function createPriceProduct() {
+//   return post({
+//     method: 'api.customerrelations.priceProduct.create',
+//   });
+// }
 
 /** 查看价格表
  * @add by zhao
  * @params options
  * {
- * id 主键Id must
+ *  id 主键Id must
  * }
  * @return Promise<Object>
  */
-export function getPrice({
-  id = getUserId(),
+export function getPriceDetailList({
+  id,
 } = {}) {
   return post({
     method: 'api.customerrelations.price.get',
     id,
   });
 }
-
 
 /** 删除价格表
  * @add by zhao
@@ -114,14 +112,14 @@ export function getPrice({
  * }
  * @return Promise<Object>
  */
-export function del({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.price.delete',
-    id,
-  });
-}
+// export function del({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.price.delete',
+//     id,
+//   });
+// }
 
 /** 编辑价格表
  * @add by zhao
@@ -135,22 +133,22 @@ export function del({
  * }
  * @return Promise<Object>
  */
-export function update({
-  departmentId,
-  name,
-  ownerId,
-  isActive,
-  comment,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.price.update',
-    departmentId,
-    name,
-    ownerId,
-    isActive,
-    comment,
-  });
-}
+// export function update({
+//   departmentId,
+//   name,
+//   ownerId,
+//   isActive,
+//   comment,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.price.update',
+//     departmentId,
+//     name,
+//     ownerId,
+//     isActive,
+//     comment,
+//   });
+// }
 
 /** 创建价格表
  * @add by zhao
@@ -165,24 +163,24 @@ export function update({
  * }
  * @return Promise<Object>
  */
-export function create({
-  departmentId,
-  name,
-  ownerId,
-  isActive,
-  comment,
-  copyPriceId,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.price.create',
-    departmentId,
-    name,
-    ownerId,
-    isActive,
-    comment,
-    copyPriceId,
-  });
-}
+// export function create({
+//   departmentId,
+//   name,
+//   ownerId,
+//   isActive,
+//   comment,
+//   copyPriceId,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.price.create',
+//     departmentId,
+//     name,
+//     ownerId,
+//     isActive,
+//     comment,
+//     copyPriceId,
+//   });
+// }
 
 /** 分页查询价格列表
  * @add by zhao
@@ -195,7 +193,7 @@ export function create({
  *   isActive 是否有效 must
  *   keyword 关键字
  * }
- * @return Promise<Object>
+ * @return Promise<ArrayList>
  */
 export function getPriceList({
   pageNumber = 1,
@@ -216,6 +214,32 @@ export function getPriceList({
   });
 }
 
+/** 关注价格表
+ * @add by zhao
+ * @params options
+ * {
+ * objectType 是否是我负责的 must
+ * objectId 是否是我关注的 must
+ * objectName 是否有效 must
+ * followTime 关键字 must
+ * }
+ * @return Promise<Object>
+ */
+// export function updateFollowPrice({
+//   objectType,
+//   objectId,
+//   objectName,
+//   followTime,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.follow.create',
+//     objectType,
+//     objectId,
+//     objectName,
+//     followTime,
+//   });
+// }
+
 
 /** 导出价格表
  * @add by zhao
@@ -228,44 +252,17 @@ export function getPriceList({
  * }
  * @return Promise<Object>
  */
-export function exportPrice({
-  isMyDuty,
-  isMyFollow,
-  isActive,
-  keyword,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.price.export',
-    isMyDuty,
-    isMyFollow,
-    isActive,
-    keyword,
-  });
-}
-
-
-/** 关注价格表
- * @add by zhao
- * @params options
- * {
- * objectType 是否是我负责的 must
- * objectId 是否是我关注的 must
- * objectName 是否有效 must
- * followTime 关键字 must
- * }
- * @return Promise<Object>
- */
-export function followPrice({
-  objectType,
-  objectId,
-  objectName,
-  followTime,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.follow.create',
-    objectType,
-    objectId,
-    objectName,
-    followTime,
-  });
-}
+// export function exportPrice({
+//   isMyDuty,
+//   isMyFollow,
+//   isActive,
+//   keyword,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.price.export',
+//     isMyDuty,
+//     isMyFollow,
+//     isActive,
+//     keyword,
+//   });
+// }

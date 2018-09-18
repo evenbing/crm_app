@@ -6,29 +6,6 @@
  */
 import { post } from '../utils/rpc';
 
-/** 分页查询产品列表
- * @add by zhao
- * @params options
- * {
- *   isMyFollow 是否是我关注的产品 must
- *   keyword 关键字 must
- *   status 是否有效 must
- * }
- * @return Promise<ArrayList>
- */
-export function getProductList({
-  isMyFollow,
-  keyword,
-  status,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.product.find',
-    isMyFollow,
-    keyword,
-    status,
-  });
-}
-
 /** 查看产品目录列表
  * @add by zhao
  * @params options
@@ -37,7 +14,7 @@ export function getProductList({
  * }
  * @return Promise<Object>
  */
-export function findProductClazz({
+export function getProductClazzList({
   keyword,
 } = {}) {
   return post({
@@ -46,135 +23,28 @@ export function findProductClazz({
   });
 }
 
-/** 删除产品目录
+/** 分页查询产品列表
  * @add by zhao
  * @params options
  * {
- *   id 主键Id must
+ *   isMyFollow 是否是我关注的产品
+ *   keyword 关键字
+ *   status 是否有效 must
  * }
- * @return Promise<Object>
+ * @return Promise<ArrayList>
  */
-export function delProductClazz({
-  id,
+export function getProductList({
+  isMyFollow,
+  keyword,
+  status = true,
 } = {}) {
   return post({
-    method: 'api.customerrelations.productClazz.delete',
-    id,
+    method: 'api.customerrelations.product.find',
+    isMyFollow,
+    keyword,
+    status,
   });
 }
-
-
-/** 查看产品目录
- * @add by zhao
- * @params options
- * {
- *   id 主键Id must
- * }
- * @return Promise<Object>
- */
-export function getProductClazz({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.productClazz.get',
-    id,
-  });
-}
-
-/** 编辑产品目录
- * @add by zhao
- * @params options
- * {
- * id 主键Id must
- * name 产品名称 must
- * parentId 父目录Id
- * level 目录级:1-顶级目录;2-二级目录;3-三级目录;4-四级目录 must
- * }
- * @return Promise<Object>
- */
-export function updateProductClazz({
-  id,
-  name,
-  parentId,
-  level,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.productClazz.update',
-    id,
-    name,
-    parentId,
-    level,
-  });
-}
-
-
-/** 创建产品目录
- * @add by zhao
- * @params options
- * {
- * name 产品名称 must
- * parentId 父目录Id
- * level 目录级:1-顶级目录;2-二级目录;3-三级目录;4-四级目录 must
- * }
- * @return Promise<Object>
- */
-export function createProductClazz({
-  name,
-  parentId,
-  level,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.productClazz.create',
-    name,
-    parentId,
-    level,
-  });
-}
-
-
-/** 关注产品
- * @add by zhao
- * @params options
- * {
- * objectType 关注类别：PRODUCT must
- * objectId productId must
- * objectName 产品名称 must
- * followTime 当前时间 must
- * }
- * @return Promise<Object>
- */
-export function createFollow({
-  objectType,
-  objectId,
-  objectName,
-  followTime,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.follow.create',
-    objectType,
-    objectId,
-    objectName,
-    followTime,
-  });
-}
-
-/** 删除产品
- * @add by zhao
- * @params options
- * {
- * id 主键Id must
- * }
- * @return Promise<Object>
- */
-export function deleteProduct({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.product.delete',
-    id,
-  });
-}
-
 
 /** 查看产品产品资料，相关信息
  * @add by zhao
@@ -193,6 +63,134 @@ export function getProduct({
   });
 }
 
+/** 查看产品目录
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键Id must
+ * }
+ * @return Promise<Object>
+ */
+// export function getProductClazz({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.productClazz.get',
+//     id,
+//   });
+// }
+
+/** 删除产品目录
+ * @add by zhao
+ * @params options
+ * {
+ *   id 主键Id must
+ * }
+ * @return Promise<Object>
+ */
+// export function deleteProductClazz({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.productClazz.delete',
+//     id,
+//   });
+// }
+
+/** 编辑产品目录
+ * @add by zhao
+ * @params options
+ * {
+ * id 主键Id must
+ * name 产品名称 must
+ * parentId 父目录Id
+ * level 目录级:1-顶级目录;2-二级目录;3-三级目录;4-四级目录 must
+ * }
+ * @return Promise<Object>
+ */
+// export function updateProductClazz({
+//   id,
+//   name,
+//   parentId,
+//   level,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.productClazz.update',
+//     id,
+//     name,
+//     parentId,
+//     level,
+//   });
+// }
+
+
+/** 创建产品目录
+ * @add by zhao
+ * @params options
+ * {
+ * name 产品名称 must
+ * parentId 父目录Id
+ * level 目录级:1-顶级目录;2-二级目录;3-三级目录;4-四级目录 must
+ * }
+ * @return Promise<Object>
+ */
+// export function createProductClazz({
+//   name,
+//   parentId,
+//   level,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.productClazz.create',
+//     name,
+//     parentId,
+//     level,
+//   });
+// }
+
+
+/** 关注产品
+ * @add by zhao
+ * @params options
+ * {
+ * objectType 关注类别：PRODUCT must
+ * objectId productId must
+ * objectName 产品名称 must
+ * followTime 当前时间 must
+ * }
+ * @return Promise<Object>
+ */
+// export function createFollow({
+//   objectType,
+//   objectId,
+//   objectName,
+//   followTime,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.follow.create',
+//     objectType,
+//     objectId,
+//     objectName,
+//     followTime,
+//   });
+// }
+
+/** 删除产品
+ * @add by zhao
+ * @params options
+ * {
+ * id 主键Id must
+ * }
+ * @return Promise<Object>
+ */
+// export function deleteProduct({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.product.delete',
+//     id,
+//   });
+// }
+
 
 /** 禁用产品
  * @add by zhao
@@ -202,14 +200,14 @@ export function getProduct({
  * }
  * @return Promise<Object>
  */
-export function inactiveProduct({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.product.inactive',
-    id,
-  });
-}
+// export function inactiveProduct({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.product.inactive',
+//     id,
+//   });
+// }
 
 /** 启用产品
  * @add by zhao
@@ -219,14 +217,14 @@ export function inactiveProduct({
  * }
  * @return Promise<Object>
  */
-export function activeProduct({
-  id,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.product.active',
-    id,
-  });
-}
+// export function activeProduct({
+//   id,
+// } = {}) {
+//   return post({
+//     method: 'api.customerrelations.product.active',
+//     id,
+//   });
+// }
 
 
 /** 产品导出

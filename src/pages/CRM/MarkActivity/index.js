@@ -242,7 +242,6 @@ class SalesClues extends React.Component {
       data,
       renderItem: this.renderItem,
       keyExtractor: this.keyExtractor,
-      ItemSeparatorComponent: null,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,

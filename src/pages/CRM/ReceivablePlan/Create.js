@@ -39,6 +39,7 @@ class Create extends React.Component {
     comment: null,
   };
   componentDidMount() {
+    ReceivablePlanModel.getReceivableIssueReq();
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });

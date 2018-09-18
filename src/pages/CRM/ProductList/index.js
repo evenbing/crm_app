@@ -7,12 +7,10 @@ import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { ContainerView } from '../../../components/Styles/Layout';
 import ProductItemList from './components/ProductItemList';
 
-const ContainerView = styled.ScrollView`
-  flex: 1;
-  background-color: #F6F6F6;
-`;
+import ProductListModel from '../../../logicStores/productList';
 
 const NavListView = styled.View`
   margin-top: ${moderateScale(10)};
@@ -23,7 +21,11 @@ useStrict(true);
 
 @observer
 class ProductList extends React.Component {
+  componentDidMount() {
+    ProductListModel.getProductClazzListReq();
+  }
   onNavHandler = (path) => {
+    path;
     // this.props.navigation.navigate(path);
   };
 
@@ -38,7 +40,9 @@ class ProductList extends React.Component {
     ];
 
     return (
-      <ContainerView>
+      <ContainerView
+        bottomPadding
+      >
         <CommStatusBar />
         <NavListView>
           {

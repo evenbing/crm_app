@@ -15,80 +15,86 @@ import { routers, theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
+import { ContainerView } from '../../../components/Styles/Layout';
+import { HorizontalDivider } from '../../../components/Styles/Divider';
 import NavItem from '../../../components/NavItem';
+import FlatListTable from '../../../components/FlatListTable';
 
 import PriceListModel from '../../../logicStores/priceList';
 
-const NavListView = styled.View`
-  margin-top: ${moderateScale(15)};
+const NavItemView = styled.View`
   background-color: #FFFFFF;
+  padding: 0 ${theme.moderateScale(14)}px;
 `;
-
-const SwitchProps = {
-  onTintColor: theme.primaryColor,
-  style: {
-    transform: [
-      { scale: 0.8 },
-      { translateX: moderateScale(10) },
-    ],
-  },
-};
 
 useStrict(true);
 
 @observer
 class PriceList extends React.Component {
-  state = {
-    stanValue: false,
-    inteValue: false,
-  };
   componentDidMount() {
-    PriceListModel.getPriceReq();
+    this.getData();
   }
+  onToggleSwitch = ({ item, index }) => {
+    debugger;
+  };
+  onPressItem = ({ item }) => {
+    this.props.navigation.navigate(routers.priceDetailList, { item });
+  };
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = PriceListModel.priceList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = (pageNumber = 1) => {
+    PriceListModel.getPriceListReq({ pageNumber });
+  };
+  renderItem = (itemProps) => {
+    const { item, index } = itemProps;
+    return (
+      <NavItemView>
+        <NavItem
+          leftText={item.name}
+          height={44}
+          onPress={() => this.onPressItem({ item, index })}
+          right={
+            <Switch
+              value={!!item.isActive}
+              onValueChange={() => this.onToggleSwitch({ item, index })}
+              onTintColor={theme.primaryColor}
+              style={{
+                transform: [
+                  { scale: 0.8 },
+                  { translateX: moderateScale(10) },
+                ],
+              }}
+            />
+          }
+        />
+      </NavItemView>
+    );
+  };
   render() {
     const {
-      state: {
-        stanValue,
-        inteValue,
-      },
-      props: {
-        navigation,
-      },
-    } = this;
+      priceList: { list, refreshing, loadingMore },
+    } = PriceListModel;
+    const flatProps = {
+      data: list,
+      renderItem: this.renderItem,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
-      <ContainerScrollView
+      <ContainerView
         bottomPadding
       >
         <CommStatusBar />
-        <NavListView>
-          <NavItem
-            leftText="标准价格表"
-            height={44}
-            onPress={() => navigation.navigate(routers.standardPriceList)}
-            right={
-              <Switch
-                value={stanValue}
-                onValueChange={stanValue => this.setState({ stanValue })}
-                {...SwitchProps}
-              />
-            }
-          />
-          <NavItem
-            leftText="内部报价"
-            height={44}
-            isLast
-            onPress={() => navigation.navigate(routers.internalPriceList)}
-            right={
-              <Switch
-                value={inteValue}
-                onValueChange={inteValue => this.setState({ inteValue })}
-                {...SwitchProps}
-              />
-            }
-          />
-        </NavListView>
-      </ContainerScrollView>
+        <HorizontalDivider height={15} />
+        <FlatListTable {...flatProps} />
+      </ContainerView>
     );
   }
 }

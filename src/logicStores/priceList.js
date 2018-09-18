@@ -7,7 +7,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
-  getPrice,
+  getPriceDetailList,
   getPriceList,
 } from '../service/price';
 import Toast from '../utils/toast';
@@ -17,37 +17,19 @@ useStrict(true);
 
 @autobind
 class PriceListStore {
-  // 查看价格表
-  @observable priceMap = {};
-  // 价格列表
-  @observable internalPriceList = initFlatList;
-  @observable standardPriceList = initFlatList;
-  // @observable contactDetails = {};
+  // 获取价格表
+  @observable priceList = initFlatList;
 
-  // 查看价格表
-  @action async getPriceReq() {
-    try {
-      const {
-        result = {},
-        errors = [],
-      } = await getPrice();
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        this.priceMap = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
+  // 价格详情列表
+  @observable priceProductList = initFlatList;
 
-  // 内部价格表
-  @action async getInternalPriceListReq({ pageNumber = 1, ...restProps } = {}) {
+  // 获取价格表
+  @action async getPriceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
-        this.internalPriceList.refreshing = true;
+        this.priceList.refreshing = true;
       } else {
-        this.internalPriceList.loadingMore = true;
+        this.priceList.loadingMore = true;
       }
       const {
         result = [],
@@ -56,59 +38,95 @@ class PriceListStore {
       } = await getPriceList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.internalPriceList.total = totalCount;
-        this.internalPriceList.pageNumber = pageNumber;
+        this.priceList.total = totalCount;
+        this.priceList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.internalPriceList.list = [...result];
+          this.priceList.list = [...result];
         } else {
-          this.internalPriceList.list = this.internalPriceList.list.concat(result);
+          this.priceList.list = this.priceList.list.concat(result);
         }
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
-        this.internalPriceList.refreshing = false;
-        this.internalPriceList.loadingMore = false;
+        this.priceList.refreshing = false;
+        this.priceList.loadingMore = false;
+      });
+    }
+  }
+
+  // 切换是否激活
+  // @action async updateFollowPrice({ id }) {
+  //   try {
+  //     if (!id) throw new Error('id 不为空');
+  //     // const {
+  //     //   contact = {},
+  //     // } = await getContactDetails({ id });
+  //     // runInAction(() => {
+  //     //   this.contactDetails = { ...contact };
+  //     // });
+  //   } catch (e) {
+  //     Toast.showError(e.message);
+  //   }
+  // }
+
+  // 查看价格表
+  @action async getPriceDetailListReq({ id }) {
+    try {
+      this.priceProductList = initFlatList;
+      const {
+        priceProductList = [],
+        errors = [],
+      } = await getPriceDetailList({ id });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.priceProductList.list = [...priceProductList];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.priceProductList.refreshing = false;
       });
     }
   }
 
   // 标准价格表
-  @action async getStandardPriceListReq({ pageNumber = 1, ...restProps } = {}) {
-    try {
-      if (pageNumber === 1) {
-        this.standardPriceList.refreshing = true;
-      } else {
-        this.standardPriceList.loadingMore = true;
-      }
-      const {
-        result = [],
-        totalCount = 0,
-        errors = [],
-      } = await getPriceList({ pageNumber, ...restProps });
-      if (errors.length) throw new Error(errors[0].message);
-      // debugger;
-      runInAction(() => {
-        this.standardPriceList.total = totalCount;
-        this.standardPriceList.pageNumber = pageNumber;
-
-        if (pageNumber === 1) {
-          this.standardPriceList.list = [...result];
-        } else {
-          this.standardPriceList.list = this.standardPriceList.list.concat(result);
-        }
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    } finally {
-      runInAction(() => {
-        this.standardPriceList.refreshing = false;
-        this.standardPriceList.loadingMore = false;
-      });
-    }
-  }
+  // @action async getStandardPriceListReq({ pageNumber = 1, ...restProps } = {}) {
+  //   try {
+  //     if (pageNumber === 1) {
+  //       this.standardPriceList.refreshing = true;
+  //     } else {
+  //       this.standardPriceList.loadingMore = true;
+  //     }
+  //     const {
+  //       result = [],
+  //       totalCount = 0,
+  //       errors = [],
+  //     } = await getPriceList({ pageNumber, ...restProps });
+  //     if (errors.length) throw new Error(errors[0].message);
+  //     // debugger;
+  //     runInAction(() => {
+  //       this.standardPriceList.total = totalCount;
+  //       this.standardPriceList.pageNumber = pageNumber;
+  //
+  //       if (pageNumber === 1) {
+  //         this.standardPriceList.list = [...result];
+  //       } else {
+  //         this.standardPriceList.list = this.standardPriceList.list.concat(result);
+  //       }
+  //     });
+  //   } catch (e) {
+  //     Toast.showError(e.message);
+  //   } finally {
+  //     runInAction(() => {
+  //       this.standardPriceList.refreshing = false;
+  //       this.standardPriceList.loadingMore = false;
+  //     });
+  //   }
+  // }
 
   // 详情
   // @action async getContactDetailsReq({ id }) {
@@ -133,7 +151,6 @@ class PriceListStore {
   //     } = await createContact(options);
   //     debugger;
   //     runInAction(() => {
-  //       // TODO next
   //       this.contactDetails = { ...result };
   //     });
   //   } catch (e) {
@@ -149,7 +166,6 @@ class PriceListStore {
   //     } = await updateContact(options);
   //     debugger;
   //     runInAction(() => {
-  //       // TODO next
   //       this.contactDetails = { ...result };
   //     });
   //   } catch (e) {
