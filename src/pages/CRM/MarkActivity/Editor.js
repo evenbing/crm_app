@@ -19,15 +19,15 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import TitleItem from '../../../components/Details/TitleItem';
+import { formatDate } from '../../../utils/base';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { MarkActivityEnum } from '../../../constants/form';
+import { CenterText } from '../../../components/Styles/Form';
+import MarkActivityStore from '../../../logicStores/markActivity';
+import Toast from '../../../utils/toast';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
 `;
 
 // const RightText = CenterText.extend`
@@ -40,11 +40,18 @@ const NavItemStyle = {
   showNavIcon: true,
 };
 
+const formatDateType = 'yyyy-MM-dd hh:mm';
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: null,
+      beginDate: null,
+      endDate: null,
+      departmentId: null,
+      departmentName: null,
+      description: null,
     };
   }
 
@@ -54,7 +61,39 @@ class Editor extends React.Component {
     });
   }
 
-  onPressRight = () => alert('finish');
+  onPressRight = () => {
+    const {
+      state: { name,
+        beginDate,
+        endDate,
+        departmentId,
+        description,
+      },
+      props: {
+        navigation: {
+          goBack,
+        },
+      },
+    } = this;
+    try {
+      if (!name) throw new Error(MarkActivityEnum.name);
+      if (!beginDate) throw new Error(MarkActivityEnum.beginDate);
+      if (!endDate) throw new Error(MarkActivityEnum.endDate);
+      if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
+      if (!description) throw new Error(MarkActivityEnum.description);
+      MarkActivityStore.createMarkActivityReq({
+        name,
+        beginDate,
+        endDate,
+        departmentId,
+        description,
+      }, () => {
+        goBack();
+      });
+    } catch (error) {
+      Toast.showError(error.message);
+    }
+  }
 
   onChangeActivityName = (name) => {
     this.setState({ name });
@@ -79,6 +118,11 @@ class Editor extends React.Component {
     } = this.props;
     const {
       name,
+      beginDate,
+      endDate,
+      departmentId,
+      departmentName,
+      description,
     } = this.state;
     return (
       <ContainerView
@@ -101,26 +145,65 @@ class Editor extends React.Component {
               value: name,
             }}
           />
-          <NavInputItem
-            leftText="开始日期"
-            center={
-              <CenterText>请选择开始日期</CenterText>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  beginDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="结束日期"
-            center={
-              <CenterText>请选择结束日期</CenterText>
+          >
+            <NavInputItem
+              leftText="开始日期"
+              needPress={false}
+              center={
+                <CenterText active={beginDate}>
+                  {beginDate || MarkActivityEnum.beginDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...NavItemStyle}
-          />
+          >
+            <NavInputItem
+              leftText="结束日期"
+              needPress={false}
+              center={
+                <CenterText active={endDate}>
+                  {endDate || MarkActivityEnum.endDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavInputItem
-            leftText="所属部门"
+            leftText="部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText active={departmentId && departmentName}>
+                {
+                  (departmentId && departmentName) ? departmentName : MarkActivityEnum.departmentName
+                }
+              </CenterText>
             }
-            {...NavItemStyle}
+            isLast
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="备注"
@@ -132,7 +215,9 @@ class Editor extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
-              placeholder="请输入备注说明"
+              value={description}
+              onChangeText={description => this.setState({ description })}
+              placeholder={MarkActivityEnum.description}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>

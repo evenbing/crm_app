@@ -70,20 +70,20 @@ export function getMarkActivityList({
 /** 新增市场活动
  * @params options
  * {
- *   name 机会名称 must
- *   beginDate 开始日期 must
- *   endDate 结束日期 must
- *   departmentId 所属部门 must
- *   status 活动状态 [枚举类型（ActivityStatusEnum）]
- *   sourceType 活动类型 [枚举类型（ActivityStatusEnum）]
- *   description 活动说明
- *   budgetCost 活动成本 创建时的成本应为：预期成本
- *   budgetRevenue 预期收入
- *   budgetPeopleNumber 邀请人数 创建时的邀请人数应为：预期人数
- *   effect 预期响应
- *   actualPeopleNumber 实际人数
- *   actualCost 实际成本
- *   executeDetail 备注
+ *  name  活动名称  是
+ *  beginDate 开始日期  是
+ *  endDate 结束日期  是
+ *  departmentId  所属部门  是
+ *  status  活动状态  否  ActivityStatusEnum：其中PLANNED-已计划，ONGOING-进行中,END-已结束,SUSPEND-终止
+ *  sourceType  活动类型  否  ActivityTypeEnum：其中ADVERT-广告，SEMINAR-研讨会/会议EMAIL-电子邮件,TELEMARKETING-电话营销,PUBLIC_RELATIONS-公共关系,PARTNER-合作伙伴,OTHER-其他
+ *  description 活动说明  是
+ *  budgetCost  活动成本  否  创建时的成本应为：预期成本
+ *  budgetRevenue 预期收入  否
+ *  budgetPeopleNumber  邀请人数  否  创建时的邀请人数应为：预期人数
+ *  effect  预期响应  否
+ *  actualPeopleNumber  实际人数  否
+ *  actualCost  实际成本  否
+ *  executeDetail 备注  否
  * }
  * @return Promise<Object>
  */

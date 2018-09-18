@@ -80,18 +80,17 @@ class MarkActivityStore {
     }
   }
 
-   // 新增
-   @action async createMarkActivityReq(options) {
+  // 新增
+  @action async createMarkActivityReq(options, callback) {
      try {
        const {
-         result = {},
          errors = [],
        } = await createMarkActivity(options);
        if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
-         // TODO next
-         this.markActivityDetail = { ...result };
+         this.getMarkActivityListReq();
+         callback && callback();
        });
      } catch (e) {
        Toast.showError(e.message);
@@ -100,21 +99,21 @@ class MarkActivityStore {
 
    // 编辑
    @action async updateMarkActivityReq(options) {
-     try {
-       const {
-         result = {},
-         errors = [],
-       } = await updateMarkActivity(options);
-       if (errors.length) throw new Error(errors[0].message);
-       debugger;
-       runInAction(() => {
-         // TODO next
-         this.markActivityDetail = { ...result };
-       });
-     } catch (e) {
-       Toast.showError(e.message);
-     }
-   }
+    try {
+      const {
+        result = {},
+        errors = [],
+      } = await updateMarkActivity(options);
+      if (errors.length) throw new Error(errors[0].message);
+      debugger;
+      runInAction(() => {
+        // TODO next
+        this.markActivityDetail = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 
    //  // 合并相同的客户
    //  @action async mergeSalesChanceReq(options) {
@@ -152,12 +151,12 @@ class MarkActivityStore {
    @action async batchCreateFollowReq(options) {
      try {
        const {
-         result = {},
+         errors = [],
        } = await batchCreateFollow(options);
+       if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
-         // TODO next
-         //  this.markActivityDetail = { ...result };
+         this.getMarkActivityListReq();
        });
      } catch (e) {
        Toast.showError(e.message);

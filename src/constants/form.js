@@ -5,6 +5,15 @@
  * @author JUSTIN XU
  */
 
+// 市场活动表单
+export const MarkActivityEnum = {
+  name: '请输入活动名称',
+  beginDate: '请选择开始日期',
+  endDate: '请选择结束日期',
+  departmentName: '请选择所属部门',
+  description: '请输入备注说明',
+};
+
 // 联系人表单
 export const ContactsEnum = {
   name: '请输入姓名',
