@@ -7,11 +7,22 @@
 
 // 市场活动表单
 export const MarkActivityEnum = {
+  // 必填
   name: '请输入活动名称',
   beginDate: '请选择开始日期',
   endDate: '请选择结束日期',
   departmentName: '请选择所属部门',
-  description: '请输入备注说明',
+  description: '请输入活动说明',
+  // 可选
+  status: '请选择活动状态',
+  sourceType: '请选择活动类型',
+  budgetCost: '请输入活动成本',
+  budgetRevenue: '请输入预期收入',
+  budgetPeopleNumber: '请输入邀请人数',
+  effect: '请输入预期响应',
+  actualPeopleNumber: '请输入实际人数',
+  actualCost: '请输入实际成本',
+  executeDetail: '请输入备注',
 };
 
 // 联系人表单

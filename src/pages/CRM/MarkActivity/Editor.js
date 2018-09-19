@@ -172,7 +172,7 @@ class Editor extends React.Component {
             />
           </DateTimePicker>
           <NavInputItem
-            leftText="部门"
+            leftText="所属部门"
             onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {

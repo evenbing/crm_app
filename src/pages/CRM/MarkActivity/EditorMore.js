@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
+import moment from 'moment';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
 
@@ -13,26 +14,23 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import { MarkActivityEnum } from '../../../constants/form';
+import { CenterText } from '../../../components/Styles/Form';
+import { routers } from '../../../constants';
+import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/enum';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { formatDate } from '../../../utils/base';
+import MarkActivityStore from '../../../logicStores/markActivity';
+import Toast from '../../../utils/toast';
+
+const formatDateType = 'yyyy-MM-dd hh:mm';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
 `;
 
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
 const RightText = CenterText.extend`
   color: ${theme.textColor};
 `;
-
-const NavItemStyle = {
-  leftWidth: moderateScale(113),
-  height: 44,
-  showNavIcon: true,
-};
 
 class EditorMore extends React.Component {
   constructor(props) {
@@ -49,7 +47,7 @@ class EditorMore extends React.Component {
             description,
           },
         },
-      }, 
+      },
     } = props;
     this.state = {
       name,
@@ -58,7 +56,9 @@ class EditorMore extends React.Component {
       departmentId,
       departmentName,
       status: null,
+      statusName: null,
       sourceType: null,
+      sourceTypeName: null,
       description,
       budgetCost: null,
       budgetRevenue: null,
@@ -75,7 +75,58 @@ class EditorMore extends React.Component {
     });
   }
 
-  onPressRight = () => alert('finish');
+  onPressRight = () => {
+    const {
+      state: {
+        name,
+        beginDate,
+        endDate,
+        departmentId,
+        description,
+        status,
+        sourceType,
+        budgetCost,
+        budgetRevenue,
+        budgetPeopleNumber,
+        effect,
+        actualPeopleNumber,
+        actualCost,
+        executeDetail,
+      },
+      props: {
+        navigation: {
+          navigate,
+        },
+      },
+    } = this;
+    try {
+      if (!name) throw new Error(MarkActivityEnum.name);
+      if (!beginDate) throw new Error(MarkActivityEnum.beginDate);
+      if (!endDate) throw new Error(MarkActivityEnum.endDate);
+      if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
+      if (!description) throw new Error(MarkActivityEnum.description);
+      MarkActivityStore.createMarkActivityReq({
+        name,
+        beginDate: moment(beginDate).format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss'),
+        departmentId,
+        description,
+        status,
+        sourceType,
+        budgetCost,
+        budgetRevenue,
+        budgetPeopleNumber,
+        effect,
+        actualPeopleNumber,
+        actualCost,
+        executeDetail,
+      }, () => {
+        navigate(routers.markActivity);
+      });
+    } catch (error) {
+      Toast.showError(error.message);
+    }
+  };
 
   getLeftStyle = (placeholder, width = 110) => {
     return {
@@ -99,9 +150,11 @@ class EditorMore extends React.Component {
         endDate,
         departmentId,
         departmentName,
-        status,
-        sourceType,
         description,
+        status,
+        statusName,
+        sourceType,
+        sourceTypeName,
         budgetCost,
         budgetRevenue,
         budgetPeopleNumber,
@@ -109,6 +162,11 @@ class EditorMore extends React.Component {
         actualPeopleNumber,
         actualCost,
         executeDetail,
+      },
+      props: {
+        navigation: {
+          navigate,
+        },
       },
     } = this;
     return (
@@ -131,17 +189,68 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="活动状态"
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: status,
+              typeEnum: MarketActivityStatus,
+              callback: (key, value) => {
+                this.setState({
+                  status: key,
+                  statusName: value,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择活动状态</CenterText>
+
+              <CenterText active={status && statusName}>
+                {
+                  (status && statusName) ? statusName : MarkActivityEnum.status
+                }
+              </CenterText>
             }
-            {...NavItemStyle}
+            isLast
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
+            center={
+              <CenterText active={departmentId && departmentName}>
+                {
+                  (departmentId && departmentName) ? departmentName : MarkActivityEnum.departmentName
+                }
+              </CenterText>
+            }
+            isLast
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="活动类型"
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: sourceType,
+              typeEnum: MarketActivityTypes,
+              callback: (key, value) => {
+                this.setState({
+                  sourceType: key,
+                  sourceTypeName: value,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择活动类型</CenterText>
+              <CenterText active={sourceType && sourceTypeName}>
+                { (sourceType && sourceTypeName) ? sourceTypeName : MarkActivityEnum.sourceType }
+              </CenterText>
             }
-            {...NavItemStyle}
+            isLast
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="活动说明"
@@ -153,68 +262,108 @@ class EditorMore extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
-              placeholder="请输入活动说明"
+              value={description}
+              onChangeText={description => this.setState({ description })}
+              placeholder={MarkActivityEnum.description}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>
           <TitleItem text="计划信息" />
-          <NavInputItem
-            leftText="开始日期"
-            center={
-              <CenterText>请选择开始日期</CenterText>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  beginDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="结束日期"
-            center={
-              <CenterText>请选择结束日期</CenterText>
+          >
+            <NavInputItem
+              leftText="开始日期"
+              needPress={false}
+              center={
+                <CenterText active={beginDate}>
+                  {beginDate || MarkActivityEnum.beginDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDate(date, formatDateType)}`,
+                })
             }
-            {...NavItemStyle}
-          />
+          >
+            <NavInputItem
+              leftText="结束日期"
+              needPress={false}
+              center={
+                <CenterText active={endDate}>
+                  {endDate || MarkActivityEnum.endDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavInputItem
             leftText="活动成本"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.budgetCost,
+              value: budgetCost,
+              onChangeText: budgetCost => this.setState({ budgetCost }),
+            })}
             right={
               <RightText>元</RightText>
             }
           />
           <NavInputItem
             leftText="预期收入"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.budgetRevenue,
+              value: budgetRevenue,
+              onChangeText: budgetRevenue => this.setState({ budgetRevenue }),
+            })}
             right={
               <RightText>元</RightText>
             }
           />
           <NavInputItem
             leftText="邀请人数"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.budgetPeopleNumber,
+              value: budgetPeopleNumber,
+              onChangeText: budgetPeopleNumber => this.setState({ budgetPeopleNumber }),
+            })}
           />
           <NavInputItem
             leftText="预期响应"
-            {...this.getLeftStyle('请输入金额')}
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.effect,
+              value: effect,
+              onChangeText: effect => this.setState({ effect }),
+            })}
           />
           <TitleItem text="实际信息" />
           <NavInputItem
             leftText="实际人数"
-            {...this.getLeftStyle('请输入人数')}
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.actualPeopleNumber,
+              value: actualPeopleNumber,
+              onChangeText: actualPeopleNumber => this.setState({ actualPeopleNumber }),
+            })}
           />
           <NavInputItem
             leftText="实际成本"
-            {...this.getLeftStyle('请输入金额')}
-            right={
-              <RightText>元</RightText>
-            }
-          />
-          <NavInputItem
-            leftText="实际收入"
-            {...this.getLeftStyle('请输入金额')}
-            right={
-              <RightText>元</RightText>
-            }
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.actualCost,
+              value: actualCost,
+              onChangeText: actualCost => this.setState({ actualCost }),
+            })}
           />
           <TitleItem text="其它信息" />
-          <NavInputItem
+          {/* <NavInputItem
             leftText="负责人"
             center={
               <CenterText>请选择负责人</CenterText>
@@ -262,7 +411,7 @@ class EditorMore extends React.Component {
               <CenterText>请选择最近跟进时间</CenterText>
             }
             {...NavItemStyle}
-          />
+          /> */}
           <NavInputItem
             leftText="备注"
             center={<View />}
@@ -272,7 +421,9 @@ class EditorMore extends React.Component {
             <TextareaView
               rowSpan={5}
               bordered
-              placeholder="请输入备注说明"
+              value={executeDetail}
+              onChangeText={(executeDetail) => { this.setState({ executeDetail }); }}
+              placeholder={MarkActivityEnum.executeDetail}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>

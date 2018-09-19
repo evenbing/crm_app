@@ -4,19 +4,32 @@ import { Container, List, ListItem, Left, Right, Icon, Text } from 'native-base'
 
 const TypePicker = (props) => {
   const {
-    state: {
-      data,
-      onSelectItem,
+    navigation: {
+      state: {
+        params: {
+          selectedKey,
+          typeEnum,
+          callback,
+        },
+      },
+      goBack,
     },
-  } = props.navigation.state.params;
+  } = props;
   return (
     <Container>
       <List>
         {
-          Object.keys(data).map(key => (
-            <ListItem onPress={() => onSelectItem(key, data[key])}>
+          Object.keys(typeEnum).map(key => (
+            <ListItem
+              key={key}
+              selected={key === selectedKey}
+              onPress={() => {
+                goBack();
+                callback(key, typeEnum[key]);
+              }}
+            >
               <Left>
-                <Text>{data[key]}</Text>
+                <Text>{typeEnum[key]}</Text>
               </Left>
               <Right>
                 <Icon name="arrow-forward" />
@@ -41,8 +54,6 @@ TypePicker.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  data: PropTypes.instanceOf(Object).isRequired,
-  onSelectItem: PropTypes.func.isRequired,
 };
 
 export default TypePicker;
