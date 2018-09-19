@@ -35,10 +35,10 @@ class PriceList extends React.Component {
     this.getData();
   }
   onToggleSwitch = ({ item, index }) => {
-    debugger;
+    PriceListModel.updatePriceActiveStatus({ item, index });
   };
   onPressItem = ({ item }) => {
-    this.props.navigation.navigate(routers.priceDetailList, { item });
+    this.props.navigation.navigate(routers.priceProductList, { item });
   };
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = PriceListModel.priceList;

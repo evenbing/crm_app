@@ -7,8 +7,10 @@
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
-  getPriceDetailList,
   getPriceList,
+  updatePriceToActive,
+  updatePriceToInActive,
+  getPriceProductList,
 } from '../service/price';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -19,7 +21,6 @@ useStrict(true);
 class PriceListStore {
   // 获取价格表
   @observable priceList = initFlatList;
-
   // 价格详情列表
   @observable priceProductList = initFlatList;
 
@@ -58,28 +59,33 @@ class PriceListStore {
   }
 
   // 切换是否激活
-  // @action async updateFollowPrice({ id }) {
-  //   try {
-  //     if (!id) throw new Error('id 不为空');
-  //     // const {
-  //     //   contact = {},
-  //     // } = await getContactDetails({ id });
-  //     // runInAction(() => {
-  //     //   this.contactDetails = { ...contact };
-  //     // });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+  @action async updatePriceActiveStatus({ item }) {
+    try {
+      const { id, isActive } = item;
+      if (!id) throw new Error('id 不为空');
+      let data;
+      if (isActive) { // 当为激活则执行关闭操作
+        data = await updatePriceToInActive({ id });
+      } else {
+        data = await updatePriceToActive({ id });
+      }
+      if (data.errors.length) throw new Error(data.errors[0].message);
+      runInAction(() => {
+        this.getPriceListReq();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 
-  // 查看价格表
-  @action async getPriceDetailListReq({ id }) {
+  // 查看价格产品表
+  @action async getPriceProductListReq({ id }) {
     try {
       this.priceProductList = initFlatList;
       const {
         priceProductList = [],
         errors = [],
-      } = await getPriceDetailList({ id });
+      } = await getPriceProductList({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.priceProductList.list = [...priceProductList];
@@ -92,86 +98,6 @@ class PriceListStore {
       });
     }
   }
-
-  // 标准价格表
-  // @action async getStandardPriceListReq({ pageNumber = 1, ...restProps } = {}) {
-  //   try {
-  //     if (pageNumber === 1) {
-  //       this.standardPriceList.refreshing = true;
-  //     } else {
-  //       this.standardPriceList.loadingMore = true;
-  //     }
-  //     const {
-  //       result = [],
-  //       totalCount = 0,
-  //       errors = [],
-  //     } = await getPriceList({ pageNumber, ...restProps });
-  //     if (errors.length) throw new Error(errors[0].message);
-  //     // debugger;
-  //     runInAction(() => {
-  //       this.standardPriceList.total = totalCount;
-  //       this.standardPriceList.pageNumber = pageNumber;
-  //
-  //       if (pageNumber === 1) {
-  //         this.standardPriceList.list = [...result];
-  //       } else {
-  //         this.standardPriceList.list = this.standardPriceList.list.concat(result);
-  //       }
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   } finally {
-  //     runInAction(() => {
-  //       this.standardPriceList.refreshing = false;
-  //       this.standardPriceList.loadingMore = false;
-  //     });
-  //   }
-  // }
-
-  // 详情
-  // @action async getContactDetailsReq({ id }) {
-  //   try {
-  //     if (!id) throw new Error('id 不为空');
-  //     const {
-  //       contact = {},
-  //     } = await getContactDetails({ id });
-  //     runInAction(() => {
-  //       this.contactDetails = { ...contact };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
-  //
-  // // 新增
-  // @action async createContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await createContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
-  //
-  // // 编辑
-  // @action async updateContactReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await updateContact(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       this.contactDetails = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
 }
 
 export default new PriceListStore();

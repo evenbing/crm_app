@@ -36,7 +36,7 @@ export function getProductClazzList({
 export function getProductList({
   isMyFollow,
   keyword,
-  status = true,
+  status = 1,
 } = {}) {
   return post({
     method: 'api.customerrelations.product.find',

@@ -36,10 +36,6 @@ class ProductListStore {
         errors = [],
       } = await getProductClazzList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
-      // result.forEach(async (v) => {
-      //   const data = await getProductList();
-      //   debugger;
-      // });
       runInAction(() => {
         this.productList.total = totalCount;
         this.productList.pageNumber = pageNumber;

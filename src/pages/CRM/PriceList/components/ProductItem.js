@@ -53,8 +53,8 @@ const ProductItem = ({
         size={80}
       />
       <ContentView>
-        <TitleText> {item.comment} </TitleText>
-        <PriceText> {item.setPrice} </PriceText>
+        <TitleText>{item.productName || '--'}</TitleText>
+        <PriceText>标准价格：¥{item.setPrice}</PriceText>
       </ContentView>
       <StatusText
         color={item.isActive ? theme.primaryColor : theme.borderColor}

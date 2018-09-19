@@ -12,7 +12,7 @@ import FlatListTable from '../../../components/FlatListTable';
 import PriceListModel from '../../../logicStores/priceList';
 
 @observer
-class PriceDetailList extends React.Component {
+class PriceProductList extends React.Component {
   componentDidMount() {
     this.getData();
   }
@@ -23,7 +23,7 @@ class PriceDetailList extends React.Component {
         state: { params: { item = {} } },
       },
     } = this.props;
-    PriceListModel.getPriceDetailListReq({ id: item.id });
+    PriceListModel.getPriceProductListReq({ id: item.id });
   };
 
   render() {
@@ -48,7 +48,7 @@ class PriceDetailList extends React.Component {
   }
 }
 
-PriceDetailList.navigationOptions = ({ navigation }) => {
+PriceProductList.navigationOptions = ({ navigation }) => {
   const {
     goBack,
     state: { params },
@@ -63,7 +63,7 @@ PriceDetailList.navigationOptions = ({ navigation }) => {
   });
 };
 
-PriceDetailList.propTypes = {
+PriceProductList.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -77,4 +77,4 @@ PriceDetailList.propTypes = {
   }).isRequired,
 };
 
-export default PriceDetailList;
+export default PriceProductList;

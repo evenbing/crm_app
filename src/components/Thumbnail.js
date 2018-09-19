@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../constants';
 import { isAndroid } from '../utils/utils';
-import defaultAvatar from '../img/default_avatar.png';
+import defaultImage from '../img/404.png';
 
 function getRound(size) {
   return (isAndroid ? size * 2 : `${size / 2}`);
@@ -32,7 +32,7 @@ const Thumbnail = ({
     <AvatarImg
       style={style}
       size={size}
-      source={imgUri ? { uri: imgUri } : (source || defaultAvatar)}
+      source={imgUri ? { uri: imgUri } : (source || defaultImage)}
       round={round}
       resizeMode={resizeMode}
       borderRadius={borderRadius}

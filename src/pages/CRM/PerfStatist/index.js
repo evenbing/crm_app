@@ -65,7 +65,7 @@ class PerfStatist extends React.Component {
   renderSection = () => {
     const {
       tabMap: { list, selectedIndex },
-      salesSumMap: { completedSalesSum, expectSalesSum, funnelSalesSum },
+      salesSumMap,
       salesRankingList,
       salesRankMap: { total, averAmount },
       refreshing,
@@ -73,9 +73,9 @@ class PerfStatist extends React.Component {
     } = PrefStatistModel;
     const salesTotalProps = {
       list: [
-        { title: '漏斗总值', text: `${funnelSalesSum}元` },
-        { title: '预计完成', text: `${expectSalesSum}元` },
-        { title: '完成总值', text: `${completedSalesSum}元` },
+        { title: '漏斗总值', text: `${salesSumMap.funnelSalesSum}元` },
+        { title: '预计完成', text: `${salesSumMap.expectSalesSum}元` },
+        { title: '完成总值', text: `${salesSumMap.completedSalesSum}元` },
       ],
     };
     const rankTotalProps = {
@@ -133,6 +133,7 @@ class PerfStatist extends React.Component {
         />
         <SalesFunnel
           list={salesStatisticList}
+          salesSumMap={salesSumMap}
         />
         <TitleHeader
           containerStyle={{
