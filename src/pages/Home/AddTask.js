@@ -18,6 +18,10 @@ import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
 import { ActionSheet } from '../../components/Modal';
 import { RemindTypes, ModuleTypes } from '../../constants/enum';
+import { TaskEnum } from '../../constants/form';
+import { CenterText } from '../../components/Styles/Form';
+
+const formatDateType = 'yyyy-MM-dd hh:mm';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -116,12 +120,18 @@ class AddTask extends Component {
   render() {
     const {
       name,
-      dateTimePickerVisible,
-      deadline,
-      remindActionSheetVisible,
-      remindType,
-      moduleActionSheetVisible,
-      moduleTypeLabel,
+      startTime,
+      endTime,
+      moduleType,
+      moduleId,
+      comment,
+      needNotice,
+      noticeTime,
+      longitudeAndLatitude,
+      locationInfo,
+      isPrivate,
+      principal,
+      userIds,
     } = this.state;
 
     const remindActionSheetProps = {
@@ -145,19 +155,32 @@ class AddTask extends Component {
           <Divder height={9} />
           <NavInputItem
             leftText="任务主题"
-            inputProps={{
-              placeholder: '请输入姓名',
-              fontSize: theme.moderateScale(16),
-              onChangeText: this.onChangeTaskName,
+            {...theme.getLeftStyle({
+              placeholder: TaskEnum.name,
               value: name,
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <Divder height={10} />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDate(date, formatDateType)}`,
+                })
+            }
+          >
+            <NavInputItem
+              leftText="截止时间"
+              needPress={false}
+              center={
+                <CenterText active={endDate}>
+                  {endDate || TaskEnum.endDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavView
             leftText="截止时间"
             rightText={deadline}

@@ -5,6 +5,24 @@
  * @author JUSTIN XU
  */
 
+// 新增任务表单
+export const TaskEnum = {
+  type: '日程任务的类型',
+  name: '请输入名称',
+  startTime: '请选择开始时间',
+  endTime: '请选择截止时间',
+  moduleType: '请选择业务类型',
+  moduleId: '请选择业务类型',
+  comment: '请输入备注',
+  needNotice: '请选择是否开启提醒',
+  noticeTime: '请选择提醒时间',
+  longitudeAndLatitude: '位置信息的经纬度',
+  locationInfo: '位置信息',
+  isPrivate: '请选择是否私密',
+  principal: '请选择责任人',
+  userIds: '请选择参与用户',
+};
+
 // 市场活动表单
 export const MarkActivityEnum = {
   // 必填

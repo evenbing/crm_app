@@ -105,16 +105,21 @@ class Editor extends React.Component {
   };
   render() {
     const {
-      navigation: { navigate },
-    } = this.props;
-    const {
-      name,
-      beginDate,
-      endDate,
-      departmentId,
-      departmentName,
-      description,
-    } = this.state;
+      props: {
+        navigation: {
+          push,
+          navigate,
+        },
+      },
+      state: {
+        name,
+        beginDate,
+        endDate,
+        departmentId,
+        departmentName,
+        description,
+      },
+    } = this;
     return (
       <ContainerView
         bottomPadding
@@ -214,7 +219,7 @@ class Editor extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => navigate(routers.markActivityEditorMore, {
+          onPress={() => push(routers.markActivityEditorMore, {
             name,
             beginDate,
             endDate,

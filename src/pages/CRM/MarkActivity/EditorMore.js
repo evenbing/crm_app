@@ -95,7 +95,7 @@ class EditorMore extends React.Component {
       },
       props: {
         navigation: {
-          navigate,
+          pop,
         },
       },
     } = this;
@@ -121,7 +121,7 @@ class EditorMore extends React.Component {
         actualCost,
         executeDetail,
       }, () => {
-        navigate(routers.markActivity);
+        pop(2);
       });
     } catch (error) {
       Toast.showError(error.message);
