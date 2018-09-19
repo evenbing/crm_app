@@ -1,7 +1,7 @@
 
 /**
- * @component ProductItem.jsm.js
- * @description ProductItem
+ * @component ProductItem.js
+ * @description 产品条目组件
  * @time 2018/8/07
  * @author zhao
  */
@@ -18,7 +18,7 @@ import ProductItem from './ProductItem';
 
 const ContainerView = styled(View)`
   padding: 0 ${moderateScale(15)}px;
-  background-color: #fff;
+  background-color: ${theme.whiteColor};
   margin-bottom: ${moderateScale(10)};
 `;
 
@@ -50,7 +50,7 @@ const ItemView = styled.View`
 const ItemText = styled.Text`
   font-family: ${theme.fontMedium};
   font-size: ${moderateScale(14)};
-  color: #18B548;
+  color: ${theme.primaryColor};
   background-color: transparent;
   margin-left: ${moderateScale(5)};
 `;
@@ -58,12 +58,30 @@ const ListView = styled.View``;
 
 class ProductItemList extends React.PureComponent {
   render() {
-    const { list } = this.props.data;
+    const {
+      item: {
+        name = null,
+        parentId = null,
+        products = [],
+        children = [],
+      },
+    } = this.props;
     return (
       <ContainerView>
         <HeadView>
-          <LeftView><LeftText>耗材（{list.length}）</LeftText></LeftView>
+          <LeftView><LeftText>{name}（{products.length}）</LeftText></LeftView>
           <RightView>
+            {
+              parentId ? (
+                <ItemView>
+                  <Thumbnail
+                    source={require('../../../../img/productList/next.png')}
+                    size={16}
+                  />
+                  <ItemText>消耗</ItemText>
+                </ItemView>
+            ) : null
+            }
             <ItemView>
               <Thumbnail
                 source={require('../../../../img/productList/next.png')}
@@ -71,17 +89,21 @@ class ProductItemList extends React.PureComponent {
               />
               <ItemText>消耗</ItemText>
             </ItemView>
-            <ItemView style={{ marginLeft: moderateScale(20) }}>
-              <Thumbnail
-                source={require('../../../../img/productList/prev.png')}
-                size={16}
-              />
-              <ItemText>单品</ItemText>
-            </ItemView>
+            {
+              children.length ? (
+                <ItemView style={{ marginLeft: moderateScale(20) }}>
+                  <Thumbnail
+                    source={require('../../../../img/productList/prev.png')}
+                    size={16}
+                  />
+                  <ItemText>单品</ItemText>
+                </ItemView>
+              ) : null
+            }
           </RightView>
         </HeadView>
         <ListView>
-          { list.map((item, index) => <ProductItem key={index} data={item} />) }
+          { products.map((item, index) => <ProductItem key={index} data={item} />) }
         </ListView>
       </ContainerView>
     );
@@ -89,12 +111,13 @@ class ProductItemList extends React.PureComponent {
 }
 
 ProductItemList.defaultProps = {
+  item: {},
   isLast: false,
   onPress: () => null,
 };
 
 ProductItemList.propTypes = {
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
+  item: PropTypes.objectOf(PropTypes.any),
   isLast: PropTypes.bool,
   onPress: PropTypes.func,
 };

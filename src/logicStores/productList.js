@@ -8,7 +8,6 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getProductClazzList,
-  getProductList,
 } from '../service/product';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
@@ -18,7 +17,7 @@ useStrict(true);
 @autobind
 class ProductListStore {
   // 产品列表
-  @observable productList = initFlatList;
+  @observable productList = { ...initFlatList, topList: [] };
   // 价格详情列表
   // @observable priceProductList = initFlatList;
 
@@ -36,14 +35,31 @@ class ProductListStore {
         errors = [],
       } = await getProductClazzList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
+      // 一维数组变成数形
+      const topList = result.filter(v => !v.parentId);
+      const twoList = result.filter(v => !!v.parentId);
+      const threeList = [];
+      if (twoList.length) {
+        twoList.forEach((v) => {
+          const index = topList.findIndex(item => item.id === v.parentId);
+          if (index > -1) {
+            topList[index].children = v;
+          } else {
+            threeList.push(v);
+          }
+        });
+      }
+      debugger;
       runInAction(() => {
         this.productList.total = totalCount;
         this.productList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
           this.productList.list = [...result];
+          this.productList.topList = [...topList];
         } else {
           this.productList.list = this.productList.list.concat(result);
+          this.productList.topList = this.productList.topList.concat(result);
         }
       });
     } catch (e) {
