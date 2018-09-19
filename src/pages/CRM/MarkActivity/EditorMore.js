@@ -12,6 +12,7 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+import { MarkActivityEnum } from '../../../constants/form';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -36,14 +37,29 @@ const NavItemStyle = {
 class EditorMore extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      navigation: {
+        state: {
+          params: {
+            name,
+            beginDate,
+            endDate,
+            departmentId,
+            departmentName,
+            description,
+          },
+        },
+      }, 
+    } = props;
     this.state = {
-      name: null,
-      beginDate: null,
-      endDate: null,
-      departmentId: null,
+      name,
+      beginDate,
+      endDate,
+      departmentId,
+      departmentName,
       status: null,
       sourceType: null,
-      description: null,
+      description,
       budgetCost: null,
       budgetRevenue: null,
       budgetPeopleNumber: null,
@@ -82,6 +98,7 @@ class EditorMore extends React.Component {
         beginDate,
         endDate,
         departmentId,
+        departmentName,
         status,
         sourceType,
         description,
@@ -106,14 +123,11 @@ class EditorMore extends React.Component {
           <TitleItem text="基本信息" />
           <NavInputItem
             leftText="活动名称"
-            {...this.getLeftStyle('请输入活动名称')}
-            {...NavItemStyle}
-            inputProps={{
-              placeholder: '请输入姓名',
-              fontSize: theme.moderateScale(16),
-              onChangeText: () => { this.setState({ name }); },
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.name,
               value: name,
-            }}
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <NavInputItem
             leftText="活动状态"

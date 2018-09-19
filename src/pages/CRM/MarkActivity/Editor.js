@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
+import moment from 'moment';
 import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
 
@@ -33,12 +34,6 @@ const ListView = styled.View`
 // const RightText = CenterText.extend`
 //   color: ${theme.textColor};
 // `;
-
-const NavItemStyle = {
-  leftWidth: moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -83,8 +78,8 @@ class Editor extends React.Component {
       if (!description) throw new Error(MarkActivityEnum.description);
       MarkActivityStore.createMarkActivityReq({
         name,
-        beginDate,
-        endDate,
+        beginDate: moment(beginDate).format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss'),
         departmentId,
         description,
       }, () => {
@@ -132,14 +127,11 @@ class Editor extends React.Component {
           <TitleItem text="必填信息" />
           <NavInputItem
             leftText="活动名称"
-            {...this.getLeftStyle('请输入活动名称')}
-            {...NavItemStyle}
-            inputProps={{
-              placeholder: '请输入姓名',
-              fontSize: theme.moderateScale(16),
-              onChangeText: () => { this.setState({ name }); },
+            {...theme.getLeftStyle({
+              placeholder: MarkActivityEnum.name,
               value: name,
-            }}
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <DateTimePicker
             onConfirm={
@@ -222,7 +214,14 @@ class Editor extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => navigate(routers.markActivityEditorMore)}
+          onPress={() => navigate(routers.markActivityEditorMore, {
+            name,
+            beginDate,
+            endDate,
+            departmentId,
+            departmentName,
+            description,
+          })}
         />
       </ContainerView>
     );
