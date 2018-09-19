@@ -202,9 +202,7 @@ class EditorMore extends React.Component {
             center={
 
               <CenterText active={status && statusName}>
-                {
-                  (status && statusName) ? statusName : MarkActivityEnum.status
-                }
+                { (status && statusName) ? statusName : MarkActivityEnum.status }
               </CenterText>
             }
             isLast

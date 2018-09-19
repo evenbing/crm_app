@@ -6,33 +6,33 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
+import { ListItem, Left, Text, Right, Icon } from 'native-base';
 import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TouchableView from '../../../components/TouchableView';
+// import TouchableView from '../../../components/TouchableView';
 import FlatListTable from '../../../components/FlatListTable';
-import Thumbnail from '../../../components/Thumbnail';
+// import Thumbnail from '../../../components/Thumbnail';
 
 import OrganizationModel from '../../../logicStores/organization';
 
-const ListItemView = styled(TouchableView)`
-  padding: ${theme.moderateScale(11)}px 0;
-  flex-direction: row;
-  justify-content: space-between;
-  border-bottom-width: 1px;
-  border-bottom-color: ${theme.borderColor};
-`;
+// const ListItemView = styled(TouchableView)`
+//   padding: ${theme.moderateScale(11)}px 0;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   border-bottom-width: 1px;
+//   border-bottom-color: ${theme.borderColor};
+// `;
 
-const TextView = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: ${theme.textColor};
-`;
+// const TextView = styled.Text`
+//   font-size: ${theme.moderateScale(16)};
+//   color: ${theme.textColor};
+// `;
 
 useStrict(true);
 
@@ -77,20 +77,31 @@ class SelectionDepartment extends React.Component {
     const { id } = this.state;
     const { item, index } = itemProps;
     return (
-      <ListItemView
-        key={item.id}
+      <ListItem
+        selected={id === item.id}
         onPress={() => this.onPressItem({ item, index })}
       >
-        <TextView>{item.name}</TextView>
-        {
-          id === item.id ? (
-            <Thumbnail
-              source={require('../../../img/modal/ok.png')}
-              size={16}
-            />
-          ) : null
-        }
-      </ListItemView>
+        <Left>
+          <Text>{item.name}</Text>
+        </Left>
+        <Right>
+          <Icon name="arrow-forward" />
+        </Right>
+      </ListItem>
+      // <ListItemView
+      //   key={item.id}
+      //   onPress={() => this.onPressItem({ item, index })}
+      // >
+      //   <TextView>{item.name}</TextView>
+      //   {
+      //     id === item.id ? (
+      //       <Thumbnail
+      //         source={require('../../../img/modal/ok.png')}
+      //         size={16}
+      //       />
+      //     ) : null
+      //   }
+      // </ListItemView>
     );
   };
   render() {
@@ -107,8 +118,8 @@ class SelectionDepartment extends React.Component {
       loadingMore,
       flatListStyle: {
         backgroundColor: theme.whiteColor,
-        paddingLeft: theme.moderateScale(14),
-        paddingRight: theme.moderateScale(14),
+        // paddingLeft: theme.moderateScale(14),
+        // paddingRight: theme.moderateScale(14),
       },
     };
     return (
