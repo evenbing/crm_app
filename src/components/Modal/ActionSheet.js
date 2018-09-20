@@ -128,6 +128,7 @@ class ActionSheet extends React.PureComponent {
     } = this.props;
     return (
       <ModalView
+        animationType="fade"
         isVisible={isVisible}
         onBackdropPress={onPressClose}
       >

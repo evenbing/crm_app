@@ -15,6 +15,7 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import CompanyHeader from '../../../components/MemberList/CompanyHeader';
 import MemberList from '../../../components/MemberList/MemberList';
+import TeamStore from '../../../logicStores/team';
 
 // static source
 import HeaderIcon from '../../../img/test/mine_head.png';
@@ -36,12 +37,20 @@ class TeamMembers extends React.Component {
       { active: false, name: '幼儿园', url: HeaderIcon },
     ],
   };
+
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+
+    TeamStore.getTeamListReq({
+      moduleId,
+      moduleType,
+    });
   }
+
   onPressRight = () => alert('finish');
+
   onPressItem = ({ item }) => {
     // TODO 判断当前的激活list
     const { list } = this.state;
@@ -51,6 +60,7 @@ class TeamMembers extends React.Component {
       list,
     });
   };
+
   renderHeader = () => {
     return (
       <CompanyHeader
@@ -59,6 +69,7 @@ class TeamMembers extends React.Component {
       />
     );
   };
+
   render() {
     const {
       state: {
@@ -82,7 +93,7 @@ class TeamMembers extends React.Component {
   }
 }
 
-TeamMembers.navigationOptions = ({ navigation, screenProps }) => ({
+TeamMembers.navigationOptions = ({ navigation }) => ({
   title: '团队成员',
   headerLeft: (
     <LeftBackIcon

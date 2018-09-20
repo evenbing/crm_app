@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, List, ListItem, Left, Right, Text } from 'native-base';
+import { List, ListItem, Left, Right, Text } from 'native-base';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import Thumbnail from '../../components/Thumbnail';
 import { ContainerView } from '../../components/Drawer/Styles';
+import { ModuleTypes } from '../../constants/enum';
 
-const TypePicker = (props) => {
+const ModuleTypePicker = (props) => {
   const {
     navigation: {
       state: {
         params: {
           selectedKey,
-          typeEnum,
           callback,
         },
       },
@@ -23,35 +23,36 @@ const TypePicker = (props) => {
       <CommStatusBar />
       <List>
         {
-          Object.keys(typeEnum).map(key => (
-            <ListItem
-              key={key}
-              onPress={() => {
-                goBack();
-                callback(key, typeEnum[key]);
-              }}
-            >
-              <Left>
-                <Text>{typeEnum[key]}</Text>
-              </Left>
-              <Right>
-                {
-                  key === selectedKey &&
+          Object.keys(ModuleTypes).map((key) => {
+            const value = ModuleTypes[key];
+            return (
+              <ListItem
+                selected={key === selectedKey}
+                key={key}
+                onPress={() => {
+                  goBack();
+                  callback(key, value);
+                }}
+              >
+                <Left>
+                  <Text>{value}</Text>
+                </Left>
+                <Right>
                   <Thumbnail
-                    source={require('../../img/modal/ok.png')}
+                    source={require('../../img/ico_right_arrow.png')}
                     size={16}
                   />
-                }
-              </Right>
-            </ListItem>
-          ))
+                </Right>
+              </ListItem>
+            );
+          })
         }
       </List>
     </ContainerView>
   );
 };
 
-TypePicker.propTypes = {
+ModuleTypePicker.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -65,7 +66,7 @@ TypePicker.propTypes = {
   }).isRequired,
 };
 
-TypePicker.navigationOptions = ({ navigation }) => {
+ModuleTypePicker.navigationOptions = ({ navigation }) => {
   const { title = '请选择' } = navigation.state.params;
   return ({
     title,
@@ -77,4 +78,4 @@ TypePicker.navigationOptions = ({ navigation }) => {
   });
 };
 
-export default TypePicker;
+export default ModuleTypePicker;

@@ -1,8 +1,8 @@
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-13 23:12:01
- * @Last Modified by: ShiQuan
- * @Last Modified time: 2018-09-15 10:19:40
+ * @Last Modified by: Edmond.Shi
+ * @Last Modified time: 2018-09-20 18:17:14
  */
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -17,10 +17,11 @@ import { theme, routers } from '../../constants';
 import RemarkInput from '../../components/RemarkInput';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
-import { ActionSheet } from '../../components/Modal';
-import { RemindTypes, ModuleTypes } from '../../constants/enum';
+import { FormActionSheet } from '../../components/Modal';
+import { RemindTypes, ModuleTypes, NoticeTypes } from '../../constants/enum';
 import { TaskEnum } from '../../constants/form';
 import { CenterText } from '../../components/Styles/Form';
+import ImageCollector from '../../components/ImageCollector';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -47,23 +48,31 @@ const ItemTitle = styled.Text`
   color: #373737;
 `;
 
-const remindTypeLabels = RemindTypes.map(item => ({ leftText: item.label }));
-const moduleTypeLabels = ModuleTypes.map(item => ({ leftText: item.label }));
+// const remindTypeLabels = RemindTypes.map(item => ({ leftText: item.label }));
+// const moduleTypeLabels = ModuleTypes.map(item => ({ leftText: item.label }));
 
 @observer
 class AddTask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      dateTimePickerVisible: false,
-      deadline: '',
-      remindActionSheetVisible: false,
-      remindType: RemindTypes[0].label,
-      noticeTime: RemindTypes[0].value,
-      moduleActionSheetVisible: false,
-      moduleTypeLabel: ModuleTypes[0].label,
-      moduleType: ModuleTypes[0].value,
+      name: null,
+      startTime: null,
+      endTime: null,
+      moduleType: null,
+      moduleTypeName: null,
+      moduleId: null,
+      comment: null,
+      needNotice: null,
+      noticeTime: null,
+      noticeTimeName: null,
+      longitudeAndLatitude: null,
+      locationInfo: null,
+      isPrivate: null,
+      principal: null,
+      principalName: null,
+      userIds: null,
+      userIdNames: null,
     };
   }
 
@@ -125,6 +134,7 @@ class AddTask extends Component {
         startTime,
         endTime,
         moduleType,
+        moduleTypeName,
         moduleId,
         comment,
         needNotice,
@@ -134,26 +144,14 @@ class AddTask extends Component {
         locationInfo,
         isPrivate,
         principal,
+        principalName,
         userIds,
+        userIdNames,
       },
       props: {
-        navigate,
+        navigation: { navigate },
       },
     } = this;
-
-    const remindActionSheetProps = {
-      isVisible: remindActionSheetVisible,
-      onPressClose: this.onPressRemindActionSheetClose,
-      onPressItem: this.onPressRemindActionSheetItem,
-      list: remindTypeLabels,
-    };
-
-    const moduleActionSheetProps = {
-      isVisible: moduleActionSheetVisible,
-      onPressClose: this.onPressModuleActionSheetClose,
-      onPressItem: this.onPressModuleActionSheetItem,
-      list: moduleTypeLabels,
-    };
 
     return (
       <ContainerView>
@@ -173,7 +171,7 @@ class AddTask extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDate(date, formatDateType)}`,
+                  endTime: `${formatDate(date, formatDateType)}`,
                 })
             }
           >
@@ -181,64 +179,83 @@ class AddTask extends Component {
               leftText="截止时间"
               needPress={false}
               center={
-                <CenterText active={endDate}>
-                  {endDate || TaskEnum.endDate}
+                <CenterText active={endTime}>
+                  {endTime || TaskEnum.endTime}
                 </CenterText>
               }
               {...theme.navItemStyle}
             />
           </DateTimePicker>
           <Divder height={10} />
-          <NavInputItem
-            leftText="提醒"
-            onPress={() => navigate(routers.typePicker, {
-              selectedKey: noticeTime,
-              typeEnum: ModuleTypes,
-              callback: (key, value) => {
-                this.setState({
-                  noticeTime: key,
-                  noticeTimeName: value,
-                });
-              },
-            })}
-            center={
-              <CenterText active={noticeTime && noticeTimeName}>
-                {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
-              </CenterText>
-            }
-            isLast
-            {...theme.navItemStyle}
-          />
-          <Divder height={1} marginHorizontal={15} />
-          <NavView leftText="负责人" rightText="无" />
-          <Divder height={1} marginHorizontal={15} />
-          <NavView leftText="参与人" rightText="无" />
-          <Divder height={10} />
+          <FormActionSheet
+            typeEnum={NoticeTypes}
+            onConfirm={(item) => {
+              this.setState({
+                noticeTime: item.key,
+                noticeTimeName: item.value,
+              });
+            }}
+          >
+            <NavInputItem
+              leftText="提醒"
+              needPress={false}
+              center={
+                <CenterText active={noticeTime && noticeTimeName}>
+                  {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
+          <Divder height={1} />
           <NavInputItem
             leftText="关联业务"
-            onPress={() => navigate(routers.typePicker, {
-              selectedKey: noticeTime,
-              typeEnum: ModuleTypes,
-              callback: (key, value) => {
-                this.setState({
-                  noticeTime: key,
-                  noticeTimeName: value,
-                });
-              },
-            })}
+            onPress={() => {
+              navigate(routers.moduleTypePicker, {
+                selectedKey: moduleType,
+                callback: (key, value) => {
+                  this.setState({
+                    moduleType: key,
+                    moduleTypeName: value,
+                  });
+                },
+              });
+            }}
             center={
-              <CenterText active={noticeTime && noticeTimeName}>
-                {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+              <CenterText active={moduleType && moduleTypeName}>
+                {(moduleType && moduleTypeName) ? moduleTypeName : TaskEnum.moduleType}
               </CenterText>
             }
             isLast
             {...theme.navItemStyle}
           />
-          <ActionSheet {...moduleActionSheetProps} />
+          <NavView
+            leftText="负责人"
+            onPress={() => {
+              navigate(routers.teamMembers);
+            }}
+            center={
+              <CenterText active={principal && principalName}>
+                {(principal && principalName) ? principalName : TaskEnum.principal}
+              </CenterText>
+          }
+            {...theme.navItemStyle}
+          />
+          <Divder height={1} marginHorizontal={15} />
+          <NavView
+            leftText="参与人"
+            center={
+              <CenterText active={userIds && userIdNames}>
+                {(userIds && userIdNames) ? userIdNames : TaskEnum.userIds}
+              </CenterText>
+          }
+            {...theme.navItemStyle}
+          />
           <Divder height={1} marginHorizontal={15} />
           <ItemTitle>描述</ItemTitle>
           <RemarkInput />
           <ItemTitle>图片</ItemTitle>
+          <ImageCollector onConfirm={() => {}} />
         </ScrollView>
       </ContainerView>
     );

@@ -189,7 +189,7 @@ export const ModuleTypes = {
 // 提醒类型
 // label：显示的给用户
 // value：用于上传（单位为分钟）
-export const RemindTypes = {
+export const NoticeTypes = {
   0: '准时',
   10: '提前10分钟',
   30: '提前30分钟',

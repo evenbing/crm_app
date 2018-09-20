@@ -70,6 +70,8 @@ export default {
   queryBusiness: 'app.tabView.root.model.queryBusiness',
   selectYear: 'app.tabView.root.model.selectYear',
   typePicker: 'app.tabView.root.model.typePicker',
+  moduleTypePicker: 'app.tabView.root.model.moduleTypePicker',
+  
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
   teamMembers: 'app.tabView.root.card.teamMembers',

@@ -93,6 +93,8 @@ import ReceivableRecordCreateScreen from './pages/CRM/ReceivableRecord/Create';
 import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/EditorMore';
 // root page -> Card -> RelatedDocs
 import RelatedDocs from './pages/Card/RelatedDocs';
+// root page -> Modal 
+import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -113,6 +115,13 @@ const HomeRouteConfig = {
   [routers.notificationList]: { screen: NotificationList },
   [routers.addSchedule]: { screen: AddSchedule },
   [routers.addTask]: { screen: AddTask },
+
+  // common
+  [routers.typePicker]: { screen: TypePickerScreen },
+  [routers.teamMembers]: { screen: TeamMembersScreen },
+  [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
+  [routers.teamRoles]: { screen: TeamRolesScreen },
+  [routers.moduleTypePicker]: { screen: ModuleTypePickerScreen },
 };
 
 const HomeNavigatorConfig = {
