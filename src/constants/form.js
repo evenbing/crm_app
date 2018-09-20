@@ -105,3 +105,12 @@ export const ReceivableRecordEnum = {
   comment: '请输入备注说明',
   // more
 };
+
+// 修改产品
+export const ProductListEnum = {
+  price: '请输入销售单价',
+  number: '请输入商品数量',
+  discount: '请输入折扣',
+  totalMoney: '请输入总价',
+  comment: '请输入备注，十字以内',
+};

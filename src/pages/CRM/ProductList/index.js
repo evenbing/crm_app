@@ -1,24 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-import { useStrict, toJS } from 'mobx/';
+import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
-// import { moderateScale } from '../../../utils/scale';
-// import { theme } from '../../../constants';
+import { routers } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
-// import { HorizontalDivider } from '../../../components/Styles/Divider';
 import FlatListTable from '../../../components/FlatListTable';
 import ProductItemList from './components/ProductItemList';
 
 import ProductListModel from '../../../logicStores/productList';
-
-// const NavListView = styled.View`
-//   margin-top: ${moderateScale(10)};
-//   margin-bottom: ${moderateScale(10)};
-// `;
 
 useStrict(true);
 
@@ -27,9 +19,10 @@ class ProductList extends React.Component {
   componentDidMount() {
     this.getData();
   }
-  // onNavHandler = (path) => {
-  //   // this.props.navigation.navigate(path);
-  // };
+
+  onPressItem = ({ item }) => {
+    this.props.navigation.navigate(routers.modifyProductPrice, { item });
+  };
 
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = ProductListModel.productList;
@@ -43,26 +36,33 @@ class ProductList extends React.Component {
   };
 
   renderItem = (itemProps) => {
-    // const { item } = itemProps;
+    const {
+      onPressSelectIndex,
+    } = ProductListModel;
     return (
-      <ProductItemList {...itemProps} />
+      <ProductItemList
+        onPressSelectIndex={onPressSelectIndex}
+        onPressItem={this.onPressItem}
+        {...itemProps}
+      />
     );
   };
 
   render() {
     const {
-      productList: { list, topList, refreshing, loadingMore },
+      productList: { list, refreshing, loadingMore },
+      topList,
     } = ProductListModel;
     const flatProps = {
       data: topList,
       renderItem: this.renderItem,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
+      keyExtractor: item => item.id,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,
     };
-    console.log(toJS(topList));
     return (
       <ContainerView
         bottomPadding

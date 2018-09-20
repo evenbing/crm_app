@@ -75,7 +75,7 @@ class SalesFunnel extends React.PureComponent {
     </ItemView>
   );
   render() {
-    const { list, salesSumMap } = this.props;
+    const { list } = this.props;
     return (
       <ContainerView>
         <FunnelView>
@@ -86,14 +86,9 @@ class SalesFunnel extends React.PureComponent {
               text: `${_.salesPhaseName}:${_.sumPlanAmount}/${_.salesPhaseCount}个`,
             }))
           }
-          {/* {this.renderFunnelItem({ text: '初步接洽：10000009／1个' })} */}
-          {/* {this.renderFunnelItem({ width: 260, backgroundColor: '#7AD0DF', text: '需求确认：10000009／1个' })} */}
-          {/* {this.renderFunnelItem({ width: 220, backgroundColor: '#72B3E0', text: '方案报价：1009／1个' })} */}
-          {/* {this.renderFunnelItem({ width: 180, backgroundColor: '#7291E0', text: '谈判审：1009／1个' })} */}
-          {/* {this.renderFunnelItem({ width: 140, backgroundColor: '#5374C7', text: '赢单：1009／1个' })} */}
         </FunnelView>
-        {this.renderNavItem('漏斗总值', `${salesSumMap.completedSalesSum}元／${salesSumMap.funnelSalesSum}个'`, 1)}
-        {this.renderNavItem('预计完成', `${salesSumMap.expectSalesSum}元`, 0)}
+        {/* {this.renderNavItem('漏斗总值', `${salesSumMap.completedSalesSum}元／${salesSumMap.funnelSalesSum}个'`, 1)} */}
+        {/* {this.renderNavItem('预计完成', `${salesSumMap.expectSalesSum}元`, 0)} */}
       </ContainerView>
     );
   }
@@ -101,7 +96,6 @@ class SalesFunnel extends React.PureComponent {
 
 SalesFunnel.defaultProps = {
   list: [],
-  salesSumMap: {},
 };
 
 SalesFunnel.propTypes = {
@@ -109,7 +103,6 @@ SalesFunnel.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
-  salesSumMap: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SalesFunnel;

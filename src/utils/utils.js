@@ -79,9 +79,9 @@ export function getFooterBottom() {
 // 防止按钮多次触发
 export const NoDoublePress = {
   lastPressTime: 1,
-  onPress(callback) {
+  onPress(callback, time = 250) {
     const curTime = new Date().getTime();
-    if (curTime - this.lastPressTime > 500) {
+    if (curTime - this.lastPressTime > time) {
       this.lastPressTime = curTime;
       callback();
     }

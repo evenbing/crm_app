@@ -12,6 +12,14 @@ export function nativeGoBack() {
   NativeModules.system && NativeModules.system.navTo('BACK');
 }
 
+// 递归生产二维数组
+export const getArrayByPid = (list = [], pid) => {
+  return list.filter(obj => obj.parentId === pid).map(obj => ({
+    ...obj,
+    children: getArrayByPid(list, obj.id),
+  }));
+};
+
 /** 根据数组对象排序 默认升序
  * @param prop 属性值
  * */
