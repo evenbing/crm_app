@@ -1,6 +1,6 @@
 /*
- * @Author: Edmond.Shi 
- * @Date: 2018-09-20 13:36:45 
+ * @Author: Edmond.Shi
+ * @Date: 2018-09-20 13:36:45
  * @Last Modified by: Edmond.Shi
  * @Last Modified time: 2018-09-20 15:05:42
  */
@@ -80,8 +80,6 @@ class FormActionSheet extends React.PureComponent {
   }
 
   onShowModal = () => {
-    console.log('onShowModal');
-    
     this.setState({ isVisible: true });
   }
 
@@ -156,7 +154,7 @@ class FormActionSheet extends React.PureComponent {
       );
     });
   };
-  
+
   renderFooter = () => (
     <FooterView
       onPress={this.onHideModal}

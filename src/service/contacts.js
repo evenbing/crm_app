@@ -82,7 +82,7 @@ export function getContactList({
  *   departmentName 部门
  *   weibo 微博
  *   postCode 邮政编码
- *   sex 性别  must
+ *   sex 性别
  *   birthDate 出生日期
  * }
  * @return Promise<Object>

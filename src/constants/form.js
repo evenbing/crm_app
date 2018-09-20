@@ -54,10 +54,10 @@ export const ContactsEnum = {
   // more
   sex: '请选择性别',
   birthDate: '请选择出生日期',
-  email: '请输入邮编',
+  email: '请输入邮箱',
   weibo: '请输入微博',
   location: '请选择省份',
-  postCode: '请输入手机',
+  postCode: '请输入邮编',
   description: '请输入备注说明',
 };
 

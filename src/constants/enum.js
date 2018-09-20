@@ -124,8 +124,8 @@ export const Departments = {
 
 // 性别枚举==
 export const SexTypes = {
-  0: '女',
-  1: '男',
+  FEMALE: '女',
+  MALE: '男',
 };
 
 // 销售线索--跟进状态
