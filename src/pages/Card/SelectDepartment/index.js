@@ -22,7 +22,12 @@ import Thumbnail from '../../../components/Thumbnail';
 import OrganizationModel from '../../../logicStores/organization';
 
 const ListItemView = styled(TouchableView)`
-  padding: ${theme.moderateScale(11)}px ${theme.moderateScale(14)}px;
+  padding: 0 ${theme.moderateScale(14)}px;
+  background-color: ${theme.whiteColor};
+`;
+
+const ListItemWrapper = styled.View`
+  padding: ${theme.moderateScale(11)}px 0;
   flex-direction: row;
   justify-content: space-between;
   border-bottom-width: 1px;
@@ -81,15 +86,17 @@ class SelectionDepartment extends React.Component {
         key={item.id}
         onPress={() => this.onPressItem({ item, index })}
       >
-        <TextView>{item.name}</TextView>
-        {
-          id === item.id ? (
-            <Thumbnail
-              source={require('../../../img/modal/ok.png')}
-              size={16}
-            />
-          ) : null
-        }
+        <ListItemWrapper>
+          <TextView>{item.name}</TextView>
+          {
+            id === item.id ? (
+              <Thumbnail
+                source={require('../../../img/modal/ok.png')}
+                size={16}
+              />
+            ) : null
+          }
+        </ListItemWrapper>
       </ListItemView>
     );
   };
@@ -105,9 +112,6 @@ class SelectionDepartment extends React.Component {
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,
-      flatListStyle: {
-        backgroundColor: theme.whiteColor,
-      },
     };
     return (
       <ContainerView

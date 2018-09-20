@@ -80,7 +80,10 @@ class NavInputItem extends React.PureComponent {
     if (React.isValidElement(center)) return center;
     if (showInput) {
       return (
-        <TextInput {...inputProps} />
+        <TextInput
+          textPadding="0"
+          {...inputProps}
+        />
       );
     }
     return null;

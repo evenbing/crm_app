@@ -44,14 +44,8 @@ export default {
     height: 44,
   }),
   navItemStyle: {
-    leftWidth: moderateScale(83),
+    leftWidth: 80,
     height: 44,
     showNavIcon: true,
-  },
-  pickerStyle: {
-    paddingLeft: 0,
-    paddingRight: moderateScale(120),
-    fontSize: moderateScale(16),
-    width: '100%',
   },
 };
