@@ -7,12 +7,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
+import PropTypes from 'prop-types';
 import DateTimePicker from '../../components/DateTimePicker';
 
 import NavView from '../../components/NavItem';
 import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
-import { theme } from '../../constants';
+import { theme, routers } from '../../constants';
 import RemarkInput from '../../components/RemarkInput';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
@@ -119,20 +120,26 @@ class AddTask extends Component {
 
   render() {
     const {
-      name,
-      startTime,
-      endTime,
-      moduleType,
-      moduleId,
-      comment,
-      needNotice,
-      noticeTime,
-      longitudeAndLatitude,
-      locationInfo,
-      isPrivate,
-      principal,
-      userIds,
-    } = this.state;
+      state: {
+        name,
+        startTime,
+        endTime,
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        noticeTimeName,
+        longitudeAndLatitude,
+        locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+      },
+      props: {
+        navigate,
+      },
+    } = this;
 
     const remindActionSheetProps = {
       isVisible: remindActionSheetVisible,
@@ -181,32 +188,51 @@ class AddTask extends Component {
               {...theme.navItemStyle}
             />
           </DateTimePicker>
-          <NavView
-            leftText="截止时间"
-            rightText={deadline}
-            onPress={() => this.setDateTimePickerVisible(true)}
-          />
-          <DateTimePicker
-            isVisible={dateTimePickerVisible}
-            onConfirm={this.onConfirmDateTimePicker}
-            onCancel={this.onCancelDateTimePicker}
-          />
           <Divder height={10} />
-          <NavView
+          <NavInputItem
             leftText="提醒"
-            rightText={remindType}
-            onPress={this.onShowRemindActionSheet}
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: noticeTime,
+              typeEnum: ModuleTypes,
+              callback: (key, value) => {
+                this.setState({
+                  noticeTime: key,
+                  noticeTimeName: value,
+                });
+              },
+            })}
+            center={
+              <CenterText active={noticeTime && noticeTimeName}>
+                {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+              </CenterText>
+            }
+            isLast
+            {...theme.navItemStyle}
           />
-          <ActionSheet {...remindActionSheetProps} />
           <Divder height={1} marginHorizontal={15} />
           <NavView leftText="负责人" rightText="无" />
           <Divder height={1} marginHorizontal={15} />
           <NavView leftText="参与人" rightText="无" />
           <Divder height={10} />
-          <NavView
+          <NavInputItem
             leftText="关联业务"
-            rightText={moduleTypeLabel}
-            onPress={this.onShowModuleActionSheet}
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: noticeTime,
+              typeEnum: ModuleTypes,
+              callback: (key, value) => {
+                this.setState({
+                  noticeTime: key,
+                  noticeTimeName: value,
+                });
+              },
+            })}
+            center={
+              <CenterText active={noticeTime && noticeTimeName}>
+                {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+              </CenterText>
+            }
+            isLast
+            {...theme.navItemStyle}
           />
           <ActionSheet {...moduleActionSheetProps} />
           <Divder height={1} marginHorizontal={15} />
@@ -226,5 +252,18 @@ AddTask.navigationOptions = () => ({
   ),
 });
 
+AddTask.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default AddTask;

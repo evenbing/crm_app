@@ -178,43 +178,21 @@ export const TimeTypes = {
 // 业务类型
 // label：显示的给用户
 // value：用于上传
-export const ModuleTypes = [
-  { value: 'CUSTOMER', label: '客户' },
-  { value: 'CONTACT', label: '联系人' },
-  { value: 'ACTIVITY', label: '市场活动' },
-  { value: 'LEADS', label: '销售线索' },
-  { value: 'OPPORTUNITY', label: '销售机会' },
-];
+export const ModuleTypes = {
+  CUSTOMER: '客户',
+  CONTACT: '联系人',
+  ACTIVITY: '市场活动',
+  LEADS: '销售线索',
+  OPPORTUNITY: '销售机会',
+};
 
 // 提醒类型
 // label：显示的给用户
 // value：用于上传（单位为分钟）
-export const RemindTypes = [
-  { label: '准时', value: 0 },
-  { label: '提前10分钟', value: 10 },
-  { label: '提前30分钟', value: 30 },
-  { label: '提前1小时', value: 60 },
-  { label: '提前1天', value: 24 * 60 },
-];
-// export const RemindTypes = {
-//   PUNCTUALITY: {
-//     label: '准时',
-//     value: 0,
-//   },
-//   AHEADOF10MINUTES: {
-//     label: '提前10分钟',
-//     value: 10,
-//   },
-//   AHEADOF30MINUTES: {
-//     label: '提前30分钟',
-//     value: 30,
-//   },
-//   AHEADOF1HOUR: {
-//     label: '提前1小时',
-//     value: 60,
-//   },
-//   AHEADOF1DAY: {
-//     label: '提前1天',
-//     value: 24 * 60,
-//   },
-// };
+export const RemindTypes = {
+  0: '准时',
+  10: '提前10分钟',
+  30: '提前30分钟',
+  60: '提前1小时',
+  1440: '提前1天',
+};

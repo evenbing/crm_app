@@ -22,7 +22,7 @@ import Thumbnail from '../../../components/Thumbnail';
 import OrganizationModel from '../../../logicStores/organization';
 
 const ListItemView = styled(TouchableView)`
-  padding: ${theme.moderateScale(11)}px 0;
+  padding: ${theme.moderateScale(11)}px ${theme.moderateScale(14)}px;
   flex-direction: row;
   justify-content: space-between;
   border-bottom-width: 1px;
@@ -107,8 +107,6 @@ class SelectionDepartment extends React.Component {
       loadingMore,
       flatListStyle: {
         backgroundColor: theme.whiteColor,
-        paddingLeft: theme.moderateScale(14),
-        paddingRight: theme.moderateScale(14),
       },
     };
     return (
