@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
@@ -26,9 +26,12 @@ const ImagePager = ({
             image,
           } = item;
           return (
-            <TouchableOpacity key={key} style={{ backgroundColor: 'transparent' }}>
-              <Image style={{ flex: 1 }} source={image} />
-            </TouchableOpacity>
+            <View key={key}>
+              <TouchableOpacity style={{ backgroundColor: 'transparent' }}>
+                <Image style={{ flex: 1 }} source={image} />
+              </TouchableOpacity>
+            </View>
+            
           );
         })
       }
