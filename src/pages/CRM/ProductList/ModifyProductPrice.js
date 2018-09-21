@@ -4,20 +4,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useStrict } from 'mobx';
+import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
-
-import NavItem from '../../../components/NavItem/index';
-import NavInputItem from '../../../components/NavInputItem/index';
+import { theme } from '../../../constants';
+import Toast from '../../../utils/toast';
+import { ProductListEnum } from '../../../constants/form';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
-import { theme } from '../../../constants/index';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+import { ContainerScrollView } from '../../../components/Styles/Layout';
+import NavItem from '../../../components/NavItem';
+import Thumbnail from '../../../components/Thumbnail';
+import NavInputItem from '../../../components/NavInputItem';
 
-const ContainerView = styled.ScrollView`
-  flex: 1;
-`;
+import ProductListModel from '../../../logicStores/productList';
 
 const MainView = styled.View`
   flex: 1;
@@ -32,15 +33,7 @@ const HeaderView = styled.View`
 `;
 
 const ItemView = styled.View`
-  width: ${moderateScale(120)};
-  height: ${moderateScale(120)};
   margin-bottom: ${moderateScale(15)};
-`;
-
-const ItemImage = styled.View`
-  width: 100%;
-  height: 100%;
-  background-color: #0000ff;
 `;
 
 const TextView = styled.View``;
@@ -65,23 +58,78 @@ const ListView = styled.View`
 
 useStrict(true);
 
-const NavInputItemStyle = {
-  leftTextStyle: {
-    color: '#373737',
-    width: moderateScale(80),
-  },
-  height: 44,
-};
-
 @observer
 class ModifyProductPrice extends React.Component {
+  state = {
+    price: null,
+    number: null,
+    discount: null,
+    totalMoney: null,
+    comment: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
-  onPressRight = () => alert('finish');
+  onPressRight = () => {
+    const {
+      state: {
+        price,
+        number,
+        discount,
+        totalMoney,
+        comment,
+      },
+      props: {
+        navigation: { goBack },
+      },
+    } = this;
+    try {
+      if (!price) throw new Error(ProductListEnum.price);
+      if (!number) throw new Error(ProductListEnum.number);
+      if (!discount) throw new Error(ProductListEnum.discount);
+      if (!totalMoney) throw new Error(ProductListEnum.totalMoney);
+      if (!comment) throw new Error(ProductListEnum.comment);
+      debugger;
+      ProductListModel.updateProductReq({
+        price,
+        number,
+        discount,
+        totalMoney,
+        comment,
+      }, () => {
+        goBack();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item)) return;
+    this.setState({ ...item });
+  };
   render() {
+    const {
+      state: {
+        price,
+        number,
+        discount,
+        totalMoney,
+        comment,
+      },
+      props: {
+        navigation: { state: { params: { item = {} } = {} } },
+      },
+    } = this;
+
     const navItemProps = {
       height: 44,
       leftText: '价格表价格',
@@ -89,7 +137,7 @@ class ModifyProductPrice extends React.Component {
         fontFamily: theme.fontRegular,
         color: '#373737',
       },
-      rightText: '¥99999.00',
+      rightText: `¥${item.price}`,
       rightTextStyle: {
         fontFamily: theme.fontRegular,
         color: '#AEAEAE',
@@ -98,62 +146,86 @@ class ModifyProductPrice extends React.Component {
       isLast: false,
     };
 
-    const TableList = [
+    const tableList = [
       {
         leftText: '销售单价',
-        inputProps: {
-          placeholder: '请输入销售单价',
-        },
+        ...theme.getLeftStyle({
+          placeholder: ProductListEnum.price,
+          value: typeof price !== 'string' ? String(price) : price,
+          onChangeText: price => this.setState({ price }),
+        }),
       },
       {
         leftText: '数量',
-        inputProps: {
-          placeholder: '请输入商品数量',
-        },
+        ...theme.getLeftStyle({
+          placeholder: ProductListEnum.number,
+          value: number,
+          onChangeText: number => this.setState({ number }),
+        }),
       },
       {
         leftText: '折扣(%)',
-        inputProps: {
-          placeholder: '请输入折扣',
-        },
+        ...theme.getLeftStyle({
+          placeholder: ProductListEnum.discount,
+          value: discount,
+          onChangeText: discount => this.setState({ discount }),
+        }),
       },
       {
         leftText: '总价',
-        inputProps: {
-          placeholder: '请输入总价',
-        },
+        ...theme.getLeftStyle({
+          placeholder: ProductListEnum.totalMoney,
+          value: totalMoney,
+          onChangeText: totalMoney => this.setState({ totalMoney }),
+        }),
       },
       {
         leftText: '备注',
-        inputProps: {
-          placeholder: '请输入备注，十字以内',
-        },
+        ...theme.getLeftStyle({
+          placeholder: ProductListEnum.comment,
+          value: comment,
+          maxLength: 10,
+          onChangeText: comment => this.setState({ comment }),
+        }),
       },
     ];
-
     return (
-      <ContainerView>
+      <ContainerScrollView
+        bottomPadding
+      >
         <CommStatusBar />
         <MainView>
           <HeaderView>
-            <ItemView><ItemImage /></ItemView>
-            <TextView style={{ marginBottom: moderateScale(5) }}><ItemNameText>电脑主机</ItemNameText></TextView>
-            <TextView><ItemPriceText>标准价格：¥9000.00</ItemPriceText></TextView>
+            <ItemView>
+              <Thumbnail
+                size={120}
+              />
+            </ItemView>
+            <TextView
+              style={{
+                marginBottom: moderateScale(5),
+              }}
+            >
+              <ItemNameText>{item.name}</ItemNameText>
+            </TextView>
+            <TextView><ItemPriceText>标准价格：¥{item.price}</ItemPriceText></TextView>
           </HeaderView>
 
           <ListView>
             <NavItem {...navItemProps} />
             {
-              TableList.map((obj, index) => <NavInputItem key={index} {...obj} {...NavInputItemStyle} />)
+              tableList.map(item => (
+                <NavInputItem key={item.leftText} {...item} />
+              ))
             }
           </ListView>
         </MainView>
-      </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
 
-ModifyProductPrice.navigationOptions = ({ navigation, screenProps }) => ({
+ModifyProductPrice.navigationOptions = ({ navigation }) => ({
   title: '产品目录',
   headerLeft: (
     <LeftBackIcon

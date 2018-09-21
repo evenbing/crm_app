@@ -4,12 +4,14 @@
  * @time 2018/9/11
  * @author JUSTIN XU
  */
-import { action, observable, runInAction, useStrict } from 'mobx/';
+import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getProductClazzList,
+  updateProduct,
 } from '../service/product';
 import Toast from '../utils/toast';
+import { getArrayByPid } from '../utils/base';
 import { initFlatList } from './initState';
 
 useStrict(true);
@@ -18,8 +20,28 @@ useStrict(true);
 class ProductListStore {
   // 产品列表
   @observable productList = { ...initFlatList, topList: [] };
-  // 价格详情列表
-  // @observable priceProductList = initFlatList;
+  // 产品列表选中
+  @observable selectList = [];
+
+  @computed get topList() {
+    let { topList } = this.productList;
+    this.selectList.forEach((v) => {
+      topList = [...topList[v].children];
+    });
+    return topList;
+  }
+
+  // 切换选择list
+  @action onPressSelectIndex(type, index) {
+    if (type === 'up') {
+      this.selectList.pop();
+      return null;
+    }
+    if (type === 'down') {
+      this.selectList.push(index);
+      return null;
+    }
+  }
 
   // 获取产品列表
   @action async getProductClazzListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -35,21 +57,7 @@ class ProductListStore {
         errors = [],
       } = await getProductClazzList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
-      // 一维数组变成数形
-      const topList = result.filter(v => !v.parentId);
-      const twoList = result.filter(v => !!v.parentId);
-      const threeList = [];
-      if (twoList.length) {
-        twoList.forEach((v) => {
-          const index = topList.findIndex(item => item.id === v.parentId);
-          if (index > -1) {
-            topList[index].children = v;
-          } else {
-            threeList.push(v);
-          }
-        });
-      }
-      debugger;
+      const topList = getArrayByPid(result);
       runInAction(() => {
         this.productList.total = totalCount;
         this.productList.pageNumber = pageNumber;
@@ -59,7 +67,7 @@ class ProductListStore {
           this.productList.topList = [...topList];
         } else {
           this.productList.list = this.productList.list.concat(result);
-          this.productList.topList = this.productList.topList.concat(result);
+          this.productList.topList = this.productList.topList.concat(topList);
         }
       });
     } catch (e) {
@@ -72,20 +80,19 @@ class ProductListStore {
     }
   }
 
-  // 切换是否激活
-  // @action async updateFollowPrice({ id }) {
-  //   try {
-  //     if (!id) throw new Error('id 不为空');
-  //     // const {
-  //     //   contact = {},
-  //     // } = await getContactDetails({ id });
-  //     // runInAction(() => {
-  //     //   this.contactDetails = { ...contact };
-  //     // });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+  // 编辑产品
+  @action async updateProductReq(options, callback) {
+    try {
+      await updateProduct(options);
+      runInAction(() => {
+        debugger;
+        this.getProductClazzListReq();
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
 }
 
 export default new ProductListStore();

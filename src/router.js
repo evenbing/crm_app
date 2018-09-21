@@ -93,7 +93,7 @@ import ReceivableRecordCreateScreen from './pages/CRM/ReceivableRecord/Create';
 import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/EditorMore';
 // root page -> Card -> RelatedDocs
 import RelatedDocs from './pages/Card/RelatedDocs';
-// root page -> Modal 
+// root page -> Modal
 import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
@@ -274,7 +274,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

@@ -75,9 +75,6 @@ class Create extends React.Component {
   };
   render() {
     const {
-      props: {
-        navigation: { navigate },
-      },
       state: {
         name,
         companyName,
@@ -86,6 +83,9 @@ class Create extends React.Component {
         mobilePhone,
         departmentId,
         departmentName,
+      },
+      props: {
+        navigation: { navigate },
       },
     } = this;
     return (

@@ -54,10 +54,10 @@ export const ContactsEnum = {
   // more
   sex: '请选择性别',
   birthDate: '请选择出生日期',
-  email: '请输入邮编',
+  email: '请输入邮箱',
   weibo: '请输入微博',
   location: '请选择省份',
-  postCode: '请输入手机',
+  postCode: '请输入邮编',
   description: '请输入备注说明',
 };
 
@@ -104,4 +104,13 @@ export const ReceivableRecordEnum = {
   ownerId: '请选择负责人',
   comment: '请输入备注说明',
   // more
+};
+
+// 修改产品
+export const ProductListEnum = {
+  price: '请输入销售单价',
+  number: '请输入商品数量',
+  discount: '请输入折扣',
+  totalMoney: '请输入总价',
+  comment: '请输入备注，十字以内',
 };

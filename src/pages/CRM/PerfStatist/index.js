@@ -133,7 +133,6 @@ class PerfStatist extends React.Component {
         />
         <SalesFunnel
           list={salesStatisticList}
-          salesSumMap={salesSumMap}
         />
         <TitleHeader
           containerStyle={{

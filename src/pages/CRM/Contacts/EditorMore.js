@@ -10,7 +10,8 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import theme from '../../../constants/theme';
 import { ContactsEnum } from '../../../constants/form';
-import { SexTypeList } from '../../../constants/actionSheet';
+import { SelectType, SexTypes } from '../../../constants/enum';
+import { routers } from '../../../constants';
 import Toast from '../../../utils/toast';
 import { formatDate } from '../../../utils/base';
 
@@ -21,13 +22,13 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import { ActionSheet } from '../../../components/Modal';
+import { FormActionSheet } from '../../../components/Modal';
 import DateTimePicker from '../../../components/DateTimePicker';
 import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import ContactsModel from '../../../logicStores/contacts';
 
-const formatDateType = 'yyyy-MM-dd hh:mm';
+const formatDateType = 'yyyy-MM-dd hh:mm:ss';
 
 @observer
 class EditorMore extends React.Component {
@@ -35,6 +36,7 @@ class EditorMore extends React.Component {
     name: null,
     sex: {},
     weibo: null,
+    postCode: null,
     location: null,
     email: null,
     birthDate: null,
@@ -45,42 +47,68 @@ class EditorMore extends React.Component {
     mobilePhone: null,
     departmentId: null,
     departmentName: null,
-    // sex
-    sexVisible: false,
   };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
   onPressRight = () => {
     const {
-      name,
-      sex,
-      weibo,
-      location,
-      email,
-      birthDate,
-      description,
-      companyName,
-      jobTitle,
-      phoneNumber,
-      mobilePhone,
-      departmentId,
-      departmentName,
-    } = this.state;
+      state: {
+        name,
+        sex,
+        weibo,
+        postCode,
+        location,
+        email,
+        birthDate,
+        description,
+        companyName,
+        jobTitle,
+        phoneNumber,
+        mobilePhone,
+        departmentId,
+        departmentName,
+      },
+      props: {
+        navigation: { pop },
+      },
+    } = this;
     try {
-      debugger;
       if (!name) throw new Error(ContactsEnum.name);
-      if (!sex) throw new Error(ContactsEnum.sex);
       if (!companyName) throw new Error(ContactsEnum.companyName);
       if (!departmentId) throw new Error(ContactsEnum.departmentId);
-      const { item: { id } } = this.props.navigation.state.params;
+      const { item: { id } = {} } = this.props.navigation.state.params || {};
+      // 新增
+      if (!id) {
+        debugger;
+        ContactsModel.createContactReq({
+          name,
+          companyName,
+          jobTitle,
+          phoneNumber,
+          mobilePhone,
+          email,
+          location,
+          description,
+          departmentId,
+          departmentName,
+          weibo,
+          postCode,
+          sex: sex.name,
+          birthDate,
+        }, () => {
+          pop(2);
+        });
+        return;
+      }
       if (!id) throw new Error('id 不为空');
       ContactsModel.updateContactReq({
         id,
         name,
-        sex,
+        sex: sex.name,
         weibo,
         location,
         email,
@@ -97,16 +125,20 @@ class EditorMore extends React.Component {
       Toast.showError(e.message);
     }
   };
-  onToggleSexVisible = () => {
+  onPressSexItem = ({ key, value }) => {
     this.setState({
-      sexVisible: !this.state.sexVisible,
+      sex: { name: value, key },
     });
   };
-  onPressSexItem = ({ item, index }) => {
-    const { leftText } = item;
-    this.setState({
-      sex: { name: leftText, key: index },
-    });
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item)) return;
+    this.setState({ ...item });
   };
   render() {
     const {
@@ -117,6 +149,7 @@ class EditorMore extends React.Component {
         location,
         birthDate,
         email,
+        postCode,
         companyName,
         jobTitle,
         phoneNumber,
@@ -124,21 +157,16 @@ class EditorMore extends React.Component {
         departmentId,
         departmentName,
         description,
-        sexVisible,
+      },
+      props: {
+        navigation: { navigate },
       },
     } = this;
-    const actionSheetProps = {
-      isVisible: sexVisible,
-      onPressClose: this.onToggleSexVisible,
-      onPressItem: this.onPressSexItem,
-      list: SexTypeList,
-    };
     return (
       <ContainerScrollView
         bottomPadding
       >
         <CommStatusBar />
-        <ActionSheet {...actionSheetProps} />
         <HorizontalDivider
           height={9}
         />
@@ -152,18 +180,23 @@ class EditorMore extends React.Component {
               onChangeText: name => this.setState({ name }),
             })}
           />
-          <NavInputItem
-            leftText="性别"
-            onPress={this.onToggleSexVisible}
-            center={
-              <CenterText
-                active={sex.name}
-              >
-                {sex.name ? sex.name : ContactsEnum.sex}
-              </CenterText>
-            }
-            {...theme.navItemStyle}
-          />
+          <FormActionSheet
+            onConfirm={this.onPressSexItem}
+            typeEnum={SexTypes}
+          >
+            <NavInputItem
+              leftText="性别"
+              needPress={false}
+              center={
+                <CenterText
+                  active={sex.name}
+                >
+                  {sex.name ? sex.name : ContactsEnum.sex}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <DateTimePicker
             onConfirm={
               date =>
@@ -185,18 +218,38 @@ class EditorMore extends React.Component {
           </DateTimePicker>
           <NavInputItem
             leftText="公司名称"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.companyName,
-              value: companyName,
-              onChangeText: companyName => this.setState({ companyName }),
+            onPress={() => navigate(routers.customer, {
+              type: SelectType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  companyName: item.title,
+                });
+              },
             })}
+            center={
+              <CenterText active={companyName}>
+                { companyName || ContactsEnum.companyName }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>
+              <CenterText active={departmentId && departmentName}>
                 {
-                  (departmentId && departmentName) ? null : ContactsEnum.departmentName
+                  (departmentId && departmentName) ? departmentName : ContactsEnum.departmentName
                 }
               </CenterText>
             }
@@ -210,7 +263,6 @@ class EditorMore extends React.Component {
               onChangeText: jobTitle => this.setState({ jobTitle }),
             })}
             isLast
-            height={44}
           />
         </ListView>
         <TitleItem text="联系信息" />
@@ -255,7 +307,7 @@ class EditorMore extends React.Component {
             })}
           />
           <NavInputItem
-            leftText="邮编"
+            leftText="邮箱"
             {...theme.getLeftStyle({
               placeholder: ContactsEnum.email,
               value: email,
@@ -263,16 +315,18 @@ class EditorMore extends React.Component {
             })}
             isLast
           />
+          <NavInputItem
+            leftText="邮编"
+            {...theme.getLeftStyle({
+              placeholder: ContactsEnum.postCode,
+              value: postCode,
+              onChangeText: postCode => this.setState({ postCode }),
+            })}
+            isLast
+          />
         </ListView>
         <TitleItem text="其他信息" />
         <ListView>
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText>{ContactsEnum.departmentName}</CenterText>
-            }
-            {...theme.navItemStyle}
-          />
           <NavInputItem
             leftText="备注"
             center={<View />}
