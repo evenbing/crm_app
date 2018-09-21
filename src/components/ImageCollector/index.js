@@ -6,9 +6,10 @@ import ImagePicker from 'react-native-image-picker';
 import uuidv1 from 'uuid/v1';
 
 import addIcon from '../../img/add.png';
-import delIcon from '../../img/drawer/delete.png';
 import { theme } from '../../constants';
-import { width } from '../../utils/scale';
+import { KEY_ADD } from './Constants';
+import ImageItem from './components/ImageItem';
+import ImagePager from './components/ImagePager';
 
 const options = {
   title: 'Select Avatar',
@@ -28,56 +29,12 @@ const Container = styled.FlatList.attrs({
   padding: 0px ${theme.moderateScale(15)}px;
 `;
 
-const ImageView = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  background-color: #F5F5F5;
-  margin-right: ${theme.moderateScale(10)}px;
-  margin-bottom: ${theme.moderateScale(10)}px;
-`;
-
-const Image = styled.Image`
-  width: ${((width - theme.moderateScale(2 * 14) - (3 * theme.moderateScale(10))) / 4)}px;
-  height: ${((width - theme.moderateScale(2 * 14) - (3 * theme.moderateScale(10))) / 4)}px;
-`;
-
-const DeleteIconView = styled.TouchableOpacity`
-  width: ${theme.moderateScale(20)}px;
-  height: ${theme.moderateScale(20)}px;
-  border-radius: ${theme.moderateScale(10)}px;
-  background-color: transparent;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DeleteIcon = styled.Image`
-  width: ${theme.moderateScale(20)}px;
-  height: ${theme.moderateScale(20)}px;
-  border-radius: ${theme.moderateScale(10)}px;
-`;
-
-const KEY_ADD = 'KEY_ADD';
-
 class ImageCollector extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isVisible: false,
       data: [{
-        key: 1,
-        image: addIcon,
-      }, {
-        key: 2,
-        image: addIcon,
-      }, {
-        key: 3,
-        image: addIcon,
-      }, {
-        key: 4,
-        image: addIcon,
-      }, {
         key: KEY_ADD,
         image: addIcon,
       }],
@@ -94,8 +51,6 @@ class ImageCollector extends React.PureComponent {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         const d = this.state.data.map(item => item);
         const loc = this.state.data.length - 1;
         d.splice(loc, 0, {
@@ -109,26 +64,23 @@ class ImageCollector extends React.PureComponent {
     });
   }
 
+  onPressItem = () => {
+    this.setState({ isVisible: true });
+  }
+
+  onCloseModal = () => {
+    this.setState({ isVisible: false });
+  }
+
   keyExtractor = item => item.key
 
   renderItem =({ item }) => {
-    const {
-      key,
-      image,
-    } = item;
     return (
-      <ImageView
-        disabled={key !== KEY_ADD}
-        onPress={this.onPickImage}
-      >
-        {
-          key !== KEY_ADD &&
-          <DeleteIconView>
-            <DeleteIcon source={delIcon} />
-          </DeleteIconView>
-        }
-        <Image source={image} />
-      </ImageView>
+      <ImageItem 
+        item={item} 
+        onPressAdd={this.onPickImage} 
+        onPressItem={this.onPressItem}
+      />
     );
   }
 
@@ -137,9 +89,6 @@ class ImageCollector extends React.PureComponent {
       state: {
         data,
       },
-      props: {
-        onConfirm,
-      },
     } = this;
     return (
       <View>
@@ -147,6 +96,11 @@ class ImageCollector extends React.PureComponent {
           data={data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
+        />
+        <ImagePager
+          data={this.state.data.filter(item => item.key !== KEY_ADD)}
+          isVisible={this.state.isVisible}
+          onCloseModal={this.onCloseModal}
         />
       </View>
 
