@@ -5,6 +5,7 @@
  * @Last Modified time: 2018-09-20 18:17:14
  */
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
@@ -14,7 +15,6 @@ import NavView from '../../components/NavItem';
 import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme, routers } from '../../constants';
-import RemarkInput from '../../components/RemarkInput';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
 import { FormActionSheet } from '../../components/Modal';
@@ -22,6 +22,7 @@ import { RemindTypes, ModuleTypes, NoticeTypes } from '../../constants/enum';
 import { TaskEnum } from '../../constants/form';
 import { CenterText } from '../../components/Styles/Form';
 import ImageCollector from '../../components/ImageCollector';
+import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -41,12 +42,12 @@ const Divder = styled.View`
   background-color: #F6F6F6;
 `;
 
-const ItemTitle = styled.Text`
-  padding: ${moderateScale(11)}px ${moderateScale(15)}px;
-  font-family: ${theme.fontRegular};
-  font-size: ${moderateScale(16)};
-  color: #373737;
-`;
+// const ItemTitle = styled.Text`
+//   padding: ${moderateScale(11)}px ${moderateScale(15)}px;
+//   font-family: ${theme.fontRegular};
+//   font-size: ${moderateScale(16)};
+//   color: #373737;
+// `;
 
 // const remindTypeLabels = RemindTypes.map(item => ({ leftText: item.label }));
 // const moduleTypeLabels = ModuleTypes.map(item => ({ leftText: item.label }));
@@ -252,10 +253,29 @@ class AddTask extends Component {
             {...theme.navItemStyle}
           />
           <Divder height={1} marginHorizontal={15} />
-          <ItemTitle>描述</ItemTitle>
-          <RemarkInput />
-          <ItemTitle>图片</ItemTitle>
-          <ImageCollector onConfirm={() => {}} />
+
+          <NavInputItem
+            leftText="描述"
+            height={44}
+            center={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder="请输入备注说明"
+              placeholderTextColor={theme.textPlaceholderColor}
+            />
+          </TextareaGroup>
+          <NavInputItem
+            leftText="图片"
+            height={44}
+            center={<View />}
+          />
+          <ImageCollector onConfirm={() => { }} />
+          <View style={{ height: 50 }} />
         </ScrollView>
       </ContainerView>
     );

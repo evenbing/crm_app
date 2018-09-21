@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import NavView from '../../components/NavItem';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
-import { theme } from '../../constants';
-import RemarkInput from '../../components/RemarkInput';
+import { theme, routers } from '../../constants';
 import NavInputItem from '../../components/NavInputItem';
 import DateTimePicker from '../../components/DateTimePicker';
 import { CenterText } from '../../components/Styles/Form';
 import { formatDate } from '../../utils/base';
 import { TaskEnum } from '../../constants/form';
 import { FormActionSheet } from '../../components/Modal';
-import { NoticeTypes } from '../../constants/enum';
+import { NoticeTypes, ModuleTypes } from '../../constants/enum';
+import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -75,12 +75,13 @@ class AddSchedule extends Component {
   };
 
   render() {
-    const { 
+    const {
       state: {
         name,
         startTime,
         endTime,
         moduleType,
+        moduleTypeName,
         moduleId,
         comment,
         needNotice,
@@ -202,8 +203,25 @@ class AddSchedule extends Component {
           <Divder height={1} marginHorizontal={15} />
           <NavView leftText="重复规则" rightText="不重复" />
           <Divder height={1} marginHorizontal={15} />
-          <ItemTitle>描述</ItemTitle>
-          <RemarkInput />
+
+          <NavInputItem
+            leftText="描述"
+            height={44}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder="请输入备注说明"
+              placeholderTextColor={theme.textPlaceholderColor}
+            />
+          </TextareaGroup>
+          <NavInputItem
+            leftText="图片"
+            height={44}
+          />
           <ItemTitle>图片</ItemTitle>
         </ScrollView>
       </ContainerView>

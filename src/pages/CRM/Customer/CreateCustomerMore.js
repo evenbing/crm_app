@@ -6,8 +6,8 @@ import { ContainerScrollView } from '../../../components/Styles/Layout';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import TouchableView from '../../../components/TouchableView';
-import RemarkInput from '../../../components/RemarkInput';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
+import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 
 const ListView = styled.View`
   background: ${theme.whiteColor};
@@ -208,12 +208,20 @@ class CreateCustomerMore extends Component {
             {...NavItemStyle}
           />
         </ListView>
-        <TitleItem
-          text="备注"
-          fontSize={16}
-          color="#373737"
+        <NavInputItem
+          leftText="描述"
+          height={44}
         />
-        <RemarkInput />
+        <TextareaGroup>
+          <TextareaView
+            rowSpan={5}
+            bordered
+            value="comment"
+            onChangeText={comment => this.setState({ })}
+            placeholder="请输入备注说明"
+            placeholderTextColor={theme.textPlaceholderColor}
+          />
+        </TextareaGroup>
         <HorizontalDivider
           height={20}
         />
