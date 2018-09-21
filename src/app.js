@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 9,
     backgroundColor: '#fff',
-    paddingBottom: getFooterBottom(),
   },
 });
 

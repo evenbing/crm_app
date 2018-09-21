@@ -81,11 +81,15 @@ class DetailsHead extends React.PureComponent {
             marginTop={12}
             marginBottom={41}
           >
-            <PersonText>负责人: {item.ownerUserName}</PersonText>
-            <Thumbnail
-              source={require('../../../../img/crm/details/principalGo.png')}
-              size={15}
-            />
+            <PersonText>负责人: {item.ownerUserName || '--'}</PersonText>
+            {
+              item.ownerUserName ? (
+                <Thumbnail
+                  source={require('../../../../img/crm/details/principalGo.png')}
+                  size={15}
+                />
+              ) : null
+            }
           </ItemView>
         </ContainerView>
       </HeaderBack>

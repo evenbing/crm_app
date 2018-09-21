@@ -11,12 +11,12 @@ import { post } from '../utils/rpc';
  * @params options
  * {
  *  moduleType  模块类型  是  PRODUCT-产品,PACT-合同,CUSTOMER-客户,CONTACT-联系人,ACTIVITY-市场活动,LEADS-销售线索,OPPORTUNITY-销售机会,PRICE-价格,RECEIVABLE_PLAN-回款计划,RECEIVABLE_DETAIL-回款记录
- *  moduleId  模块ID  是
+ *  moduleId  模块ID  是 // 这里好像是不是必须传
  *  createBy  创建人ID  是
  * }
  * @return Promise<Object>
  */
-export function find({
+export function getDynamicList({
   moduleType,
   moduleId,
   createBy,
@@ -40,7 +40,7 @@ export function find({
  * }
  * @return Promise<Object>
  */
-export function create({
+export function createDynamic({
   moduleType,
   moduleId,
   contentType,

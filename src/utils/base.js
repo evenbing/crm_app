@@ -4,8 +4,18 @@
  * @time 2018/6/23
  * @author JUSTIN XU
  */
+import moment from 'moment';
 import { NativeModules } from 'react-native';
 import { pinyin } from './pinyin';
+
+// 格式化
+export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
+  if (!str) return null;
+  if (typeof str === 'string') {
+    str = Number(str);
+  }
+  return moment(str).format(formatType);
+}
 
 // nav go back
 export function nativeGoBack() {
@@ -19,22 +29,6 @@ export const getArrayByPid = (list = [], pid) => {
     children: getArrayByPid(list, obj.id),
   }));
 };
-
-/** 根据数组对象排序 默认升序
- * @param prop 属性值
- * */
-export function compareProps(prop) {
-  return (obj1, obj2) => {
-    const val1 = obj1[prop];
-    const val2 = obj2[prop];
-    if (val1 < val2) {
-      return -1;
-    } else if (val1 > val2) {
-      return 1;
-    }
-    return 0;
-  };
-}
 
 function padLeftZero(str) {
   return (`00${str}`).substr(str.length);

@@ -8,82 +8,90 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants/index';
+import moment from 'moment';
+import { theme } from '../../constants';
 import { moderateScale } from '../../utils/scale';
-import TouchableView from '../TouchableView'
+
+// components
+import TouchableView from '../TouchableView';
 
 const ContainerView = styled(TouchableView)`
-flex-direction: row;
-padding-bottom: ${moderateScale(10)};
-borderBottomWidth: 1px;
-borderColor: #F6F6F6;
-margin-bottom: ${moderateScale(10)};
+  flex-direction: row;
+  padding-bottom: ${moderateScale(10)};
+  borderBottomWidth: 1px;
+  borderColor: #F6F6F6;
+  margin-bottom: ${moderateScale(10)};
 `;
 
 const LeftView = styled.View`
-width: ${moderateScale(32)};
-height: ${moderateScale(32)};
-background-color: #D8D8D8;
-border-radius: 4;
-margin-right: ${moderateScale(17)};
-`
+  width: ${moderateScale(32)};
+  height: ${moderateScale(32)};
+  background-color: #D8D8D8;
+  border-radius: 4;
+  margin-right: ${moderateScale(17)};
+`;
 const RightView = styled.View`
-flex: 1;
-`
+  flex: 1;
+`;
+
 const NameText = styled.Text`
-font-family: ${theme.fontMedium};
-font-size: ${moderateScale(14)};
-color: #516189;
-background-color: transparent;
-margin-bottom: ${moderateScale(5)};
-`
+  font-family: ${theme.fontMedium};
+  font-size: ${moderateScale(14)};
+  color: #516189;
+  background-color: transparent;
+  margin-bottom: ${moderateScale(5)};
+`;
+
 const ContentText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(14)};
-color: #474747;
-background-color: transparent;
-margin-bottom: ${moderateScale(5)};
-`
+  font-family: ${theme.fontRegular};
+  font-size: ${moderateScale(14)};
+  color: #474747;
+  background-color: transparent;
+  margin-bottom: ${moderateScale(5)};
+`;
+
 const PicImage = styled.View`
-width: ${moderateScale(108)};
-height: ${moderateScale(140)};
-background: #D8D8D8;
-margin-top: ${moderateScale(3)};
-margin-bottom: ${moderateScale(5)};
-`
+  width: ${moderateScale(108)};
+  height: ${moderateScale(140)};
+  background: #D8D8D8;
+  margin-top: ${moderateScale(3)};
+  margin-bottom: ${moderateScale(5)};
+`;
+
 const BottomView = styled.View`
-flex-direction: row;
-align-items: center;
-`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const TimeText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(12)};
-color: #BBBBBB;
-margin-left: ${moderateScale(10)};
-`
+  font-family: ${theme.fontRegular};
+  font-size: ${moderateScale(12)};
+  color: #BBBBBB;
+  margin-left: ${moderateScale(10)};
+`;
+
 const TypeText = styled.Text`
-font-family: ${theme.fontRegular};
-font-size: ${moderateScale(12)};
-color: #18B548;
-`
+  font-family: ${theme.fontRegular};
+  font-size: ${moderateScale(12)};
+  color: #18B548;
+`;
 
 
 class DynamicItem extends React.PureComponent {
   render() {
-    const { onPress, data } = this.props
-
+    const { onPress, item } = this.props;
     return (
       <ContainerView onPress={onPress}>
         <LeftView />
         <RightView>
           <NameText>张三</NameText>
-          <ContentText>李总会带3个销售人员参会，李总会带3个销售人员参会李总会带3个销售人员参会。</ContentText>
+          <ContentText>{item.content}</ContentText>
           {
-            data.url ? <PicImage /> : null
+            item.url ? <PicImage /> : null
           }
           <BottomView>
             <TypeText>快速记录</TypeText>
-            <TimeText>13:00</TimeText>
+            <TimeText>{moment(Number(item.creationTime)).format('HH:mm')}</TimeText>
           </BottomView>
         </RightView>
 
@@ -93,12 +101,12 @@ class DynamicItem extends React.PureComponent {
 }
 
 DynamicItem.defaultProps = {
-  data: {},
+  item: {},
   onPress: () => null,
 };
 
 DynamicItem.propTypes = {
-  data: PropTypes.object.isRequired,
+  item: PropTypes.objectOf(PropTypes.any),
   onPress: PropTypes.func,
 };
 

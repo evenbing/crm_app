@@ -10,19 +10,22 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import { ModuleType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
-import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
-import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 
+import ActivityDetailsItem from './components/ActivityDetailsItem';
+import DetailsHead from './components/DetailsHead';
+
 import ContactsModel from '../../../logicStores/contacts';
+import DynamicModel from '../../../logicStores/dynamic';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -49,25 +52,40 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+const dynamicContactList = `${ModuleType.contact}List`;
+
 @observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
   componentDidMount() {
-    this.getData();
+    this.getDynamicList();
+    this.getContactDetail();
   }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-  onRefresh = () => {
-    //
-  };
   onEndReached = () => {
-    //
+    const { total = 0, [dynamicContactList]: list = [], pageNumber = 1, loadingMore } = DynamicModel.dynamicList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
   };
-  getData = () => {
-    const { item } = this.props.navigation.state.params;
+  getDynamicList = (pageNumber = 1) => {
+    // const { item } = this.props.navigation.state.params || {};
+    // DynamicModel.getDynamicListReq({
+    //   pageNumber,
+    //   moduleType: ModuleType.contact,
+    //   createBy: item.id,
+    // });
+    DynamicModel.getDynamicListReq({
+      pageNumber,
+      moduleType: ModuleType.contact,
+    });
+  };
+  getContactDetail = () => {
+    const { item } = this.props.navigation.state.params || {};
     ContactsModel.getContactDetailsReq(item);
   };
   renderTotalItem = () => {
@@ -101,30 +119,20 @@ class Details extends React.Component {
       </View>
     );
   };
-  renderDynamicItem = ({ item, index }) => (
-    <DynamicList isFrist={index === 0} data={item} />
-  );
   renderDynamicView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 0,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      dynamicList: {
+        [dynamicContactList]: list = [],
+        refreshing,
+        loadingMore,
+      } = {},
+      getDynamic,
+    } = DynamicModel;
     const flatProps = {
-      data: list,
+      data: getDynamic,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDynamicItem,
-      onRefresh: this.onRefresh,
+      renderItemElem: <DynamicList />,
+      onRefresh: this.getDynamicList,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -141,22 +149,16 @@ class Details extends React.Component {
     <ActivityDetailsItem {...props} />
   );
   renderDetailsView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
+    const { contactDetails } = ContactsModel;
+    const list = [contactDetails];
     const { refreshing = false, loadingMore = false } = {};
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
-      ItemSeparatorComponent: null,
-      onRefresh: this.onRefresh,
-      onEndReached: this.onEndReached,
+      onRefresh: this.getContactDetail,
       flatListStyle: {
-        marginBottom: theme.moderateScale(50),
+        paddingBottom: theme.moderateScale(50),
       },
       refreshing,
       noDataBool: !refreshing && list.length === 0,
@@ -202,7 +204,7 @@ class Details extends React.Component {
   }
 }
 
-Details.navigationOptions = ({ navigation, screenProps }) => ({
+Details.navigationOptions = ({ navigation }) => ({
   title: '联系人',
   headerLeft: (
     <LeftBackIcon

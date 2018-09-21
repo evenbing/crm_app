@@ -13,7 +13,7 @@ import { ContactsEnum } from '../../../constants/form';
 import { SelectType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
 import Toast from '../../../utils/toast';
-import { formatDate } from '../../../utils/base';
+import { formatDateByMoment } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -27,8 +27,6 @@ import DateTimePicker from '../../../components/DateTimePicker';
 import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import ContactsModel from '../../../logicStores/contacts';
-
-const formatDateType = 'yyyy-MM-dd hh:mm:ss';
 
 @observer
 class EditorMore extends React.Component {
@@ -201,7 +199,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  birthDate: `${formatDate(date, formatDateType)}`,
+                  birthDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
