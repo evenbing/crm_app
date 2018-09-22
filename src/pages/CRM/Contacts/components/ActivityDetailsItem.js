@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { SexTypes } from '../../../../constants/enum';
 import { formatDateByMoment } from '../../../../utils/base';
 
 // components
@@ -48,7 +49,7 @@ const ActivityDetailsItem = ({
       text="基本信息"
     />
     {renderBasicItem('姓名', item.name)}
-    {renderBasicItem('性别', item.sex)}
+    {renderBasicItem('性别', item.sex ? (SexTypes[item.sex] || item.sex) : null)}
     {renderBasicItem('出生日期', formatDateByMoment(item.birthDate))}
     {renderBasicItem('公司名称', item.companyName)}
     {renderBasicItem('部门', item.departmentName)}
@@ -59,7 +60,7 @@ const ActivityDetailsItem = ({
     {renderBasicItem('电话', item.phoneNumber)}
     {renderBasicItem('手机', item.mobilePhone)}
     {renderBasicItem('微博', item.weibo)}
-    {renderBasicItem('地址', item.location)}
+    {renderBasicItem('地址', item.location && item.cityName)}
     {renderBasicItem('邮箱', item.email)}
     {renderBasicItem('邮编', item.postCode)}
     <TitleItemComponent
