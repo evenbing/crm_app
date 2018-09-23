@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import HeaderComponent from './Header';
-import { moderateScale, width } from '../../../utils/scale';
+import { moderateScale } from '../../../utils/scale';
 
 const ImagePager = ({
   data,

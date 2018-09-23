@@ -39,26 +39,8 @@ class ImageCollector extends React.PureComponent {
     super(props);
     this.state = {
       isVisible: false,
-      pagerData: [{
-        key: 'key111',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }, {
-        key: 'ke222',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }, {
-        key: 'ke333',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }],
+      pagerData: [],
       data: [{
-        key: 'key111',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }, {
-        key: 'ke222',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }, {
-        key: 'ke333',
-        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
-      }, {
         key: KEY_ADD,
         image: addIcon,
       }],
@@ -76,7 +58,6 @@ class ImageCollector extends React.PureComponent {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
-        console.log(source);
         const pagerData = [...this.state.pagerData];
         pagerData.push({
           key: uuidv1(),
@@ -111,12 +92,23 @@ class ImageCollector extends React.PureComponent {
     const pagerData = this.state.pagerData.filter((item, index) => index !== selectedIndex);
     const data = [...pagerData];
     data.push(addIconObject);
-    console.log(data);
-    console.log(pagerData);
-    this.setState({
-      pagerData,
-      data,
-    });
+    console.log({ data });
+    console.log({ pagerData });
+    if (pagerData.length === 0) {
+      this.setState({
+        isVisible: false,
+      }, () => {
+        this.setState({
+          pagerData,
+          data,
+        });
+      });
+    } else {
+      this.setState({
+        pagerData,
+        data,
+      });
+    }
   }
 
   onPageSelected = (selectedIndex) => {

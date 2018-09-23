@@ -44,8 +44,8 @@ class TeamMembers extends React.Component {
     });
 
     TeamStore.getTeamListReq({
-      moduleId,
-      moduleType,
+      moduleId: 1041498947111227392,
+      moduleType: 'ACTIVITY',
     });
   }
 

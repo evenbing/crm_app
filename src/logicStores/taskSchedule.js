@@ -8,7 +8,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, create, update,
+  find, create, update, del,
 } from '../service/taskSchedule';
 import Toast from '../utils/toast';
 
@@ -16,10 +16,28 @@ useStrict(true);
 
 @autobind
 class TaskScheduleStore {
-  // home task schedule
+  // 列表
   @observable taskScheduleList = [];
-  constructor() {
-    // reaction(() => this.totalCount);
+
+  // 详情
+  @observable taskSchedule = {};
+
+  /**
+   * 删除任务或详情
+   */
+  @action async deleteTaskScheduleRelatedToMeReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await del(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.taskScheduleList = [];
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
   }
 
   /**

@@ -5,14 +5,17 @@
  * @Last Modified time: 2018-09-09 22:47:12
  */
 import React from 'react';
+import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
+import { observer } from 'mobx-react/native';
 
 import Toast from '../../../utils/toast';
 import ListItem from './ListItem';
 import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
+import TaskScheduleStore from '../../../logicStores/taskSchedule';
 
 const List = styled.FlatList`
   background-color: ${theme.pageBackColor};
@@ -24,6 +27,7 @@ const ListItemSeparatorComponent = styled.View`
   height: ${moderateScale(10)}px;
 `;
 
+@observer
 class taskScheduleList extends React.Component {
   keyExtractor = item => item.key;
 
@@ -33,6 +37,7 @@ class taskScheduleList extends React.Component {
       type,
       name,
       comment,
+      operateList,
     } = item;
     return (
       <ListItem
@@ -40,11 +45,7 @@ class taskScheduleList extends React.Component {
         type={type}
         name={name}
         comment={comment}
-        operateList={[
-          { key: uuidv1(), text: '下一步', onPress: () => Toast.showSuccess('下一步') },
-          { key: uuidv1(), text: '延时', onPress: () => Toast.showSuccess('延时') },
-          { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-        ]}
+        operateList={operateList}
       />
     );
   }
