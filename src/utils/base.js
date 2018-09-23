@@ -119,20 +119,21 @@ export function formatDateNow(value) {
   return `${birthYear}-${birthMonth}-${birthDate}`;
 }
 
-// 格式化成员list
+// 格式化团队list
 export function formatMemberList(list) {
   if (!Array.isArray(list)) {
     throw new Error('params must be array');
   }
   if (!list.length) return list;
   return list.map((value) => {
-    const nameChar = pinyin.getFullChars(value.name);
+    const nameChar = pinyin.getFullChars(value.userName);
     const sortLetters = pinyin.getCamelChars(nameChar).substring(0, 1).toUpperCase();
     if (/^[A-Z]$/.test(sortLetters)) {
       value.sortLetters = sortLetters;
     } else {
       value.sortLetters = '#';
     }
+    value.actived = false;
     return value;
   });
 }

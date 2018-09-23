@@ -8,48 +8,72 @@
 import { action, observable, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, create,
+  getTeamList,
+  createTeamUser,
 } from '../service/team';
 import Toast from '../utils/toast';
+import { formatMemberList } from '../utils/base';
 
 useStrict(true);
 
 @autobind
 class TeamStore {
-  // home task schedule
-
   // 列表
   @observable teamList = [];
   // 详情
   @observable teamDetail = {};
 
-  /**
-   * 查询任务或日程
-   */
+  @action updateTeamActive({ item, radio }) {
+    this.teamList = this.teamList.map((v) => {
+      if (v.userName === item.userName) {
+        v.actived = !v.actived;
+      } else if (!radio) { // 单选
+        v.actived = false;
+      }
+      return v;
+    });
+  }
+
+  @action clearModuleType() {
+    this.moduleType = null;
+  }
+
+  // 查询团队成员
   @action async getTeamListReq(options) {
     try {
+      this.teamList = [];
       const {
         result = [],
         errors = [],
-      } = await find(options);
+      } = await getTeamList(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.teamList = [...result];
+        this.teamList = formatMemberList([
+          ...result,
+          {
+            ...result[0],
+            userName: '张三',
+          },
+        ]);
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.teamList.refreshing = false;
+      });
     }
   }
 
   /**
-   *  创建
+   *  创建团队成员
    */
-  @action async createTeamReq() {
+  @action async createTeamReq(options) {
     try {
       const {
         result = [],
         errors = [],
-      } = await create();
+      } = await createTeamUser(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.teamList = [...result];

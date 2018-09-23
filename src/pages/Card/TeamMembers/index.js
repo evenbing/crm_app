@@ -6,58 +6,56 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
-import { formatMemberList } from '../../../utils/base';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import CompanyHeader from '../../../components/MemberList/CompanyHeader';
 import MemberList from '../../../components/MemberList/MemberList';
 import TeamStore from '../../../logicStores/team';
 
-// static source
-import HeaderIcon from '../../../img/test/mine_head.png';
-
+@observer
 class TeamMembers extends React.Component {
-  state = {
-    list: [
-      { active: false, name: '张三', url: HeaderIcon },
-      { active: false, name: '安琪', url: HeaderIcon },
-      { active: false, name: '贝贝', url: HeaderIcon },
-      { active: false, name: '测试', url: HeaderIcon },
-      { active: false, name: '戴尔', url: HeaderIcon },
-      { active: false, name: '刚哥', url: HeaderIcon },
-      { active: false, name: '宁哥', url: HeaderIcon },
-      { active: false, name: '五阿哥', url: HeaderIcon },
-      { active: false, name: '13123123', url: HeaderIcon },
-      { active: false, name: '于金', url: HeaderIcon },
-      { active: false, name: '186123123', url: HeaderIcon },
-      { active: false, name: '幼儿园', url: HeaderIcon },
-    ],
-  };
-
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-
-    TeamStore.getTeamListReq({
-      moduleId: '1041675409789423616',
-      moduleType: 'ACTIVITY',
-    });
+    this.getData();
   }
 
-  onPressRight = () => alert('finish');
+  onPressRight = () => {
+    const {
+      props: {
+        navigation: { goBack, state },
+      },
+    } = this;
+    const {
+      teamList,
+    } = TeamStore;
+    const obj = teamList.find(v => !!v.actived);
+    if (!obj) return;
+    state.params.callback(obj);
+    goBack();
+  };
 
   onPressItem = ({ item }) => {
-    // TODO 判断当前的激活list
-    const { list } = this.state;
-    const index = list.findIndex(v => v.name === item.name);
-    list[index].active = !list[index].active;
-    this.setState({
-      list,
+    const {
+      radio = false, // false 单选 true 多选
+    } = this.props.navigation.state.params || {};
+    TeamStore.updateTeamActive({ item, radio });
+  };
+
+  getData = () => {
+    const {
+      moduleId,
+      moduleType,
+    } = this.props.navigation.state.params || {};
+    TeamStore.getTeamListReq({
+      moduleId,
+      moduleType,
     });
   };
 
@@ -72,10 +70,8 @@ class TeamMembers extends React.Component {
 
   render() {
     const {
-      state: {
-        list,
-      },
-    } = this;
+      teamList,
+    } = TeamStore;
     return (
       <ContainerView
         bottomPadding
@@ -85,7 +81,7 @@ class TeamMembers extends React.Component {
         <MemberList
           renderHeader={this.renderHeader}
           headerHeight={theme.moderateScale(44)}
-          dataList={formatMemberList(list)}
+          dataList={teamList}
           onPressItem={this.onPressItem}
         />
       </ContainerView>
@@ -98,6 +94,15 @@ TeamMembers.navigationOptions = ({ navigation }) => ({
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
+    />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
     />
   ),
 });

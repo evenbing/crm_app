@@ -11,6 +11,7 @@ import {
   createContact,
   getContactDetails,
   updateContact,
+  updateOwnerUser,
 } from '../service/contacts';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
@@ -103,6 +104,23 @@ class ContactStore {
       const {
         errors = [],
       } = await updateContact(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getContactDetailsReq({ id: options.id });
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 转移负责人
+  @action async updateOwnerUserReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateOwnerUser(options);
+      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContactDetailsReq({ id: options.id });

@@ -11,6 +11,7 @@ import {
   getContractDetails,
   createContract,
   updateContract,
+  updateOwnerUser,
 } from '../service/contract';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
@@ -108,6 +109,23 @@ class ContractStore {
       runInAction(() => {
         // TODO next
         this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 转移负责人
+  @action async updateOwnerUserReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateOwnerUser(options);
+      debugger;
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getContractDetailsReq({ id: options.id });
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
