@@ -91,17 +91,16 @@ class ContactStore {
   }
 
   // 编辑
-  @action async updateContactReq(options) {
+  @action async updateContactReq(options, callback) {
     try {
+      debugger;
       const {
-        result = {},
         errors = [],
       } = await updateContact(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getContactDetailsReq({ id: options.id });
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

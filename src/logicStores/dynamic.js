@@ -1,8 +1,8 @@
-/*
- * @Author: ShiQuan
- * @Date: 2018-09-11 01:10:41
- * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-12 13:35:17
+/**
+ * @component initState.js
+ * @description 详情动态store
+ * @time 2018/9/11
+ * @author JUSTIN XU
  */
 import moment from 'moment';
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
@@ -56,16 +56,20 @@ class DynamicStore {
           type,
           nextMonth,
           nextDay,
-          list: [next] });
+          list: [next],
+        });
       }
       return item;
     }, []);
   }
 
+  @action clearModuleType() {
+    this.moduleType = null;
+  }
+
   // 列表
   @action async getDynamicListReq({ pageNumber = 1, moduleType, ...restProps } = {}) {
     try {
-      this.moduleType = null;
       if (pageNumber === 1) {
         this.dynamicList.refreshing = true;
       } else {
@@ -97,15 +101,13 @@ class DynamicStore {
   }
 
   // 新增
-  @action async createDynamicReq(options) {
+  @action async createDynamicReq({ moduleType, ...restProps }, callback) {
     try {
-      const {
-        result = {},
-      } = await createDynamic(options);
+      await createDynamic({ moduleType, ...restProps });
       debugger;
+      callback && callback();
       runInAction(() => {
-        // TODO next
-        this.dynamicDetail = { ...result };
+        this.getDynamicListReq({ moduleType });
       });
     } catch (e) {
       Toast.showError(e.message);

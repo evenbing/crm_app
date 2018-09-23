@@ -63,6 +63,9 @@ class Details extends React.Component {
     this.getDynamicList();
     this.getContactDetail();
   }
+  componentWillUnmount() {
+    DynamicModel.clearModuleType();
+  }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
@@ -71,6 +74,16 @@ class Details extends React.Component {
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
+  };
+  onPressSend = ({ content, contentType }, callback) => {
+    debugger;
+    DynamicModel.createDynamicReq({
+      content,
+      contentType,
+      moduleType: ModuleType.contact,
+    }, () => {
+      callback && callback();
+    });
   };
   getDynamicList = (pageNumber = 1) => {
     // const { item } = this.props.navigation.state.params || {};
@@ -174,9 +187,10 @@ class Details extends React.Component {
         tabIndex,
       },
       props: {
-        navigation: { navigate },
+        navigation: { navigate, state },
       },
     } = this;
+    const { item } = state.params || {};
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -192,10 +206,12 @@ class Details extends React.Component {
         }
         {
           tabIndex === 0 ?
-            <SendFooter />
+            <SendFooter
+              onPressSend={this.onPressSend}
+            />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactCreate)}
+                onPress={() => navigate(routers.contactEditorMore, { item })}
               />
             )
         }

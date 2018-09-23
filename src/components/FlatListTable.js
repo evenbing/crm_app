@@ -38,11 +38,13 @@ const FooterView = styled.View`
 class FlatListTable extends React.PureComponent {
   state = {
     listHeight: 0,
+    scrollY: 0,
   };
   render() {
     const {
       state: {
         listHeight,
+        scrollY,
       },
       props: {
         renderHeader,
@@ -77,9 +79,12 @@ class FlatListTable extends React.PureComponent {
           ref={flatRef}
           data={data}
           onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            if (listHeight < height) {
-              this.setState({ listHeight: theme.moderateScale(height) });
+            const { height, y } = e.nativeEvent.layout;
+            if (listHeight <= height) {
+              this.setState({
+                listHeight: height,
+                scrollY: y,
+              });
             }
           }}
           onRefresh={onRefresh}
@@ -104,7 +109,7 @@ class FlatListTable extends React.PureComponent {
           ListEmptyComponent={
             noDataBool ? (
               ListEmptyComponent || (
-                <ListEmptyView height={listHeight}>
+                <ListEmptyView height={listHeight - scrollY}>
                   <EmptyText>{ noDataText }</EmptyText>
                 </ListEmptyView>
               ))

@@ -104,6 +104,7 @@ class SendFilterList extends React.PureComponent {
     } = this.props;
     return (
       <ModalView
+        animationType="fade"
         isVisible={isVisible}
         onBackdropPress={onPressClose}
         backdropOpacity={0}

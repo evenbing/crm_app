@@ -118,6 +118,8 @@ class EditorMore extends React.Component {
         mobilePhone,
         departmentId,
         departmentName,
+      }, () => {
+        pop(1);
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -136,7 +138,13 @@ class EditorMore extends React.Component {
     } = this;
     const { item = {} } = state.params || {};
     if (!Object.keys(item)) return;
-    this.setState({ ...item });
+    const { sex: sexKey, ...restProps } = item;
+    let sex;
+    if (sexKey) {
+      const name = SexTypes[sexKey] || sexKey;
+      sex = { name, key: sexKey };
+    }
+    this.setState({ sex, ...restProps });
   };
   render() {
     const {

@@ -5,17 +5,20 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Input } from 'native-base';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
 import { getFooterBottom } from '../../utils/utils';
+import { mapToArray } from '../../utils/base';
+import Toast from '../../utils/toast';
+import { DynamicRecordType } from '../../constants/enum';
 
 // components
 import Thumbnail from '../Thumbnail';
 import TouchableView from '../TouchableView';
 import { SendFilterList } from '../Modal';
+import TextInput from '../TextInput';
 
 const ContainerView = styled.View`
   position: absolute;
@@ -64,10 +67,6 @@ const SendText = styled.Text`
   padding-right: ${moderateScale(8)};
 `;
 
-const InputView = styled(Input)`
-  height: ${moderateScale(30)};
-`;
-
 const IconView = styled.View`
   width: ${moderateScale(30)};
   height: ${moderateScale(30)};
@@ -76,37 +75,59 @@ const IconView = styled.View`
 `;
 
 class SendFooter extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isVisible: false,
-      selectedIndex: 0,
-    };
+  state = {
+    isVisible: false,
+    selectedIndex: 0,
+    content: null,
+  };
+
+  componentWillMount() {
+    this.setState({ content: null });
   }
 
-  onPressFilterItem = ({ index, item }) => {
-    const { onSelectRecordType } = this.props;
-    onSelectRecordType && onSelectRecordType(item);
+  onPressFilterItem = ({ index }) => {
     this.setState({ selectedIndex: index });
+  };
+
+  onPressSend = () => {
+    const {
+      state: {
+        content,
+        selectedIndex,
+      },
+      props: {
+        recordTypeList,
+        onPressSend,
+      },
+    } = this;
+    try {
+      if (!content) throw new Error('请输入内容');
+      const contentType = recordTypeList[selectedIndex].key;
+      onPressSend({ content, contentType }, () => {
+        this.setState({ content: null });
+      });
+    } catch (err) {
+      Toast.showError(err.message);
+    }
   };
 
   selectRecordType= () => {
     this.setState({
       isVisible: !this.state.isVisible,
     });
-  }
+  };
 
   render() {
     const {
-      isVisible,
-      selectedIndex,
-    } = this.state;
-    const {
-      recordTypeList = [
-        { leftText: '跟进时间' },
-        { leftText: '开始时间' },
-      ],
-    } = this.props;
+      state: {
+        isVisible,
+        selectedIndex,
+        content,
+      },
+      props: {
+        recordTypeList,
+      },
+    } = this;
     return (
       <ContainerView>
         <SendFilterList
@@ -115,7 +136,7 @@ class SendFooter extends React.PureComponent {
           selectedIndex={selectedIndex}
           onPressItem={this.onPressFilterItem}
           // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
-          marginBottom={moderateScale(50 + getFooterBottom())}
+          marginBottom={50 + getFooterBottom()}
           flexDirection="column-reverse"
           list={recordTypeList}
         />
@@ -127,12 +148,18 @@ class SendFooter extends React.PureComponent {
           size={8}
         />
         <SendView>
-          <InputView />
-          <SendTextView onPress={() => alert('send')}>
+          <TextInput
+            value={content}
+            onChangeText={content => this.setState({ content })}
+          />
+          <SendTextView
+            onPress={this.onPressSend}
+          >
             <SendText>发送</SendText>
           </SendTextView>
         </SendView>
-        <IconView
+        {/*
+         <IconView
           marginLeft={3}
         >
           <Thumbnail
@@ -140,6 +167,7 @@ class SendFooter extends React.PureComponent {
             size={27}
           />
         </IconView>
+         */}
         <IconView
           marginLeft={8}
           marginRight={13}
@@ -154,8 +182,14 @@ class SendFooter extends React.PureComponent {
   }
 }
 
-SendFooter.defaultProps = {};
+SendFooter.defaultProps = {
+  recordTypeList: mapToArray(DynamicRecordType, 'leftText'),
+  onPressSend: () => null,
+};
 
-SendFooter.propTypes = {};
+SendFooter.propTypes = {
+  recordTypeList: PropTypes.arrayOf(PropTypes.any),
+  onPressSend: PropTypes.func,
+};
 
 export default SendFooter;
