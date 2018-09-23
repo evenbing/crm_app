@@ -82,7 +82,6 @@ class DynamicStore {
       runInAction(() => {
         this.dynamicList.total = totalCount;
         this.dynamicList.pageNumber = pageNumber;
-
         if (pageNumber === 1) {
           this.dynamicList = {
             ...this.dynamicList,

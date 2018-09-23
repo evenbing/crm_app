@@ -41,7 +41,7 @@ export function getReceivableRecordList({
  * }
  * @return Promise<Object>
  */
-export function getReceivableRecord({
+export function getReceivableRecordDetails({
   id,
 } = {}) {
   return post({

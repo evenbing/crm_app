@@ -9,11 +9,12 @@ import autobind from 'autobind-decorator';
 import {
   getReceivablePlanList,
   getReceivableIssue,
+  getReceivablePlanDetails,
   createReceivablePlan,
   updateReceivablePlan,
 } from '../service/receivablePlan';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initDetailMap, initFlatList } from './initState';
 
 useStrict(true);
 
@@ -21,7 +22,7 @@ useStrict(true);
 class ReceivablePlanStore {
   // 列表
   @observable receivablePlanList = initFlatList;
-  // @observable contactDetails = {};
+  @observable receivablePlanDetails = initDetailMap;
 
   // 列表
   @action async getReceivablePlanListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -58,19 +59,27 @@ class ReceivablePlanStore {
   }
 
   // 详情
-  // @action async getContactDetailsReq({ id }) {
-  //   try {
-  //     if (!id) throw new Error('id 不为空');
-  //     const {
-  //       contact = {},
-  //     } = await getContactDetails({ id });
-  //     runInAction(() => {
-  //       this.contactDetails = { ...contact };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+  @action async getReceivablePlanDetailsReq({ id }) {
+    try {
+      if (!id) throw new Error('id 不为空');
+      this.receivablePlanDetails.refreshing = true;
+      const {
+        receivablePlan = {},
+        errors = [],
+      } = await getReceivablePlanDetails({ id });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.receivablePlanDetails.list = [receivablePlan];
+        this.receivablePlanDetails.map = receivablePlan;
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.receivablePlanDetails.refreshing = false;
+      });
+    }
+  }
 
   // 获取回款档期
   @action async getReceivableIssueReq() {
