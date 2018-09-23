@@ -48,13 +48,7 @@ class TeamStore {
       } = await getTeamList(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.teamList = formatMemberList([
-          ...result,
-          {
-            ...result[0],
-            userName: '张三',
-          },
-        ]);
+        this.teamList = formatMemberList(result);
       });
     } catch (e) {
       Toast.showError(e.message);
