@@ -71,13 +71,14 @@ export default {
   selectYear: 'app.tabView.root.model.selectYear',
   typePicker: 'app.tabView.root.model.typePicker',
   moduleTypePicker: 'app.tabView.root.model.moduleTypePicker',
-  
+
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
   teamMembers: 'app.tabView.root.card.teamMembers',
   teamRoles: 'app.tabView.root.card.teamRoles',
   relatedDocs: 'app.tabView.root.card.relatedDocs',
   selectDepartment: 'app.tabView.root.card.selectDepartment',
+  moduleList: 'app.tabView.root.card.moduleList',
   // demo
   actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
   mobxDemo: 'app.tabView.root.demo.mobxDemo',

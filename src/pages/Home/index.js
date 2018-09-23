@@ -67,7 +67,9 @@ class Home extends React.Component {
         this.setState({ createActionSheetVisible: false });
         break;
       case '新建任务':
-        navigate(routers.addTask);
+        navigate(routers.addTask, {
+          reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+        });
         this.setState({ createActionSheetVisible: false });
         break;
       default:
@@ -80,6 +82,7 @@ class Home extends React.Component {
     switch (item.leftText) {
       case '1小时之后':
         // navigate(routers.addSchedule);
+
         this.setState({ delayActionSheetVisible: false });
         break;
       case '3小时之后':
@@ -204,45 +207,6 @@ class Home extends React.Component {
     );
   }
 
-  renderItem = ({ item }) => {
-    const {
-      startTime,
-      endTime,
-      type,
-      name,
-      comment,
-    } = item;
-    let typeText = '';
-    let duration = '';
-    const startDate = new Date(parseInt(startTime, 10));
-    const endDate = new Date(parseInt(endTime, 10));
-    switch (type) {
-      case 'TASK':
-        typeText = '任务';
-        duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-        break;
-      case 'SCHEDULE':
-        typeText = ' 日程';
-        duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-        break;
-      default:
-        break;
-    }
-    return (<ListItem
-      duration={duration}
-      type={typeText}
-      name={name}
-      comment={comment}
-      operateList={[
-        { key: uuidv1(), text: '下一步', onPress: this.selectCreateType },
-        { key: uuidv1(), text: '延时', onPress: this.selectDelayType },
-        { key: uuidv1(), text: '删除', onPress: () => Toast.showSuccess('删除') },
-      ]}
-    />);
-  }
-
-  renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
-
   render() {
     const {
       state: {
@@ -257,13 +221,13 @@ class Home extends React.Component {
     } = this;
     const createActionSheetProps = {
       isVisible: createActionSheetVisible,
-      onPressClose: this.selectCreateType,
+      onPressClose: () => { this.setState({ createActionSheetVisible: false }); },
       onPressItem: this.onSelectCreateType,
       list: createTypes,
     };
     const delayActionSheetProps = {
       isVisible: delayActionSheetVisible,
-      onPressClose: this.selectDelayType,
+      onPressClose: () => { this.setState({ delayActionSheetVisible: false }); },
       onPressItem: this.onSelectDelayType,
       list: delayTypes,
     };

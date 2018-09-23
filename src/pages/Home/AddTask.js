@@ -9,20 +9,23 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import DateTimePicker from '../../components/DateTimePicker';
 
 import NavView from '../../components/NavItem';
-import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
+import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme, routers } from '../../constants';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
 import { FormActionSheet } from '../../components/Modal';
-import { RemindTypes, ModuleTypes, NoticeTypes } from '../../constants/enum';
+import { NoticeTypes } from '../../constants/enum';
 import { TaskEnum } from '../../constants/form';
 import { CenterText } from '../../components/Styles/Form';
 import ImageCollector from '../../components/ImageCollector';
 import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
+import TaskScheduleModel from '../../logicStores/taskSchedule';
+import Toast from '../../utils/toast';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -42,108 +45,122 @@ const Divder = styled.View`
   background-color: #F6F6F6;
 `;
 
-// const ItemTitle = styled.Text`
-//   padding: ${moderateScale(11)}px ${moderateScale(15)}px;
-//   font-family: ${theme.fontRegular};
-//   font-size: ${moderateScale(16)};
-//   color: #373737;
-// `;
-
-// const remindTypeLabels = RemindTypes.map(item => ({ leftText: item.label }));
-// const moduleTypeLabels = ModuleTypes.map(item => ({ leftText: item.label }));
-
 @observer
 class AddTask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: null,
-      startTime: null,
-      endTime: null,
+      type: 'TASK', // 'TASK',
+      name: null, // 'new task',
+      // startTime: null, // '2018-09-09 11:12:12',
+      endTime: null, // '2019-09-19 12:12:12',
       moduleType: null,
       moduleTypeName: null,
       moduleId: null,
+      moduleName: null,
       comment: null,
       needNotice: null,
       noticeTime: null,
       noticeTimeName: null,
-      longitudeAndLatitude: null,
-      locationInfo: null,
-      isPrivate: null,
-      principal: null,
+      // longitudeAndLatitude: null,
+      // locationInfo: null,
+      isPrivate: 1, // 先默认写1
+      principal: '1004674766843809792',
       principalName: null,
       userIds: null,
       userIdNames: null,
     };
   }
 
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+
+  onPressRight = () => {
+    const {
+      state: {
+        type,
+        name,
+        // startTime,
+        endTime,
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        // longitudeAndLatitude,
+        // locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+      },
+      props: {
+        navigation: {
+          goBack,
+          state: {
+            params: {
+              reFetchTaskScheduleList,
+            },
+          },
+        },
+      },
+    } = this;
+    try {
+      // if (!type) throw new Error(TaskEnum.type);
+      if (!name) throw new Error(TaskEnum.name);
+      // if (!startTime) throw new Error(TaskEnum.startTime);
+      if (!endTime) throw new Error(TaskEnum.endTime);
+      // if (!(moduleType && moduleTypeName)) throw new Error(TaskEnum.moduleType);
+      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      // if (!(comment)) throw new Error(TaskEnum.comment);
+      TaskScheduleModel.createTaskScheduleRelatedToMeReq({
+        // id: '1043786812474134528',
+        type,
+        name,
+        // startTime,
+        endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        // longitudeAndLatitude,
+        // locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+      }, () => {
+        reFetchTaskScheduleList();
+        goBack();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  };
+
   onChangeTaskName = (name) => {
     this.setState({ name });
-  }
-
-  onConfirmDateTimePicker = (date) => {
-    this.setState({
-      deadline: `${formatDate(date, 'yyyy-MM-dd hh:mm')}`,
-    });
-    this.setDateTimePickerVisible(false);
-  }
-
-  onCancelDateTimePicker = () => {
-    this.setDateTimePickerVisible(false);
-  }
-
-  onShowModuleActionSheet = () => {
-    this.setState({ moduleActionSheetVisible: true });
-  }
-
-  onPressModuleActionSheetItem = ({ item }) => {
-    const { value } = ModuleTypes.filter(type => type.label === item.leftText)[0];
-    this.setState({
-      moduleTypeLabel: item.leftText,
-      moduleType: value,
-    });
-  }
-
-  onPressModuleActionSheetClose = () => {
-    this.setState({ moduleActionSheetVisible: false });
-  }
-
-  onShowRemindActionSheet = () => {
-    this.setState({ remindActionSheetVisible: true });
-  }
-
-  onPressRemindActionSheetItem = ({ item }) => {
-    const { value } = RemindTypes.filter(type => type.label === item.leftText)[0];
-    this.setState({
-      remindType: item.leftText,
-      noticeTime: value,
-    });
-  }
-
-  onPressRemindActionSheetClose = () => {
-    this.setState({ remindActionSheetVisible: false });
-  }
-
-  setDateTimePickerVisible = (visible) => {
-    this.setState({ dateTimePickerVisible: visible });
   }
 
   render() {
     const {
       state: {
         name,
-        startTime,
+        // startTime,
         endTime,
         moduleType,
         moduleTypeName,
         moduleId,
+        moduleName,
         comment,
-        needNotice,
+        // needNotice,
         noticeTime,
         noticeTimeName,
-        longitudeAndLatitude,
-        locationInfo,
-        isPrivate,
+        // longitudeAndLatitude,
+        // locationInfo,
+        // isPrivate,
         principal,
         principalName,
         userIds,
@@ -191,9 +208,14 @@ class AddTask extends Component {
           <FormActionSheet
             typeEnum={NoticeTypes}
             onConfirm={(item) => {
+              const {
+                key,
+                value,
+              } = item;
               this.setState({
-                noticeTime: item.key,
-                noticeTimeName: item.value,
+                needNotice: key !== 0,
+                noticeTime: key,
+                noticeTimeName: value,
               });
             }}
           >
@@ -213,18 +235,25 @@ class AddTask extends Component {
             leftText="关联业务"
             onPress={() => {
               navigate(routers.moduleTypePicker, {
-                selectedKey: moduleType,
-                callback: (key, value) => {
+                selectedModuleType: moduleType,
+                selectedModuleId: moduleId,
+                callback: ({ id, name, moduleType, moduleTypeName }) => {
                   this.setState({
-                    moduleType: key,
-                    moduleTypeName: value,
+                    moduleId: id,
+                    moduleName: name,
+                    moduleType,
+                    moduleTypeName,
                   });
                 },
               });
             }}
             center={
               <CenterText active={moduleType && moduleTypeName}>
-                {(moduleType && moduleTypeName) ? moduleTypeName : TaskEnum.moduleType}
+                {
+                  moduleId && moduleName && moduleType && moduleTypeName
+                    ? `${moduleTypeName},${moduleName}`
+                  : TaskEnum.moduleType
+                }
               </CenterText>
             }
             isLast
@@ -282,10 +311,19 @@ class AddTask extends Component {
   }
 }
 
-AddTask.navigationOptions = () => ({
+AddTask.navigationOptions = ({ navigation }) => ({
   title: '新增任务',
   headerLeft: (
     <LeftBackIcon />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
+    />
   ),
 });
 

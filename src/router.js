@@ -95,6 +95,7 @@ import ReceivableRecordEditorMoreScreen from './pages/CRM/ReceivableRecord/Edito
 import RelatedDocs from './pages/Card/RelatedDocs';
 // root page -> Modal
 import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
+import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -122,6 +123,7 @@ const HomeRouteConfig = {
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.moduleTypePicker]: { screen: ModuleTypePickerScreen },
+  [routers.moduleList]: { screen: ModuleListScreen },
 };
 
 const HomeNavigatorConfig = {

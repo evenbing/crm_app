@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, Left, Right, Text } from 'native-base';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import Thumbnail from '../../components/Thumbnail';
-import { ContainerView } from '../../components/Drawer/Styles';
-import { ModuleTypes } from '../../constants/enum';
+import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import Thumbnail from '../../../components/Thumbnail';
+import { ContainerView } from '../../../components/Drawer/Styles';
+import { ModuleTypes } from '../../../constants/enum';
 
 const ModuleTypePicker = (props) => {
   const {

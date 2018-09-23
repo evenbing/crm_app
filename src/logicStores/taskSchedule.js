@@ -62,17 +62,16 @@ class TaskScheduleStore {
   /**
    *  创建 任务或日程
    */
-  @action async createTaskScheduleRelatedToMeReq() {
+  @action async createTaskScheduleRelatedToMeReq(options, callback) {
     try {
       const {
         result = [],
         errors = [],
-      } = await create();
+      } = await create(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        console.log({ result });
-
         this.taskScheduleList = [...result];
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -82,12 +81,12 @@ class TaskScheduleStore {
   /**
    *  修改 任务或日程
    */
-  @action async updateTaskScheduleRelatedToMeReq() {
+  @action async updateTaskScheduleRelatedToMeReq(options) {
     try {
       const {
         result = [],
         errors = [],
-      } = await update();
+      } = await update(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         console.log({ result });
