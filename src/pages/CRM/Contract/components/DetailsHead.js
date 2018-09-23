@@ -63,19 +63,20 @@ const PlanStatusText = styled.Text`
 
 class DetailsHead extends React.PureComponent {
   render() {
+    const { item } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
           <ItemView marginTop={51}>
-            <NameText>西风网络销售合同</NameText>
+            <NameText>{item.theme}</NameText>
           </ItemView>
           <ItemView marginTop={4}>
-            <CompanyText>客户：西风网络</CompanyText>
+            <CompanyText>客户：{item.customerName}</CompanyText>
           </ItemView>
           <ItemView
             marginTop={9}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
@@ -85,13 +86,13 @@ class DetailsHead extends React.PureComponent {
             marginTop={11}
             marginBottom={20}
           >
-            <MoneyText>总金额：¥100,000,000.00</MoneyText>
-            <MoneyText marginLeft={13}>未回款：¥100,000,000.00</MoneyText>
+            <MoneyText>总金额：¥{item.totalMoney}</MoneyText>
+            {/* <MoneyText marginLeft={13}>未回款：¥100,000,000.00</MoneyText> */}
           </ItemView>
         </ContainerView>
         <FooterView>
           <MoneyText>活动状态：</MoneyText>
-          <PlanStatusText>已计划</PlanStatusText>
+          <PlanStatusText>{item.status}</PlanStatusText>
           <Thumbnail
             source={PrincipalIcon}
             size={15}

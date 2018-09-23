@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 import { theme } from '../../constants';
+import { DynamicRecordType } from '../../constants/enum';
 import { moderateScale } from '../../utils/scale';
 
 // components
@@ -90,7 +91,7 @@ class DynamicItem extends React.PureComponent {
             item.url ? <PicImage /> : null
           }
           <BottomView>
-            <TypeText>快速记录</TypeText>
+            <TypeText>{DynamicRecordType[item.contentType]}</TypeText>
             <TimeText>{moment(Number(item.creationTime)).format('HH:mm')}</TimeText>
           </BottomView>
         </RightView>

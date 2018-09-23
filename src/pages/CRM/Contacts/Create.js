@@ -93,9 +93,11 @@ class Create extends React.Component {
         bottomPadding
       >
         <CommStatusBar />
-        {/* <ScanCard
+        {/*
+         <ScanCard
           onPress={() => alert(1)}
-        /> */}
+          />
+         */}
         <HorizontalDivider height={9} />
         <TitleItem text="必填信息" />
         <ListView>

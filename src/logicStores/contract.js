@@ -13,7 +13,7 @@ import {
   updateContract,
 } from '../service/contract';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
 
@@ -21,7 +21,7 @@ useStrict(true);
 class ContractStore {
   // 列表
   @observable contractList = initFlatList;
-  @observable contractDetails = {};
+  @observable contractDetails = initDetailMap;
 
   // 列表
   @action async getContractListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -61,16 +61,23 @@ class ContractStore {
   @action async getContractDetailsReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
+      this.contractDetails.refreshing = true;
       const {
-        result = {},
+        pact = {},
         errors = [],
       } = await getContractDetails({ id });
       if (errors.length) throw new Error(errors[0].message);
+      debugger;
       runInAction(() => {
-        this.contactDetails = { ...result };
+        this.contractDetails.list = [pact];
+        this.contractDetails.map = pact;
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.contractDetails.refreshing = false;
+      });
     }
   }
 

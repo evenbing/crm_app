@@ -10,19 +10,21 @@ import styled from 'styled-components';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import { ModuleType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
-import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
+import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 
 import ContractModel from '../../../logicStores/contract';
+import DynamicModel from '../../../logicStores/dynamic';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -48,25 +50,51 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+const dynamicPactList = `${ModuleType.pact}List`;
+
 @observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
   componentDidMount() {
-    this.getData();
+    this.getDynamicList();
+    this.getContractDetail();
+  }
+  componentWillUnmount() {
+    DynamicModel.clearModuleType();
   }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-  onRefresh = () => {
-    //
-  };
   onEndReached = () => {
-    //
+    const { total = 0, [dynamicPactList]: list = [], pageNumber = 1, loadingMore } = DynamicModel.dynamicList;
+    if (list.length < total && loadingMore === false) {
+      this.getDynamicList(pageNumber + 1);
+    }
   };
-  getData = () => {
-    const { item } = this.props.navigation.state.params;
+  onPressSend = ({ content, contentType }, callback) => {
+    const { item } = this.props.navigation.state.params || {};
+    debugger;
+    DynamicModel.createDynamicReq({
+      content,
+      contentType,
+      moduleId: item.id,
+      moduleType: ModuleType.pact,
+    }, () => {
+      callback && callback();
+    });
+  };
+  getDynamicList = (pageNumber = 1) => {
+    const { item } = this.props.navigation.state.params || {};
+    DynamicModel.getDynamicListReq({
+      pageNumber,
+      moduleType: ModuleType.pact,
+      moduleId: item.id,
+    });
+  };
+  getContractDetail = () => {
+    const { item } = this.props.navigation.state.params || {};
     ContractModel.getContractDetailsReq(item);
   };
   renderTotalItem = () => {
@@ -93,9 +121,10 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const { contractDetails: { map } } = ContractModel;
     return (
       <View>
-        <DetailsHead />
+        <DetailsHead item={map} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
@@ -103,30 +132,20 @@ class Details extends React.Component {
       </View>
     );
   };
-  renderDynamicItem = ({ item, index }) => (
-    <DynamicList isFrist={index === 0} data={item} />
-  );
   renderDynamicView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 0,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      dynamicList: {
+        [dynamicPactList]: list = [],
+        refreshing,
+        loadingMore,
+      } = {},
+      getDynamic,
+    } = DynamicModel;
     const flatProps = {
-      data: list,
+      data: getDynamic,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDynamicItem,
-      onRefresh: this.onRefresh,
+      renderItemElem: <DynamicList />,
+      onRefresh: this.getDynamicList,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -143,25 +162,18 @@ class Details extends React.Component {
     <ActivityDetailsItem {...props} />
   );
   renderDetailsView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      contractDetails: { list = [], refreshing },
+    } = ContractModel;
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
-      onRefresh: this.onRefresh,
-      onEndReached: this.onEndReached,
+      onRefresh: this.getContractDetail,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
       refreshing,
-      noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <FlatListTable {...flatProps} />
@@ -173,9 +185,10 @@ class Details extends React.Component {
         tabIndex,
       },
       props: {
-        navigation: { navigate },
+        navigation: { navigate, state },
       },
     } = this;
+    const { item } = state.params || {};
     const bool = tabIndex === 0;
     return (
       <ContainerView
@@ -191,10 +204,12 @@ class Details extends React.Component {
         }
         {
           bool ?
-            <SendFooter />
+            <SendFooter
+              onPressSend={this.onPressSend}
+            />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactCreate)}
+                onPress={() => navigate(routers.contactCreate, { item })}
               />
             )
         }

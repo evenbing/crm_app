@@ -16,6 +16,8 @@ import { initFlatList } from './initState';
 
 useStrict(true);
 
+const FormatType = 'YYYY-MM-DD';
+
 @autobind
 class DynamicStore {
   // 列表
@@ -29,23 +31,21 @@ class DynamicStore {
     if (!moduleType) return [];
     const list = this.dynamicList[`${moduleType}List`] || [];
     if (!list.length) return [];
-    const resultList = list.sort((a, b) => (Number(a.creationTime) > Number(b.creationTime)));
+    const resultList = list.sort((a, b) => (Number(a.creationTime) < Number(b.creationTime)));
     const hashMap = new Map();
     return resultList.reduce((item, next, currentIndex) => {
-      const prevIndex = hashMap.get(next.creationTime);
+      const nextDate = moment(Number(next.creationTime));
+      const nextFormatDate = nextDate.format(FormatType);
+      const prevIndex = hashMap.get(nextFormatDate);
       if (prevIndex || prevIndex === 0) {
         item[prevIndex].list.push(next);
       } else {
-        hashMap.set(next.creationTime, currentIndex);
         let type; // 0 其他时间 1为当前时间
         let nextMonth;
         let nextDay;
-        const nextDate = moment(Number(next.creationTime));
-        const nowDate = moment();
-        if (nextDate.year() === nowDate.year()
-          && nextDate.month() === nowDate.month()
-          && nextDate.date() === nowDate.date()
-        ) {
+        const nowFormatDate = moment().format(FormatType);
+        hashMap.set(nextFormatDate, currentIndex);
+        if (nextFormatDate === nowFormatDate) {
           type = 1;
         } else {
           nextMonth = nextDate.month() + 1;
@@ -84,9 +84,17 @@ class DynamicStore {
         this.dynamicList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.dynamicList[`${moduleType}List`] = [...result];
+          this.dynamicList = {
+            ...this.dynamicList,
+            [`${moduleType}List`]: result,
+          };
         } else {
-          this.dynamicList[`${moduleType}List`] = this.dynamicList[`${moduleType}List`].concat(result);
+          const list = this.dynamicList[`${moduleType}List`].concat(result);
+          this.dynamicList = {
+            ...this.dynamicList,
+            [`${moduleType}List`]: list,
+          };
+          // this.dynamicList[`${moduleType}List`] = this.dynamicList[`${moduleType}List`].concat(result);
         }
         this.moduleType = moduleType;
       });
@@ -101,13 +109,12 @@ class DynamicStore {
   }
 
   // 新增
-  @action async createDynamicReq({ moduleType, ...restProps }, callback) {
+  @action async createDynamicReq({ moduleType, moduleId, ...restProps }, callback) {
     try {
-      await createDynamic({ moduleType, ...restProps });
-      debugger;
+      await createDynamic({ moduleType, moduleId, ...restProps });
       callback && callback();
       runInAction(() => {
-        this.getDynamicListReq({ moduleType });
+        this.getDynamicListReq({ moduleType, moduleId });
       });
     } catch (e) {
       Toast.showError(e.message);
