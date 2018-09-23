@@ -20,7 +20,6 @@ import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
 
@@ -165,12 +164,6 @@ class Create extends React.Component {
             />
           </TextareaGroup>
         </ListView>
-        <HorizontalDivider
-          height={41}
-        />
-        <CreateMoreButton
-          onPress={() => navigate(routers.receivableRecordEditorMore)}
-        />
       </ContainerView>
     );
   }

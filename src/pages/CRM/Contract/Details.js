@@ -105,7 +105,7 @@ class Details extends React.Component {
     } = this.props;
     const list = [
       { title: '文档', text: '12', onPress: () => {} },
-      { title: '合同', text: '3', onPress: () => { navigate(routers.receivable); } },
+      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable); } },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >
@@ -209,7 +209,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactCreate, { item })}
+                onPress={() => navigate(routers.contactEditorMore, { item })}
               />
             )
         }

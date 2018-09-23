@@ -190,8 +190,6 @@ const CrmRouteConfig = {
   [routers.contractEditorMore]: { screen: ContractEditorMoreScreen },
   [routers.receivable]: { screen: ReceivableScreen },
 
-  [routers.queryBusiness]: { screen: QueryBusinessScreen },
-
   [routers.salesChance]: { screen: SalesChanceScreen },
   [routers.createSalesChance]: { screen: CreateSalesChanceScreen },
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
@@ -230,13 +228,13 @@ const CrmRouteConfig = {
   [routers.receivableRecordCreate]: { screen: ReceivableRecordCreateScreen },
   [routers.receivableRecordEditorMore]: { screen: ReceivableRecordEditorMoreScreen },
 
+  // common
+  [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
-
   [routers.relatedDocs]: { screen: RelatedDocs },
   [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
-
   [routers.typePicker]: { screen: TypePickerScreen },
 };
 

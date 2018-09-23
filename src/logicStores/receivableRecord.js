@@ -8,11 +8,12 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivableRecordList,
+  getReceivableRecordDetails,
   createReceivableRecord,
   updateReceivableRecord,
 } from '../service/receivableRecord';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initDetailMap, initFlatList } from './initState';
 
 useStrict(true);
 
@@ -20,7 +21,7 @@ useStrict(true);
 class ReceivableRecordStore {
   // 列表
   @observable receivableRecordList = initFlatList;
-  // @observable contactDetails = {};
+  @observable receivableRecordDetails = initDetailMap;
 
   // 列表
   @action async getReceivableRecordListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -57,19 +58,27 @@ class ReceivableRecordStore {
   }
 
   // 详情
-  // @action async getContactDetailsReq({ id }) {
-  //   try {
-  //     if (!id) throw new Error('id 不为空');
-  //     const {
-  //       contact = {},
-  //     } = await getContactDetails({ id });
-  //     runInAction(() => {
-  //       this.contactDetails = { ...contact };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
+  @action async getReceivableRecordDetailsReq({ id }) {
+    try {
+      if (!id) throw new Error('id 不为空');
+      this.receivableRecordDetails.refreshing = true;
+      const {
+        receivableRecord = {},
+        errors = [],
+      } = await getReceivableRecordDetails({ id });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.receivableRecordDetails.list = [receivableRecord];
+        this.receivableRecordDetails.map = receivableRecord;
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.receivableRecordDetails.refreshing = false;
+      });
+    }
+  }
 
   // 新增
   @action async createReceivableRecordReq(options) {

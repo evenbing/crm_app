@@ -14,7 +14,7 @@ import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
@@ -53,14 +53,8 @@ class ReceivablePlan extends React.Component {
     ],
   };
   componentDidMount() {
-    this.props.navigation.setParams({
-      onPressRight: this.onPressRight,
-    });
     this.getData();
   }
-  onPressRight = () => {
-    this.props.navigation.navigate(routers.receivablePlanCreate);
-  };
   onPressFilterItem = async ({ index }) => {
     const { screenTabList, activeIndex } = this.state;
     screenTabList[activeIndex].selectedIndex = index;
@@ -289,15 +283,6 @@ ReceivablePlan.navigationOptions = ({ navigation }) => ({
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
     />
   ),
 });

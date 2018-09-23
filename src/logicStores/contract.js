@@ -67,7 +67,6 @@ class ContractStore {
         errors = [],
       } = await getContractDetails({ id });
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.contractDetails.list = [pact];
         this.contractDetails.map = pact;
