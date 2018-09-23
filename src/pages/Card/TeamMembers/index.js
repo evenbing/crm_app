@@ -43,9 +43,14 @@ class TeamMembers extends React.Component {
       onPressRight: this.onPressRight,
     });
 
+    const {
+      moduleId,
+      moduleType,
+    } = this.props.navigation.state.params;
+
     TeamStore.getTeamListReq({
-      moduleId: '1041675409789423616',
-      moduleType: 'ACTIVITY',
+      moduleId,
+      moduleType,
     });
   }
 

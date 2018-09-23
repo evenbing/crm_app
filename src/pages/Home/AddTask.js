@@ -10,9 +10,8 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import DateTimePicker from '../../components/DateTimePicker';
 
-import NavView from '../../components/NavItem';
+import DateTimePicker from '../../components/DateTimePicker';
 import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme, routers } from '../../constants';
@@ -65,10 +64,10 @@ class AddTask extends Component {
       // longitudeAndLatitude: null,
       // locationInfo: null,
       isPrivate: 1, // 先默认写1
-      principal: '1004674766843809792',
+      principal: null,
       principalName: null,
-      userIds: null,
-      userIdNames: null,
+      userIds: [],
+      userIdNames: [],
     };
   }
 
@@ -251,32 +250,44 @@ class AddTask extends Component {
               <CenterText active={moduleType && moduleTypeName}>
                 {
                   moduleId && moduleName && moduleType && moduleTypeName
-                    ? `${moduleTypeName},${moduleName}`
-                  : TaskEnum.moduleType
+                  ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
                 }
               </CenterText>
             }
-            isLast
             {...theme.navItemStyle}
           />
-          <NavView
+          <Divder height={1} />
+          <NavInputItem
             leftText="负责人"
             onPress={() => {
-              navigate(routers.teamMembers);
+              if (!(moduleId && moduleType)) {
+                Toast.showError('请先选择关联业务');
+                return;
+              }
+              navigate(routers.teamMembers, {
+                moduleId,
+                moduleType,
+              });
             }}
             center={
               <CenterText active={principal && principalName}>
-                {(principal && principalName) ? principalName : TaskEnum.principal}
+                {
+                  principal && principalName
+                  ? principalName : TaskEnum.principal
+                }
               </CenterText>
-          }
+            }
             {...theme.navItemStyle}
           />
           <Divder height={1} marginHorizontal={15} />
-          <NavView
+          <NavInputItem
             leftText="参与人"
             center={
-              <CenterText active={userIds && userIdNames}>
-                {(userIds && userIdNames) ? userIdNames : TaskEnum.userIds}
+              <CenterText active={userIds.length && userIdNames.length}>
+                {
+                  userIds.length && userIdNames.length
+                  ? userIdNames : TaskEnum.userIds
+                }
               </CenterText>
           }
             {...theme.navItemStyle}
