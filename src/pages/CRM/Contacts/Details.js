@@ -72,29 +72,26 @@ class Details extends React.Component {
   onEndReached = () => {
     const { total = 0, [dynamicContactList]: list = [], pageNumber = 1, loadingMore } = DynamicModel.dynamicList;
     if (list.length < total && loadingMore === false) {
-      this.getData(pageNumber + 1);
+      this.getDynamicList(pageNumber + 1);
     }
   };
   onPressSend = ({ content, contentType }, callback) => {
-    debugger;
+    const { item } = this.props.navigation.state.params || {};
     DynamicModel.createDynamicReq({
       content,
       contentType,
+      moduleId: item.id,
       moduleType: ModuleType.contact,
     }, () => {
       callback && callback();
     });
   };
   getDynamicList = (pageNumber = 1) => {
-    // const { item } = this.props.navigation.state.params || {};
-    // DynamicModel.getDynamicListReq({
-    //   pageNumber,
-    //   moduleType: ModuleType.contact,
-    //   createBy: item.id,
-    // });
+    const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
       moduleType: ModuleType.contact,
+      moduleId: item.id,
     });
   };
   getContactDetail = () => {
@@ -121,10 +118,10 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
-    const { contactDetails } = ContactsModel;
+    const { contactDetails: { map } } = ContactsModel;
     return (
       <View>
-        <DetailsHead item={contactDetails} />
+        <DetailsHead item={map} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
@@ -162,20 +159,18 @@ class Details extends React.Component {
     <ActivityDetailsItem {...props} />
   );
   renderDetailsView = () => {
-    const { contactDetails } = ContactsModel;
-    const list = [contactDetails];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      contactDetails: { list = [], refreshing },
+    } = ContactsModel;
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
       onRefresh: this.getContactDetail,
       flatListStyle: {
-        paddingBottom: theme.moderateScale(50),
+        marginBottom: theme.moderateScale(50),
       },
       refreshing,
-      noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <FlatListTable {...flatProps} />
@@ -191,6 +186,7 @@ class Details extends React.Component {
       },
     } = this;
     const { item } = state.params || {};
+    const bool = tabIndex === 0;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -198,14 +194,13 @@ class Details extends React.Component {
       >
         <CommStatusBar />
         {
-          tabIndex === 0
-            ?
+          bool ?
             this.renderDynamicView()
             :
             this.renderDetailsView()
         }
         {
-          tabIndex === 0 ?
+          bool ?
             <SendFooter
               onPressSend={this.onPressSend}
             />

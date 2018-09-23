@@ -12,3 +12,10 @@ export const initFlatList = {
   list: [],
   total: 0,
 };
+
+export const initDetailMap = {
+  refreshing: false,
+  list: [],
+  map: {},
+};
+

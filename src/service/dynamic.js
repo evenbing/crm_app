@@ -10,9 +10,9 @@ import { post } from '../utils/rpc';
  * @add by zhao
  * @params options
  * {
- *  moduleType  模块类型  是  PRODUCT-产品,PACT-合同,CUSTOMER-客户,CONTACT-联系人,ACTIVITY-市场活动,LEADS-销售线索,OPPORTUNITY-销售机会,PRICE-价格,RECEIVABLE_PLAN-回款计划,RECEIVABLE_DETAIL-回款记录
- *  moduleId  模块ID  是 // 这里好像是不是必须传
- *  createBy  创建人ID  是
+ *  moduleType  模块类型  must PRODUCT-产品,PACT-合同,CUSTOMER-客户,CONTACT-联系人,ACTIVITY-市场活动,LEADS-销售线索,OPPORTUNITY-销售机会,PRICE-价格,RECEIVABLE_PLAN-回款计划,RECEIVABLE_DETAIL-回款记录
+ *  moduleId  模块ID  must
+ *  createBy  创建人ID
  * }
  * @return Promise<Object>
  */
@@ -47,7 +47,7 @@ export function createDynamic({
   content,
 } = {}) {
   return post({
-    method: 'api.customerrelations.dynamic.find',
+    method: 'api.customerrelations.dynamic.create',
     moduleType,
     moduleId,
     contentType,
