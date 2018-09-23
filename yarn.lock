@@ -5256,7 +5256,7 @@ rimraf@~2.2.6:
 
 rn-viewpager@^1.2.9:
   version "1.2.9"
-  resolved "https://registry.yarnpkg.com/rn-viewpager/-/rn-viewpager-1.2.9.tgz#7f06f898e23b296f3b5be7c98bd9101d94427779"
+  resolved "https://registry.npmjs.org/rn-viewpager/-/rn-viewpager-1.2.9.tgz#7f06f898e23b296f3b5be7c98bd9101d94427779"
 
 rndm@1.2.0:
   version "1.2.0"

@@ -22,6 +22,11 @@ const options = {
   },
 };
 
+const addIconObject = {
+  key: KEY_ADD,
+  image: addIcon,
+};
+
 const Container = styled.FlatList.attrs({
   numColumns: 4,
 })`
@@ -34,10 +39,30 @@ class ImageCollector extends React.PureComponent {
     super(props);
     this.state = {
       isVisible: false,
+      pagerData: [{
+        key: 'key111',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }, {
+        key: 'ke222',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }, {
+        key: 'ke333',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }],
       data: [{
+        key: 'key111',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }, {
+        key: 'ke222',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }, {
+        key: 'ke333',
+        image: { uri: 'content://com.crm_app.provider/app_images/Pictures/image-1dfdb60d-e2f6-49ec-b609-1bfe19289828.jpg' },
+      }, {
         key: KEY_ADD,
         image: addIcon,
       }],
+      selectedIndex: 0,
     };
   }
 
@@ -51,45 +76,71 @@ class ImageCollector extends React.PureComponent {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
-        const d = this.state.data.map(item => item);
-        const loc = this.state.data.length - 1;
-        d.splice(loc, 0, {
+        console.log(source);
+        const pagerData = [...this.state.pagerData];
+        pagerData.push({
           key: uuidv1(),
           image: source,
         });
+        const data = [...pagerData];
+        data.push(addIconObject);
         this.setState({
-          data: d,
+          pagerData,
+          data,
         });
       }
     });
   }
 
-  onPressItem = () => {
-    this.setState({ isVisible: true });
+  onPressItem = index => () => {
+    this.setState({
+      selectedIndex: index,
+    }, () => {
+      this.setState({
+        isVisible: true });
+    });
   }
 
   onCloseModal = () => {
     this.setState({ isVisible: false });
   }
 
+  onDeleteImage = () => {
+    const { selectedIndex } = this.state;
+    console.log({ selectedIndex });
+    const pagerData = this.state.pagerData.filter((item, index) => index !== selectedIndex);
+    const data = [...pagerData];
+    data.push(addIconObject);
+    console.log(data);
+    console.log(pagerData);
+    this.setState({
+      pagerData,
+      data,
+    });
+  }
+
+  onPageSelected = (selectedIndex) => {
+    this.setState({ selectedIndex });
+  }
+
   keyExtractor = item => item.key
 
-  renderItem =({ item }) => {
+  renderItem =({ item, index }) => {
     return (
-      <ImageItem 
-        item={item} 
-        onPressAdd={this.onPickImage} 
-        onPressItem={this.onPressItem}
+      <ImageItem
+        item={item}
+        onPressAdd={this.onPickImage}
+        onPressItem={this.onPressItem(index)}
       />
     );
   }
 
   render() {
     const {
-      state: {
-        data,
-      },
-    } = this;
+      data,
+      pagerData,
+      selectedIndex,
+    } = this.state;
     return (
       <View>
         <Container
@@ -98,9 +149,12 @@ class ImageCollector extends React.PureComponent {
           renderItem={this.renderItem}
         />
         <ImagePager
-          data={this.state.data.filter(item => item.key !== KEY_ADD)}
+          data={pagerData}
           isVisible={this.state.isVisible}
-          onCloseModal={this.onCloseModal}
+          onCloseModal={() => this.onCloseModal()}
+          onDeleteImage={this.onDeleteImage}
+          onPageSelected={this.onPageSelected}
+          selectedIndex={selectedIndex}
         />
       </View>
 

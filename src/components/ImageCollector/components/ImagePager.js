@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
+import HeaderComponent from './Header';
+import { moderateScale, width } from '../../../utils/scale';
 
 const ImagePager = ({
   data,
   isVisible,
+  selectedIndex,
   onCloseModal,
+  onDeleteImage,
+  onPageSelected,
 }) => (
   <Modal
     animationType="fade"
@@ -15,9 +20,24 @@ const ImagePager = ({
     style={{ margin: 0 }}
     onBackButtonPress={onCloseModal}
   >
+    <HeaderComponent
+      onLeftPress={onCloseModal}
+      onRightPress={onDeleteImage}
+    />
     <IndicatorViewPager
+      initialPage={selectedIndex}
+      onPageSelected={(params) => {
+        onPageSelected(params.position);
+      }}
       style={{ flex: 1 }}
-      indicator={<PagerDotIndicator pageCount={3} />}
+      indicator={
+        <PagerDotIndicator
+          pageCount={data.length}
+          selectedDotStyle={{
+            width: moderateScale(10),
+          }}
+        />
+      }
     >
       {
         data.map((item) => {
@@ -27,11 +47,8 @@ const ImagePager = ({
           } = item;
           return (
             <View key={key}>
-              <TouchableOpacity style={{ backgroundColor: 'transparent' }}>
-                <Image style={{ flex: 1 }} source={image} />
-              </TouchableOpacity>
+              <Image style={{ flex: 1 }} source={image} />
             </View>
-            
           );
         })
       }
@@ -51,7 +68,10 @@ ImagePager.propTypes = {
     }),
   })).isRequired,
   isVisible: PropTypes.bool,
+  selectedIndex: PropTypes.number.isRequired,
   onCloseModal: PropTypes.func.isRequired,
+  onDeleteImage: PropTypes.func.isRequired,
+  onPageSelected: PropTypes.func.isRequired,
 };
 
 export default ImagePager;
