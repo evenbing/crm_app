@@ -19,6 +19,9 @@ import TeamStore from '../../../logicStores/team';
 
 @observer
 class TeamMembers extends React.Component {
+  state = {
+    search: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
@@ -70,18 +73,32 @@ class TeamMembers extends React.Component {
 
   render() {
     const {
-      teamList,
+      state: {
+        search,
+      },
+    } = this;
+    const {
+      filterTeamList,
+      updateSearch,
     } = TeamStore;
     return (
       <ContainerView
         bottomPadding
       >
         <CommStatusBar />
-        <SearchInput placeholder="输入姓名搜索成员" />
+        <SearchInput
+          value={search}
+          placeholder="输入姓名搜索成员"
+          onChangeText={(search) => {
+            if (!search) updateSearch(search);
+            this.setState({ search });
+          }}
+          onSearch={() => updateSearch(search)}
+        />
         <MemberList
           renderHeader={this.renderHeader}
           headerHeight={theme.moderateScale(44)}
-          dataList={teamList}
+          dataList={filterTeamList}
           onPressItem={this.onPressItem}
         />
       </ContainerView>
