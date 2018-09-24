@@ -15,6 +15,7 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import TouchableView from '../../../../components/TouchableView';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -61,9 +62,22 @@ const PlanStatusText = styled.Text`
   margin-right: ${theme.moderateScale(2)};
 `;
 
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+`;
+
+
 class DetailsHead extends React.PureComponent {
   render() {
-    const { item } = this.props;
+    const {
+      item,
+      onPressChoiceTeam,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
@@ -73,15 +87,16 @@ class DetailsHead extends React.PureComponent {
           <ItemView marginTop={4}>
             <CompanyText>客户：{item.customerName}</CompanyText>
           </ItemView>
-          <ItemView
+          <OwnerUserNameView
             marginTop={9}
+            onPress={onPressChoiceTeam}
           >
             <PersonText>负责人: {item.ownerName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
             />
-          </ItemView>
+          </OwnerUserNameView>
           <ItemView
             marginTop={11}
             marginBottom={20}
@@ -105,10 +120,12 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressChoiceTeam: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressChoiceTeam: PropTypes.func,
 };
 
 export default DetailsHead;

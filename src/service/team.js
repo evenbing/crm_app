@@ -18,13 +18,13 @@ import { post } from '../utils/rpc';
  */
 export function getTeamList({
   pageSize = 0,
-  moduleId,
+  moduleID,
   moduleType,
 } = {}) {
   return post({
-    method: 'api.customerrelations.managementTeam.find',
+    method: 'api.customerrelations.managementTeamMember.find',
     pageSize,
-    moduleId,
+    moduleID,
     moduleType,
   });
 }

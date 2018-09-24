@@ -57,7 +57,7 @@ class TeamMembers extends React.Component {
       moduleType,
     } = this.props.navigation.state.params || {};
     TeamStore.getTeamListReq({
-      moduleId,
+      moduleID: moduleId,
       moduleType,
     });
   };
