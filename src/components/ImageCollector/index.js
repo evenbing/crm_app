@@ -69,6 +69,7 @@ class ImageCollector extends React.PureComponent {
           pagerData,
           data,
         });
+        this.props.onConfirm && this.props.onConfirm(pagerData);
       }
     });
   }
@@ -109,6 +110,7 @@ class ImageCollector extends React.PureComponent {
         data,
       });
     }
+    this.props.onConfirm && this.props.onConfirm(pagerData);
   }
 
   onPageSelected = (selectedIndex) => {

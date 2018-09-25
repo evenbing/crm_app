@@ -139,7 +139,7 @@ class EditorMore extends React.Component {
     const { item = {} } = state.params || {};
     if (!Object.keys(item)) return;
     const { sex: sexKey, ...restProps } = item;
-    let sex;
+    let sex = {};
     if (sexKey) {
       const name = SexTypes[sexKey] || sexKey;
       sex = { name, key: sexKey };

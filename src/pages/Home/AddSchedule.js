@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+/*
+ * @Author: ShiQuan
+ * @Date: 2018-09-24 20:50:41
+ * @Last Modified by: ShiQuan
+ * @Last Modified time: 2018-09-24 21:00:03
+ */
 
-import NavView from '../../components/NavItem';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+
+import DateTimePicker from '../../components/DateTimePicker';
+import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import { theme, routers } from '../../constants';
 import NavInputItem from '../../components/NavInputItem';
-import DateTimePicker from '../../components/DateTimePicker';
-import { CenterText } from '../../components/Styles/Form';
 import { formatDate } from '../../utils/base';
-import { TaskEnum } from '../../constants/form';
 import { FormActionSheet } from '../../components/Modal';
-import { NoticeTypes, ModuleTypes } from '../../constants/enum';
+import { NoticeTypes } from '../../constants/enum';
+import { TaskEnum } from '../../constants/form';
+import { CenterText } from '../../components/Styles/Form';
+import ImageCollector from '../../components/ImageCollector';
 import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
+import TaskScheduleModel from '../../logicStores/taskSchedule';
+import AttachmentModel from '../../logicStores/attachment';
+import Toast from '../../utils/toast';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -32,47 +46,114 @@ const Divder = styled.View`
   background-color: #F6F6F6;
 `;
 
-const ItemTitle = styled.Text`
-  padding: ${moderateScale(11)}px ${moderateScale(15)}px;
-  font-family: ${theme.fontRegular};
-  font-size: ${moderateScale(16)};
-  color: #373737;
-`;
-
+@observer
 class AddSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 'SCHEDULE',
-      name: null,
-      startTime: null,
-      endTime: null,
+      type: 'SCHEDULE', // 'TASK',
+      name: null, // 'new task',
+      startTime: null, // '2018-09-09 11:12:12',
+      endTime: null, // '2019-09-19 12:12:12',
       moduleType: null,
+      moduleTypeName: null,
       moduleId: null,
+      moduleName: null,
       comment: null,
       needNotice: null,
       noticeTime: null,
+      noticeTimeName: null,
       longitudeAndLatitude: null,
       locationInfo: null,
-      isPrivate: null,
+      isPrivate: 1, // 先默认写1
       principal: null,
-      userIds: null,
+      principalName: null,
+      userIds: [],
+      userIdNames: [],
+      images: [],
     };
   }
 
-  getLeftStyle = (inputProps, width = 80) => {
-    return {
-      inputProps: {
-        ...inputProps,
-        fontSize: moderateScale(16),
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+
+  onPressRight = () => {
+    const {
+      state: {
+        type,
+        name,
+        startTime,
+        endTime,
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        longitudeAndLatitude,
+        locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+        images,
       },
-      leftTextStyle: {
-        color: theme.textFormColor,
-        width: moderateScale(width),
+      props: {
+        navigation: {
+          goBack,
+          state: {
+            params: {
+              reFetchTaskScheduleList,
+            },
+          },
+        },
       },
-      height: 44,
-    };
+    } = this;
+    try {
+      // 上传图片
+      // const path = images[0].image.uri;
+      // AttachmentModel.uploadImageReq({
+      //   file: {
+      //     uri: path,
+      //     type: 'multipart/form-data',
+      //     name: path.substr(path.lastIndexOf('/') + 1),
+      //   },
+      //   businessId: '1314398247923840238940',
+      // });
+
+      if (!name) throw new Error(TaskEnum.name);
+      if (!startTime) throw new Error(TaskEnum.startTime);
+      if (!endTime) throw new Error(TaskEnum.endTime);
+      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      TaskScheduleModel.createTaskScheduleRelatedToMeReq({
+        // id: '1043786812474134528',
+        type,
+        name,
+        startTime,
+        endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        longitudeAndLatitude,
+        locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+      }, () => {
+        reFetchTaskScheduleList();
+        goBack();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
   };
+
+  onChangeTaskName = (name) => {
+    this.setState({ name });
+  }
 
   render() {
     const {
@@ -83,31 +164,33 @@ class AddSchedule extends Component {
         moduleType,
         moduleTypeName,
         moduleId,
+        moduleName,
         comment,
-        needNotice,
+        // needNotice,
         noticeTime,
         noticeTimeName,
         longitudeAndLatitude,
         locationInfo,
-        isPrivate,
+        // isPrivate,
         principal,
+        principalName,
         userIds,
+        userIdNames,
       },
       props: {
-        navigation: {
-          navigate,
-        },
+        navigation: { navigate },
       },
     } = this;
+
     return (
       <ContainerView>
         <CommStatusBar />
         <ScrollView>
           <Divder height={9} />
           <NavInputItem
-            leftText="日程主题"
+            leftText="任务主题"
             {...theme.getLeftStyle({
-              placeholder: '请输入日程主题',
+              placeholder: TaskEnum.name,
               value: name,
               onChangeText: name => this.setState({ name }),
             })}
@@ -132,7 +215,6 @@ class AddSchedule extends Component {
               {...theme.navItemStyle}
             />
           </DateTimePicker>
-          <Divder height={1} marginHorizontal={15} />
           <DateTimePicker
             onConfirm={
               date =>
@@ -156,9 +238,14 @@ class AddSchedule extends Component {
           <FormActionSheet
             typeEnum={NoticeTypes}
             onConfirm={(item) => {
+              const {
+                key,
+                value,
+              } = item;
               this.setState({
-                noticeTime: item.key,
-                noticeTimeName: item.value,
+                needNotice: key !== 0,
+                noticeTime: key,
+                noticeTimeName: value,
               });
             }}
           >
@@ -173,40 +260,124 @@ class AddSchedule extends Component {
               {...theme.navItemStyle}
             />
           </FormActionSheet>
-          <Divder height={1} marginHorizontal={15} />
-          <NavView leftText="位置" rightText="江苏 苏州" />
-          <Divder height={1} marginHorizontal={15} />
-          <NavView leftText="参与人" rightText="无" />
-          <Divder height={10} />
           <NavInputItem
-            leftText="关联业务"
+            leftText="位置"
             onPress={() => {
-              navigate(routers.typePicker, {
-                selectedKey: moduleType,
-                typeEnum: ModuleTypes,
-                callback: (key, value) => {
+              navigate(routers.moduleTypePicker, {
+                selectedModuleType: moduleType,
+                selectedModuleId: moduleId,
+                callback: ({ id, name, moduleType, moduleTypeName }) => {
                   this.setState({
-                    moduleType: key,
-                    moduleTypeName: value,
+                    moduleId: id,
+                    moduleName: name,
+                    moduleType,
+                    moduleTypeName,
                   });
                 },
               });
             }}
             center={
               <CenterText active={moduleType && moduleTypeName}>
-                {(moduleType && moduleTypeName) ? moduleTypeName : TaskEnum.moduleType}
+                {
+                  moduleId && moduleName && moduleType && moduleTypeName
+                    ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
+                }
               </CenterText>
             }
-            isLast
+            {...theme.navItemStyle}
+          />
+          <Divder height={1} />
+          <NavInputItem
+            leftText="关联业务"
+            onPress={() => {
+              navigate(routers.moduleTypePicker, {
+                selectedModuleType: moduleType,
+                selectedModuleId: moduleId,
+                callback: ({ id, name, moduleType, moduleTypeName }) => {
+                  this.setState({
+                    moduleId: id,
+                    moduleName: name,
+                    moduleType,
+                    moduleTypeName,
+                  });
+                },
+              });
+            }}
+            center={
+              <CenterText active={moduleType && moduleTypeName}>
+                {
+                  moduleId && moduleName && moduleType && moduleTypeName
+                    ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <Divder height={1} />
+          <NavInputItem
+            leftText="负责人"
+            onPress={() => {
+              if (!(moduleId && moduleType)) {
+                Toast.showError('请先选择关联业务');
+                return;
+              }
+              navigate(routers.teamMembers, {
+                moduleId,
+                moduleType,
+                callback: ({ userId, userName }) => {
+                  this.setState({
+                    principal: userId,
+                    principalName: userName,
+                  });
+                },
+              });
+            }}
+            center={
+              <CenterText active={principal && principalName}>
+                {
+                  principal && principalName
+                    ? principalName : TaskEnum.principal
+                }
+              </CenterText>
+            }
             {...theme.navItemStyle}
           />
           <Divder height={1} marginHorizontal={15} />
-          <NavView leftText="重复规则" rightText="不重复" />
+          <NavInputItem
+            leftText="参与人"
+            onPress={() => {
+              if (!(moduleId && moduleType)) {
+                Toast.showError('请先选择关联业务');
+                return;
+              }
+              navigate(routers.teamMembers, {
+                moduleId,
+                moduleType,
+                radio: true,
+                callback: (list) => {
+                  this.setState({
+                    userIds: list.map(user => user.userId),
+                    userIdNames: list.map(user => user.userName),
+                  });
+                },
+              });
+            }}
+            center={
+              <CenterText active={userIds.length && userIdNames.length}>
+                {
+                  userIds.length && userIdNames.length
+                    ? userIdNames.reduce((a, c) => `${a},${c}`) : TaskEnum.userIds
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
           <Divder height={1} marginHorizontal={15} />
 
           <NavInputItem
             leftText="描述"
             height={44}
+            center={<View />}
           />
           <TextareaGroup>
             <TextareaView
@@ -221,13 +392,50 @@ class AddSchedule extends Component {
           <NavInputItem
             leftText="图片"
             height={44}
+            center={<View />}
           />
-          <ItemTitle>图片</ItemTitle>
+          <ImageCollector
+            onConfirm={(images) => {
+              console.log(images);
+              this.setState({ images });
+            }}
+          />
+          <View style={{ height: 50 }} />
         </ScrollView>
       </ContainerView>
     );
   }
 }
+
+AddSchedule.navigationOptions = ({ navigation }) => ({
+  title: '新增任务',
+  headerLeft: (
+    <LeftBackIcon />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
+    />
+  ),
+});
+
+AddSchedule.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 AddSchedule.navigationOptions = () => ({
   title: '新增日程',

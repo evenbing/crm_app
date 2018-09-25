@@ -85,7 +85,7 @@ class DynamicItem extends React.PureComponent {
       <ContainerView onPress={onPress}>
         <LeftView />
         <RightView>
-          <NameText>张三</NameText>
+          <NameText>{item.createdByName}</NameText>
           <ContentText>{item.content}</ContentText>
           {
             item.url ? <PicImage /> : null

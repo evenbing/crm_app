@@ -36,7 +36,7 @@ class taskScheduleList extends React.Component {
       duration,
       type,
       name,
-      comment,
+      comment = '',
       operateList,
     } = item;
     return (

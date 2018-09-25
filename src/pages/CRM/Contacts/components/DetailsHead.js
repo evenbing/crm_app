@@ -12,6 +12,7 @@ import { theme } from '../../../../constants';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import TouchableView from '../../../../components/TouchableView';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -58,9 +59,21 @@ const PersonText = NameText.extend`
   margin-right: ${theme.moderateScale(5)};
 `;
 
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+`;
+
 class DetailsHead extends React.PureComponent {
   render() {
-    const { item } = this.props;
+    const {
+      item,
+      onPressChoiceTeam,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
@@ -77,20 +90,17 @@ class DetailsHead extends React.PureComponent {
           <ItemView marginTop={2}>
             <CompanyText>{item.companyName}</CompanyText>
           </ItemView>
-          <ItemView
+          <OwnerUserNameView
             marginTop={12}
             marginBottom={41}
+            onPress={onPressChoiceTeam}
           >
             <PersonText>负责人: {item.ownerUserName || '--'}</PersonText>
-            {
-              item.ownerUserName ? (
-                <Thumbnail
-                  source={require('../../../../img/crm/details/principalGo.png')}
-                  size={15}
-                />
-              ) : null
-            }
-          </ItemView>
+            <Thumbnail
+              source={require('../../../../img/crm/details/principalGo.png')}
+              size={15}
+            />
+          </OwnerUserNameView>
         </ContainerView>
       </HeaderBack>
     );
@@ -99,10 +109,12 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressChoiceTeam: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressChoiceTeam: PropTypes.func,
 };
 
 export default DetailsHead;

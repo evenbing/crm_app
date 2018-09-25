@@ -36,7 +36,7 @@ export function createReceivableIssue({
  * }
  * @return Promise<Object>
  */
-export function changeOwnerUser({
+export function updateOwnerUser({
   id,
   ownerIdBefore,
   ownerIdAfter,

@@ -206,7 +206,7 @@ export function updateContact({
  * }
  * @return Promise<Object>
  */
-export function changeOwnerUser({
+export function updateOwnerUser({
   id,
   ownerUserId,
   ownerUserName,

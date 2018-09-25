@@ -1,8 +1,8 @@
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-13 23:12:01
- * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-20 18:17:14
+ * @Last Modified by: ShiQuan
+ * @Last Modified time: 2018-09-24 20:46:41
  */
 import React, { Component } from 'react';
 import { View } from 'react-native';
@@ -24,6 +24,7 @@ import { CenterText } from '../../components/Styles/Form';
 import ImageCollector from '../../components/ImageCollector';
 import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
 import TaskScheduleModel from '../../logicStores/taskSchedule';
+import AttachmentModel from '../../logicStores/attachment';
 import Toast from '../../utils/toast';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
@@ -68,6 +69,7 @@ class AddTask extends Component {
       principalName: null,
       userIds: [],
       userIdNames: [],
+      images: [],
     };
   }
 
@@ -94,6 +96,7 @@ class AddTask extends Component {
         isPrivate,
         principal,
         userIds,
+        images,
       },
       props: {
         navigation: {
@@ -107,6 +110,17 @@ class AddTask extends Component {
       },
     } = this;
     try {
+      // 上传图片
+      // const path = images[0].image.uri;
+      // AttachmentModel.uploadImageReq({
+      //   file: {
+      //     uri: path,
+      //     type: 'multipart/form-data',
+      //     name: path.substr(path.lastIndexOf('/') + 1),
+      //   },
+      //   businessId: '1314398247923840238940',
+      // });
+
       // if (!type) throw new Error(TaskEnum.type);
       if (!name) throw new Error(TaskEnum.name);
       // if (!startTime) throw new Error(TaskEnum.startTime);
@@ -267,6 +281,12 @@ class AddTask extends Component {
               navigate(routers.teamMembers, {
                 moduleId,
                 moduleType,
+                callback: ({ userId, userName }) => {
+                  this.setState({
+                    principal: userId,
+                    principalName: userName,
+                  });
+                },
               });
             }}
             center={
@@ -282,11 +302,28 @@ class AddTask extends Component {
           <Divder height={1} marginHorizontal={15} />
           <NavInputItem
             leftText="参与人"
+            onPress={() => {
+              if (!(moduleId && moduleType)) {
+                Toast.showError('请先选择关联业务');
+                return;
+              }
+              navigate(routers.teamMembers, {
+                moduleId,
+                moduleType,
+                radio: true,
+                callback: (list) => {
+                  this.setState({
+                    userIds: list.map(user => user.userId),
+                    userIdNames: list.map(user => user.userName),
+                  });
+                },
+              });
+            }}
             center={
               <CenterText active={userIds.length && userIdNames.length}>
                 {
                   userIds.length && userIdNames.length
-                  ? userIdNames : TaskEnum.userIds
+                  ? userIdNames.reduce((a, c) => `${a},${c}`) : TaskEnum.userIds
                 }
               </CenterText>
           }
@@ -314,7 +351,12 @@ class AddTask extends Component {
             height={44}
             center={<View />}
           />
-          <ImageCollector onConfirm={() => { }} />
+          <ImageCollector
+            onConfirm={(images) => {
+              console.log(images);
+              this.setState({ images });
+            }}
+          />
           <View style={{ height: 50 }} />
         </ScrollView>
       </ContainerView>

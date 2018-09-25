@@ -19,8 +19,8 @@ export const TaskEnum = {
   longitudeAndLatitude: '位置信息的经纬度',
   locationInfo: '位置信息',
   isPrivate: '请选择是否私密',
-  principal: '请选择责任人',
-  userIds: '请选择参与用户',
+  principal: '无',
+  userIds: '无',
 };
 
 // 市场活动表单

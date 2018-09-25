@@ -43,25 +43,24 @@ class ModuleList extends Component {
 
   getData = (pageNumber = 1) => {
     switch (this.moduleType) {
-      case ModuleTypes.CUSTOMER:
+      case 'CUSTOMER':
         CustomerStore.getCustomerListReq({ pageNumber });
         break;
-      case ModuleTypes.CONTACT:
+      case 'CONTACT':
         ContactStore.getContactListReq({ pageNumber });
         break;
-      case ModuleTypes.ACTIVITY:
+      case 'ACTIVITY':
         MarkActivityStore.getMarkActivityListReq({ pageNumber });
         break;
-      case ModuleTypes.LEADS:
+      case 'LEADS':
         SalesClueStore.getSalesClueListReq({ pageNumber });
         break;
-      case ModuleTypes.OPPORTUNITY:
+      case 'OPPORTUNITY':
         SalesChanceStore.getSalesChanceListReq({ pageNumber });
         break;
       default:
         break;
     }
-    MarkActivityStore.getMarkActivityListReq({ pageNumber });
   };
 
   keyExtractor = item => item.id;
@@ -106,9 +105,31 @@ class ModuleList extends Component {
   }
 
   render() {
-    const {
-      markActivityList: { list, refreshing, loadingMore },
-    } = MarkActivityStore;
+    let obj = null;
+    console.log(this.moduleType);
+
+    switch (this.moduleType) {
+      case 'CUSTOMER':
+        obj = CustomerStore.customerList;
+        break;
+      case 'CONTACT':
+        obj = ContactStore.contactList;
+        break;
+      case 'ACTIVITY':
+        obj = MarkActivityStore.markActivityList;
+        break;
+      case 'LEADS':
+        obj = SalesClueStore.salesClueList;
+        break;
+      case 'OPPORTUNITY':
+        obj = SalesChanceStore.salesChanceList;
+        break;
+      default:
+        break;
+    }
+
+    const { list, refreshing, loadingMore } = obj;
+
     const data = list.map((item) => {
       const {
         id,

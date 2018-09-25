@@ -171,3 +171,26 @@ export async function upload(file) {
   }
   return json;
 }
+
+// 上传图片
+export async function uploadImage(formData) {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData,
+  };
+  const passportId = await getPassportId();
+  const resp = await fetch(config.uploadUrl + "?passportId=" + passportId, options);
+  const text = await resp.text();
+  console.log('REQ:' + config.uploadUrl + "?passportId=" + passportId, options);
+
+  console.log('RESP:', text);
+  const json = JSON.parse(text);
+  // 如果请求失败
+  if (resp.status !== 200) {
+    throw new ResponseError(json.message, resp.status, json);
+  }
+  return json.result;
+}

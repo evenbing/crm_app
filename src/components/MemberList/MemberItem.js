@@ -57,7 +57,7 @@ const MemberItem = ({
         hiddenIcon ? null : (
           <LeftIconView>
             <Thumbnail
-              source={item.active ? require('../../img/company/selected.png') : require('../../img/company/unselected.png')}
+              source={item.actived ? require('../../img/company/selected.png') : require('../../img/company/unselected.png')}
               size={20}
             />
           </LeftIconView>
@@ -67,7 +67,7 @@ const MemberItem = ({
         source={item.url || require('../../img/picture.png')}
         size={60}
       />
-      <NameText>{item.name}</NameText>
+      <NameText>{item.userName}</NameText>
       <BoardView />
     </ContainerView>
   );
