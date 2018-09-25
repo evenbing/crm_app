@@ -233,7 +233,7 @@ class Home extends React.Component {
     };
     const data = TaskScheduleStore.taskScheduleList.map(item => this.formatTaskScheduleListData(item));
     return (
-      <ContainerView>
+      <ContainerView bottomPadding >
         <CommStatusBar />
         <ActionSheet {...createActionSheetProps} />
         <ActionSheet {...delayActionSheetProps} />

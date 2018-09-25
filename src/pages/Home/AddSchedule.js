@@ -27,13 +27,9 @@ import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
 import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import Toast from '../../utils/toast';
+import { ContainerView } from '../../components/Drawer/Styles';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
-
-const ContainerView = styled.View`
-  flex: 1;
-  background-color: white;
-`;
 
 const ScrollView = styled.ScrollView`
   background-color: white;
@@ -183,7 +179,7 @@ class AddSchedule extends Component {
     } = this;
 
     return (
-      <ContainerView>
+      <ContainerView bottomPadding >
         <CommStatusBar />
         <ScrollView>
           <Divder height={9} />
@@ -263,24 +259,16 @@ class AddSchedule extends Component {
           <NavInputItem
             leftText="位置"
             onPress={() => {
-              navigate(routers.moduleTypePicker, {
-                selectedModuleType: moduleType,
-                selectedModuleId: moduleId,
-                callback: ({ id, name, moduleType, moduleTypeName }) => {
-                  this.setState({
-                    moduleId: id,
-                    moduleName: name,
-                    moduleType,
-                    moduleTypeName,
-                  });
+              navigate(routers.cityPicker, {
+                callback: ({ prov, city, area }) => {
+                  console.log('city');
                 },
               });
             }}
             center={
-              <CenterText active={moduleType && moduleTypeName}>
+              <CenterText active={locationInfo}>
                 {
-                  moduleId && moduleName && moduleType && moduleTypeName
-                    ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
+                  locationInfo || TaskEnum.locationInfo
                 }
               </CenterText>
             }

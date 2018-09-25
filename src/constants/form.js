@@ -17,7 +17,7 @@ export const TaskEnum = {
   needNotice: '请选择是否开启提醒',
   noticeTime: '请选择提醒时间',
   longitudeAndLatitude: '位置信息的经纬度',
-  locationInfo: '位置信息',
+  locationInfo: '无',
   isPrivate: '请选择是否私密',
   principal: '无',
   userIds: '无',

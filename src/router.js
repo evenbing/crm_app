@@ -96,6 +96,7 @@ import RelatedDocs from './pages/Card/RelatedDocs';
 // root page -> Modal
 import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
+import CityPickerScreen from './pages/Modal/CityPicker';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -124,6 +125,7 @@ const HomeRouteConfig = {
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.moduleTypePicker]: { screen: ModuleTypePickerScreen },
   [routers.moduleList]: { screen: ModuleListScreen },
+  [routers.cityPicker]: { screen: CityPickerScreen },
 };
 
 const HomeNavigatorConfig = {

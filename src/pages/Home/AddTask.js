@@ -27,13 +27,9 @@ import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import Toast from '../../utils/toast';
 import { getNewId } from '../../service/app';
+import { ContainerView } from '../../components/Drawer/Styles';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
-
-const ContainerView = styled.View`
-  flex: 1;
-  background-color: white;
-`;
 
 const ScrollView = styled.ScrollView`
   background-color: white;
@@ -190,7 +186,7 @@ class AddTask extends Component {
     } = this;
 
     return (
-      <ContainerView>
+      <ContainerView bottomPadding >
         <CommStatusBar />
         <ScrollView>
           <Divder height={9} />

@@ -57,7 +57,6 @@ class ImageCollector extends React.PureComponent {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        // console.log({ response });
         const source = {
           uri: response.uri,
           path: response.path,
@@ -93,12 +92,9 @@ class ImageCollector extends React.PureComponent {
 
   onDeleteImage = () => {
     const { selectedIndex } = this.state;
-    console.log({ selectedIndex });
     const pagerData = this.state.pagerData.filter((item, index) => index !== selectedIndex);
     const data = [...pagerData];
     data.push(addIconObject);
-    console.log({ data });
-    console.log({ pagerData });
     if (pagerData.length === 0) {
       this.setState({
         isVisible: false,
