@@ -5,7 +5,7 @@
  * @Last Modified time: 2018-09-20 16:26:50
  */
 
-import { action, observable, runInAction, useStrict } from 'mobx';
+import { action, observable, computed, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
   getTeamList,
@@ -22,6 +22,17 @@ class TeamStore {
   @observable teamList = [];
   // 详情
   @observable teamDetail = {};
+
+  @observable search = null;
+
+  @computed get filterTeamList() {
+    if (!this.search) return this.teamList;
+    return this.teamList.filter(v => v.userName === this.search);
+  }
+
+  @action updateSearch(value) {
+    this.search = value;
+  }
 
   @action updateTeamActive({ item, radio }) {
     this.teamList = this.teamList.map((v) => {

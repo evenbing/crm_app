@@ -1,6 +1,6 @@
 /**
  * @component Details.js
- * @description 联系人详情页面
+ * @description 合同详情页面
  * @time 2018/8/12
  * @author JUSTIN XU
  */
@@ -85,6 +85,25 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    navigate(routers.teamMembers, {
+      moduleId: item.id,
+      moduleType: ModuleType.pact,
+      callback: (obj) => {
+        ContractModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.id,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -122,9 +141,13 @@ class Details extends React.Component {
       onChange: index => this.onTabChange(index),
     };
     const { contractDetails: { map } } = ContractModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+    };
     return (
       <View>
-        <DetailsHead item={map} />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
@@ -209,7 +232,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactEditorMore, { item })}
+                onPress={() => navigate(routers.contractEditorMore, { item })}
               />
             )
         }

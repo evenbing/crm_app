@@ -5,9 +5,10 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { formatDateByMoment } from '../../../../utils/base';
 
 // components
 import NavItemComponent from '../../../../components/NavItem';
@@ -34,7 +35,7 @@ class ActivityDetailsItem extends React.PureComponent {
   renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
     <NavItemComponent
       height={44}
-      leftText={leftText}
+      leftText={leftText || '--'}
       rightText={rightText}
       showNavIcon={false}
       isLast={isLast}
@@ -46,20 +47,23 @@ class ActivityDetailsItem extends React.PureComponent {
     />
   );
   render() {
+    const {
+      item,
+    } = this.props;
     return (
       <ContainerView>
         <TitleItemComponent
           text="基本信息"
         />
-        {this.renderBasicItem('合同名称', '合同名称')}
-        {this.renderBasicItem('客户', '西风网络')}
-        {this.renderBasicItem('销售机会', '标准价格表')}
-        {this.renderBasicItem('合同类型', '老客户机会')}
-        {this.renderBasicItem('合同状态', '部分回款')}
-        {this.renderBasicItem('付款方式', '现金')}
-        {this.renderBasicItem('总金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-        {this.renderBasicItem('开始日期', '2018-09-09')}
-        {this.renderBasicItem('结束日期', '2018-09-09', null, null, true)}
+        {this.renderBasicItem('合同名称', item.theme)}
+        {this.renderBasicItem('客户', item.customerName)}
+        {this.renderBasicItem('销售机会', item.salesOpportunitiesId)}
+        {this.renderBasicItem('合同类型', item.type)}
+        {this.renderBasicItem('合同状态', item.status)}
+        {this.renderBasicItem('付款方式', item.payType)}
+        {this.renderBasicItem('总金额', item.totalMoney, <RightSuffix>元</RightSuffix>)}
+        {this.renderBasicItem('开始日期', formatDateByMoment(item.startDate))}
+        {this.renderBasicItem('结束日期', formatDateByMoment(item.endDate), null, null, true)}
         <TitleItemComponent
           text="回款信息"
         />
@@ -72,14 +76,14 @@ class ActivityDetailsItem extends React.PureComponent {
         <TitleItemComponent
           text="其他信息"
         />
-        {this.renderBasicItem('合同编号', '1234567890')}
-        {this.renderBasicItem('签约日期', '2018-09-09 09:00')}
-        {this.renderBasicItem('我方签约人', '张三张三')}
-        {this.renderBasicItem('客户方签约人', '张三')}
+        {this.renderBasicItem('合同编号', item.number)}
+        {this.renderBasicItem('签约日期', formatDateByMoment(item.pactDate))}
+        {this.renderBasicItem('我方签约人', item.ourContractName)}
+        {this.renderBasicItem('客户方签约人', item.customerContractName)}
         {this.renderBasicItem('合同正文', null, null, null, true)}
         <RemarkView>
           <RemarkText>
-            合同正文，合同正文合同正文合同正文合同正文合同正文合同正文合同正文合同正文
+            {item.content}
           </RemarkText>
         </RemarkView>
         <TitleItemComponent
@@ -88,7 +92,7 @@ class ActivityDetailsItem extends React.PureComponent {
         />
         <RemarkView>
           <RemarkText>
-            活动说明，活动说明，活动说明，活动说明，活动说明，活动说明，
+            {item.comment}
           </RemarkText>
         </RemarkView>
       </ContainerView>
@@ -96,8 +100,12 @@ class ActivityDetailsItem extends React.PureComponent {
   }
 }
 
-ActivityDetailsItem.defaultProps = {};
+ActivityDetailsItem.defaultProps = {
+  item: {},
+};
 
-ActivityDetailsItem.propTypes = {};
+ActivityDetailsItem.propTypes = {
+  item: PropTypes.objectOf(PropTypes.any),
+};
 
 export default ActivityDetailsItem;
