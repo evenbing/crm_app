@@ -11,6 +11,17 @@ import { post, upload } from '../utils/rpc';
  * @param data
  * @returns {*}
  */
+export function getNewId() {
+  return post({
+    method: 'api.base.newId.get',
+  });
+}
+
+/**
+ * 获取承租人信息和用户id
+ * @param data
+ * @returns {*}
+ */
 export function getPassportInfo({ id } = {}) {
   return post({
     method: 'api.security.passport.get',

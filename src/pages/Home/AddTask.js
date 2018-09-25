@@ -26,6 +26,7 @@ import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
 import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import Toast from '../../utils/toast';
+import { getNewId } from '../../service/app';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -79,7 +80,7 @@ class AddTask extends Component {
     });
   }
 
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         type,
@@ -110,16 +111,19 @@ class AddTask extends Component {
       },
     } = this;
     try {
+      const businessId = await getNewId();
       // 上传图片
-      // const path = images[0].image.uri;
-      // AttachmentModel.uploadImageReq({
-      //   file: {
-      //     uri: path,
-      //     type: 'multipart/form-data',
-      //     name: path.substr(path.lastIndexOf('/') + 1),
-      //   },
-      //   businessId: '1314398247923840238940',
-      // });
+      for (let index = 0; index < images.length; index++) {
+        const { path } = images[index];
+        AttachmentModel.uploadImageReq({
+          file: {
+            uri: path,
+            type: 'multipart/form-data',
+            name: path.substr(path.lastIndexOf('/') + 1),
+          },
+          businessId,
+        });
+      }
 
       // if (!type) throw new Error(TaskEnum.type);
       if (!name) throw new Error(TaskEnum.name);
@@ -129,7 +133,7 @@ class AddTask extends Component {
       if (!(moduleId)) throw new Error(TaskEnum.moduleId);
       // if (!(comment)) throw new Error(TaskEnum.comment);
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
-        // id: '1043786812474134528',
+        id: businessId,
         type,
         name,
         // startTime,
@@ -147,6 +151,7 @@ class AddTask extends Component {
       }, () => {
         reFetchTaskScheduleList();
         goBack();
+        Toast.showSuccess('任务创建成功');
       });
     } catch (e) {
       Toast.showError(e.message);

@@ -57,7 +57,11 @@ class ImageCollector extends React.PureComponent {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = { uri: response.uri };
+        // console.log({ response });
+        const source = {
+          uri: response.uri,
+          path: response.path,
+        };
         const pagerData = [...this.state.pagerData];
         pagerData.push({
           key: uuidv1(),
