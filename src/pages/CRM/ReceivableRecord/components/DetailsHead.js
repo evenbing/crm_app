@@ -12,6 +12,7 @@ import { theme } from '../../../../constants';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import TouchableView from '../../../../components/TouchableView';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -40,31 +41,46 @@ const PersonText = NameText.extend`
   margin-right: ${theme.moderateScale(5)};
 `;
 
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+`;
+
+
 class DetailsHead extends React.PureComponent {
   render() {
+    const {
+      item,
+      onPressChoiceTeam,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
           <ItemView marginTop={50}>
-            <NameText>20180909-0001</NameText>
+            <NameText>{item.code}</NameText>
           </ItemView>
           <ItemView marginTop={2}>
-            <CompanyText>客户：西风网络</CompanyText>
+            <CompanyText>客户：{item.customerName}</CompanyText>
           </ItemView>
-          <ItemView
+          <OwnerUserNameView
+            onPress={onPressChoiceTeam}
             marginTop={8}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerName}</PersonText>
             <Thumbnail
               source={require('../../../../img/crm/details/principalGo.png')}
               size={15}
             />
-          </ItemView>
+          </OwnerUserNameView>
           <ItemView
             marginTop={11}
             marginBottom={56}
           >
-            <CompanyText>计划回款金额：¥100,000,000.00</CompanyText>
+            <CompanyText>计划回款金额：¥{item.receivablePrice}</CompanyText>
           </ItemView>
         </ContainerView>
       </HeaderBack>
@@ -74,10 +90,12 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressChoiceTeam: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressChoiceTeam: PropTypes.func,
 };
 
 export default DetailsHead;

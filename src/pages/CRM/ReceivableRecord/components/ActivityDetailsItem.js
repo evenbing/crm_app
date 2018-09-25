@@ -5,7 +5,7 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
 
@@ -75,8 +75,12 @@ class ActivityDetailsItem extends React.PureComponent {
   }
 }
 
-ActivityDetailsItem.defaultProps = {};
+ActivityDetailsItem.defaultProps = {
+  item: {},
+};
 
-ActivityDetailsItem.propTypes = {};
+ActivityDetailsItem.propTypes = {
+  item: PropTypes.objectOf(PropTypes.any),
+};
 
 export default ActivityDetailsItem;
