@@ -62,13 +62,13 @@ class SalesClueStore {
   }
 
   // 详情
-  @action async getSalesClueReq({ id }) {
+  @action async getSalesClueDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
       const {
         result = {},
         errors = [],
-      } = await getSalesClue({ id });
+      } = await getSalesClueDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.salesClueDetail = { ...result };

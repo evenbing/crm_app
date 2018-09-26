@@ -7,10 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { theme } from '../constants';
 
 const TableBody = styled.View`
+  flex: 1;
+`;
+
+const FlatList = styled.FlatList`
   flex: 1;
 `;
 
@@ -22,7 +26,7 @@ const ListEmptyView = styled.View`
 `;
 
 const EmptyText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
+  font-size: ${theme.moderateScale(16)}px;
   color: #999;
 `;
 
@@ -32,7 +36,7 @@ const FooterView = styled.View`
   justify-content: center;
   align-items: center;
   padding: 0;
-  height: ${theme.moderateScale(44)};
+  height: ${theme.moderateScale(44)}px;
 `;
 
 class FlatListTable extends React.PureComponent {

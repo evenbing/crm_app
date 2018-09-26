@@ -10,27 +10,29 @@ import { post } from '../utils/rpc';
  * 
  * @param options
  * {
- *  isMyManger	我负责的	否
- *  myParticipate	我参与的	否
- *  sevenDaysUninvolved	7天未跟进的	否
- *  all	全部	否	关注对象类型必须传参
- *  status	线索状态	否
- *  source	来源	否
- *  name	姓名	否
- *  companyName	公司名称	否
- *  jobTitle	职位	否
- *  departmentId	部门id	否
- *  phone	电话	否
- *  locationId	地址id	否
- *  postCode	邮编	否
- *  activityId	市场活动	否
- *  email	邮箱	否
- *  objectType	关注对象类型	否	当选择为我关注的和全部时必填
- *  myFollow	我关注的	否	关注对象类型必须传参
- *  sortColumn	表头排序	否
+ *  isMyManger  我负责的否
+ *  myParticipate 我参与的否
+ *  sevenDaysUninvolved 7天未跟进的否
+ *  all 全部否  关注对象类型必须传参
+ *  status  线索状态否
+ *  source  来源否
+ *  name  姓名否
+ *  companyName 公司名称否
+ *  jobTitle  职位否
+ *  departmentId  部门id否
+ *  phone 电话否
+ *  locationId  地址id否
+ *  postCode  邮编否
+ *  activityId  市场活动否
+ *  email 邮箱 否
+ *  objectType  关注对象类型 否  当选择为我关注的和全部时必填
+ *  myFollow  我关注的 否  关注对象类型必须传参
+ *  sortColumn  表头排序 否
  * } 
  */
 export function getSalesClueList({
+  pageNumber = 1,
+  pageSize = 15,
   isMyManger,
   myParticipate,
   sevenDaysUninvolved,
@@ -52,6 +54,8 @@ export function getSalesClueList({
 } = {}) {
   return post({
     method: 'api.customerrelations.leads.find',
+    pageNumber,
+    pageSize,
     isMyManger,
     myParticipate,
     sevenDaysUninvolved,

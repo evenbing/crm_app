@@ -52,9 +52,11 @@ class SalesClues extends React.Component {
     });
     this.getData();
   }
+
   onPressRight = () => {
     this.props.navigation.navigate(routers.createSalesClue);
   };
+
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
@@ -62,14 +64,17 @@ class SalesClues extends React.Component {
       this.onOpenDrawer();
     }
   };
+
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
   };
+
   onOpenDrawer = () => {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
+  
   onToggleItem = ({ type, currIndex, pareIndex, value }) => {
     const list = drawerUtils.handleToggleItem({
       list: this.state.filterList,
@@ -138,15 +143,15 @@ class SalesClues extends React.Component {
 
   keyExtractor = item => item.key;
 
-  renderItem = (props) => {
-    const { index } = props;
+  renderItem = ({ index, item }) => {
+    // const { index, item } = props;
     const {
       navigation: { navigate },
     } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
-        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        ref={(row) => { this[`rows.${index}`] = row; }}
         rightOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         style={{
           paddingTop: 0,
@@ -159,8 +164,8 @@ class SalesClues extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
-            onPress={() => navigate(routers.salesClueDetails)}
+            {...{ index, item }}
+            onPress={() => navigate(routers.salesClueDetails, { item })}
           />
         }
         right={
@@ -291,10 +296,6 @@ SalesClues.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-SalesClues.defaultProps = {
-  index: '',
-};
-
 SalesClues.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
@@ -307,7 +308,6 @@ SalesClues.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  index: PropTypes.string,
 };
 
 export default SalesClues;
