@@ -5,23 +5,6 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
-import { getUserId } from '../utils/base';
-
-/** 高级查询回款期次
- * @params options
- * {
- *   pactId 合同ID must
- * }
- * @return Promise<Object>
- */
-export function getReceivableIssue({
-  pactId = getUserId(),
-} = {}) {
-  return post({
-    method: 'api.customerrelations.receivableIssue.find',
-    pactId,
-  });
-}
 
 /** 高级查询回款计划
  * @params options
@@ -67,37 +50,6 @@ export function getReceivablePlanDetails({
   return post({
     method: 'api.customerrelations.receivablePlan.get',
     id,
-  });
-}
-
-/** 创建回款计划
- * @params options
- * {
- *   pactId 合同ID must
- *   issueId 回款期次ID must
- *   receivablePrice 回款金额 must
- *   receivableDate 回款日期  must
- *   ownerId 负责人ID must
- *   comment 备注
- * }
- * @return Promise<Object>
- */
-export function createReceivablePlan({
-  pactId,
-  issueId,
-  receivablePrice,
-  receivableDate,
-  ownerId,
-  comment,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.receivablePlan.create',
-    pactId,
-    issueId,
-    receivablePrice,
-    receivableDate,
-    ownerId,
-    comment,
   });
 }
 

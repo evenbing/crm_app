@@ -23,7 +23,7 @@ import NavInputItem from '../../../components/NavInputItem';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
 
-import ReceivableRecordModel from '../../../logicStores/receivableRecord';
+import ReceivableModel from '../../../logicStores/receivable';
 
 const LeftViewWidth = moderateScale(110);
 const formatDateType = 'yyyy-MM-dd hh:mm';
@@ -58,7 +58,7 @@ class Create extends React.Component {
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
-      ReceivableRecordModel.createReceivableRecordReq({
+      ReceivableModel.createReceivableRecordReq({
         pactId,
         issueId,
         receivablePrice,

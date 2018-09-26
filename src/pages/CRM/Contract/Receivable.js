@@ -1,60 +1,75 @@
+/**
+ * @component Create.js
+ * @description 回款详情页面
+ * @time 2018/9/2
+ * @author --
+ */
 import React, { Component } from 'react';
-import uuidv1 from 'uuid/v1';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
-import { ContainerView } from '../../../components/Styles/Layout';
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+import { observer } from 'mobx-react/native';
 import { moderateScale } from '../../../utils/scale';
-import ReceivableTitle from './components/ReceivableTitle';
-import ReceivableList from './components/ReceivableList';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { theme, routers } from '../../../constants';
 
-const data = [
-  {
-    data: [
-      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-    ],
-    title: '第一期',
-  },
-  {
-    data: [
-      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-    ],
-    title: '第二期',
-  },
-  {
-    data: [
-      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '任务', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-      { key: uuidv1(), type: '计划', time: '2018-09-09', amount: '¥98989898.08', status: '未完成' },
-    ],
-    title: '第三期',
-  },
-];
+// components
+import { ContainerView } from '../../../components/Styles/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+// import { HorizontalDivider } from '../../../components/Styles/Divider';
+import FlatListTable from '../../../components/FlatListTable';
+import ReceivableTitle from './components/ReceivableTitle';
+import ReceivableItem from './components/ReceivableItem';
+
+import ReceivableModel from '../../../logicStores/receivable';
 
 const RightViews = styled.View`
   flex-direction: row;
 `;
 
+@observer
 class Receivable extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    this.getData();
   }
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = ReceivableModel.receivableIssueList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+  getData = () => {
+    const { id } = this.props.navigation.state.params || {};
+    ReceivableModel.getReceivableIssueReq({ pactId: id });
+  };
 
   render() {
+    const {
+      receivableIssueList: {
+        pactPrice,
+        totalPrice,
+        list,
+        refreshing,
+        loadingMore,
+      },
+    } = ReceivableModel;
+    const receivableTitleProps = {
+      pactPrice,
+      totalPrice,
+    };
+    const flatProps = {
+      data: list,
+      ListHeaderComponent: <ReceivableTitle {...receivableTitleProps} />,
+      renderItemElem: <ReceivableItem totalPrice={totalPrice} />,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <ContainerView>
         <CommStatusBar />
-        <ReceivableTitle progress={0.5} />
-        <HorizontalDivider height={moderateScale(10)} />
-        <ReceivableList
-          data={data}
-        />
+        {/* <HorizontalDivider height={10} /> */}
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
@@ -94,5 +109,21 @@ Receivable.navigationOptions = ({ navigation }) => ({
     </RightViews>
   ),
 });
+
+Receivable.defaultProps = {};
+
+Receivable.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default Receivable;

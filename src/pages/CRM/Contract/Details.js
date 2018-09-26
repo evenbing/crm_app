@@ -120,11 +120,13 @@ class Details extends React.Component {
     const {
       navigation: {
         navigate,
+        state,
       },
     } = this.props;
+    const { item } = state.params || {};
     const list = [
       { title: '文档', text: '12', onPress: () => {} },
-      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable); } },
+      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable, { id: item.id }); } },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >

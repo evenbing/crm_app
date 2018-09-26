@@ -6,37 +6,26 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
-import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
+import { theme, routers } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
+import { SelectType, PackType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
+import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { FormActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
 
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
 
 @observer
 class EditorMore extends React.Component {
@@ -45,7 +34,10 @@ class EditorMore extends React.Component {
     customerId: null,
     customerName: null,
     salesOpportunitiesId: null,
-    type: null,
+    typeMap: {
+      key: null,
+      value: null,
+    },
     status: null,
     payType: null,
     totalMoney: null,
@@ -65,36 +57,71 @@ class EditorMore extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
   onPressRight = () => {
     const {
-      name,
-      customerId,
-      customerName,
-      salesOpportunitiesId,
-      type,
-      status,
-      payType,
-      totalMoney,
-      startDate,
-      endDate,
-      number,
-      pactDate,
-      ourContractId,
-      customerContractId,
-      customerContractName,
-      departmentId,
-      departmentName,
-      content,
-      comment,
-    } = this.state;
+      state: {
+        name,
+        customerId,
+        customerName,
+        salesOpportunitiesId,
+        typeMap: { key: type },
+        status,
+        payType,
+        totalMoney,
+        startDate,
+        endDate,
+        number,
+        pactDate,
+        ourContractId,
+        customerContractId,
+        customerContractName,
+        departmentId,
+        content,
+        comment,
+      },
+      props: {
+        navigation: { pop },
+      },
+    } = this;
     try {
       if (!name) throw new Error(ContractEnum.theme);
+      if (!type) throw new Error(ContractEnum.type);
       if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
       if (!totalMoney) throw new Error(ContractEnum.totalMoney);
       if (!startDate) throw new Error(ContractEnum.startDate);
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
+      const { item: { id } = {} } = this.props.navigation.state.params || {};
+      // 新增
+      if (!id) {
+        debugger;
+        ContractModel.createContractReq({
+          theme: name,
+          type,
+          customerId,
+          customerName,
+          salesOpportunitiesId,
+          status,
+          payType,
+          totalMoney,
+          startDate,
+          endDate,
+          number,
+          pactDate,
+          ourContractId,
+          customerContractId,
+          customerContractName,
+          departmentId,
+          content,
+          comment,
+        }, () => {
+          pop(2);
+        });
+        return;
+      }
+      if (!id) throw new Error('id 不为空');
       ContractModel.updateContractReq({
         theme: name,
         customerId,
@@ -103,46 +130,53 @@ class EditorMore extends React.Component {
         startDate,
         endDate,
         departmentId,
+      }, () => {
+        pop(1);
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   };
-  getLeftStyle = (inputProps, width = 80) => {
-    return {
-      inputProps: {
-        ...inputProps,
-        fontSize: moderateScale(16),
+  onPressActionSheetItem = ({ key, value }) => {
+    this.setState({
+      typeMap: { key, value },
+    });
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
       },
-      leftTextStyle: {
-        color: theme.textFormColor,
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item)) return;
+    this.setState({ ...item });
   };
   render() {
     const {
       state: {
         name,
-        // customerId,
-        // customerName,
+        customerId,
+        customerName,
         // salesOpportunitiesId,
-        // type,
+        typeMap,
         // status,
         // payType,
-        // totalMoney,
-        // startDate,
-        // endDate,
+        totalMoney,
+        startDate,
+        endDate,
         number,
-        // pactDate,
+        pactDate,
         // ourContractId,
         // customerContractId,
         // customerContractName,
-        // departmentId,
-        // departmentName,
+        departmentId,
+        departmentName,
         content,
         comment,
+      },
+      props: {
+        navigation: { navigate },
       },
     } = this;
     return (
@@ -165,8 +199,23 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="客户"
+            onPress={() => navigate(routers.customer, {
+              type: SelectType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  customerId: item.key,
+                  customerName: item.title,
+                });
+              },
+            })}
             center={
-              <CenterText>{ContractEnum.customerName}</CenterText>
+              <CenterText active={customerId && customerName}>
+                {
+                  (customerId && customerName) ? customerName :
+                    ContractEnum.customerName
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
           />
@@ -177,13 +226,21 @@ class EditorMore extends React.Component {
             }
             {...theme.navItemStyle}
           />
-          <NavInputItem
-            leftText="合同类型"
-            center={
-              <CenterText>{ContractEnum.type}</CenterText>
-            }
-            {...theme.navItemStyle}
-          />
+          <FormActionSheet
+            onConfirm={this.onPressActionSheetItem}
+            typeEnum={PackType}
+          >
+            <NavInputItem
+              leftText="合同类型"
+              needPress={false}
+              center={
+                <CenterText active={typeMap.value}>
+                  { typeMap.value || ContractEnum.type }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <NavInputItem
             leftText="合同状态"
             center={
@@ -202,7 +259,7 @@ class EditorMore extends React.Component {
             leftText="总金额"
             {...theme.getLeftStyle({
               placeholder: ContractEnum.totalMoney,
-              value: name,
+              value: totalMoney,
               onChangeText: totalMoney => this.setState({ totalMoney }),
             })}
             right={
@@ -210,21 +267,45 @@ class EditorMore extends React.Component {
             }
             {...theme.navItemStyle}
           />
-          <NavInputItem
-            leftText="开始日期"
-            center={
-              <CenterText>{ContractEnum.startDate}</CenterText>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  startDate: `${formatDateByMoment(date)}`,
+                })
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="结束日期"
-            center={
-              <CenterText>{ContractEnum.endDate}</CenterText>
+          >
+            <NavInputItem
+              leftText="开始日期"
+              needPress={false}
+              center={
+                <CenterText active={startDate}>
+                  { startDate || ContractEnum.startDate }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDateByMoment(date)}`,
+                })
             }
-            isLast
-            {...theme.navItemStyle}
-          />
+          >
+            <NavInputItem
+              leftText="结束日期"
+              needPress={false}
+              center={
+                <CenterText active={endDate}>
+                  { endDate || ContractEnum.endDate }
+                </CenterText>
+              }
+              isLast
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
         </ListView>
         <TitleItem text="其他信息" />
         <ListView>
@@ -237,13 +318,25 @@ class EditorMore extends React.Component {
             })}
             height={44}
           />
-          <NavInputItem
-            leftText="签约日期"
-            center={
-              <CenterText>{ContractEnum.pactDate}</CenterText>
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  endDate: `${formatDateByMoment(date)}`,
+                })
             }
-            {...theme.navItemStyle}
-          />
+          >
+            <NavInputItem
+              leftText="签约日期"
+              needPress={false}
+              center={
+                <CenterText active={pactDate}>
+                  { pactDate || ContractEnum.pactDate }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           <NavInputItem
             leftText="我方签约人"
             center={
@@ -261,8 +354,23 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>{ContractEnum.departmentName}</CenterText>
+              <CenterText active={departmentId && departmentName}>
+                {
+                  (departmentId && departmentName) ? departmentName :
+                    ContractEnum.departmentName
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
           />

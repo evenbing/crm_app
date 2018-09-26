@@ -9,7 +9,6 @@ import autobind from 'autobind-decorator';
 import {
   getReceivableRecordList,
   getReceivableRecordDetails,
-  createReceivableRecord,
   updateReceivableRecord,
 } from '../service/receivableRecord';
 import { updateOwnerUser } from '../service/contract';
@@ -81,24 +80,6 @@ class ReceivableRecordStore {
     }
   }
 
-  // 新增
-  @action async createReceivableRecordReq(options) {
-    try {
-      const {
-        result = {},
-        errors = [],
-      } = await createReceivableRecord(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
   // 编辑
   @action async updateReceivableRecordReq(options) {
     try {
@@ -126,7 +107,7 @@ class ReceivableRecordStore {
       debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.getReceivablePlanDetailsReq({ id: options.id });
+        this.getReceivableRecordDetailsReq({ id: options.id });
         callback && callback();
       });
     } catch (e) {

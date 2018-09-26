@@ -8,9 +8,7 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivablePlanList,
-  getReceivableIssue,
   getReceivablePlanDetails,
-  createReceivablePlan,
   updateReceivablePlan,
 } from '../service/receivablePlan';
 import { updateOwnerUser } from '../service/contract';
@@ -79,36 +77,6 @@ class ReceivablePlanStore {
       runInAction(() => {
         this.receivablePlanDetails.refreshing = false;
       });
-    }
-  }
-
-  // 获取回款档期
-  @action async getReceivableIssueReq() {
-    try {
-      const data = await getReceivableIssue();
-      // runInAction(() => {
-      //   // this.contactDetails = { ...contact };
-      // });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-  // 新增
-  @action async createReceivablePlanReq(options) {
-    try {
-      const {
-        result = {},
-        errors = [],
-      } = await createReceivablePlan(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
     }
   }
 

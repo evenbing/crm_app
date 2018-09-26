@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import moment from 'moment';
 import { moderateScale } from '../../../../utils/scale';
 import { theme } from '../../../../constants';
+import { DataTitleTypes } from '../../../../constants/enum';
+
+// static source
 import rightArrow from '../../../../img/home/ico_right_arrow.png';
+
+// components
 import { HorizontalDivider } from '../../../../components/Styles/Divider';
 
-const SectionList = styled.SectionList`
-  background-color: ${theme.pageBackColor};
-`;
+const ContainerView = styled.View``;
 
 const ListHeaderView = styled.View`
   height: ${moderateScale(44)}px;
@@ -26,7 +29,7 @@ const ListHeaderText = styled.Text.attrs({
   line-height: ${moderateScale(43)}px;
 `;
 
-const ListDataView = styled.View`
+const ListSectionView = styled.View`
   flex-direction: row;
   align-items: center;
   height: ${moderateScale(44)}px;
@@ -73,74 +76,63 @@ const NavIcon = styled.Image.attrs({
   height: ${moderateScale(11)}px;
 `;
 
-const HorizontalDividerView = styled.View`
-  padding: 0px ${moderateScale(15)}px;
-`;
-
-class ReceivableList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  renderSectionFooter = () => <HorizontalDivider height={moderateScale(11)} />
-
-  renderItemSeparatorComponent = () => (
-    <HorizontalDividerView>
-      <HorizontalDivider height={moderateScale(1)} />
-    </HorizontalDividerView>
-  )
-
-  renderSectionHeader = ({ section: { title } }) => {
-    return (
-      <ListHeaderView>
-        <ListHeaderText> {title} </ListHeaderText>
-        <HorizontalDivider height={moderateScale(1)} />
-      </ListHeaderView>
-    );
-  }
-
-  renderItem = ({ item }) => {
+class ReceivableItem extends React.PureComponent {
+  renderItem = () => {
     const {
-      type,
-      time,
-      amount,
-      status,
-    } = item;
-    return (
-      <ListDataView>
-        <TypeText> {type} </TypeText>
+      item: {
+        receivableDetailList = [],
+      },
+      totalPrice,
+    } = this.props;
+    if (!receivableDetailList.length) return null;
+    return receivableDetailList.map(value => (
+      <ListSectionView key={value.id}>
+        <TypeText>计划</TypeText>
         <MiddleView>
-          <TimeText> {time} </TimeText>
-          <AmountText> {amount} </AmountText>
+          <TimeText>
+            {
+              value.receivableDate ?
+                moment(Number(value.receivableDate)).format('YYYY-MM-DD')
+                : null
+            }
+          </TimeText>
+          <AmountText> {value.receivablePrice} </AmountText>
         </MiddleView>
         <RightView>
-          <StatusText> {status} </StatusText>
+          <StatusText> {totalPrice <= value.receivablePrice ? '已完成' : '未完成'} </StatusText>
           <NavIcon />
         </RightView>
-      </ListDataView>
-    );
-  }
-
+      </ListSectionView>
+    ));
+  };
   render() {
-    const { data } = this.props;
+    const {
+      index,
+    } = this.props;
     return (
-      <SectionList
-        renderSectionHeader={this.renderSectionHeader}
-        renderSectionFooter={this.renderSectionFooter}
-        renderItem={this.renderItem}
-        ItemSeparatorComponent={this.renderItemSeparatorComponent}
-        keyExtractor={item => item.key}
-        sections={data}
-      />
+      <ContainerView>
+        <ListHeaderView>
+          <ListHeaderText> 第{DataTitleTypes[index]}期 </ListHeaderText>
+          <HorizontalDivider height={moderateScale(1)} />
+        </ListHeaderView>
+        {this.renderItem()}
+      </ContainerView>
     );
   }
 }
 
-ReceivableList.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    data: PropTypes.array,
-    title: PropTypes.string,
-  })).isRequired,
+ReceivableItem.defaultProps = {
+  item: {},
+  index: 0,
+  isLast: false,
+  totalPrice: 0,
 };
 
-export default ReceivableList;
+ReceivableItem.propTypes = {
+  item: PropTypes.objectOf(PropTypes.any),
+  index: PropTypes.number,
+  isLast: PropTypes.bool,
+  totalPrice: PropTypes.number,
+};
+
+export default ReceivableItem;
