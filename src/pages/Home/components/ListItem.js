@@ -129,7 +129,7 @@ class ListItem extends Component {
       type,
       name,
       comment,
-      operateList = [],
+      operateList,
     } = this.props;
     const { showOperateView } = this.state;
     return (
@@ -174,6 +174,7 @@ class ListItem extends Component {
 
 ListItem.defaultProps = {
   comment: '',
+  operateList: [],
 };
 
 ListItem.propTypes = {
@@ -185,7 +186,7 @@ ListItem.propTypes = {
     key: PropTypes.string,
     text: PropTypes.string,
     onPress: PropTypes.func,
-  })).isRequired,
+  })),
 };
 
 export default ListItem;

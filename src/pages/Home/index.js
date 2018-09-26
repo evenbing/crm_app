@@ -11,8 +11,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
-import Toast from '../../utils/toast';
-import ListItem from './components/ListItem';
 import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 // components
@@ -63,7 +61,9 @@ class Home extends React.Component {
     const { navigate } = this.props.navigation;
     switch (item.leftText) {
       case '新建日程':
-        navigate(routers.addSchedule);
+        navigate(routers.addSchedule, {
+          reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+        });
         this.setState({ createActionSheetVisible: false });
         break;
       case '新建任务':

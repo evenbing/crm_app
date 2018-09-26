@@ -56,7 +56,7 @@ class AddTask extends Component {
       moduleId: null,
       moduleName: null,
       comment: null,
-      needNotice: null,
+      needNotice: false,
       noticeTime: null,
       noticeTimeName: null,
       // longitudeAndLatitude: null,
@@ -107,6 +107,14 @@ class AddTask extends Component {
       },
     } = this;
     try {
+      // if (!type) throw new Error(TaskEnum.type);
+      if (!name) throw new Error(TaskEnum.name);
+      // if (!startTime) throw new Error(TaskEnum.startTime);
+      if (!endTime) throw new Error(TaskEnum.endTime);
+      // if (!(moduleType && moduleTypeName)) throw new Error(TaskEnum.moduleType);
+      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      // if (!(comment)) throw new Error(TaskEnum.comment);
+
       const businessId = await getNewId();
       // 上传图片
       for (let index = 0; index < images.length; index++) {
@@ -121,13 +129,6 @@ class AddTask extends Component {
         });
       }
 
-      // if (!type) throw new Error(TaskEnum.type);
-      if (!name) throw new Error(TaskEnum.name);
-      // if (!startTime) throw new Error(TaskEnum.startTime);
-      if (!endTime) throw new Error(TaskEnum.endTime);
-      // if (!(moduleType && moduleTypeName)) throw new Error(TaskEnum.moduleType);
-      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
-      // if (!(comment)) throw new Error(TaskEnum.comment);
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
         id: businessId,
         type,

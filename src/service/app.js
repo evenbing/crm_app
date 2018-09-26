@@ -62,3 +62,42 @@ export function getOperatingUnitId({
 export function updateImage(file) {
   return upload(file);
 }
+
+/**
+ * 创建省市区ID
+ */
+export function createLocationId({
+  provinceId = '',
+  cityId = '',
+  districtId = '',
+  address = '',
+} = {}) {
+  return post({
+    method: 'api.base.location.create',
+    countryId: 86,
+    provinceId,
+    cityId,
+    districtId,
+    address,
+  });
+}
+
+/**
+ * 更新省市区ID
+ */
+export function updateLocationId({
+  id,
+  provinceId = '',
+  cityId = '',
+  districtId = '',
+  address = '',
+} = {}) {
+  return post({
+    method: 'api.base.location.update',
+    id,
+    provinceId,
+    cityId,
+    districtId,
+    address,
+  });
+}

@@ -29,7 +29,20 @@ class CityPicker extends Component {
   }
 
   onPressRight = () => {
-
+    const {
+      goBack,
+      state: { params: { callback } },
+    } = this.props.navigation;
+    const {
+      provinceList,
+      cityList,
+      areaList,
+    } = this.state;
+    const { label: province } = provinceList.filter(item => item.selected)[0];
+    const { label: city } = cityList.filter(item => item.selected)[0];
+    const { label: area } = areaList.filter(item => item.selected)[0];
+    callback && callback({ province, city, area });
+    goBack();
   }
 
   onPressProvinceItem = ({ selected, value, children }) => () => {
@@ -78,11 +91,11 @@ class CityPicker extends Component {
       <ContainerView >
         <CommStatusBar />
         <Container>
-          <CityList 
-            data={provinceList} 
+          <CityList
+            data={provinceList}
             onPressItem={this.onPressProvinceItem}
           />
-          <CityList 
+          <CityList
             style={{ marginLeft: 2 }}
             data={cityList}
             onPressItem={this.onPressCityItem}

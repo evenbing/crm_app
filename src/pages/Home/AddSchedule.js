@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-24 20:50:41
  * @Last Modified by: ShiQuan
- * @Last Modified time: 2018-09-24 21:00:03
+ * @Last Modified time: 2018-09-25 21:35:00
  */
 
 import React, { Component } from 'react';
@@ -28,6 +28,7 @@ import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import Toast from '../../utils/toast';
 import { ContainerView } from '../../components/Drawer/Styles';
+import { getNewId, createLocationId } from '../../service/app';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
@@ -56,14 +57,17 @@ class AddSchedule extends Component {
       moduleId: null,
       moduleName: null,
       comment: null,
-      needNotice: null,
+      needNotice: false,
       noticeTime: null,
       noticeTimeName: null,
       longitudeAndLatitude: null,
       locationInfo: null,
+      provinceId: null,
+      cityId: null,
+      districtId: null,
       isPrivate: 1, // 先默认写1
       principal: null,
-      principalName: null,
+      // principalName: null,
       userIds: [],
       userIdNames: [],
       images: [],
@@ -76,7 +80,7 @@ class AddSchedule extends Component {
     });
   }
 
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         type,
@@ -90,6 +94,9 @@ class AddSchedule extends Component {
         noticeTime,
         longitudeAndLatitude,
         locationInfo,
+        provinceId,
+        cityId,
+        districtId,
         isPrivate,
         principal,
         userIds,
@@ -107,26 +114,40 @@ class AddSchedule extends Component {
       },
     } = this;
     try {
-      // 上传图片
-      // const path = images[0].image.uri;
-      // AttachmentModel.uploadImageReq({
-      //   file: {
-      //     uri: path,
-      //     type: 'multipart/form-data',
-      //     name: path.substr(path.lastIndexOf('/') + 1),
-      //   },
-      //   businessId: '1314398247923840238940',
-      // });
-
       if (!name) throw new Error(TaskEnum.name);
       if (!startTime) throw new Error(TaskEnum.startTime);
       if (!endTime) throw new Error(TaskEnum.endTime);
       if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+
+      // 获取位置信息
+      let locationid = null;
+      if (locationInfo) {
+        const { location: { id } } = await createLocationId({
+          provinceId,
+          cityId,
+          districtId,
+        });
+        locationid = id;
+      }
+
+      const businessId = await getNewId();
+      // 上传图片
+      for (let index = 0; index < images.length; index++) {
+        const { path } = images[index];
+        AttachmentModel.uploadImageReq({
+          file: {
+            uri: path,
+            type: 'multipart/form-data',
+            name: path.substr(path.lastIndexOf('/') + 1),
+          },
+          businessId,
+        });
+      }
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
-        // id: '1043786812474134528',
+        id: businessId,
         type,
         name,
-        startTime,
+        startTime: moment(startTime).format('YYYY-MM-DD HH:mm:ss'),
         endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
         moduleType,
         moduleId,
@@ -135,6 +156,7 @@ class AddSchedule extends Component {
         noticeTime,
         longitudeAndLatitude,
         locationInfo,
+        locationid,
         isPrivate,
         principal,
         userIds,
@@ -165,11 +187,14 @@ class AddSchedule extends Component {
         // needNotice,
         noticeTime,
         noticeTimeName,
-        longitudeAndLatitude,
+        // longitudeAndLatitude,
         locationInfo,
+        // provinceId,
+        // cityId,
+        // districtId,
         // isPrivate,
-        principal,
-        principalName,
+        // principal,
+        // principalName,
         userIds,
         userIdNames,
       },
@@ -260,8 +285,13 @@ class AddSchedule extends Component {
             leftText="位置"
             onPress={() => {
               navigate(routers.cityPicker, {
-                callback: ({ prov, city, area }) => {
-                  console.log('city');
+                callback: ({ province, city, area }) => {
+                  this.setState({
+                    locationInfo: `${province},${city},${area}`,
+                    provinceId: province,
+                    cityId: city,
+                    districtId: area,
+                  });
                 },
               });
             }}
@@ -302,7 +332,7 @@ class AddSchedule extends Component {
             {...theme.navItemStyle}
           />
           <Divder height={1} />
-          <NavInputItem
+          {/* <NavInputItem
             leftText="负责人"
             onPress={() => {
               if (!(moduleId && moduleType)) {
@@ -329,7 +359,7 @@ class AddSchedule extends Component {
               </CenterText>
             }
             {...theme.navItemStyle}
-          />
+          /> */}
           <Divder height={1} marginHorizontal={15} />
           <NavInputItem
             leftText="参与人"
@@ -425,10 +455,19 @@ AddSchedule.propTypes = {
   }).isRequired,
 };
 
-AddSchedule.navigationOptions = () => ({
+AddSchedule.navigationOptions = ({ navigation }) => ({
   title: '新增日程',
   headerLeft: (
     <LeftBackIcon />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
+    />
   ),
 });
 

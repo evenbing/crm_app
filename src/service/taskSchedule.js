@@ -175,6 +175,8 @@ export function detail({
  * @return Promise<Object>
  */
 export function find({
+  pageNumber = 1,
+  pageSize = 15,
   principal,
   userId,
   isTodayWork,
@@ -186,6 +188,8 @@ export function find({
 } = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.find',
+    pageNumber,
+    pageSize,
     principal,
     userId,
     isTodayWork,

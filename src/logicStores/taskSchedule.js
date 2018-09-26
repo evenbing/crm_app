@@ -43,19 +43,35 @@ class TaskScheduleStore {
   /**
    * 查询任务或日程
    */
-  @action async getTaskScheduleRelatedToMeReq(options) {
+  @action async getTaskScheduleRelatedToMeReq(pageNumber = 1, ...restProps) {
     try {
+      if (pageNumber === 1) {
+        this.taskScheduleList.refreshing = true;
+      } else {
+        this.taskScheduleList.loadingMore = true;
+      }
       const {
         result = [],
+        totalCount = 0,
         errors = [],
-      } = await find(options);
+      } = await find({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        // console.log({ result });
-        this.taskScheduleList = [...result];
+        this.taskScheduleList.total = totalCount;
+        this.taskScheduleList.pageNumber = pageNumber;
+        if (pageNumber === 1) {
+          this.taskScheduleList.list = [...result];
+        } else {
+          this.taskScheduleList.list = this.taskScheduleList.list.concat(result);
+        }
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.taskScheduleList.refreshing = false;
+        this.taskScheduleList.loadingMore = false;
+      });
     }
   }
 
