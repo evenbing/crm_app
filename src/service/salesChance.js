@@ -26,6 +26,8 @@ import { post } from '../utils/rpc';
  * } options
  */
 export function getSalesChanceList({
+  pageNumber = 1,
+  pageSize = 15,
   my,
   myFollow,
   myParticipate,
@@ -42,6 +44,8 @@ export function getSalesChanceList({
 } = {}) {
   return post({
     method: 'api.customerrelations.opportunity.find',
+    pageNumber,
+    pageSize,
     my,
     myFollow,
     myParticipate,
@@ -62,16 +66,16 @@ export function getSalesChanceList({
 /** 新增销售机会
  * @params options
  * {
- *   name 机会名称 must
- *   customerId 客户名称 must
- *   planAmount 销售金额 must
- *   salesPhaseId 销售阶段 must
- *   expectedDate 结单日期 must
- *   description 备注
- *   departmentId 所属部门 must
- *   activityId 市场活动
- *   opportunityType 机会类型 [枚举类型（OpportunityEnum）]
- *   sourceType 机会来源 [枚举类型（OpportunityEnum）]
+ *  name  机会名称  是
+ *  customerId  客户名称  是
+ *  planAmount  销售金额  是
+ *  salesPhaseId  销售阶段  是
+ *  expectedDate  结单日期  是
+ *  description 备注  否
+ *  departmentId  所属部门  是
+ *  activityId  市场活动  否
+ *  opportunityType 机会类型  否 OpportunityType Enum：NEW_CUSTOMER-新客户,OLD_CUSTOMER-老客户
+ *  sourceType  机会来源  否 OpportunitySourceEnum：ADVERT-广告,SEMINAR-研讨会,SOLAR_ENGINE: 搜索引擎,SALES_OPPORTUNITY__INTRODUCTION-销售机会介绍,OTHER-其他
  * }
  * @return Promise<Object>
  */

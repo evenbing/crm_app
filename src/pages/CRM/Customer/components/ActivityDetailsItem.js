@@ -46,22 +46,35 @@ const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLa
 );
 
 const ActivityDetailsItem = ({
+
   // class:"com.xiniunet.customerRelations.domain.Customer"
   // createdByName:"测试员工1"
-  // creationTime:"1537199331000"
-  // departmentId:"1004298465016418304"
+  // creationTime:"1537949474000"
+  // departmentId:"999160903427821568"
+  // description:"看了一下午"
+  // fax:"175999"
   // feeds:Array(0)
   // follow:false
   // followUpStatus:false
-  // id:"1041715609471160320"
+  // id:"1044861939311841280"
+  // industry:"HIGH_TECH"
   // isActive:true
-  // name:"优质客户"
+  // level:"A"
+  // location:Object
+  // locationId:"1044861938393288704"
+  // name:"头像"
   // ownerUserId:"801689539444879360"
   // ownerUserName:"测试员工1"
-  // pinyin:"youzhikehu"
-  // py:"yzkh"
+  // peopleNumber:12
+  // phone:"154253688558"
+  // pinyin:"touxiang"
+  // py:"tx"
   // rowVersion:"0"
+  // salesNumber:128
+  // superiorCustomerId:"1032800638335062016"
   // tenantId:"801689539428098048"
+  // website:"KTV音响"
+  // weibo:"好困"
 
   data: {
     expectedDate, // '1536422400000',
