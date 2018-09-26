@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { PayType, PackType, PackStatus } from '../../../../constants/enum';
 import { formatDateByMoment } from '../../../../utils/base';
 
 // components
@@ -58,9 +59,9 @@ class ActivityDetailsItem extends React.PureComponent {
         {this.renderBasicItem('合同名称', item.theme)}
         {this.renderBasicItem('客户', item.customerName)}
         {this.renderBasicItem('销售机会', item.salesOpportunitiesId)}
-        {this.renderBasicItem('合同类型', item.type)}
-        {this.renderBasicItem('合同状态', item.status)}
-        {this.renderBasicItem('付款方式', item.payType)}
+        {this.renderBasicItem('合同类型', PackType[item.type])}
+        {this.renderBasicItem('合同状态', PackStatus[item.status])}
+        {this.renderBasicItem('付款方式', PayType[item.payType])}
         {this.renderBasicItem('总金额', item.totalMoney, <RightSuffix>元</RightSuffix>)}
         {this.renderBasicItem('开始日期', formatDateByMoment(item.startDate))}
         {this.renderBasicItem('结束日期', formatDateByMoment(item.endDate), null, null, true)}

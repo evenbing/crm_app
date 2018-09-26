@@ -6,9 +6,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
-import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
 
@@ -82,6 +82,25 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    navigate(routers.teamMembers, {
+      moduleId: item.id,
+      moduleType: ModuleType.pact,
+      callback: (obj) => {
+        ReceivableRecordModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.id,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -117,9 +136,13 @@ class Details extends React.Component {
       onChange: index => this.onTabChange(index),
     };
     const { receivableRecordDetails: { map } } = ReceivableRecordModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+    };
     return (
       <View>
-        <DetailsHead item={map} />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
@@ -206,7 +229,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.receivablePlanEditorMore, { item })}
+                onPress={() => navigate(routers.receivableRecordEditorMore, { item })}
               />
             )
         }

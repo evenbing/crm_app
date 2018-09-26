@@ -12,6 +12,7 @@ import {
   createReceivableRecord,
   updateReceivableRecord,
 } from '../service/receivableRecord';
+import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
 import { initDetailMap, initFlatList } from './initState';
 
@@ -63,13 +64,13 @@ class ReceivableRecordStore {
       if (!id) throw new Error('id 不为空');
       this.receivableRecordDetails.refreshing = true;
       const {
-        receivableRecord = {},
+        receivableDetail = {},
         errors = [],
       } = await getReceivableRecordDetails({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.receivableRecordDetails.list = [receivableRecord];
-        this.receivableRecordDetails.map = receivableRecord;
+        this.receivableRecordDetails.list = [receivableDetail];
+        this.receivableRecordDetails.map = receivableDetail;
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -110,6 +111,23 @@ class ReceivableRecordStore {
       runInAction(() => {
         // TODO next
         this.contactDetails = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 转移负责人
+  @action async updateOwnerUserReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateOwnerUser(options);
+      debugger;
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getReceivablePlanDetailsReq({ id: options.id });
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
