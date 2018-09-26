@@ -7,6 +7,7 @@
 import moment from 'moment';
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import uuidv1 from 'uuid/v1';
 import {
   getDynamicList,
   createDynamic,
@@ -37,7 +38,7 @@ class DynamicStore {
       const nextDate = moment(Number(next.creationTime));
       const nextFormatDate = nextDate.format(FormatType);
       const prevIndex = hashMap.get(nextFormatDate);
-      if (prevIndex || prevIndex === 0) {
+      if ((prevIndex || prevIndex === 0) && prevIndex < item.length) {
         item[prevIndex].list.push(next);
       } else {
         let type; // 0 其他时间 1为当前时间
@@ -52,7 +53,9 @@ class DynamicStore {
           nextDay = nextDate.date();
           type = 0;
         }
+        const key = uuidv1();
         item.push({
+          key,
           type,
           nextMonth,
           nextDay,

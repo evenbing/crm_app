@@ -7,11 +7,11 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
+import { theme } from '../../../../constants';
 
 // components
-import NavItemComponent from '../NavItem';
-import TitleItemComponent from './TitleItem';
+import NavItemComponent from '../../../../components/NavItem';
+import TitleItemComponent from '../../../../components/Details/TitleItem';
 
 const ContainerView = styled.View``;
 
@@ -46,6 +46,23 @@ const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLa
 );
 
 const ActivityDetailsItem = ({
+  // class:"com.xiniunet.customerRelations.domain.Customer"
+  // createdByName:"测试员工1"
+  // creationTime:"1537199331000"
+  // departmentId:"1004298465016418304"
+  // feeds:Array(0)
+  // follow:false
+  // followUpStatus:false
+  // id:"1041715609471160320"
+  // isActive:true
+  // name:"优质客户"
+  // ownerUserId:"801689539444879360"
+  // ownerUserName:"测试员工1"
+  // pinyin:"youzhikehu"
+  // py:"yzkh"
+  // rowVersion:"0"
+  // tenantId:"801689539428098048"
+
   data: {
     expectedDate, // '1536422400000',
     follow, // false,
@@ -60,7 +77,7 @@ const ActivityDetailsItem = ({
     salesPhaseId, // '3333333333',
     tenantId, // '801689539428098048',
   },
-}) => (
+} = {}) => (
   <ContainerView>
     <TitleItemComponent
       text="基本信息"

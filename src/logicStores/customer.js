@@ -72,7 +72,7 @@ class CustomerStore {
       } = await getCustomerDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.customerDetail = { ...result };
+        this.customerDetail.map = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);

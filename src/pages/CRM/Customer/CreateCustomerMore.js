@@ -10,7 +10,7 @@ import TouchableView from '../../../components/TouchableView';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import { CustomerEnum } from '../../../constants/form';
-import { CustomerLevelTypes, industryTypes } from '../../../constants/enum';
+import { CustomerLevelTypes, industryTypes, SelectType } from '../../../constants/enum';
 import { CenterText, RightText } from '../../../components/Styles/Form';
 import { createLocationId } from '../../../service/app';
 import CustomerModel from '../../../logicStores/customer';
@@ -55,7 +55,8 @@ class CreateCustomerMore extends Component {
       departmentName,
       level: null,
       levelName: null,
-      // superiorCustomerId: null,
+      superiorCustomerId: null,
+      superiorCustomerName: null,
       weibo: null,
       peopleNumber: null,
       salesNumber: null,
@@ -95,7 +96,7 @@ class CreateCustomerMore extends Component {
         departmentName,
         level,
         levelName,
-        // superiorCustomerId,
+        superiorCustomerId,
         weibo,
         peopleNumber,
         salesNumber,
@@ -143,12 +144,13 @@ class CreateCustomerMore extends Component {
         peopleNumber,
         salesNumber,
         industry,
+        superiorCustomerId,
       }, () => {
         reFetchDataList();
         pop(2);
       });
     } catch (error) {
-      Toast.error(error.message);
+      Toast.showError(error.message);
     }
   }
 
@@ -175,7 +177,8 @@ class CreateCustomerMore extends Component {
         departmentName,
         level,
         levelName,
-        // superiorCustomerId,
+        superiorCustomerId,
+        superiorCustomerName,
         weibo,
         peopleNumber,
         salesNumber,
@@ -228,18 +231,29 @@ class CreateCustomerMore extends Component {
           isLast
           {...theme.navItemStyle}
         />
-        {/* <NavInputItem
+        <NavInputItem
           leftText="上级客户"
-          inputProps={{
-              'placeholder': '请输入公司名称',
-              fontSize: theme.moderateScale(16),
-            }}
-          leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-          height={44}
-        /> */}
+          onPress={() => navigate(routers.customer, {
+            type: SelectType,
+            callback: (item) => {
+              const {
+                key,
+                title,
+              } = item;
+              this.setState({
+                superiorCustomerId: key,
+                superiorCustomerName: title,
+              });
+            },
+          })}
+          center={
+            <CenterText active={superiorCustomerId && superiorCustomerName}>
+              {(superiorCustomerId && superiorCustomerName) ? superiorCustomerName : CustomerEnum.superiorCustomerName}
+            </CenterText>
+          }
+          isLast
+          {...theme.navItemStyle}
+        />
         <NavInputItem
           leftText="所属行业"
           onPress={() => navigate(routers.typePicker, {

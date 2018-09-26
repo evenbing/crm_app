@@ -47,6 +47,7 @@ export const CustomerEnum = {
   peopleNumber: '请输入总人数',
   salesNumber: '请输入销售额',
   industry: '请输入行业', 
+  superiorCustomerName: '请选择上级客户',
 };
 
 // 市场活动表单
