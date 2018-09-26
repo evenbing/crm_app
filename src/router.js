@@ -310,7 +310,8 @@ class Routers extends React.Component {
       <Root>
         <RootNavigator
           ref={navigatorRef => registerTopNavigator(navigatorRef)}
-          onNavigationStateChange={(prevNav, nav, action) => {
+          // onNavigationStateChange={(prevNav, nav, action) => {
+          onNavigationStateChange={() => {
             // const { routeName } = action;
             // if (routers.home === routeName) {
             //   // HomeModel.getHomeDataReq();
