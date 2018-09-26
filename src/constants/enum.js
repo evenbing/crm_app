@@ -58,8 +58,8 @@ export const PayType = {
   OTHER: 'OTHER',
 };
 
-// 客户登录
-export const CustomerLevel = {
+// 客户级别
+export const CustomerLevelTypes = {
   A: '重点客户',
   B: '普通用户',
   C: '非优先用户',

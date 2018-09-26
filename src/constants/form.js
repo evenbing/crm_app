@@ -23,6 +23,32 @@ export const TaskEnum = {
   userIds: '无',
 };
 
+// 客户表单
+export const CustomerEnum = {
+  contactId: '联系人ID',
+  code: '客户编码',
+  name: '请输入客户名称',
+  quickCode: '助记码',
+  shortName: '客户简称',
+  phone: '请输入公司总机',
+  fax: '请输入公司传真',
+  website: '请输入网址',
+  locationDivision: '请选择省市区',
+  locationInfo: '请输入详细地址',
+  description: '请输入说明',
+  pictureId: '图片ID',
+  ownerUserId: '负责人用户ID',
+  ownerUserName: '负责人用户姓名',
+  isActive: '是否有效',
+  departmentName: '请选择部门部门',
+  level: '请选择客户等级', // A： 重点客户，B：普通用户，C：非优先用户
+  superiorCustomerId: '上级客户ID',
+  weibo: '请输入微博',
+  peopleNumber: '请输入总人数',
+  salesNumber: '请输入销售额',
+  industry: '请输入行业', 
+};
+
 // 市场活动表单
 export const MarkActivityEnum = {
   // 必填

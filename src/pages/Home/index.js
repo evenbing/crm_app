@@ -8,7 +8,6 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';
@@ -16,7 +15,6 @@ import TaskScheduleStore from '../../logicStores/taskSchedule';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { ActionSheet } from '../../components/Modal';
-import { moderateScale } from '../../utils/scale';
 import { routers } from '../../constants';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
@@ -36,11 +34,6 @@ const delayTypes = [
   { leftText: '后天' },
   { leftText: '自定义' },
 ];
-
-const ListItemSeparatorComponent = styled.View`
-  background-color: transparent;
-  height: ${moderateScale(10)}px;
-`;
 
 @observer
 class Home extends React.Component {
@@ -78,7 +71,7 @@ class Home extends React.Component {
   }
 
   onSelectDelayType = ({ item }) => {
-    const { navigate } = this.props.navigation;
+    // const { navigate } = this.props.navigation;
     switch (item.leftText) {
       case '1小时之后':
         // navigate(routers.addSchedule);
@@ -112,10 +105,13 @@ class Home extends React.Component {
   }
 
   getTaskScheduleList = (date) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      startDateId: date,
-      endDateId: date,
-    });
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq(
+      10, 
+      {
+        startDateId: date,
+        endDateId: date,
+      },
+    );
   }
 
   reFetchTaskScheduleList = () => {
@@ -231,7 +227,7 @@ class Home extends React.Component {
       onPressItem: this.onSelectDelayType,
       list: delayTypes,
     };
-    const data = TaskScheduleStore.taskScheduleList.map(item => this.formatTaskScheduleListData(item));
+    const data = TaskScheduleStore.taskScheduleList.list.map(item => this.formatTaskScheduleListData(item));
     return (
       <ContainerView bottomPadding >
         <CommStatusBar />

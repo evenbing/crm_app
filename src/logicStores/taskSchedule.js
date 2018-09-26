@@ -11,16 +11,17 @@ import {
   find, create, update, del,
 } from '../service/taskSchedule';
 import Toast from '../utils/toast';
+import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
 
 @autobind
 class TaskScheduleStore {
   // 列表
-  @observable taskScheduleList = [];
+  @observable taskScheduleList = initFlatList;
 
   // 详情
-  @observable taskSchedule = {};
+  @observable taskSchedule = initDetailMap;
 
   /**
    * 删除任务或详情
@@ -86,7 +87,7 @@ class TaskScheduleStore {
       } = await create(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.taskScheduleList = [...result];
+        this.taskSchedule.map = [...result];
         callback && callback();
       });
     } catch (e) {
@@ -107,7 +108,7 @@ class TaskScheduleStore {
       runInAction(() => {
         console.log({ result });
 
-        this.taskScheduleList = [...result];
+        this.taskSchedule.map = [...result];
       });
     } catch (e) {
       Toast.showError(e.message);

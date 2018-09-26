@@ -8,7 +8,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
-  getCustomerList,
+  find,
   createCustomer,
   updateCustomer,
   getCustomerDetail,
@@ -16,7 +16,7 @@ import {
   changeOwnerUser,
 } from '../service/customer';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
 
@@ -26,7 +26,7 @@ class CustomerStore {
   @observable customerList = initFlatList;
 
   // 客户详情
-  @observable customerDetail = {};
+  @observable customerDetail = initDetailMap;
 
   // 列表
   @action async getCustomerListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -40,7 +40,7 @@ class CustomerStore {
         result = [],
         totalCount = 0,
         errors = [],
-      } = await getCustomerList({ pageNumber, ...restProps });
+      } = await find({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.customerList.total = totalCount;
@@ -80,17 +80,16 @@ class CustomerStore {
   }
 
   // 新增
-  @action async createCustomerReq(options) {
+  @action async createCustomerReq(options, callback) {
     try {
       const {
         result = {},
         errors = [],
       } = await createCustomer(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        // TODO next
         this.customerDetail = { ...result };
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

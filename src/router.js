@@ -240,6 +240,7 @@ const CrmRouteConfig = {
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
   [routers.typePicker]: { screen: TypePickerScreen },
+  [routers.cityPicker]: { screen: CityPickerScreen },
 };
 
 const CrmNavigatorConfig = {
@@ -276,7 +277,7 @@ const RootRouteConfig = {
 };
 
 const RootNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

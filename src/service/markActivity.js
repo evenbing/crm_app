@@ -29,6 +29,8 @@ import { post } from '../utils/rpc';
  * } options
  */
 export function getMarkActivityList({
+  pageNumber = 1,
+  pageSize = 15,
   my,
   myFollowed,
   objectType,
@@ -48,6 +50,8 @@ export function getMarkActivityList({
 } = {}) {
   return post({
     method: 'api.customerrelations.activity.find',
+    pageNumber,
+    pageSize,
     my,
     myFollowed,
     objectType,

@@ -47,15 +47,20 @@ class Customer extends React.Component {
       DrawerFilterMap,
     ],
   };
+
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
     this.getData();
   }
+
   onPressRight = () => {
-    this.props.navigation.navigate(routers.createCustomer);
+    this.props.navigation.navigate(routers.createCustomer, {
+      reFetchDataList: this.getData,
+    });
   };
+  
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {

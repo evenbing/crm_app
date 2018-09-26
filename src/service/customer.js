@@ -28,7 +28,9 @@ import { post } from '../utils/rpc';
  * }
  * @return Promise<Object>
  */
-export function getCustomerList({
+export function find({
+  pageNumber = 1,
+  pageSize = 15,
   my,
   myFollow,
   objectType,
@@ -47,6 +49,8 @@ export function getCustomerList({
 } = {}) {
   return post({
     method: 'api.customerrelations.customer.find',
+    pageNumber,
+    pageSize,
     my,
     myFollow,
     objectType,
@@ -68,27 +72,27 @@ export function getCustomerList({
 /** 新增客户
  * @params options
  * {
- *   contactId 联系人id
- *   code 客户编码
- *   name 客户名称 must
- *   quickCode 助记码
- *   shortName 客户简称
- *   phone 公司总机
- *   fax  公司传真
- *   website 网址
- *   locationId 地址ID
- *   description 说明
- *   pictureId 图片ID
- *   ownerUserId 负责人用户ID
- *   ownerUserName 负责人用户姓名
- *   isActive 是否有效 must
- *   departmentId 部门id must
- *   level 等级 A：重点客户，B：普通用户，C：非优先用户
- *   superiorCustomerId 上级客户ID
- *   weibo 微博
- *   peopleNumber 总人数
- *   salesNumber 销售额
- *   industry 行业  [枚举类型（IndustryTypeEnum）]
+ *  contactId 联系人ID  否
+ *  code  客户编码  否
+ *  name  客户名称  是
+ *  quickCode 助记码  否
+ *  shortName 客户简称  否
+ *  phone 公司总机  否
+ *  fax 公司传真  否
+ *  website 网址  否
+ *  locationId  地址ID  否
+ *  description 说明  否
+ *  pictureId 图片ID  否
+ *  ownerUserId 负责人用户ID  否
+ *  ownerUserName 负责人用户姓名  否
+ *  isActive  是否有效  是  默认传true
+ *  departmentId  部门id  是
+ *  level 等级  否  A： 重点客户，B：普通用户，C：非优先用户
+ *  superiorCustomerId  上级客户ID  否
+ *  weibo 微博  否
+ *  peopleNumber  总人数  否
+ *  salesNumber 销售额  否
+ *  industry  行业  否 IndustryTypeEnum：FINANCIAL-金融，TELECOM-电信，HIGH_TECH-高科技，GOVERNMENT-政府，FABRICATION-制造，SERVICE-服务，ENERGY-能源，RETAIL-零售，MEDIA-媒体，ENTERTAINMENT-娱乐，CONSULTATION-咨询，NONPROFIT_ORGANIZATION-非盈利组织，PUBLIC_SERVICE-公共事业，OTHER-其他
  * }
  * @return Promise<Object>
  */
