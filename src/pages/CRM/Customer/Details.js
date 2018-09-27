@@ -180,9 +180,10 @@ class Details extends React.Component {
   renderDetailsView = () => {
     const { customerDetail: {
       refreshing,
-      map,
+      map = null,
     } } = CustomerModel;
-    const list = [map];
+
+    const list = map ? [map] : [];
     const flatProps = {
       keyExtractor: (item, index) => index,
       data: list,

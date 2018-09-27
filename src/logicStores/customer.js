@@ -67,12 +67,12 @@ class CustomerStore {
     try {
       if (!id) throw new Error('id 不为空');
       const {
-        result = {},
+        customer = {},
         errors = [],
       } = await getCustomerDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.customerDetail.map = { ...result };
+        this.customerDetail.map = customer;
       });
     } catch (e) {
       Toast.showError(e.message);

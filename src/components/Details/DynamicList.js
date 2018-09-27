@@ -48,7 +48,12 @@ class DynamicList extends React.PureComponent {
       item: { list = [] },
     } = this.props;
     if (!list.length) return null;
-    return list.map(item => <DynamicItem key={item.id} item={item} />);
+
+    return list.map((item, index) => {
+      return (
+        <DynamicItem key={`${item.id} ${index}`} item={item} />
+      );
+    });
   };
   render() {
     const {
