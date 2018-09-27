@@ -92,14 +92,15 @@ class Details extends React.Component {
       },
     } = this;
     const { item } = state.params || {};
-    navigate(routers.teamMembers, {
-      moduleId: item.id,
-      moduleType: ModuleType.pact,
+    const { receivablePlanDetails: { map } } = ReceivablePlanModel;
+    navigate(routers.selectEmployee, {
       callback: (obj) => {
         ReceivablePlanModel.updateOwnerUserReq({
           id: item.id,
-          ownerUserId: obj.id,
-          ownerUserName: obj.userName,
+          ownerIdBefore: map.ownerId,
+          ownerIdAfter: obj.id,
+          ownerNameBefore: map.ownerName,
+          ownerNameAfter: obj.userName,
         });
       },
     });

@@ -13,14 +13,14 @@ import {
 } from '../service/receivableRecord';
 import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
-import { initDetailMap, initFlatList } from './initState';
+import { initDetailMap, receivableFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ReceivableRecordStore {
   // 列表
-  @observable receivableRecordList = initFlatList;
+  @observable receivableRecordList = receivableFlatList;
   @observable receivableRecordDetails = initDetailMap;
 
   // 列表
@@ -34,6 +34,11 @@ class ReceivableRecordStore {
       const {
         result = [],
         totalCount = 0,
+        totalFactPrice = 0,
+        totalOverTimePrice = 0,
+        totalPlanPrice = 0,
+        totalPrice = 0,
+        totalUnreceivablePrice = 0,
         errors = [],
       } = await getReceivableRecordList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
@@ -42,7 +47,15 @@ class ReceivableRecordStore {
         this.receivableRecordList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.receivableRecordList.list = [...result];
+          this.receivableRecordList = {
+            ...this.receivableRecordList,
+            list: result,
+            totalFactPrice,
+            totalOverTimePrice,
+            totalPlanPrice,
+            totalPrice,
+            totalUnreceivablePrice,
+          };
         } else {
           this.receivableRecordList.list = this.receivableRecordList.list.concat(result);
         }

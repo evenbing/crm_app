@@ -14,7 +14,6 @@ import { theme, routers } from '../../../constants';
 // components
 import { ContainerView } from '../../../components/Styles/Layout';
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-// import { HorizontalDivider } from '../../../components/Styles/Divider';
 import FlatListTable from '../../../components/FlatListTable';
 import ReceivableTitle from './components/ReceivableTitle';
 import ReceivableItem from './components/ReceivableItem';
@@ -25,11 +24,26 @@ const RightViews = styled.View`
   flex-direction: row;
 `;
 
+const TEST_ID = '2331';
+
 @observer
 class Receivable extends Component {
   componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
     this.getData();
   }
+  onPressRight = (path) => {
+    if (!path) return;
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { id = TEST_ID } = state.params || {};
+    navigate(path, { pactId: id });
+  };
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = ReceivableModel.receivableIssueList;
     if (list.length < total && loadingMore === false) {
@@ -37,7 +51,7 @@ class Receivable extends Component {
     }
   };
   getData = () => {
-    const { id } = this.props.navigation.state.params || {};
+    const { id = TEST_ID } = this.props.navigation.state.params || {};
     ReceivableModel.getReceivableIssueReq({ pactId: id });
   };
 
@@ -68,47 +82,49 @@ class Receivable extends Component {
     return (
       <ContainerView>
         <CommStatusBar />
-        {/* <HorizontalDivider height={10} /> */}
         <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
 }
 
-Receivable.navigationOptions = ({ navigation }) => ({
-  title: '回款',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightViews>
-      <RightView
-        onPress={() => { navigation.navigate(routers.receivablePlanCreate); }}
-        right="增加计划"
-        rightStyle={{
-          color: theme.primaryColor,
-        }}
-        rightViewStyle={{
-          paddingLeft: 0,
-          paddingRight: 0,
-        }}
+Receivable.navigationOptions = ({ navigation }) => {
+  const { onPressRight } = navigation.state.params || {};
+  return {
+    title: '回款',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
       />
-      <RightView
-        onPress={() => { navigation.navigate(routers.receivableRecordCreate); }}
-        right="增加记录"
-        rightStyle={{
-          color: theme.primaryColor,
-        }}
-        rightViewStyle={{
-          paddingLeft: moderateScale(8),
-          paddingRight: moderateScale(15),
-        }}
-      />
-    </RightViews>
-  ),
-});
+    ),
+    headerRight: (
+      <RightViews>
+        <RightView
+          onPress={onPressRight ? () => onPressRight(routers.receivablePlanCreate) : null}
+          right="增加计划"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+          rightViewStyle={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        />
+        <RightView
+          onPress={onPressRight ? () => onPressRight(routers.receivableRecordCreate) : null}
+          right="增加记录"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+          rightViewStyle={{
+            paddingLeft: moderateScale(8),
+            paddingRight: moderateScale(15),
+          }}
+        />
+      </RightViews>
+    ),
+  };
+};
 
 Receivable.defaultProps = {};
 

@@ -20,7 +20,7 @@ class TeamStore {
 
   @computed get filterTeamList() {
     if (!this.search) return this.teamList;
-    return this.teamList.filter(v => v.userName === this.search);
+    return this.teamList.filter(v => v.userName && v.userName.includes(this.search));
   }
 
   @action updateSearch(value) {

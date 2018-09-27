@@ -7,39 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
 import { SexTypes } from '../../../../constants/enum';
 import { formatDateByMoment } from '../../../../utils/base';
 
 // components
-import NavItemComponent from '../../../../components/NavItem';
 import TitleItemComponent from '../../../../components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText } from '../../../../components/Details/Styles';
 
 const ContainerView = styled.View``;
-
-const RemarkView = styled.View`
-  padding: 0 ${theme.moderateScale(15)}px;
-`;
-
-const RemarkText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-`;
-
-const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
-  <NavItemComponent
-    height={44}
-    leftText={leftText}
-    rightText={rightText || '--'}
-    showNavIcon={false}
-    isLast={isLast}
-    rightTextStyle={{
-      color: theme.textGrayColor,
-      ...rightStyle,
-    }}
-    rightSuffix={rightSuffix}
-  />
-);
 
 const ActivityDetailsItem = ({
   item,

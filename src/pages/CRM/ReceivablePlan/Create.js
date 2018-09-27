@@ -32,9 +32,11 @@ class Create extends React.Component {
   state = {
     pactId: null,
     issueId: null,
+    issueName: null,
     receivablePrice: null,
     receivableDate: null,
     ownerId: null,
+    ownerName: null,
     comment: null,
   };
   componentDidMount() {
@@ -73,15 +75,21 @@ class Create extends React.Component {
     const {
       state: {
         issueId,
+        issueName,
         receivablePrice,
         ownerId,
+        ownerName,
         comment,
         receivableDate,
       },
       props: {
-        navigation: { navigate },
+        navigation: {
+          navigate,
+          state,
+        },
       },
     } = this;
+    const { pactId } = state.params || {};
     return (
       <ContainerView
         bottomPadding
@@ -93,11 +101,26 @@ class Create extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...theme.getLeftStyle({
-                placeholder: ReceivablePlanEnum.issue,
-                value: issueId,
-                onChangeText: issueId => this.setState({ issueId }),
+            onPress={() => navigate(routers.selectPeriod, {
+              pactId,
+              callback: (obj) => {
+                if (!Object.keys(obj).length) return;
+                debugger;
+                this.setState({
+                  ownerId: obj.id,
+                  ownerName: obj.userName,
+                });
+              },
             })}
+            center={
+              <CenterText active={issueId}>
+                {
+                  (issueId && issueName) ? issueName :
+                    ReceivablePlanEnum.issue
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="计划回款金额"
@@ -133,10 +156,20 @@ class Create extends React.Component {
           </DateTimePicker>
           <NavInputItem
             leftText="负责人"
+            onPress={() => navigate(routers.selectEmployee, {
+              callback: (obj) => {
+                if (!Object.keys(obj).length) return;
+                debugger;
+                this.setState({
+                  ownerId: obj.id,
+                  ownerName: obj.userName,
+                });
+              },
+            })}
             center={
-              <CenterText>
+              <CenterText active={ownerId && ownerName}>
                 {
-                  ownerId ? null :
+                  (ownerId && ownerName) ? ownerName :
                     ReceivablePlanEnum.ownerId
                 }
               </CenterText>

@@ -12,7 +12,9 @@ import rightArrow from '../../../../img/home/ico_right_arrow.png';
 // components
 import { HorizontalDivider } from '../../../../components/Styles/Divider';
 
-const ContainerView = styled.View``;
+const ContainerView = styled.View`
+  margin-top: ${moderateScale(10)};
+`;
 
 const ListHeaderView = styled.View`
   height: ${moderateScale(44)}px;

@@ -70,7 +70,7 @@ class DetailsHead extends React.PureComponent {
             marginTop={8}
             onPress={onPressChoiceTeam}
           >
-            <PersonText>负责人: {item.ownerName}</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={require('../../../../img/crm/details/principalGo.png')}
               size={15}
