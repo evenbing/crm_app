@@ -10,6 +10,7 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import { getUserId } from '../../../utils/base';
 import { ModuleType } from '../../../constants/enum';
 
 // components
@@ -93,9 +94,9 @@ class Details extends React.Component {
       },
     } = this;
     const { item } = state.params || {};
-    navigate(routers.teamMembers, {
-      moduleId: item.id,
-      moduleType: ModuleType.contact,
+    const { contactDetails: { map } } = ContactsModel;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    navigate(routers.selectEmployee, {
       callback: (obj) => {
         ContactsModel.updateOwnerUserReq({
           id: item.id,

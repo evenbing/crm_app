@@ -81,7 +81,7 @@ class DynamicStore {
       const {
         result = [],
         totalCount = 0,
-      } = await getDynamicList({ pageNumber, ...restProps });
+      } = await getDynamicList({ pageNumber, moduleType, ...restProps });
       runInAction(() => {
         this.dynamicList.total = totalCount;
         this.dynamicList.pageNumber = pageNumber;

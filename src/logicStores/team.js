@@ -1,10 +1,3 @@
-/*
- * @Author: Edmond.Shi
- * @Date: 2018-09-06 22:15:31
- * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-20 16:26:50
- */
-
 import { action, observable, computed, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
@@ -36,7 +29,7 @@ class TeamStore {
 
   @action updateTeamActive({ item, radio }) {
     this.teamList = this.teamList.map((v) => {
-      if (v.userName === item.userName) {
+      if (v.id === item.id) {
         v.actived = !v.actived;
       } else if (!radio) { // 单选
         v.actived = false;
@@ -63,10 +56,6 @@ class TeamStore {
       });
     } catch (e) {
       Toast.showError(e.message);
-    } finally {
-      runInAction(() => {
-        this.teamList.refreshing = false;
-      });
     }
   }
 

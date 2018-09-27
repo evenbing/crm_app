@@ -126,6 +126,9 @@ export function formatMemberList(list) {
   }
   if (!list.length) return list;
   return list.map((value) => {
+    if (!value.userName && (value.firstName || value.lastName)) {
+      value.userName = `${value.lastName}${value.firstName}`;
+    }
     const nameChar = pinyin.getFullChars(value.userName);
     const sortLetters = pinyin.getCamelChars(nameChar).substring(0, 1).toUpperCase();
     if (/^[A-Z]$/.test(sortLetters)) {

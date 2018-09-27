@@ -21,6 +21,7 @@ import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
 import TeamRolesScreen from './pages/Card/TeamRoles';
 import SelectDepartmentScreen from './pages/Card/SelectDepartment';
+import SelectEmployeeScreen from './pages/Card/SelectEmployee';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 import TypePickerScreen from './pages/Modal/TypePicker';
@@ -241,6 +242,7 @@ const CrmRouteConfig = {
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
   [routers.typePicker]: { screen: TypePickerScreen },
   [routers.cityPicker]: { screen: CityPickerScreen },
+  [routers.selectEmployee]: { screen: SelectEmployeeScreen },
 };
 
 const CrmNavigatorConfig = {
