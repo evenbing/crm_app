@@ -46,13 +46,6 @@ const ItemView = styled(TouchableView)`
   align-items: center;
 `;
 
-// const ItemText = styled.Text`
-//   font-family: ${theme.fontMedium};
-//   font-size: ${moderateScale(14)};
-//   color: ${theme.primaryColor};
-//   background-color: transparent;
-//   margin-left: ${moderateScale(5)};
-// `;
 const ListView = styled.View``;
 
 class ProductItemList extends React.PureComponent {
@@ -63,10 +56,10 @@ class ProductItemList extends React.PureComponent {
         parentId = null,
         products = [],
         children = [],
-        index = 0,
       },
       onPressSelectIndex,
       onPressItem,
+      index = 0,
     } = this.props;
     return (
       <ContainerView>
@@ -119,6 +112,7 @@ class ProductItemList extends React.PureComponent {
 ProductItemList.defaultProps = {
   item: {},
   isLast: false,
+  index: 0,
   onPressItem: () => null,
   onPressSelectIndex: () => null,
 };
@@ -126,6 +120,7 @@ ProductItemList.defaultProps = {
 ProductItemList.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   isLast: PropTypes.bool,
+  index: PropTypes.number,
   onPressItem: PropTypes.func,
   onPressSelectIndex: PropTypes.func,
 };

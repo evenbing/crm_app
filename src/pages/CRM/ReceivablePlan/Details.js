@@ -131,7 +131,7 @@ class Details extends React.Component {
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
-      list: ['动态', '活动详情'],
+      list: ['动态', '计划详情'],
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };

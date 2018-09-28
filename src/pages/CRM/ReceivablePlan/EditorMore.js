@@ -12,6 +12,7 @@ import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
 import { ReceivablePlanEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
+import { formatDateByMoment } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -24,10 +25,8 @@ import DateTimePicker from '../../../components/DateTimePicker';
 
 
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
-import { formatDate } from '../../../utils/base';
 
 const LeftViewWidth = moderateScale(110);
-const formatDateType = 'yyyy-MM-dd hh:mm';
 
 @observer
 class EditorMore extends React.Component {
@@ -43,6 +42,7 @@ class EditorMore extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
   onPressRight = () => {
     const {
@@ -70,6 +70,16 @@ class EditorMore extends React.Component {
     } catch (e) {
       Toast.showError(e.message);
     }
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item)) return;
+    this.setState({ ...item });
   };
   render() {
     const {
@@ -114,7 +124,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  receivableDate: `${formatDate(date, formatDateType)}`,
+                  receivableDate: `${formatDateByMoment(date)}`,
                 })
             }
           >

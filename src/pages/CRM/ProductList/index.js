@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useStrict, toJS } from 'mobx/';
+import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
-// import { routers } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -53,7 +52,7 @@ class ProductList extends React.Component {
       productList: { list, refreshing, loadingMore },
       topList,
     } = ProductListModel;
-    console.log(toJS(topList));
+    // console.log(toJS(topList));
     const flatProps = {
       data: topList,
       renderItem: this.renderItem,

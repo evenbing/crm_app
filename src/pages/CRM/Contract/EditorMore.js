@@ -53,6 +53,7 @@ class EditorMore extends React.Component {
     departmentName: null,
     content: null,
     comment: null,
+    ownerId: null,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -81,6 +82,7 @@ class EditorMore extends React.Component {
         departmentId,
         content,
         comment,
+        ownerId,
       },
       props: {
         navigation: { pop },
@@ -94,6 +96,7 @@ class EditorMore extends React.Component {
       if (!startDate) throw new Error(ContractEnum.startDate);
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
+      if (!ownerId) throw new Error(ContractEnum.ownerId);
       const { item: { id } = {} } = this.props.navigation.state.params || {};
       // 新增
       if (!id) {
@@ -115,6 +118,7 @@ class EditorMore extends React.Component {
           customerContractId,
           customerContractName,
           departmentId,
+          ownerId,
           content,
           comment,
         }, () => {
@@ -175,6 +179,8 @@ class EditorMore extends React.Component {
         departmentName,
         content,
         comment,
+        ownerId,
+        ownerName,
       },
       props: {
         navigation: { navigate },
@@ -370,6 +376,27 @@ class EditorMore extends React.Component {
                 {
                   (departmentId && departmentName) ? departmentName :
                     ContractEnum.departmentName
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="负责人"
+            onPress={() => navigate(routers.selectEmployee, {
+              callback: (obj) => {
+                if (!Object.keys(obj).length) return;
+                this.setState({
+                  ownerId: obj.id,
+                  ownerName: obj.userName,
+                });
+              },
+            })}
+            center={
+              <CenterText active={ownerId && ownerName}>
+                {
+                  (ownerId && ownerName) ? ownerName :
+                    ContractEnum.ownerId
                 }
               </CenterText>
             }
