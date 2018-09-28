@@ -79,6 +79,8 @@ export default {
   relatedDocs: 'app.tabView.root.card.relatedDocs',
   selectDepartment: 'app.tabView.root.card.selectDepartment',
   moduleList: 'app.tabView.root.card.moduleList',
+  selectEmployee: 'app.tabView.root.card.selectEmployee',
+  selectPeriod: 'app.tabView.root.card.selectPeriod',
   // demo
   actionSheetDemo: 'app.tabView.root.demo.actionSheetDemo',
   mobxDemo: 'app.tabView.root.demo.mobxDemo',

@@ -89,14 +89,15 @@ class Details extends React.Component {
       },
     } = this;
     const { item } = state.params || {};
-    navigate(routers.teamMembers, {
-      moduleId: item.id,
-      moduleType: ModuleType.pact,
+    const { receivableRecordDetails: { map } } = ReceivableRecordModel;
+    navigate(routers.selectEmployee, {
       callback: (obj) => {
         ReceivableRecordModel.updateOwnerUserReq({
           id: item.id,
-          ownerUserId: obj.id,
-          ownerUserName: obj.userName,
+          ownerIdBefore: map.ownerId,
+          ownerIdAfter: obj.id,
+          ownerNameBefore: map.ownerName,
+          ownerNameAfter: obj.userName,
         });
       },
     });
@@ -163,7 +164,7 @@ class Details extends React.Component {
       data: getDynamic,
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <DynamicList />,
-      onRefresh: this.onRefresh,
+      onRefresh: this.getDynamicList,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -187,13 +188,11 @@ class Details extends React.Component {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
-      onRefresh: this.onRefresh,
-      onEndReached: this.onEndReached,
+      onRefresh: this.getRecordDetail,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
       refreshing,
-      noDataBool: !refreshing && list.length === 0,
     };
     return (
       <FlatListTable {...flatProps} />

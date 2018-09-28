@@ -11,6 +11,7 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
+import { getUserId } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -75,7 +76,6 @@ class Details extends React.Component {
   };
   onPressSend = ({ content, contentType }, callback) => {
     const { item } = this.props.navigation.state.params || {};
-    debugger;
     DynamicModel.createDynamicReq({
       content,
       contentType,
@@ -92,14 +92,16 @@ class Details extends React.Component {
       },
     } = this;
     const { item } = state.params || {};
-    navigate(routers.teamMembers, {
-      moduleId: item.id,
-      moduleType: ModuleType.pact,
+    const { contractDetails: { map } } = ContractModel;
+    if (map.ownerId && (getUserId() !== map.ownerId)) return;
+    navigate(routers.selectEmployee, {
       callback: (obj) => {
         ContractModel.updateOwnerUserReq({
           id: item.id,
-          ownerUserId: obj.id,
-          ownerUserName: obj.userName,
+          ownerIdBefore: map.ownerId,
+          ownerIdAfter: obj.id,
+          ownerNameBefore: map.ownerName,
+          ownerNameAfter: obj.userName,
         });
       },
     });
@@ -120,11 +122,13 @@ class Details extends React.Component {
     const {
       navigation: {
         navigate,
+        state,
       },
     } = this.props;
+    const { item } = state.params || {};
     const list = [
       { title: '文档', text: '12', onPress: () => {} },
-      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable); } },
+      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable, { id: item.id }); } },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >

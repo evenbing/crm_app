@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import { Component } from 'react-native';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Modal from 'react-native-modal';

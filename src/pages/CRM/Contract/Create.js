@@ -11,7 +11,7 @@ import { routers, theme } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
 import { SelectType, PackType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
-import { formatDate, mapToArray } from '../../../utils/base';
+import { formatDateByMoment } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -22,12 +22,9 @@ import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
-import Thumbnail from '../../../components/Thumbnail';
-import { ActionSheet } from '../../../components/Modal';
+import { FormActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
-
-const formatDateType = 'yyyy-MM-dd hh:mm:ss';
 
 @observer
 class Create extends React.Component {
@@ -44,8 +41,6 @@ class Create extends React.Component {
       key: null,
       value: null,
     },
-    typeVisible: false,
-    activityIndex: 0,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -92,27 +87,10 @@ class Create extends React.Component {
       Toast.showError(e.message);
     }
   };
-  onToggleVisible = () => {
+  onPressActionSheetItem = ({ key, value }) => {
     this.setState({
-      typeVisible: !this.state.typeVisible,
+      typeMap: { key, value },
     });
-  };
-  onPressActionSheetItem = ({ item, index }) => {
-    if (this.state.activityIndex === index) return;
-    this.setState({
-      activityIndex: index,
-      typeMap: { key: item.key, value: item.leftText },
-    });
-  };
-  getRightElem = (index) => {
-    const { activityIndex } = this.state;
-    if (activityIndex !== index) return null;
-    return (
-      <Thumbnail
-        source={require('../../../img/modal/ok.png')}
-        size={16}
-      />
-    );
   };
   render() {
     const {
@@ -126,22 +104,11 @@ class Create extends React.Component {
         startDate,
         endDate,
         typeMap,
-        typeVisible,
       },
       props: {
         navigation: { navigate },
       },
     } = this;
-    const PackTypeList = mapToArray(PackType, 'leftText').map((v, i) => {
-      v.rightText = this.getRightElem(i);
-      return v;
-    });
-    const actionSheetProps = {
-      isVisible: typeVisible,
-      onPressClose: this.onToggleVisible,
-      onPressItem: this.onPressActionSheetItem,
-      list: PackTypeList,
-    };
     return (
       <ContainerScrollView
         bottomPadding
@@ -150,7 +117,6 @@ class Create extends React.Component {
         <HorizontalDivider
           height={9}
         />
-        <ActionSheet {...actionSheetProps} />
         <TitleItem text="必填信息" />
         <ListView>
           <NavInputItem
@@ -161,16 +127,21 @@ class Create extends React.Component {
               onChangeText: name => this.setState({ name }),
             })}
           />
-          <NavInputItem
-            leftText="合同类型"
-            onPress={this.onToggleVisible}
-            center={
-              <CenterText active={typeMap.value}>
-                { typeMap.value || ContractEnum.type }
-              </CenterText>
-            }
-            {...theme.navItemStyle}
-          />
+          <FormActionSheet
+            onConfirm={this.onPressActionSheetItem}
+            typeEnum={PackType}
+          >
+            <NavInputItem
+              leftText="合同类型"
+              needPress={false}
+              center={
+                <CenterText active={typeMap.value}>
+                  { typeMap.value || ContractEnum.type }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <NavInputItem
             leftText="客户"
             onPress={() => navigate(routers.customer, {
@@ -209,7 +180,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  startDate: `${formatDate(date, formatDateType)}`,
+                  startDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -228,7 +199,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDate(date, formatDateType)}`,
+                  endDate: `${formatDateByMoment(date)}`,
                 })
             }
           >

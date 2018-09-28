@@ -49,7 +49,8 @@ const TotalReceivableText = styled.Text.attrs({
   margin-left: ${width - (2 * moderateScale(58))}px;
 `;
 
-const ReceivableTitle = ({ progress }) => {
+const ReceivableTitle = ({ pactPrice, totalPrice }) => {
+  const progress = pactPrice / totalPrice || 0;
   const ReceivableProgressProps = {
     progress,
     width: width - (2 * moderateScale(58)),
@@ -71,24 +72,26 @@ const ReceivableTitle = ({ progress }) => {
         <ReceivableText>回款进度</ReceivableText>
         <CurReceivable>
           <CurReceivableText progress={progress}>
-                ¥1000.000
+                ¥{pactPrice}
           </CurReceivableText>
         </CurReceivable>
         <ReceivableProgress {...ReceivableProgressProps} />
         <TotalReceivable>
-          <TotalReceivableText>¥2000.000</TotalReceivableText>
+          <TotalReceivableText>¥{totalPrice}</TotalReceivableText>
         </TotalReceivable>
       </ReceivableTitleView>
     </LinearGradient>
   );
 };
 
-ReceivableTitle.propTypes = {
-  progress: PropType.number,
+ReceivableTitle.defaultProps = {
+  pactPrice: 0,
+  totalPrice: 0,
 };
 
-ReceivableTitle.defaultProps = {
-  progress: 0.3,
+ReceivableTitle.propTypes = {
+  pactPrice: PropType.number,
+  totalPrice: PropType.number,
 };
 
 export default ReceivableTitle;

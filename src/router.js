@@ -11,8 +11,8 @@ import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Root } from 'native-base';
 import { Image } from 'react-native';
 import { observer } from 'mobx-react/native';
-import styled from 'styled-components';
 import { routers, theme } from './constants';
+import { DefaultHeaderView } from './components/Styles/Layout';
 import { getHeaderPadding, getHeaderHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
 import { registerTopNavigator } from './utils/navigationService';
@@ -21,6 +21,7 @@ import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
 import TeamRolesScreen from './pages/Card/TeamRoles';
 import SelectDepartmentScreen from './pages/Card/SelectDepartment';
+import SelectEmployeeScreen from './pages/Card/SelectEmployee';
 // root page -> common modal
 import QueryBusinessScreen from './pages/Modal/QueryBusiness';
 import TypePickerScreen from './pages/Modal/TypePicker';
@@ -100,11 +101,6 @@ import CityPickerScreen from './pages/Modal/CityPicker';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
-
-const DefaultHeaderView = styled.View`
-  flex: 1;
-  flex-direction: row;
-`;
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
@@ -241,6 +237,7 @@ const CrmRouteConfig = {
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
   [routers.typePicker]: { screen: TypePickerScreen },
   [routers.cityPicker]: { screen: CityPickerScreen },
+  [routers.selectEmployee]: { screen: SelectEmployeeScreen },
 };
 
 const CrmNavigatorConfig = {

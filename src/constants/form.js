@@ -46,7 +46,7 @@ export const CustomerEnum = {
   weibo: '请输入微博',
   peopleNumber: '请输入总人数',
   salesNumber: '请输入销售额',
-  industry: '请输入行业', 
+  industry: '请输入行业',
   superiorCustomerName: '请选择上级客户',
 };
 
@@ -112,19 +112,16 @@ export const ContractEnum = {
 // 回款计划
 export const ReceivablePlanEnum = {
   pactId: '请选择合同ID',
-  issue: '请输入回款期次',
   receivablePrice: '请输入回款金额',
   receivableDate: '请选择回款日期',
   ownerId: '请选择负责人',
   comment: '请输入备注说明',
-  // more
 };
 
 // 回款记录
 export const ReceivableRecordEnum = {
   pactId: '请选择合同ID',
-  issue: '请输入回款期次',
-  plan: '请选择回款计划',
+  planId: '请选择回款计划',
   receivablePrice: '请输入回款金额',
   receivableDate: '请选择回款日期',
   payType: '请选择付款方式',

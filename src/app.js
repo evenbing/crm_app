@@ -48,29 +48,12 @@ class App extends React.Component {
       init(config);
       const id = await getPassportId();
       const {
-        errors: pwdErrors,
+        errors: pwdErrors = [],
         passport: { tenantId, userId } = {},
       } = await getPassportInfo({ id });
-      if (pwdErrors == null || pwdErrors.length > 0) {
-        throw new Error(pwdErrors[0].message);
-      }
+      if (pwdErrors.length) throw new Error(pwdErrors[0].message);
       global.tenantId = tenantId;
       global.userId = userId;
-      // const {
-      //   errors: userErrors,
-      //   result = [],
-      // } = await AppService.getShoppingGuideInfo({
-      //   userId,
-      //   tenantId,
-      // });
-      // if (userErrors == null || userErrors.length > 0) {
-      //   throw new Error(userErrors[0].message);
-      // }
-      // const { id: guideUserId } = result[0] || {};
-      // if (!guideUserId) {
-      //   throw new Error('没有此导购信息');
-      // }
-      // global.guideUserId = guideUserId;
       this.setState({ loading: false });
     } catch (e) {
       Toast.showError(e.message);

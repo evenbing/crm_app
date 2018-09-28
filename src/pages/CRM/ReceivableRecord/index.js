@@ -223,18 +223,27 @@ class ReceivableRecord extends React.Component {
       },
     } = this;
     const {
-      receivableRecordList: { list, refreshing, loadingMore },
+      receivableRecordList: {
+        list,
+        refreshing,
+        loadingMore,
+        totalFactPrice,
+        totalOverTimePrice,
+        totalPlanPrice,
+        totalPrice,
+        totalUnreceivablePrice,
+      },
     } = ReceivableRecordModel;
     const amountActionSheetProps = {
       isVisible: amountVisible,
       onPressClose: this.onToggleAmountVisible,
       itemNeedPress: false,
       list: [
-        { leftText: '总金额', rightText: '¥100,000,00', rightStyle: { color: theme.dangerColor } },
-        { leftText: '计划回款金额', rightText: '¥90,000,00' },
-        { leftText: '实际回款金额', rightText: '¥70,000,00' },
-        { leftText: '未回款金额', rightText: '¥100,000,00' },
-        { leftText: '逾期未回款金额', rightText: '¥100,000,00' },
+        { leftText: '总金额', rightText: `¥${totalPrice}`, rightStyle: { color: theme.dangerColor } },
+        { leftText: '计划回款金额', rightText: `¥${totalPlanPrice}` },
+        { leftText: '实际回款金额', rightText: `¥${totalFactPrice}` },
+        { leftText: '未回款金额', rightText: `¥${totalUnreceivablePrice}` },
+        { leftText: '逾期未回款金额', rightText: `¥${totalOverTimePrice}` },
       ],
     };
     const flatProps = {

@@ -23,7 +23,7 @@ const RightText = styled.Text`
   background-color: transparent;
 `;
 
-class RightView extends React.Component {
+class RightView extends React.PureComponent {
   renderText = () => {
     const {
       props: {

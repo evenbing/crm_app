@@ -8,21 +8,19 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivablePlanList,
-  getReceivableIssue,
   getReceivablePlanDetails,
-  createReceivablePlan,
   updateReceivablePlan,
 } from '../service/receivablePlan';
 import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
-import { initDetailMap, initFlatList } from './initState';
+import { initDetailMap, receivableFlatList } from './initState';
 
 useStrict(true);
 
 @autobind
 class ReceivablePlanStore {
   // 列表
-  @observable receivablePlanList = initFlatList;
+  @observable receivablePlanList = receivableFlatList;
   @observable receivablePlanDetails = initDetailMap;
 
   // 列表
@@ -36,6 +34,11 @@ class ReceivablePlanStore {
       const {
         result = [],
         totalCount = 0,
+        totalFactPrice = 0,
+        totalOverTimePrice = 0,
+        totalPlanPrice = 0,
+        totalPrice = 0,
+        totalUnreceivablePrice = 0,
         errors = [],
       } = await getReceivablePlanList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
@@ -44,7 +47,15 @@ class ReceivablePlanStore {
         this.receivablePlanList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.receivablePlanList.list = [...result];
+          this.receivablePlanList = {
+            ...this.receivablePlanList,
+            list: result,
+            totalFactPrice,
+            totalOverTimePrice,
+            totalPlanPrice,
+            totalPrice,
+            totalUnreceivablePrice,
+          };
         } else {
           this.receivablePlanList.list = this.receivablePlanList.list.concat(result);
         }
@@ -79,36 +90,6 @@ class ReceivablePlanStore {
       runInAction(() => {
         this.receivablePlanDetails.refreshing = false;
       });
-    }
-  }
-
-  // 获取回款档期
-  @action async getReceivableIssueReq() {
-    try {
-      const data = await getReceivableIssue();
-      // runInAction(() => {
-      //   // this.contactDetails = { ...contact };
-      // });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-  // 新增
-  @action async createReceivablePlanReq(options) {
-    try {
-      const {
-        result = {},
-        errors = [],
-      } = await createReceivablePlan(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
     }
   }
 

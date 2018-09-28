@@ -13,6 +13,15 @@ export const initFlatList = {
   total: 0,
 };
 
+export const receivableFlatList = {
+  ...initFlatList,
+  totalFactPrice: 0,
+  totalOverTimePrice: 0,
+  totalPlanPrice: 0,
+  totalPrice: 0,
+  totalUnreceivablePrice: 0,
+};
+
 export const initDetailMap = {
   refreshing: false,
   list: [],
