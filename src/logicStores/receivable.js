@@ -99,17 +99,27 @@ class ReceivablePlanStore {
   }
 
   // 新增回款计划
+  @action async createReceivableIssueReq({ pactId }) {
+    try {
+      const {
+        errors,
+      } = await createReceivableIssue({ pactId });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getReceivableIssueReq({ pactId });
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 新增回款计划
   @action async createReceivablePlanReq({ pactId, ...restProps }, callback) {
     try {
       const {
-        id: issueId,
-        errors: issueError = [],
-      } = await createReceivableIssue({ pactId });
-      if (issueError.length) throw new Error(issueError[0].message);
-      const {
-        errors: planError = [],
-      } = await createReceivablePlan({ pactId, issueId, ...restProps });
-      if (planError.length) throw new Error(planError[0].message);
+        errors = [],
+      } = await createReceivablePlan({ pactId, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivableIssueReq({ pactId });
         callback && callback();
@@ -118,19 +128,14 @@ class ReceivablePlanStore {
       Toast.showError(e.message);
     }
   }
+
   // 新增回款记录
   @action async createReceivableRecordReq({ pactId, ...restProps }, callback) {
     try {
       const {
-        id: issueId,
-        errors: issueError = [],
-      } = await createReceivableIssue({ pactId });
-      if (issueError.length) throw new Error(issueError[0].message);
-      const {
-        errors: recordError = [],
-      } = await createReceivableRecord({ pactId, issueId, ...restProps });
-      if (recordError.length) throw new Error(recordError[0].message);
-      debugger;
+        errors = [],
+      } = await createReceivableRecord({ pactId, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivableIssueReq({ pactId });
         callback && callback();

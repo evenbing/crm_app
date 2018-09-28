@@ -6,9 +6,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { theme, routers } from '../../../constants';
+import { theme } from '../../../constants';
 import { DataTitleTypes } from '../../../constants/enum';
 import { moderateScale } from '../../../utils/scale';
 
@@ -21,12 +20,6 @@ import ReceivableItem from './components/ReceivableItem';
 
 import ReceivableModel from '../../../logicStores/receivable';
 
-const RightViews = styled.View`
-  flex-direction: row;
-`;
-
-const TEST_ID = '2331';
-
 @observer
 class Receivable extends Component {
   componentDidMount() {
@@ -35,20 +28,29 @@ class Receivable extends Component {
     });
     this.getData();
   }
-  onPressRight = (path) => {
+  onPressRight = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { id } = state.params || {};
+    ReceivableModel.createReceivableIssueReq({ pactId: id });
+  };
+  onPressCreate = (path, { index, ...restProps }) => {
     if (!path) return;
     const {
       props: {
         navigation: { navigate, state },
       },
     } = this;
-    const { id = TEST_ID } = state.params || {};
-    const { total } = ReceivableModel.receivableIssueList;
+    const { id } = state.params || {};
     navigate(path, {
       pactId: id,
-      period: DataTitleTypes[total],
+      period: DataTitleTypes[index],
+      ...restProps,
     });
-  };
+  }
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = ReceivableModel.receivableIssueList;
     if (list.length < total && loadingMore === false) {
@@ -78,7 +80,7 @@ class Receivable extends Component {
     const flatProps = {
       data: getIssueList,
       ListHeaderComponent: <ReceivableTitle {...receivableTitleProps} />,
-      renderItemElem: <ReceivableItem />,
+      renderItemElem: <ReceivableItem onPressCreate={this.onPressCreate} />,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,
@@ -104,30 +106,17 @@ Receivable.navigationOptions = ({ navigation }) => {
       />
     ),
     headerRight: (
-      <RightViews>
-        <RightView
-          onPress={onPressRight ? () => onPressRight(routers.receivablePlanCreate) : null}
-          right="增加计划"
-          rightStyle={{
-            color: theme.primaryColor,
-          }}
-          rightViewStyle={{
-            paddingLeft: 0,
-            paddingRight: 0,
-          }}
-        />
-        <RightView
-          onPress={onPressRight ? () => onPressRight(routers.receivableRecordCreate) : null}
-          right="增加记录"
-          rightStyle={{
-            color: theme.primaryColor,
-          }}
-          rightViewStyle={{
-            paddingLeft: moderateScale(8),
-            paddingRight: moderateScale(15),
-          }}
-        />
-      </RightViews>
+      <RightView
+        onPress={onPressRight ? () => onPressRight() : null}
+        right="增加期次"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+        rightViewStyle={{
+          paddingLeft: moderateScale(8),
+          paddingRight: moderateScale(15),
+        }}
+      />
     ),
   };
 };

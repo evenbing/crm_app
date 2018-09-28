@@ -54,14 +54,16 @@ class Create extends React.Component {
         },
       },
     } = this;
-    const { pactId } = state.params || {};
+    const { pactId, issueId } = state.params || {};
     try {
       if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
+      if (!issueId) throw new Error(ReceivablePlanEnum.issueId);
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
       ReceivableModel.createReceivablePlanReq({
         pactId,
+        issueId,
         receivablePrice,
         receivableDate,
         ownerId,

@@ -10,7 +10,7 @@ import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
-import { ReceivableRecordEnum } from '../../../constants/form';
+import { ReceivablePlanEnum, ReceivableRecordEnum } from '../../../constants/form';
 import { PayType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
@@ -63,9 +63,10 @@ class Create extends React.Component {
         },
       },
     } = this;
-    const { pactId, planId } = state.params || {};
+    const { pactId, issueId, planId } = state.params || {};
     try {
       if (!pactId) throw new Error(ReceivableRecordEnum.pactId);
+      if (!issueId) throw new Error(ReceivablePlanEnum.issueId);
       if (!planId) throw new Error(ReceivableRecordEnum.planId);
       if (!receivablePrice) throw new Error(ReceivableRecordEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivableRecordEnum.receivableDate);
@@ -73,6 +74,7 @@ class Create extends React.Component {
       if (!ownerId) throw new Error(ReceivableRecordEnum.ownerId);
       ReceivableModel.createReceivableRecordReq({
         pactId,
+        issueId,
         planId,
         receivablePrice,
         receivableDate,

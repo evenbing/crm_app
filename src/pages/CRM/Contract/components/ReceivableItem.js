@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 import { moderateScale } from '../../../../utils/scale';
-import { theme } from '../../../../constants';
+import { routers, theme } from '../../../../constants';
 import { DataTitleTypes } from '../../../../constants/enum';
 
 // static source
 import rightArrow from '../../../../img/home/ico_right_arrow.png';
 
 // components
-import { HorizontalDivider } from '../../../../components/Styles/Divider';
+import TouchableView from '../../../../components/TouchableView';
 
 const ContainerView = styled.View`
   margin-top: ${moderateScale(10)};
@@ -20,6 +20,11 @@ const ListHeaderView = styled.View`
   height: ${moderateScale(44)}px;
   padding: 0px ${moderateScale(15)}px;
   background-color: ${theme.whiteColor};
+  border-bottom-width: 1px;
+  border-bottom-color: ${theme.borderColor};
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ListHeaderText = styled.Text.attrs({
@@ -29,6 +34,16 @@ const ListHeaderText = styled.Text.attrs({
   font-size: ${moderateScale(16)}px;
   height: ${moderateScale(43)}px;
   line-height: ${moderateScale(43)}px;
+`;
+
+const ListHeaderRightView = styled.View`
+  flex-direction: row;
+`;
+
+const ListHeaderRightItemView = styled(TouchableView)``;
+
+const ListHeaderRightItemText = styled.Text`
+  color: ${theme.primaryColor};
 `;
 
 const ListSectionView = styled.View`
@@ -61,7 +76,7 @@ const AmountText = styled.Text`
   color: ${theme.textPlaceholderColor};
 `;
 
-const RightView = styled.View`
+const RightStatusView = styled.View`
   flex-direction: row;
   align-items: center;
 `;
@@ -98,24 +113,56 @@ class ReceivableItem extends React.PureComponent {
                 : null
             }
           </TimeText>
-          <AmountText> {value.receivablePrice} </AmountText>
+          <AmountText> ¥{value.receivablePrice || 0} </AmountText>
         </MiddleView>
-        <RightView>
+        <RightStatusView>
           <StatusText> {receivableStatus} </StatusText>
           <NavIcon />
-        </RightView>
+        </RightStatusView>
       </ListSectionView>
     ));
   };
   render() {
     const {
       index,
+      onPressCreate,
+      item: {
+        hasPlan,
+        receivablePlan,
+        id,
+      },
     } = this.props;
     return (
       <ContainerView>
         <ListHeaderView>
           <ListHeaderText> 第{DataTitleTypes[index]}期 </ListHeaderText>
-          <HorizontalDivider height={1} />
+          <ListHeaderRightView>
+            {
+              hasPlan ? null : (
+                <ListHeaderRightItemView
+                  onPress={() => onPressCreate(routers.receivablePlanCreate, {
+                    index,
+                    issueId: id,
+                  })}
+                >
+                  <ListHeaderRightItemText>增加计划</ListHeaderRightItemText>
+                </ListHeaderRightItemView>
+              )
+            }
+            {
+              hasPlan ? (
+                <ListHeaderRightItemView
+                  onPress={() => onPressCreate(routers.receivableRecordCreate, {
+                    index,
+                    issueId: id,
+                    planId: receivablePlan.id,
+                  })}
+                >
+                  <ListHeaderRightItemText>增加记录</ListHeaderRightItemText>
+                </ListHeaderRightItemView>
+              ) : null
+            }
+          </ListHeaderRightView>
         </ListHeaderView>
         {this.renderItem()}
       </ContainerView>
@@ -127,12 +174,14 @@ ReceivableItem.defaultProps = {
   item: {},
   index: 0,
   isLast: false,
+  onPressCreate: () => null,
 };
 
 ReceivableItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   index: PropTypes.number,
   isLast: PropTypes.bool,
+  onPressCreate: PropTypes.func,
 };
 
 export default ReceivableItem;
