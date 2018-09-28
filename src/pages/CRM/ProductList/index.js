@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useStrict } from 'mobx/';
+import { useStrict, toJS } from 'mobx/';
 import { observer } from 'mobx-react/native';
-import { routers } from '../../../constants';
+// import { routers } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -20,9 +20,9 @@ class ProductList extends React.Component {
     this.getData();
   }
 
-  onPressItem = ({ item }) => {
-    this.props.navigation.navigate(routers.modifyProductPrice, { item });
-  };
+  // onPressItem = ({ item }) => {
+  //   this.props.navigation.navigate(routers.modifyProductPrice, { item });
+  // };
 
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = ProductListModel.productList;
@@ -42,7 +42,7 @@ class ProductList extends React.Component {
     return (
       <ProductItemList
         onPressSelectIndex={onPressSelectIndex}
-        onPressItem={this.onPressItem}
+        // onPressItem={this.onPressItem}
         {...itemProps}
       />
     );
@@ -53,6 +53,7 @@ class ProductList extends React.Component {
       productList: { list, refreshing, loadingMore },
       topList,
     } = ProductListModel;
+    console.log(toJS(topList));
     const flatProps = {
       data: topList,
       renderItem: this.renderItem,

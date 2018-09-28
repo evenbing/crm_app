@@ -2,14 +2,15 @@
  * @component Create.js
  * @description 回款详情页面
  * @time 2018/9/2
- * @author --
+ * @author JUSTIN XU
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { moderateScale } from '../../../utils/scale';
 import { theme, routers } from '../../../constants';
+import { DataTitleTypes } from '../../../constants/enum';
+import { moderateScale } from '../../../utils/scale';
 
 // components
 import { ContainerView } from '../../../components/Styles/Layout';
@@ -42,7 +43,11 @@ class Receivable extends Component {
       },
     } = this;
     const { id = TEST_ID } = state.params || {};
-    navigate(path, { pactId: id });
+    const { total } = ReceivableModel.receivableIssueList;
+    navigate(path, {
+      pactId: id,
+      period: DataTitleTypes[total],
+    });
   };
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = ReceivableModel.receivableIssueList;
@@ -64,15 +69,16 @@ class Receivable extends Component {
         refreshing,
         loadingMore,
       },
+      getIssueList,
     } = ReceivableModel;
     const receivableTitleProps = {
       pactPrice,
       totalPrice,
     };
     const flatProps = {
-      data: list,
+      data: getIssueList,
       ListHeaderComponent: <ReceivableTitle {...receivableTitleProps} />,
-      renderItemElem: <ReceivableItem totalPrice={totalPrice} />,
+      renderItemElem: <ReceivableItem />,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,

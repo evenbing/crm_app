@@ -10,9 +10,10 @@ import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import { routers, theme } from '../../../constants';
 import { moderateScale } from '../../../utils/scale';
-import { ReceivablePlanEnum } from '../../../constants/form';
+import { ReceivableRecordEnum } from '../../../constants/form';
+import { PayType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
-import { formatDate } from '../../../utils/base';
+import { formatDateByMoment } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -22,21 +23,24 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
+import { FormActionSheet } from '../../../components/Modal';
 
 import ReceivableModel from '../../../logicStores/receivable';
 
 const LeftViewWidth = moderateScale(110);
-const formatDateType = 'yyyy-MM-dd hh:mm';
 
 @observer
 class Create extends React.Component {
   state = {
-    pactId: null,
-    issueId: null,
     receivablePrice: null,
     receivableDate: null,
     ownerId: null,
+    ownerName: null,
     comment: null,
+    typeMap: {
+      key: null,
+      value: null,
+    },
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -45,44 +49,66 @@ class Create extends React.Component {
   }
   onPressRight = () => {
     const {
-      pactId,
-      issueId,
-      receivablePrice,
-      receivableDate,
-      ownerId,
-      comment,
-    } = this.state;
-    try {
-      if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
-      if (!issueId) throw new Error(ReceivablePlanEnum.issue);
-      if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
-      if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
-      if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
-      ReceivableModel.createReceivableRecordReq({
-        pactId,
-        issueId,
+      state: {
         receivablePrice,
         receivableDate,
         ownerId,
         comment,
+        typeMap: { key: payType },
+      },
+      props: {
+        navigation: {
+          state,
+          goBack,
+        },
+      },
+    } = this;
+    const { pactId, planId } = state.params || {};
+    try {
+      if (!pactId) throw new Error(ReceivableRecordEnum.pactId);
+      if (!planId) throw new Error(ReceivableRecordEnum.planId);
+      if (!receivablePrice) throw new Error(ReceivableRecordEnum.receivablePrice);
+      if (!receivableDate) throw new Error(ReceivableRecordEnum.receivableDate);
+      if (!payType) throw new Error(ReceivableRecordEnum.payType);
+      if (!ownerId) throw new Error(ReceivableRecordEnum.ownerId);
+      ReceivableModel.createReceivableRecordReq({
+        pactId,
+        planId,
+        receivablePrice,
+        receivableDate,
+        payType,
+        ownerId,
+        comment,
+      }, () => {
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   };
+  onPressActionSheetItem = ({ key, value }) => {
+    this.setState({
+      typeMap: { key, value },
+    });
+  };
   render() {
     const {
       state: {
-        issueId,
         receivablePrice,
         ownerId,
+        ownerName,
         comment,
         receivableDate,
+        typeMap,
       },
       props: {
-        navigation: { navigate },
+        navigation: {
+          navigate,
+          state,
+        },
       },
     } = this;
+    const { period } = state.params || {};
     return (
       <ContainerView
         bottomPadding
@@ -94,17 +120,20 @@ class Create extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...theme.getLeftStyle({
-              placeholder: '请输入期次',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText
+                active={period}
+              >
+                {period}
+              </CenterText>
+            }
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="实际回款金额"
             {...theme.getLeftStyle({
-              placeholder: '请输入金额',
-              value: issueId,
+              placeholder: ReceivableRecordEnum.receivablePrice,
+              value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),
             }, 110)}
             right={
@@ -116,7 +145,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  receivableDate: `${formatDate(date, formatDateType)}`,
+                  receivableDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -125,25 +154,47 @@ class Create extends React.Component {
               needPress={false}
               center={
                 <CenterText active={receivableDate}>
-                  { receivableDate || ReceivablePlanEnum.receivableDate }
+                  { receivableDate || ReceivableRecordEnum.receivableDate }
                 </CenterText>
               }
               {...theme.navItemStyle}
               leftWidth={LeftViewWidth}
             />
           </DateTimePicker>
-          <NavInputItem
-            leftText="实付款方式"
-            center={
-              <CenterText>请选择方式</CenterText>
-            }
-            {...theme.navItemStyle}
-            leftWidth={LeftViewWidth}
-          />
+          <FormActionSheet
+            onConfirm={this.onPressActionSheetItem}
+            typeEnum={PayType}
+          >
+            <NavInputItem
+              leftText="实付款方式"
+              needPress={false}
+              center={
+                <CenterText active={typeMap.value}>
+                  { typeMap.value || ReceivableRecordEnum.payType }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+              leftWidth={LeftViewWidth}
+            />
+          </FormActionSheet>
           <NavInputItem
             leftText="负责人"
+            onPress={() => navigate(routers.selectEmployee, {
+              callback: (obj) => {
+                if (!Object.keys(obj).length) return;
+                this.setState({
+                  ownerId: obj.id,
+                  ownerName: obj.userName,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择负责人</CenterText>
+              <CenterText active={ownerId && ownerName}>
+                {
+                  (ownerId && ownerName) ? ownerName :
+                    ReceivableRecordEnum.ownerId
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
           />
@@ -159,7 +210,7 @@ class Create extends React.Component {
               bordered
               value={comment}
               onChangeText={comment => this.setState({ comment })}
-              placeholder={ReceivablePlanEnum.comment}
+              placeholder={ReceivableRecordEnum.comment}
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>

@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import { routers, theme } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
 import { ReceivablePlanEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
-import { formatDate } from '../../../utils/base';
+import { formatDateByMoment } from '../../../utils/base';
+import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -25,14 +25,9 @@ import DateTimePicker from '../../../components/DateTimePicker';
 
 import ReceivableModel from '../../../logicStores/receivable';
 
-const formatDateType = 'yyyy-MM-dd hh:mm';
-
 @observer
 class Create extends React.Component {
   state = {
-    pactId: null,
-    issueId: null,
-    issueName: null,
     receivablePrice: null,
     receivableDate: null,
     ownerId: null,
@@ -46,26 +41,33 @@ class Create extends React.Component {
   }
   onPressRight = () => {
     const {
-      pactId,
-      issueId,
-      receivablePrice,
-      receivableDate,
-      ownerId,
-      comment,
-    } = this.state;
+      state: {
+        receivablePrice,
+        receivableDate,
+        ownerId,
+        comment,
+      },
+      props: {
+        navigation: {
+          state,
+          goBack,
+        },
+      },
+    } = this;
+    const { pactId } = state.params || {};
     try {
       if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
-      if (!issueId) throw new Error(ReceivablePlanEnum.issue);
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
       ReceivableModel.createReceivablePlanReq({
         pactId,
-        issueId,
         receivablePrice,
         receivableDate,
         ownerId,
         comment,
+      }, () => {
+        goBack();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -74,8 +76,6 @@ class Create extends React.Component {
   render() {
     const {
       state: {
-        issueId,
-        issueName,
         receivablePrice,
         ownerId,
         ownerName,
@@ -89,7 +89,7 @@ class Create extends React.Component {
         },
       },
     } = this;
-    const { pactId } = state.params || {};
+    const { period } = state.params || {};
     return (
       <ContainerView
         bottomPadding
@@ -101,23 +101,11 @@ class Create extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            onPress={() => navigate(routers.selectPeriod, {
-              pactId,
-              callback: (obj) => {
-                if (!Object.keys(obj).length) return;
-                debugger;
-                this.setState({
-                  ownerId: obj.id,
-                  ownerName: obj.userName,
-                });
-              },
-            })}
             center={
-              <CenterText active={issueId}>
-                {
-                  (issueId && issueName) ? issueName :
-                    ReceivablePlanEnum.issue
-                }
+              <CenterText
+                active={period}
+              >
+                {period}
               </CenterText>
             }
             {...theme.navItemStyle}
@@ -138,7 +126,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  receivableDate: `${formatDate(date, formatDateType)}`,
+                  receivableDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -159,7 +147,6 @@ class Create extends React.Component {
             onPress={() => navigate(routers.selectEmployee, {
               callback: (obj) => {
                 if (!Object.keys(obj).length) return;
-                debugger;
                 this.setState({
                   ownerId: obj.id,
                   ownerName: obj.userName,

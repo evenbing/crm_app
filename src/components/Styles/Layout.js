@@ -20,3 +20,8 @@ export const ContainerScrollView = styled.ScrollView`
   background-color: ${props => props.backgroundColor || theme.pageBackColor};
   padding-bottom: ${props => props.bottomPadding ? getFooterBottom() : 0};
 `;
+
+export const DefaultHeaderView = styled.View`
+  flex: 1;
+  flex-direction: row;
+`;

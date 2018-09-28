@@ -82,14 +82,14 @@ class ReceivableItem extends React.PureComponent {
   renderItem = () => {
     const {
       item: {
-        receivableDetailList = [],
+        receivableList = [],
+        receivableStatus,
       },
-      totalPrice,
     } = this.props;
-    if (!receivableDetailList.length) return null;
-    return receivableDetailList.map(value => (
-      <ListSectionView key={value.id}>
-        <TypeText>计划</TypeText>
+    if (!receivableList.length) return null;
+    return receivableList.map(value => (
+      <ListSectionView key={`${value.id}.${value.typeName}`}>
+        <TypeText>{value.typeName}</TypeText>
         <MiddleView>
           <TimeText>
             {
@@ -101,7 +101,7 @@ class ReceivableItem extends React.PureComponent {
           <AmountText> {value.receivablePrice} </AmountText>
         </MiddleView>
         <RightView>
-          <StatusText> {totalPrice <= value.receivablePrice ? '已完成' : '未完成'} </StatusText>
+          <StatusText> {receivableStatus} </StatusText>
           <NavIcon />
         </RightView>
       </ListSectionView>
@@ -115,7 +115,7 @@ class ReceivableItem extends React.PureComponent {
       <ContainerView>
         <ListHeaderView>
           <ListHeaderText> 第{DataTitleTypes[index]}期 </ListHeaderText>
-          <HorizontalDivider height={moderateScale(1)} />
+          <HorizontalDivider height={1} />
         </ListHeaderView>
         {this.renderItem()}
       </ContainerView>
@@ -127,14 +127,12 @@ ReceivableItem.defaultProps = {
   item: {},
   index: 0,
   isLast: false,
-  totalPrice: 0,
 };
 
 ReceivableItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   index: PropTypes.number,
   isLast: PropTypes.bool,
-  totalPrice: PropTypes.number,
 };
 
 export default ReceivableItem;

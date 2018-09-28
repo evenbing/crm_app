@@ -4,10 +4,11 @@
  * @time 2018/9/9
  * @author JUSTIN XU
  */
-import { action, observable, runInAction, useStrict } from 'mobx/';
+import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getReceivableIssueList,
+  createReceivableIssue,
   createReceivablePlan,
   createReceivableRecord,
 } from '../service/receivable';
@@ -23,8 +24,41 @@ class ReceivablePlanStore {
     ...initFlatList,
     pactPrice: 0,
     totalPrice: 0,
-    receivablePlan: {},
   };
+
+  @computed get getIssueList() {
+    const { list = [] } = this.receivableIssueList;
+    if (!list.length) return list;
+    return list.map((value) => {
+      const {
+        receivableDetailList = [],
+        receivablePlan = {},
+      } = value;
+      const receivableList = [];
+      let receivablePrice = 0; // 计划总金额
+      let recordTotal = 0; // 记录还款总金额
+      if (Object.keys(receivablePlan).length) {
+        receivableList.push({
+          typeName: '计划',
+          ...receivablePlan,
+        });
+        value.hasPlan = true; // 包含计划
+        receivablePrice = (receivablePlan.receivablePrice || 0);
+      }
+      if (receivableDetailList.length) {
+        receivableDetailList.forEach((item) => {
+          receivableList.push({
+            typeName: '记录',
+            ...item,
+          });
+          recordTotal += (item.receivablePrice || 0);
+        });
+      }
+      value.receivableList = receivableList;
+      value.receivableStatus = (receivablePrice !== 0 && receivablePrice <= recordTotal) ? '已完成' : '未完成';
+      return value;
+    });
+  }
 
   // 列表
   @action async getReceivableIssueReq({ pageNumber = 1, ...restProps } = {}) {
@@ -65,34 +99,41 @@ class ReceivablePlanStore {
   }
 
   // 新增回款计划
-  @action async createReceivablePlanReq(options) {
+  @action async createReceivablePlanReq({ pactId, ...restProps }, callback) {
     try {
       const {
-        result = {},
-        errors = [],
-      } = await createReceivablePlan(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
+        id: issueId,
+        errors: issueError = [],
+      } = await createReceivableIssue({ pactId });
+      if (issueError.length) throw new Error(issueError[0].message);
+      const {
+        errors: planError = [],
+      } = await createReceivablePlan({ pactId, issueId, ...restProps });
+      if (planError.length) throw new Error(planError[0].message);
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getReceivableIssueReq({ pactId });
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   }
   // 新增回款记录
-  @action async createReceivableRecordReq(options) {
+  @action async createReceivableRecordReq({ pactId, ...restProps }, callback) {
     try {
       const {
-        result = {},
-        errors = [],
-      } = await createReceivableRecord(options);
-      if (errors.length) throw new Error(errors[0].message);
+        id: issueId,
+        errors: issueError = [],
+      } = await createReceivableIssue({ pactId });
+      if (issueError.length) throw new Error(issueError[0].message);
+      const {
+        errors: recordError = [],
+      } = await createReceivableRecord({ pactId, issueId, ...restProps });
+      if (recordError.length) throw new Error(recordError[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getReceivableIssueReq({ pactId });
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

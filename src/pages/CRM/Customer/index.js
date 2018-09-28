@@ -17,7 +17,7 @@ import * as drawerUtils from '../../../utils/drawer';
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
@@ -290,7 +290,7 @@ Customer.navigationOptions = ({ navigation }) => {
       />
     ),
     headerRight: (
-      bool ? null : (
+      bool ? <DefaultHeaderView /> : (
         <RightView
           onPress={onPressRight || null}
           right="新增"

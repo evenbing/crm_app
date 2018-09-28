@@ -26,6 +26,23 @@ export function getReceivableIssueList({
   });
 }
 
+/** 创建回款期次
+ * @add by zhao
+ * @params options
+ * {
+ *   pactId 合同ID must
+ * }
+ * @return Promise<Object>
+ */
+export function createReceivableIssue({
+  pactId,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.receivableIssue.create',
+    pactId,
+  });
+}
+
 /** 创建回款计划
  * @params options
  * {
