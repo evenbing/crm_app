@@ -71,7 +71,7 @@ class DynamicStore {
   }
 
   // 列表
-  @action async getDynamicListReq({ pageNumber = 1, moduleType, ...restProps } = {}) {
+  @action async getDynamicListReq({ pageNumber = 1, moduleType, restProps } = {}) {
     try {
       if (pageNumber === 1) {
         this.dynamicList.refreshing = true;

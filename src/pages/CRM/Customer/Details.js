@@ -21,7 +21,6 @@ import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
-
 import CustomerModel from '../../../logicStores/customer';
 import DynamicModel from '../../../logicStores/dynamic';
 import { ModuleType } from '../../../constants/enum';
@@ -72,7 +71,13 @@ class Details extends React.Component {
   };
 
   onEndReached = () => {
-    const { total = 0, [dynamicPactList]: list = [], pageNumber = 1, loadingMore } = DynamicModel.dynamicList;
+    const { 
+      total = 0, 
+      [dynamicPactList]: list = [], 
+      pageNumber = 1, 
+      loadingMore, 
+    } = DynamicModel.dynamicList;
+    console.log({ list });
     if (list.length < total && loadingMore === false) {
       this.getDynamicList(pageNumber + 1);
     }
@@ -91,7 +96,7 @@ class Details extends React.Component {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
-      moduleType: ModuleType.pact,
+      moduleType: ModuleType.customer,
       moduleId: item.id,
     });
   };
@@ -182,7 +187,6 @@ class Details extends React.Component {
       refreshing,
       map = null,
     } } = CustomerModel;
-
     const list = map ? [map] : [];
     const flatProps = {
       keyExtractor: (item, index) => index,

@@ -8,6 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+
 import { theme, routers } from '../../../constants';
 // import { moderateScale } from '../../../utils/scale';
 
@@ -21,7 +23,10 @@ import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-import MarkActivityDetailsItem from './components/MarkActivityDetailsItem';
+import ActivityDetailsItem from './components/ActivityDetailsItem';
+import { ModuleType } from '../../../constants/enum';
+import MarkActivityModel from '../../../logicStores/markActivity';
+import DynamicModel from '../../../logicStores/dynamic';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -46,19 +51,53 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
+const dynamicPactList = `${ModuleType.activity}List`;
+
+@observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
   };
+
+  componentDidMount() {
+    this.getDynamicList();
+    this.getMarkActivityDetail();
+  }
+
+  componentWillUnmount() {
+    DynamicModel.clearModuleType();
+  }
+
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-  onRefresh = () => {
-    //
-  };
+
   onEndReached = () => {
-    //
+    const {
+      total = 0,
+      [dynamicPactList]: list = [],
+      pageNumber = 1,
+      loadingMore,
+    } = DynamicModel.dynamicList;
+    if (list.length < total && loadingMore === false) {
+      this.getDynamicList(pageNumber + 1);
+    }
   };
+
+  getDynamicList = (pageNumber = 1) => {
+    const { item } = this.props.navigation.state.params || {};
+    DynamicModel.getDynamicListReq({
+      pageNumber,
+      moduleType: ModuleType.activity,
+      moduleId: item.key,
+    });
+  };
+
+  getMarkActivityDetail = () => {
+    const { item: { key } } = this.props.navigation.state.params || {};
+    MarkActivityModel.getMarkActivityDetailReq({ id: key });
+  };
+
   renderTotalItem = () => {
     const list = [
       { title: '日程', text: '12' },
@@ -99,27 +138,22 @@ class Details extends React.Component {
   renderDynamicItem = ({ item, index }) => (
     <DynamicList isFrist={index === 0} data={item} />
   );
+
   renderDynamicView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 0,
-        list: [{ url: true }, {}, {}],
-      },
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      dynamicList: {
+        [dynamicPactList]: list = [],
+        refreshing,
+        loadingMore,
+      } = {},
+      getDynamic,
+    } = DynamicModel;
     const flatProps = {
-      data: list,
+      data: getDynamic,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDynamicItem,
-      onRefresh: this.onRefresh,
+      renderItemElem: <DynamicList />,
+      onRefresh: this.getDynamicList,
+      keyExtractor: item => item.key,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -132,30 +166,30 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-  renderDetailsItem = props => (
-    <MarkActivityDetailsItem {...props} />
+
+  renderDetailsItem = ({ item }) => (
+    <ActivityDetailsItem {...item} />
   );
   renderDetailsView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
-      },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    const {
+      markActivityDetail: {
+        refreshing,
+        map,
+      }, 
+    } = MarkActivityModel;
+    const list = map ? [map] : [];
     const flatProps = {
       keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
-      onRefresh: this.onRefresh,
+      onRefresh: this.getMarkActivityDetail,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
       refreshing,
       noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <FlatListTable {...flatProps} />

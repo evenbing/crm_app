@@ -16,7 +16,7 @@ import {
   changeOwnerUser,
 } from '../service/salesChance';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
 
@@ -26,7 +26,7 @@ class SalesChanceStore {
   @observable salesChanceList = initFlatList;
 
   // 客户详情
-  @observable salesChanceDetail = {};
+  @observable salesChanceDetail = initDetailMap;
 
   // 列表
   @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -67,12 +67,12 @@ class SalesChanceStore {
     try {
       if (!id) throw new Error('id 不为空');
       const {
-        result = {},
+        opportunity = {},
         errors = [],
       } = await getSalesChanceDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.salesChanceDetail = { ...result.opportunity };
+        this.salesChanceDetail.map = opportunity;
       });
     } catch (e) {
       Toast.showError(e.message);

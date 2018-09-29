@@ -160,7 +160,9 @@ class SalesClues extends React.Component {
         body={
           <ListItem
             {...props}
-            onPress={() => navigate(routers.markActivityDetails)}
+            onPress={() => navigate(routers.markActivityDetails, {
+              item: props.item,
+            })}
           />
         }
         right={

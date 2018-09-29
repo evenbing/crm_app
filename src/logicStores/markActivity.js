@@ -16,18 +16,15 @@ import {
   batchCreateFollow,
 } from '../service/markActivity';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
-
+import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
-
 @autobind
 class MarkActivityStore {
   // 列表
   @observable markActivityList = initFlatList;
-
   // 详情
-  @observable markActivityDetail = {}
+  @observable markActivityDetail = initDetailMap;
 
   // 列表
   @action async getMarkActivityListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -68,12 +65,12 @@ class MarkActivityStore {
     try {
       if (!id) throw new Error('id 不为空');
       const {
-        result = {},
+        activity = {},
         errors = [],
       } = await getMarkActivityDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.markActivityDetail = { ...result };
+        this.markActivityDetail.map = activity;
       });
     } catch (e) {
       Toast.showError(e.message);

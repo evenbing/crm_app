@@ -165,8 +165,6 @@ class SalesChance extends React.Component {
     );
   };
   renderItem = (itemProps) => {
-    console.log(itemProps);
-
     const { index } = itemProps;
     const {
       navigation: { navigate },
@@ -194,7 +192,7 @@ class SalesChance extends React.Component {
             }
             onPress={() => navigate(
               routers.salesChanceDetails,
-              { id: itemProps.item.key },
+              { item: itemProps.item },
             )}
           />
         }
