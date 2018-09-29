@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
-import styled from 'styled-components';
 
-import Toast from '../../utils/toast';
-import { moderateScale } from '../../utils/scale';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import ListItem from './components/ListItem';
 import { get2Date } from '../../utils/date';
 import TaskScheduleStore from '../../logicStores/taskSchedule';
 import FlatListTable from '../../components/FlatListTable';
 import { ContainerView } from '../../components/Styles/Layout';
+import { theme } from '../../constants';
 
 useStrict(true);
 
@@ -39,9 +37,9 @@ class UpcomingScheduleList extends Component {
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      pageNumber,
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq(pageNumber, {
       type: 'SCHEDULE',
+      category: 'UNREAD',
     });
   };
 
@@ -105,6 +103,7 @@ class UpcomingScheduleList extends Component {
       <ContainerView bottomPadding>
         <CommStatusBar />
         <FlatListTable
+          tableBodyStyle={{ paddingTop: theme.moderateScale(10), paddingLeft: theme.moderateScale(15), paddingRight: theme.moderateScale(15) }}
           data={data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}

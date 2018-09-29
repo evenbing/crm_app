@@ -15,7 +15,7 @@ const Divder = styled.View`
 const Container = styled.View``;
 
 const Up = styled.TouchableOpacity`
-  background-color: ${theme.whiteColor};;
+  background-color: ${theme.whiteColor};
   padding: ${moderateScale(15)}px 0px;
   flex-direction: row;
   align-items: center;
@@ -120,7 +120,10 @@ class ListItem extends Component {
   }
 
   onToggleOperateView = () => {
-    this.setState({ showOperateView: !this.state.showOperateView });
+    const { operateList } = this.props;
+    if (operateList && operateList.length > 0) {
+      this.setState({ showOperateView: !this.state.showOperateView });
+    }
   }
 
   render() {
@@ -153,7 +156,7 @@ class ListItem extends Component {
         <OperateView showOperateView={showOperateView}>
           <HorizontalDivider height={moderateScale(1)} />
           <OperateItemView>
-            {operateList.map((item) => {
+            {operateList && operateList.map((item) => {
               const {
                 key,
                 text,

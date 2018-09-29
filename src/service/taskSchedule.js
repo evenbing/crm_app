@@ -171,6 +171,7 @@ export function detail({
  * moduleId 业务ID
  * startDateId 任务日程的开始日期ID yyyyMMdd
  * endDateId 任务日程的结束日期ID  yyyyMMdd
+ * 参数为category：ALL-全部，READ-已读，UNREAD-未读，此处传参UNREAD
  * }
  * @return Promise<Object>
  */
@@ -185,7 +186,10 @@ export function find({
   moduleId,
   startDateId,
   endDateId,
+  category,
 } = {}) {
+  console.log({ category });
+  
   return post({
     method: 'api.customerrelations.taskSchedule.find',
     pageNumber,
@@ -198,5 +202,6 @@ export function find({
     moduleId,
     startDateId,
     endDateId,
+    category,
   });
 }

@@ -44,7 +44,7 @@ class TaskScheduleStore {
   /**
    * 查询任务或日程
    */
-  @action async getTaskScheduleRelatedToMeReq(pageNumber = 1, ...restProps) {
+  @action async getTaskScheduleRelatedToMeReq(pageNumber = 1, restProps) {
     try {
       if (pageNumber === 1) {
         this.taskScheduleList.refreshing = true;
