@@ -58,7 +58,6 @@ class ProductListStore {
       } = await getProductClazzList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       const topList = getArrayByPid(result);
-      debugger;
       runInAction(() => {
         this.productList.total = totalCount;
         this.productList.pageNumber = pageNumber;

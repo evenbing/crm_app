@@ -96,6 +96,7 @@ export const ContractEnum = {
   startDate: '请选择活动开始日期',
   endDate: '请选择活动结束日期',
   departmentName: '请选择所属部门',
+  ownerId: '请选择负责人',
   // more
   salesOpportunities: '请选择销售机会',
   type: '请选择合同类型',
