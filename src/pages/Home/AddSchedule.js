@@ -426,7 +426,7 @@ class AddSchedule extends Component {
 }
 
 AddSchedule.navigationOptions = ({ navigation }) => ({
-  title: '新增任务',
+  title: '新增日程',
   headerLeft: (
     <LeftBackIcon />
   ),
