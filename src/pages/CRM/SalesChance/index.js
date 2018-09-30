@@ -6,18 +6,18 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
+import { SalesChanceType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
@@ -165,9 +165,9 @@ class SalesChance extends React.Component {
     );
   };
   renderItem = (itemProps) => {
-    const { index } = itemProps;
+    const { index, item } = itemProps;
     const {
-      navigation: { navigate },
+      navigation: { navigate, state, goBack },
     } = this.props;
     return (
       <SwipeRow
@@ -190,10 +190,16 @@ class SalesChance extends React.Component {
             left={
               <LeftItem />
             }
-            onPress={() => navigate(
-              routers.salesChanceDetails,
-              { item: itemProps.item },
-            )}
+            onPress={() => {
+              // from select salesChance
+              if (state.params.type === SalesChanceType) {
+                state.params.callback(item);
+                goBack();
+                return;
+              }
+              // form nav page
+              navigate(routers.salesChanceDetails, { item });
+            }}
           />
         }
         right={
@@ -308,23 +314,29 @@ class SalesChance extends React.Component {
   }
 }
 
-SalesChance.navigationOptions = ({ navigation }) => ({
-  title: '销售机会',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={() => navigation.navigate(routers.createSalesChance)}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+SalesChance.navigationOptions = ({ navigation }) => {
+  const { onPressRight, type } = navigation.state.params || {};
+  const bool = type === SalesChanceType;
+  return {
+    title: bool ? '选择销售机会' : '销售机会',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      bool ? <DefaultHeaderView /> : (
+        <RightView
+          onPress={onPressRight || null}
+          right="新增"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+        />
+      )
+    ),
+  };
+};
 
 SalesChance.defaultProps = {};
 

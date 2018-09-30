@@ -10,7 +10,7 @@ import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { ContactsEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
-import { SelectType } from '../../../constants/enum';
+import { CustomerType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -112,7 +112,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="公司名称"
             onPress={() => navigate(routers.customer, {
-              type: SelectType,
+              type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({

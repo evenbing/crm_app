@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
-import { SelectType, PackType } from '../../../constants/enum';
+import { CustomerType, PackType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
 
@@ -150,7 +150,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="客户"
             onPress={() => navigate(routers.customer, {
-              type: SelectType,
+              type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({

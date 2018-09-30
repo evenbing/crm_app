@@ -10,7 +10,7 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import theme from '../../../constants/theme';
 import { ContactsEnum } from '../../../constants/form';
-import { SelectType, SexTypes } from '../../../constants/enum';
+import { CustomerType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
@@ -229,7 +229,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="公司名称"
             onPress={() => navigate(routers.customer, {
-              type: SelectType,
+              type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({

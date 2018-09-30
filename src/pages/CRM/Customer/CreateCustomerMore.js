@@ -10,7 +10,7 @@ import TouchableView from '../../../components/TouchableView';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import { CustomerEnum } from '../../../constants/form';
-import { CustomerLevelTypes, industryTypes, SelectType } from '../../../constants/enum';
+import { CustomerLevelTypes, industryTypes, CustomerType } from '../../../constants/enum';
 import { CenterText, RightText } from '../../../components/Styles/Form';
 import { createLocationId } from '../../../service/app';
 import CustomerModel from '../../../logicStores/customer';
@@ -234,7 +234,7 @@ class CreateCustomerMore extends Component {
         <NavInputItem
           leftText="上级客户"
           onPress={() => navigate(routers.customer, {
-            type: SelectType,
+            type: CustomerType,
             callback: (item) => {
               const {
                 key,

@@ -11,7 +11,7 @@ import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
-import { SelectType } from '../../../constants/enum';
+import { CustomerType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
@@ -168,7 +168,7 @@ class Customer extends React.Component {
             right="hidden"
             onPress={() => {
               // from select customer
-              if (state.params.type === SelectType) {
+              if (state.params.type === CustomerType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -281,7 +281,7 @@ class Customer extends React.Component {
 
 Customer.navigationOptions = ({ navigation }) => {
   const { onPressRight, type } = navigation.state.params || {};
-  const bool = type === SelectType;
+  const bool = type === CustomerType;
   return {
     title: bool ? '选择客户' : '客户',
     headerLeft: (

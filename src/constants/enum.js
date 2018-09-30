@@ -1,6 +1,7 @@
 
 // 客户页面类型
-export const SelectType = 'CUSTOMER/SELECT';
+export const CustomerType = 'CUSTOMER/SELECT';
+export const SalesChanceType = 'SALES_CHANCE/SELECT';
 
 // 模块类型枚举
 export const ModuleType = {

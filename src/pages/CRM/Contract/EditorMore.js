@@ -10,7 +10,7 @@ import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import { theme, routers } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
-import { SelectType, PackType } from '../../../constants/enum';
+import { CustomerType, SalesChanceType, PackType, PackStatus, PayType } from '../../../constants/enum';
 import { formatDateByMoment } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
@@ -27,7 +27,6 @@ import { FormActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
 
-
 @observer
 class EditorMore extends React.Component {
   state = {
@@ -35,12 +34,19 @@ class EditorMore extends React.Component {
     customerId: null,
     customerName: null,
     salesOpportunitiesId: null,
+    salesOpportunitiesName: null,
     typeMap: {
       key: null,
       value: null,
     },
-    status: null,
-    payType: null,
+    statusMap: {
+      key: null,
+      value: null,
+    },
+    payMap: {
+      key: null,
+      value: null,
+    },
     totalMoney: null,
     startDate: null,
     endDate: null,
@@ -69,8 +75,8 @@ class EditorMore extends React.Component {
         customerName,
         salesOpportunitiesId,
         typeMap: { key: type },
-        status,
-        payType,
+        statusMap: { key: status },
+        payMap: { key: payType },
         totalMoney,
         startDate,
         endDate,
@@ -142,11 +148,6 @@ class EditorMore extends React.Component {
       Toast.showError(e.message);
     }
   };
-  onPressActionSheetItem = ({ key, value }) => {
-    this.setState({
-      typeMap: { key, value },
-    });
-  };
   initState = () => {
     const {
       props: {
@@ -163,10 +164,11 @@ class EditorMore extends React.Component {
         name,
         customerId,
         customerName,
-        // salesOpportunitiesId,
+        salesOpportunitiesId,
+        salesOpportunitiesName,
         typeMap,
-        // status,
-        // payType,
+        statusMap,
+        payMap,
         totalMoney,
         startDate,
         endDate,
@@ -207,7 +209,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="客户"
             onPress={() => navigate(routers.customer, {
-              type: SelectType,
+              type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
@@ -228,13 +230,32 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="销售机会"
+            onPress={() => navigate(routers.salesChance, {
+              type: SalesChanceType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  salesOpportunitiesId: item.key,
+                  salesOpportunitiesName: item.title,
+                });
+              },
+            })}
             center={
-              <CenterText>{ContractEnum.salesOpportunities}</CenterText>
+              <CenterText active={salesOpportunitiesId && salesOpportunitiesName}>
+                {
+                  (salesOpportunitiesId && salesOpportunitiesName) ? salesOpportunitiesName :
+                    ContractEnum.salesOpportunities
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
           />
           <FormActionSheet
-            onConfirm={this.onPressActionSheetItem}
+            onConfirm={({ key, value }) => {
+              this.setState({
+                typeMap: { key, value },
+              });
+            }}
             typeEnum={PackType}
           >
             <NavInputItem
@@ -248,20 +269,44 @@ class EditorMore extends React.Component {
               {...theme.navItemStyle}
             />
           </FormActionSheet>
-          <NavInputItem
-            leftText="合同状态"
-            center={
-              <CenterText>{ContractEnum.status}</CenterText>
-            }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="付款方式"
-            center={
-              <CenterText>{ContractEnum.payType}</CenterText>
-            }
-            {...theme.navItemStyle}
-          />
+          <FormActionSheet
+            onConfirm={({ key, value }) => {
+              this.setState({
+                statusMap: { key, value },
+              });
+            }}
+            typeEnum={PackStatus}
+          >
+            <NavInputItem
+              leftText="合同状态"
+              needPress={false}
+              center={
+                <CenterText active={statusMap.value}>
+                  { statusMap.value || ContractEnum.status }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
+          <FormActionSheet
+            onConfirm={({ key, value }) => {
+              this.setState({
+                payMap: { key, value },
+              });
+            }}
+            typeEnum={PayType}
+          >
+            <NavInputItem
+              leftText="付款方式"
+              needPress={false}
+              center={
+                <CenterText active={payMap.value}>
+                  { payMap.value || ContractEnum.payType }
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <NavInputItem
             leftText="总金额"
             {...theme.getLeftStyle({
@@ -329,7 +374,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDateByMoment(date)}`,
+                  pactDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
