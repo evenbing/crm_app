@@ -13,16 +13,26 @@ import {
   updateContact,
   updateOwnerUser,
 } from '../service/contacts';
+import { find as getTaskScheduleList } from '../service/taskSchedule';
+import { TASK_TYPE, SCHEDULE_TYPE, ModuleType } from '../constants/enum';
+import { getSalesChanceList } from '../service/salesChance';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
+
+const initTotal = {
+  scheduleTotal: 0,
+  taskTotal: 0,
+  salesTotal: 0,
+};
 
 @autobind
 class ContactStore {
   // 列表
   @observable contactList = initFlatList;
   @observable contactDetails = initDetailMap;
+  @observable contactTotal = initTotal;
 
   // 列表
   @action async getContactListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -77,6 +87,50 @@ class ContactStore {
     } finally {
       runInAction(() => {
         this.contactDetails.refreshing = false;
+      });
+    }
+  }
+
+  // 总计
+  @action async getContactTotalReq({ id, pageSize = 1 }) {
+    try {
+      const {
+        totalCount: taskTotal = 0,
+        errors: taskErrors = [],
+      } = await getTaskScheduleList({
+        type: TASK_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.contact,
+        pageSize,
+      });
+      if (taskErrors.length) throw new Error(taskErrors[0].message);
+      const {
+        totalCount: scheduleTotal = 0,
+        errors: scheduleErrors = [],
+      } = await getTaskScheduleList({
+        type: SCHEDULE_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.contact,
+        pageSize,
+      });
+      if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
+      const {
+        totalCount: salesTotal = 0,
+        errors: salesErrors = [],
+      // } = await getSalesChanceList({ customerId: id, pageSize });
+      } = await getSalesChanceList({ pageSize });
+      if (salesErrors.length) throw new Error(salesErrors[0].message);
+      runInAction(() => {
+        this.contactTotal = {
+          scheduleTotal,
+          taskTotal,
+          salesTotal,
+        };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+      runInAction(() => {
+        this.contactTotal = initTotal;
       });
     }
   }

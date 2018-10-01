@@ -126,7 +126,7 @@ CityPicker.propTypes = {
 };
 
 CityPicker.navigationOptions = ({ navigation }) => ({
-  title: '新增日程',
+  title: '选择地区',
   headerLeft: (
     <LeftBackIcon />
   ),

@@ -7,7 +7,6 @@
 import moment from 'moment';
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
-import uuidv1 from 'uuid/v1';
 import {
   getDynamicList,
   createDynamic,
@@ -34,7 +33,7 @@ class DynamicStore {
     if (!list.length) return [];
     const resultList = list.sort((a, b) => (Number(a.creationTime) < Number(b.creationTime)));
     const hashMap = new Map();
-    return resultList.reduce((item, next, currentIndex) => {
+    return resultList.reduce((item, next) => {
       const nextDate = moment(Number(next.creationTime));
       const nextFormatDate = nextDate.format(FormatType);
       const prevIndex = hashMap.get(nextFormatDate);
@@ -45,7 +44,7 @@ class DynamicStore {
         let nextMonth;
         let nextDay;
         const nowFormatDate = moment().format(FormatType);
-        hashMap.set(nextFormatDate, currentIndex);
+        hashMap.set(nextFormatDate, item.length);
         if (nextFormatDate === nowFormatDate) {
           type = 1;
         } else {
@@ -53,9 +52,7 @@ class DynamicStore {
           nextDay = nextDate.date();
           type = 0;
         }
-        const key = uuidv1();
         item.push({
-          key,
           type,
           nextMonth,
           nextDay,
@@ -71,8 +68,9 @@ class DynamicStore {
   }
 
   // 列表
-  @action async getDynamicListReq({ pageNumber = 1, moduleType, restProps } = {}) {
+  @action async getDynamicListReq({ pageNumber = 1, moduleType, ...restProps } = {}) {
     try {
+      this.moduleType = moduleType;
       if (pageNumber === 1) {
         this.dynamicList.refreshing = true;
       } else {
@@ -90,6 +88,7 @@ class DynamicStore {
             ...this.dynamicList,
             [`${moduleType}List`]: result,
           };
+          // this.dynamicList[`${moduleType}List`] = result;
         } else {
           const list = this.dynamicList[`${moduleType}List`].concat(result);
           this.dynamicList = {
@@ -98,7 +97,6 @@ class DynamicStore {
           };
           // this.dynamicList[`${moduleType}List`] = this.dynamicList[`${moduleType}List`].concat(result);
         }
-        this.moduleType = moduleType;
       });
     } catch (e) {
       Toast.showError(e.message);

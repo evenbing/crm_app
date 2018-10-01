@@ -3,6 +3,10 @@
 export const CustomerType = 'CUSTOMER/SELECT';
 export const SalesChanceType = 'SALES_CHANCE/SELECT';
 
+// 任务日程
+export const TASK_TYPE = 'TASK';
+export const SCHEDULE_TYPE = 'SCHEDULE';
+
 // 模块类型枚举
 export const ModuleType = {
   // 产品模块

@@ -188,8 +188,6 @@ export function find({
   endDateId,
   category,
 } = {}) {
-  console.log({ category });
-  
   return post({
     method: 'api.customerrelations.taskSchedule.find',
     pageNumber,

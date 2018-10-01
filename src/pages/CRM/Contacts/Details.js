@@ -63,6 +63,7 @@ class Details extends React.Component {
   componentDidMount() {
     this.getDynamicList();
     this.getContactDetail();
+    this.getContactTotal();
   }
   componentWillUnmount() {
     DynamicModel.clearModuleType();
@@ -118,11 +119,16 @@ class Details extends React.Component {
     const { item } = this.props.navigation.state.params || {};
     ContactsModel.getContactDetailsReq(item);
   };
+  getContactTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    ContactsModel.getContactTotalReq(item);
+  };
   renderTotalItem = () => {
+    const { contactTotal: { scheduleTotal, taskTotal, salesTotal } } = ContactsModel;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '10' },
-      { title: '销售机会', text: '3' },
+      { title: '日程', text: scheduleTotal },
+      { title: '任务', text: taskTotal },
+      { title: '销售机会', text: salesTotal },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>

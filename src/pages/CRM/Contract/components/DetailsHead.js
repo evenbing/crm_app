@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { PackStatus } from '../../../../constants/enum';
 
 // static source
 import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
@@ -107,7 +108,7 @@ class DetailsHead extends React.PureComponent {
         </ContainerView>
         <FooterView>
           <MoneyText>活动状态：</MoneyText>
-          <PlanStatusText>{item.status}</PlanStatusText>
+          <PlanStatusText>{PackStatus[item.status] || '--'}</PlanStatusText>
           <Thumbnail
             source={PrincipalIcon}
             size={15}

@@ -303,18 +303,21 @@ class EditorMore extends React.Component {
           />
           <NavInputItem
             leftText="省份"
+            onPress={() => navigate(routers.cityPicker, {
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                const { province, city, area } = item;
+                this.setState({
+                  location: `${province}+${city}`,
+                });
+              },
+            })}
             center={
-              <CenterText>{ContactsEnum.location}</CenterText>
+              <CenterText active={location}>
+                { location || ContactsEnum.location}
+              </CenterText>
             }
             {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="地址"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.location,
-              value: location,
-              onChangeText: location => this.setState({ location }),
-            })}
           />
           <NavInputItem
             leftText="邮箱"
