@@ -60,6 +60,7 @@ class Details extends React.Component {
   componentDidMount() {
     this.getDynamicList();
     this.getRecordDetail();
+    this.getRecordTotal();
   }
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
@@ -72,7 +73,6 @@ class Details extends React.Component {
   };
   onPressSend = ({ content, contentType }, callback) => {
     const { item } = this.props.navigation.state.params || {};
-    debugger;
     DynamicModel.createDynamicReq({
       content,
       contentType,
@@ -114,12 +114,23 @@ class Details extends React.Component {
     const { item } = this.props.navigation.state.params || {};
     ReceivableRecordModel.getReceivableRecordDetailsReq(item);
   };
+  getRecordTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    ReceivableRecordModel.getReceivableRecordTotalReq(item);
+  };
   renderTotalItem = () => {
+    const {
+      receivableRecordTotal: { attaTotal },
+      receivableRecordDetails: { map },
+    } = ReceivableRecordModel;
     const list = [
       {
         title: '文档',
-        text: '12',
-        onPress: () => { this.props.navigation.navigate(routers.relatedDocs); },
+        text: attaTotal,
+        onPress: () => {
+          if (!attaTotal) return;
+          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+        },
       },
     ];
     return list.map(_ => (

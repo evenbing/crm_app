@@ -117,8 +117,7 @@ class ContactStore {
       const {
         totalCount: salesTotal = 0,
         errors: salesErrors = [],
-      // } = await getSalesChanceList({ customerId: id, pageSize });
-      } = await getSalesChanceList({ pageSize });
+      } = await getSalesChanceList({ customerId: id, pageSize });
       if (salesErrors.length) throw new Error(salesErrors[0].message);
       runInAction(() => {
         this.contactTotal = {

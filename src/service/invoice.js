@@ -14,7 +14,7 @@ import { post } from '../utils/rpc';
  * }
  * @return Promise<Object>
  */
-export function del({
+export function deleteInvoice({
   id,
 } = {}) {
   return post({
@@ -38,7 +38,7 @@ export function del({
  * }
  * @return Promise<Object>
  */
-export function update({
+export function updateInvoice({
   pactId,
   issueId,
   content,
@@ -69,7 +69,7 @@ export function update({
  * }
  * @return Promise<Object>
  */
-export function detail({
+export function getInvoiceDetails({
   id,
 } = {}) {
   return post({
@@ -88,7 +88,7 @@ export function detail({
  * }
  * @return Promise<Object>
  */
-export function find({
+export function getInvoiceList({
   pactId,
   issueId,
 } = {}) {
@@ -114,7 +114,7 @@ export function find({
  * }
  * @return Promise<Object>
  */
-export function create({
+export function createInvoice({
   pactId,
   issueId,
   content,

@@ -60,6 +60,7 @@ class Details extends React.Component {
   componentDidMount() {
     this.getDynamicList();
     this.getPlanDetail();
+    this.getPlanTotal();
   }
   componentWillUnmount() {
     DynamicModel.clearModuleType();
@@ -117,9 +118,24 @@ class Details extends React.Component {
     const { item } = this.props.navigation.state.params || {};
     ReceivablePlanModel.getReceivablePlanDetailsReq(item);
   };
+  getPlanTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    ReceivablePlanModel.getReceivablePlanTotalReq(item);
+  };
   renderTotalItem = () => {
+    const {
+      receivablePlanTotal: { attaTotal },
+      receivablePlanDetails: { map },
+    } = ReceivablePlanModel;
     const list = [
-      { title: '文档', text: '12' },
+      {
+        title: '文档',
+        text: attaTotal,
+        onPress: () => {
+          if (!attaTotal) return;
+          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+        },
+      },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>

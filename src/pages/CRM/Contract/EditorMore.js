@@ -106,7 +106,6 @@ class EditorMore extends React.Component {
       const { item: { id } = {} } = this.props.navigation.state.params || {};
       // 新增
       if (!id) {
-        debugger;
         ContractModel.createContractReq({
           theme: name,
           type,
@@ -134,13 +133,26 @@ class EditorMore extends React.Component {
       }
       if (!id) throw new Error('id 不为空');
       ContractModel.updateContractReq({
+        id,
         theme: name,
+        type,
         customerId,
         customerName,
+        salesOpportunitiesId,
+        status,
+        payType,
         totalMoney,
         startDate,
         endDate,
+        number,
+        pactDate,
+        ourContractId,
+        customerContractId,
+        customerContractName,
         departmentId,
+        ownerId,
+        content,
+        comment,
       }, () => {
         pop(1);
       });
@@ -155,8 +167,55 @@ class EditorMore extends React.Component {
       },
     } = this;
     const { item = {} } = state.params || {};
-    if (!Object.keys(item)) return;
-    this.setState({ ...item });
+    if (!Object.keys(item).length) return;
+    const {
+      theme: name,
+      payType: payKey,
+      status: statusKey,
+      type: typeKey,
+      startDate: startDateTime,
+      endDate: endDateTime,
+      pactDate: pactDateTime,
+      ...restProps
+    } = item;
+    let startDate = null;
+    if (startDateTime) {
+      startDate = formatDateByMoment(startDateTime);
+    }
+    let endDate = null;
+    if (endDateTime) {
+      endDate = formatDateByMoment(endDateTime);
+    }
+    let pactDate = null;
+    if (pactDateTime) {
+      pactDate = formatDateByMoment(pactDateTime);
+    }
+    debugger;
+    let payMap = {};
+    if (payKey) {
+      const value = PayType[payKey] || payKey;
+      payMap = { value, key: payKey };
+    }
+    let statusMap = {};
+    if (statusKey || statusKey === 0) {
+      const value = PackStatus[statusKey] || statusKey;
+      statusMap = { value, key: statusKey };
+    }
+    let typeMap = {};
+    if (typeKey) {
+      const value = PackType[typeKey] || typeKey;
+      typeMap = { value, key: typeKey };
+    }
+    this.setState({
+      name,
+      startDate,
+      endDate,
+      pactDate,
+      payMap,
+      statusMap,
+      typeMap,
+      ...restProps,
+    });
   };
   render() {
     const {
@@ -174,9 +233,10 @@ class EditorMore extends React.Component {
         endDate,
         number,
         pactDate,
-        // ourContractId,
-        // customerContractId,
-        // customerContractName,
+        ourContractId,
+        ourContractName,
+        customerContractId,
+        customerContractName,
         departmentId,
         departmentName,
         content,
@@ -391,15 +451,52 @@ class EditorMore extends React.Component {
           </DateTimePicker>
           <NavInputItem
             leftText="我方签约人"
+            onPress={() => navigate(routers.selectEmployee, {
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  ourContractId: item.id,
+                  ourContractName: item.userName,
+                });
+              },
+            })}
             center={
-              <CenterText>{ContractEnum.ourContract}</CenterText>
+              <CenterText active={ourContractId && ourContractName}>
+                {
+                  (ourContractId && ourContractName) ? ourContractName :
+                    ContractEnum.ourContract
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
+            leftWidth={110}
           />
           <NavInputItem
             leftText="客户方签约人"
+            onPress={() => {
+              if (!customerId) {
+                Toast.showError('请先选择客户');
+                return;
+              }
+              navigate(routers.contacts, {
+                type: SalesChanceType,
+                customerId,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    customerContractId: item.key,
+                    customerContractName: item.title,
+                  });
+                },
+              });
+            }}
             center={
-              <CenterText>{ContractEnum.customerContractName}</CenterText>
+              <CenterText active={customerContractId && customerContractName}>
+                {
+                  (customerContractId && customerContractName) ? customerContractName :
+                    ContractEnum.customerContractName
+                }
+              </CenterText>
             }
             {...theme.navItemStyle}
             leftWidth={110}
@@ -429,11 +526,11 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="负责人"
             onPress={() => navigate(routers.selectEmployee, {
-              callback: (obj) => {
-                if (!Object.keys(obj).length) return;
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
                 this.setState({
-                  ownerId: obj.id,
-                  ownerName: obj.userName,
+                  ownerId: item.id,
+                  ownerName: item.userName,
                 });
               },
             })}

@@ -14,14 +14,20 @@ import {
 import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
 import { initDetailMap, receivableFlatList } from './initState';
+import { getAttachmentList } from '../service/attachment';
 
 useStrict(true);
+
+const initTotal = {
+  attaTotal: 0,
+};
 
 @autobind
 class ReceivableRecordStore {
   // 列表
   @observable receivableRecordList = receivableFlatList;
   @observable receivableRecordDetails = initDetailMap;
+  @observable receivableRecordTotal = initTotal;
 
   // 列表
   @action async getReceivableRecordListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -89,6 +95,30 @@ class ReceivableRecordStore {
     } finally {
       runInAction(() => {
         this.receivableRecordDetails.refreshing = false;
+      });
+    }
+  }
+
+  // 总计
+  @action async getReceivableRecordTotalReq({ id, pageSize = 1 }) {
+    try {
+      const {
+        totalCount: attaTotal = 0,
+        errors: attaErrors = [],
+      } = await getAttachmentList({
+        businessId: id,
+        pageSize,
+      });
+      if (attaErrors.length) throw new Error(attaErrors[0].message);
+      runInAction(() => {
+        this.receivableRecordTotal = {
+          attaTotal,
+        };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+      runInAction(() => {
+        this.receivableRecordTotal = initTotal;
       });
     }
   }

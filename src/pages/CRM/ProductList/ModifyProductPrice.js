@@ -113,7 +113,7 @@ class ModifyProductPrice extends React.Component {
       },
     } = this;
     const { item = {} } = state.params || {};
-    if (!Object.keys(item)) return;
+    if (!Object.keys(item).length) return;
     this.setState({ ...item });
   };
   render() {

@@ -177,13 +177,14 @@ class ListItem extends Component {
 
 ListItem.defaultProps = {
   comment: '',
+  name: '',
   operateList: [],
 };
 
 ListItem.propTypes = {
   duration: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   comment: PropTypes.string,
   operateList: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string,
