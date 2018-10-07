@@ -25,6 +25,7 @@ import { post } from '../utils/rpc';
  *   mobilePhone 手机
  *   email 性别
  *   sortColumn 表头排序 目前不支持
+ *   customerId 客户id
  * }
  * @return Promise<ArrayList>
  */
@@ -45,6 +46,7 @@ export function getContactList({
   mobilePhone,
   email,
   sortColumn,
+  customerId,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.find',
@@ -64,6 +66,7 @@ export function getContactList({
     mobilePhone,
     email,
     sortColumn,
+    customerId,
   });
 }
 

@@ -109,10 +109,12 @@ class DetailsHead extends React.PureComponent {
         <FooterView>
           <MoneyText>活动状态：</MoneyText>
           <PlanStatusText>{PackStatus[item.status] || '--'}</PlanStatusText>
-          <Thumbnail
+          {/*
+           <Thumbnail
             source={PrincipalIcon}
             size={15}
           />
+           */}
         </FooterView>
       </HeaderBack>
     );

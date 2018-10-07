@@ -123,10 +123,16 @@ class Contacts extends React.Component {
   };
   getData = (pageNumber = 1) => {
     const { screenTabList, searchValue } = this.state;
+    const {
+      customerId, // false 单选 true 多选
+    } = this.props.navigation.state.params || {};
     const obj = {
       pageNumber,
       name: searchValue,
     };
+    if (customerId) {
+      obj.customerId = customerId;
+    }
     // query header tab
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
@@ -134,8 +140,8 @@ class Contacts extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContactsModel.getContactListReq(obj);
-    ContactsModel.getContactListReq({ pageNumber });
+    ContactsModel.getContactListReq(obj);
+    // ContactsModel.getContactListReq({ pageNumber });
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {

@@ -212,11 +212,13 @@ class Details extends React.Component {
         tabIndex,
       },
       props: {
-        navigation: { navigate, state },
+        navigation: { navigate },
       },
     } = this;
-    const { item } = state.params || {};
     const bool = tabIndex === 0;
+    const {
+      contactDetails: { map },
+    } = ContactsModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -236,7 +238,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactEditorMore, { item })}
+                onPress={() => navigate(routers.contactEditorMore, { item: map })}
               />
             )
         }

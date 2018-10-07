@@ -84,6 +84,7 @@ export const ContactsEnum = {
   email: '请输入邮箱',
   weibo: '请输入微博',
   location: '请选择省份',
+  address: '请输入地址',
   postCode: '请输入邮编',
   description: '请输入备注说明',
 };

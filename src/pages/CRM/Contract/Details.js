@@ -61,6 +61,7 @@ class Details extends React.Component {
   componentDidMount() {
     this.getDynamicList();
     this.getContractDetail();
+    this.getContractTotal();
   }
   componentWillUnmount() {
     DynamicModel.clearModuleType();
@@ -118,6 +119,10 @@ class Details extends React.Component {
     const { item } = this.props.navigation.state.params || {};
     ContractModel.getContractDetailsReq(item);
   };
+  getContractTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    ContractModel.getContactTotalReq(item);
+  };
   renderTotalItem = () => {
     const {
       navigation: {
@@ -125,10 +130,21 @@ class Details extends React.Component {
         state,
       },
     } = this.props;
+    const {
+      contractTotal: { issueTotal, attaTotal },
+      contractDetails: { map },
+    } = ContractModel;
     const { item } = state.params || {};
     const list = [
-      { title: '文档', text: '12', onPress: () => {} },
-      { title: '回款', text: '3', onPress: () => { navigate(routers.receivable, { id: item.id }); } },
+      {
+        title: '文档',
+        text: attaTotal,
+        onPress: () => {
+          if (!attaTotal) return;
+          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+        },
+      },
+      { title: '回款', text: issueTotal, onPress: () => { navigate(routers.receivable, { id: item.id }); } },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >
@@ -212,11 +228,13 @@ class Details extends React.Component {
         tabIndex,
       },
       props: {
-        navigation: { navigate, state },
+        navigation: { navigate },
       },
     } = this;
-    const { item } = state.params || {};
     const bool = tabIndex === 0;
+    const {
+      contractDetails: { map },
+    } = ContractModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -236,7 +254,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contractEditorMore, { item })}
+                onPress={() => navigate(routers.contractEditorMore, { item: map })}
               />
             )
         }

@@ -15,14 +15,22 @@ import {
 } from '../service/contract';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
+import { getReceivableIssueList } from '../service/receivable';
+import { getAttachmentList } from '../service/attachment';
 
 useStrict(true);
+
+const initTotal = {
+  issueTotal: 0,
+  attaTotal: 0,
+};
 
 @autobind
 class ContractStore {
   // 列表
   @observable contractList = initFlatList;
   @observable contractDetails = initDetailMap;
+  @observable contractTotal = initTotal;
 
   // 列表
   @action async getContractListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -81,6 +89,39 @@ class ContractStore {
     }
   }
 
+  // 总计
+  @action async getContactTotalReq({ id, pageSize = 1 }) {
+    try {
+      const {
+        totalCount: issueTotal = 0,
+        errors: issueErrors = [],
+      } = await getReceivableIssueList({
+        pactId: id,
+        pageSize,
+      });
+      if (issueErrors.length) throw new Error(issueErrors[0].message);
+      const {
+        totalCount: attaTotal = 0,
+        errors: attaErrors = [],
+      } = await getAttachmentList({
+        businessId: id,
+        pageSize,
+      });
+      if (attaErrors.length) throw new Error(attaErrors[0].message);
+      runInAction(() => {
+        this.contractTotal = {
+          issueTotal,
+          attaTotal,
+        };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+      runInAction(() => {
+        this.contractTotal = initTotal;
+      });
+    }
+  }
+
   // 新增
   @action async createContractReq(options, callback) {
     try {
@@ -100,6 +141,7 @@ class ContractStore {
   // 编辑
   @action async updateContractReq(options) {
     try {
+      debugger;
       const {
         result = {},
         errors = [],

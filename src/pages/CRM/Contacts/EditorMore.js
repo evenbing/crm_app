@@ -35,7 +35,8 @@ class EditorMore extends React.Component {
     sex: {},
     weibo: null,
     postCode: null,
-    location: null,
+    location: {},
+    address: null,
     email: null,
     birthDate: null,
     description: null,
@@ -60,6 +61,7 @@ class EditorMore extends React.Component {
         weibo,
         postCode,
         location,
+        address,
         email,
         birthDate,
         description,
@@ -74,6 +76,10 @@ class EditorMore extends React.Component {
         navigation: { pop },
       },
     } = this;
+    if (address) {
+      location.address = address;
+    }
+    const locationToString = JSON.stringify(location);
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
@@ -81,7 +87,6 @@ class EditorMore extends React.Component {
       const { item: { id } = {} } = this.props.navigation.state.params || {};
       // 新增
       if (!id) {
-        debugger;
         ContactsModel.createContactReq({
           name,
           companyName,
@@ -89,7 +94,7 @@ class EditorMore extends React.Component {
           phoneNumber,
           mobilePhone,
           email,
-          location,
+          location: locationToString,
           description,
           departmentId,
           departmentName,
@@ -103,12 +108,13 @@ class EditorMore extends React.Component {
         return;
       }
       if (!id) throw new Error('id 不为空');
+      debugger;
       ContactsModel.updateContactReq({
         id,
         name,
         sex: sex.name,
         weibo,
-        location,
+        location: locationToString,
         email,
         birthDate,
         description,
@@ -137,7 +143,7 @@ class EditorMore extends React.Component {
       },
     } = this;
     const { item = {} } = state.params || {};
-    if (!Object.keys(item)) return;
+    if (!Object.keys(item).length) return;
     const { sex: sexKey, birthDate: birthDateTime, ...restProps } = item;
     let sex = {};
     if (sexKey) {
@@ -156,7 +162,8 @@ class EditorMore extends React.Component {
         name,
         sex,
         weibo,
-        location,
+        formatLocation,
+        address,
         birthDate,
         email,
         postCode,
@@ -308,16 +315,29 @@ class EditorMore extends React.Component {
                 if (!Object.keys(item).length) return;
                 const { province, city, area } = item;
                 this.setState({
-                  location: `${province}+${city}`,
+                  formatLocation: `${province}-${city}-${area}`,
+                  location: {
+                    provinceName: province,
+                    cityName: city,
+                    districtName: area,
+                  },
                 });
               },
             })}
             center={
-              <CenterText active={location}>
-                { location || ContactsEnum.location}
+              <CenterText active={formatLocation}>
+                { formatLocation || ContactsEnum.location}
               </CenterText>
             }
             {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="地址"
+            {...theme.getLeftStyle({
+              placeholder: ContactsEnum.address,
+              value: address,
+              onChangeText: address => this.setState({ address }),
+            })}
           />
           <NavInputItem
             leftText="邮箱"
