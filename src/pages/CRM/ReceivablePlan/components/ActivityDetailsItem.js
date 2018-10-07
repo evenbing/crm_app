@@ -24,15 +24,15 @@ const ActivityDetailsItem = ({
     {renderBasicItem('计划回款日期', formatDateByMoment(item.receivableDate))}
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('合同', '西风网络合同')}
-    {renderBasicItem('客户名称', '西风网络')}
+    {renderBasicItem('客户名称', item.pactName)}
     {renderBasicItem('实际回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('本期回款状态', '未完成')}
     {renderBasicItem('本期逾期状态', '已逾期')}
     {renderBasicItem('所属部门', '市场部')}
     {renderBasicItem('负责人', '张三')}
     {renderBasicItem('所属部门', '市场部')}
-    {renderBasicItem('创建人', '张三')}
-    {renderBasicItem('创建时间', '2018-09-09')}
+    {renderBasicItem('创建人', item.createdByName)}
+    {renderBasicItem('创建时间', formatDateByMoment(item.creationTime))}
     {renderBasicItem('最近修改人', '张三')}
     {renderBasicItem('最近时间', '2018-09-01')}
     <TitleItemComponent
@@ -41,7 +41,7 @@ const ActivityDetailsItem = ({
     />
     <RemarkView>
       <RemarkText>
-        活动说明，活动说明，活动说明，活动说明，活动说明，活动说明，
+        {item.comment}
       </RemarkText>
     </RemarkView>
   </ContainerView>

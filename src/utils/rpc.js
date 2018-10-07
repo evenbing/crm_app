@@ -185,12 +185,11 @@ export async function uploadImage(formData) {
   const passportId = await getPassportId();
   console.log('REQ:', config.uploadUrl + "?passportId=" + passportId, options);
   const resp = await fetch(config.uploadUrl + "?passportId=" + passportId, options);
-  const text = await resp.text();
-  console.log('RESP:', text);
-  const json = JSON.parse(text);
+  const json = await resp.json();
+  console.log('RESP:', json);
   // 如果请求失败
   if (resp.status !== 200) {
     throw new ResponseError(json.message, resp.status, json);
   }
-  return json.result;
+  return json;
 }

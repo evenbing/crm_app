@@ -9,6 +9,7 @@ import { action, observable, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import { uploadImage } from '../service/attachment';
 import Toast from '../utils/toast';
+import { ModuleType } from '../constants/enum';
 
 useStrict(true);
 
@@ -26,7 +27,7 @@ class AttachmentStore {
     businessId,
     businessType = 'APPSERVICE',
     businessCategory = 'COMMON',
-  } = {}) {
+  } = {}, callback) {
     try {
       const fileName = file.name;
       const ext = fileName.substr(fileName.lastIndexOf('.') + 1, fileName.length);
@@ -42,11 +43,12 @@ class AttachmentStore {
       formdata.append('Ext', ext);
       formdata.append('method', 'api.foundation.attachment.upload');
       formdata.append('businessId', businessId);
-      formdata.append('businessType', businessType);
+      formdata.append('businessType', `CRM_${businessType}`);
       formdata.append('businessCategory', businessCategory);
       const result = await uploadImage(formdata);
       this.updateImageResult = { ...result };
       console.log('upload image result:', result);
+      callback && callback(result);
     } catch (e) {
       console.log('upload image error:', e);
       Toast.showError(e.message);

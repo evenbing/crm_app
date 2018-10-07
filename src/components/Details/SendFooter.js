@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ImagePicker from 'react-native-image-picker';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
 import { getFooterBottom } from '../../utils/utils';
@@ -39,7 +40,7 @@ const RecordType = styled.TouchableOpacity``;
 const RecordText = styled.Text`
   font-family: ${theme.fontRegular};
   font-size: ${moderateScale(12)};
-  color: #18B548;
+  color: ${theme.primaryColor};
   margin-left: ${moderateScale(15)};
 `;
 
@@ -67,12 +68,22 @@ const SendText = styled.Text`
   padding-right: ${moderateScale(8)};
 `;
 
-const IconView = styled.View`
+const IconView = styled(TouchableView)`
   width: ${moderateScale(30)};
   height: ${moderateScale(30)};
   margin-left: ${props => moderateScale(props.marginLeft || 0)};
   margin-right: ${props => moderateScale(props.marginRight || 0)};
+  justify-content: center;
+  align-items: center;
 `;
+
+const options = {
+  title: 'Select Avatar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
 
 class SendFooter extends React.PureComponent {
   state = {
@@ -88,6 +99,33 @@ class SendFooter extends React.PureComponent {
   onPressFilterItem = ({ index }) => {
     this.setState({ selectedIndex: index });
   };
+
+  onPickImage =() => {
+    const {
+      props: {
+        onPressImage,
+      },
+    } = this;
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const { uri, path = '' } = response;
+        onPressImage({
+          file: {
+            uri,
+            type: 'multipart/form-data',
+            name: path.substr(path.lastIndexOf('/') + 1),
+          },
+          path,
+        });
+      }
+    });
+  }
 
   onPressSend = () => {
     const {
@@ -126,6 +164,7 @@ class SendFooter extends React.PureComponent {
       },
       props: {
         recordTypeList,
+        cacheImageMap,
       },
     } = this;
     return (
@@ -171,8 +210,10 @@ class SendFooter extends React.PureComponent {
         <IconView
           marginLeft={8}
           marginRight={13}
+          onPress={this.onPickImage}
         >
           <Thumbnail
+            imgUri={cacheImageMap.filePath}
             source={require('../../img/picture.png')}
             size={27}
           />
@@ -185,11 +226,15 @@ class SendFooter extends React.PureComponent {
 SendFooter.defaultProps = {
   recordTypeList: mapToArray(DynamicRecordType, 'leftText'),
   onPressSend: () => null,
+  onPressImage: () => null,
+  cacheImageMap: {},
 };
 
 SendFooter.propTypes = {
   recordTypeList: PropTypes.arrayOf(PropTypes.any),
   onPressSend: PropTypes.func,
+  onPressImage: PropTypes.func,
+  cacheImageMap: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SendFooter;

@@ -10,7 +10,7 @@ import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import { theme, routers } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
-import { CustomerType, SalesChanceType, PackType, PackStatus, PayType } from '../../../constants/enum';
+import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayType } from '../../../constants/enum';
 import { formatDateByMoment } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
@@ -190,7 +190,6 @@ class EditorMore extends React.Component {
     if (pactDateTime) {
       pactDate = formatDateByMoment(pactDateTime);
     }
-    debugger;
     let payMap = {};
     if (payKey) {
       const value = PayType[payKey] || payKey;
@@ -206,6 +205,9 @@ class EditorMore extends React.Component {
       const value = PackType[typeKey] || typeKey;
       typeMap = { value, key: typeKey };
     }
+    let { totalMoney = '' } = restProps;
+    if (totalMoney) totalMoney = String(totalMoney);
+
     this.setState({
       name,
       startDate,
@@ -215,6 +217,7 @@ class EditorMore extends React.Component {
       statusMap,
       typeMap,
       ...restProps,
+      totalMoney,
     });
   };
   render() {
@@ -452,10 +455,11 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="我方签约人"
             onPress={() => navigate(routers.selectEmployee, {
+              title: '选择我方签约人',
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
-                  ourContractId: item.id,
+                  ourContractId: item.userId,
                   ourContractName: item.userName,
                 });
               },
@@ -479,13 +483,13 @@ class EditorMore extends React.Component {
                 return;
               }
               navigate(routers.contacts, {
-                type: SalesChanceType,
+                type: ContactsType,
                 customerId,
                 callback: (item) => {
                   if (!Object.keys(item).length) return;
                   this.setState({
-                    customerContractId: item.key,
-                    customerContractName: item.title,
+                    customerContractId: item.id,
+                    customerContractName: item.name,
                   });
                 },
               });
@@ -529,7 +533,7 @@ class EditorMore extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
-                  ownerId: item.id,
+                  ownerId: item.userId,
                   ownerName: item.userName,
                 });
               },

@@ -46,16 +46,21 @@ class EditorMore extends React.Component {
   }
   onPressRight = () => {
     const {
-      pactId,
-      issueId,
-      receivablePrice,
-      receivableDate,
-      ownerId,
-      comment,
-    } = this.state;
+      state: {
+        pactId,
+        issueId,
+        receivablePrice,
+        receivableDate,
+        ownerId,
+        comment,
+      },
+      props: {
+        navigation: { pop },
+      },
+    } = this;
     try {
       if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
-      if (!issueId) throw new Error(ReceivablePlanEnum.issue);
+      if (!issueId) throw new Error(ReceivablePlanEnum.issueId);
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
@@ -66,6 +71,8 @@ class EditorMore extends React.Component {
         receivableDate,
         ownerId,
         comment,
+      }, () => {
+        pop(1);
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -79,14 +86,36 @@ class EditorMore extends React.Component {
     } = this;
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
-    this.setState({ ...item });
+    let {
+      receivableDate,
+      receivablePrice,
+      creationTime,
+    } = item;
+    if (receivableDate) {
+      receivableDate = formatDateByMoment(receivableDate);
+    }
+    if (receivablePrice) {
+      receivablePrice = String(receivablePrice);
+    }
+    if (creationTime) {
+      creationTime = formatDateByMoment(creationTime);
+    }
+    this.setState({
+      ...item,
+      receivableDate,
+      receivablePrice,
+      creationTime,
+    });
   };
   render() {
     const {
       state: {
         issueId,
         receivablePrice,
-        ownerId,
+        ownerUserName,
+        pactName,
+        createdByName,
+        creationTime,
         comment,
         receivableDate,
       },
@@ -102,15 +131,14 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="回款期次"
-            {...theme.getLeftStyle({
-              placeholder: ReceivablePlanEnum.issue,
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText active>{issueId}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="计划回款金额"
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
             {...theme.getLeftStyle({
               placeholder: ReceivablePlanEnum.receivablePrice,
               value: receivablePrice,
@@ -136,113 +164,90 @@ class EditorMore extends React.Component {
                   { receivableDate || ReceivablePlanEnum.receivableDate }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...theme.navItemOnlyShowStyle}
               leftWidth={moderateScale(110)}
             />
           </DateTimePicker>
           <NavInputItem
             leftText="负责人"
             center={
-              <CenterText>
-                {
-                  ownerId ? null :
-                    ReceivablePlanEnum.ownerId
-                }
-              </CenterText>
+              <CenterText active>{ownerUserName}</CenterText>
             }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="合同"
-            {...theme.getLeftStyle({
-              placeholder: '请输入合同',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText active>{pactName}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="客户名称"
-            {...theme.getLeftStyle({
-              placeholder: '请输入客户名称',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText active>{}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="实际回款金额"
-            {...theme.getLeftStyle({
-              placeholder: '请输入金额',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            }, LeftViewWidth)}
+            center={
+              <CenterText active>{}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="本期回款状态"
             center={
-              <CenterText>请选择回款状态</CenterText>
+              <CenterText active>{}</CenterText>
             }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="本期逾期状态"
             center={
-              <CenterText>请选择逾期状态</CenterText>
+              <CenterText active>{}</CenterText>
             }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="所属部门"
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText active>{}</CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="负责人"
-            {...theme.getLeftStyle({
-              placeholder: '请输入负责人',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
-          />
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText>请选择所属部门</CenterText>
-            }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="创建人"
-            {...theme.getLeftStyle({
-              placeholder: '请输入创建人',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText active>{createdByName}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="创建时间"
             center={
-              <CenterText>请选择创建时间</CenterText>
+              <CenterText active>{creationTime}</CenterText>
             }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="最近修改人"
-            {...theme.getLeftStyle({
-              placeholder: '请输入修改人',
-              value: issueId,
-              onChangeText: issueId => this.setState({ issueId }),
-            })}
+            center={
+              <CenterText active>{}</CenterText>
+            }
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
           />
           <NavInputItem
             leftText="最近时间"
             center={
-              <CenterText>请选择最近时间</CenterText>
+              <CenterText active>{}</CenterText>
             }
-            {...theme.navItemStyle}
+            {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="备注"

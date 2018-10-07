@@ -29,9 +29,13 @@ class ReceivablePlanStore {
   @observable receivablePlanDetails = initDetailMap;
   @observable receivablePlanTotal = initTotal;
 
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
   // 列表
   @action async getReceivablePlanListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.receivablePlanList.refreshing = true;
       } else {
@@ -124,17 +128,18 @@ class ReceivablePlanStore {
   }
 
   // 编辑
-  @action async updateReceivablePlanReq(options) {
+  @action async updateReceivablePlanReq(options, callback) {
     try {
+      debugger;
       const {
-        result = {},
         errors = [],
       } = await updateReceivablePlan(options);
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getReceivablePlanDetailsReq({ id: options.id });
+        this.getReceivablePlanListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -144,6 +149,7 @@ class ReceivablePlanStore {
   // 转移负责人
   @action async updateOwnerUserReq(options, callback) {
     try {
+      debugger;
       const {
         errors = [],
       } = await updateOwnerUser(options);
@@ -151,6 +157,7 @@ class ReceivablePlanStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivablePlanDetailsReq({ id: options.id });
+        this.getReceivablePlanListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {

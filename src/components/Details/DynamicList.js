@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants/index';
+import { theme } from '../../constants';
 import { moderateScale } from '../../utils/scale';
 
 import DynamicItem from './DynamicItem';

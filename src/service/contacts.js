@@ -87,6 +87,7 @@ export function getContactList({
  *   postCode 邮政编码
  *   sex 性别
  *   birthDate 出生日期
+ *   customerId, 客户ID
  * }
  * @return Promise<Object>
  */
@@ -105,6 +106,7 @@ export function createContact({
   postCode,
   sex,
   birthDate,
+  customerId,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.create',
@@ -122,6 +124,7 @@ export function createContact({
     postCode,
     sex,
     birthDate,
+    customerId,
   });
 }
 
@@ -159,6 +162,7 @@ export function getContactDetails({
  *   postCode 邮政编码
  *   departmentName 部门
  *   description 备注
+ *   customerId, 客户ID
  * }
  * @return Promise<Object>
  */
@@ -178,6 +182,7 @@ export function updateContact({
   postCode,
   departmentName,
   description,
+  customerId,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.update',
@@ -196,6 +201,7 @@ export function updateContact({
     postCode,
     departmentName,
     description,
+    customerId,
   });
 }
 

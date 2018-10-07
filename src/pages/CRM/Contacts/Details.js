@@ -10,8 +10,10 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
-import { getUserId } from '../../../utils/base';
 import { ModuleType } from '../../../constants/enum';
+import { getUserId } from '../../../utils/base';
+import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -21,12 +23,12 @@ import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 import DetailsHead from './components/DetailsHead';
 
 import ContactsModel from '../../../logicStores/contacts';
 import DynamicModel from '../../../logicStores/dynamic';
+import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -59,6 +61,7 @@ const dynamicContactList = `${ModuleType.contact}List`;
 class Details extends React.Component {
   state = {
     tabIndex: 0,
+    cacheImageMap: {},
   };
   componentDidMount() {
     this.getDynamicList();
@@ -77,14 +80,44 @@ class Details extends React.Component {
       this.getDynamicList(pageNumber + 1);
     }
   };
+  onPressImage = async ({ file }) => {
+    try {
+      const businessId = await getNewId();
+      AttachmentModel.uploadImageReq({
+        file,
+        businessId,
+        businessType: ModuleType.contact,
+      }, (result) => {
+        const { attachment = {} } = result;
+        this.setState({
+          cacheImageMap: {
+            businessId,
+            ...attachment,
+          },
+        });
+      });
+    } catch (err) {
+      Toast.showError(err.message);
+    }
+  };
   onPressSend = ({ content, contentType }, callback) => {
-    const { item } = this.props.navigation.state.params || {};
+    const {
+      state: {
+        cacheImageMap,
+      },
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item } = state.params || {};
     DynamicModel.createDynamicReq({
+      id: cacheImageMap.businessId,
       content,
       contentType,
       moduleId: item.id,
       moduleType: ModuleType.contact,
     }, () => {
+      this.setState({ cacheImageMap: {} });
       callback && callback();
     });
   };
@@ -101,7 +134,7 @@ class Details extends React.Component {
       callback: (obj) => {
         ContactsModel.updateOwnerUserReq({
           id: item.id,
-          ownerUserId: obj.id,
+          ownerUserId: obj.userId,
           ownerUserName: obj.userName,
         });
       },
@@ -185,9 +218,6 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-  renderDetailsItem = props => (
-    <ActivityDetailsItem {...props} />
-  );
   renderDetailsView = () => {
     const {
       contactDetails: { list = [], refreshing },
@@ -195,7 +225,7 @@ class Details extends React.Component {
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDetailsItem,
+      renderItemElem: <ActivityDetailsItem />,
       onRefresh: this.getContactDetail,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -210,6 +240,7 @@ class Details extends React.Component {
     const {
       state: {
         tabIndex,
+        cacheImageMap,
       },
       props: {
         navigation: { navigate },
@@ -234,7 +265,9 @@ class Details extends React.Component {
         {
           bool ?
             <SendFooter
+              cacheImageMap={cacheImageMap}
               onPressSend={this.onPressSend}
+              onPressImage={this.onPressImage}
             />
             : (
               <EditorFooter

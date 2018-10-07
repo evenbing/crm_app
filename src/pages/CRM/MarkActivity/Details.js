@@ -9,9 +9,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-
 import { theme, routers } from '../../../constants';
-// import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -135,9 +133,6 @@ class Details extends React.Component {
       </View>
     );
   };
-  renderDynamicItem = ({ item, index }) => (
-    <DynamicList isFrist={index === 0} data={item} />
-  );
 
   renderDynamicView = () => {
     const {
@@ -175,7 +170,7 @@ class Details extends React.Component {
       markActivityDetail: {
         refreshing,
         map,
-      }, 
+      },
     } = MarkActivityModel;
     const list = map ? [map] : [];
     const flatProps = {

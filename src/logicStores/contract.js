@@ -32,9 +32,13 @@ class ContractStore {
   @observable contractDetails = initDetailMap;
   @observable contractTotal = initTotal;
 
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
   // 列表
   @action async getContractListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.contractList.refreshing = true;
       } else {
@@ -130,7 +134,7 @@ class ContractStore {
       } = await createContract(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.getContractListReq();
+        this.getContractListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {
@@ -139,18 +143,16 @@ class ContractStore {
   }
 
   // 编辑
-  @action async updateContractReq(options) {
+  @action async updateContractReq(options, callback) {
     try {
-      debugger;
       const {
-        result = {},
         errors = [],
       } = await updateContract(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getContractDetailsReq({ id: options.id });
+        this.getContractListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -163,10 +165,10 @@ class ContractStore {
       const {
         errors = [],
       } = await updateOwnerUser(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContractDetailsReq({ id: options.id });
+        this.getContractListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {

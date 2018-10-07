@@ -7,13 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { routers, theme } from '../../../constants';
+import { theme } from '../../../constants';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
-import CompanyHeader from '../../../components/MemberList/CompanyHeader';
+// import CompanyHeader from '../../../components/MemberList/CompanyHeader';
 import MemberList from '../../../components/MemberList/MemberList';
 import TeamStore from '../../../logicStores/team';
 
@@ -70,14 +70,14 @@ class TeamMembers extends React.Component {
     });
   };
 
-  renderHeader = () => {
-    return (
-      <CompanyHeader
-        title="公司部门"
-        onPress={() => this.props.navigation.navigate(routers.companyDepartment)}
-      />
-    );
-  };
+  // renderHeader = () => {
+  //   return (
+  //     <CompanyHeader
+  //       title="公司部门"
+  //       onPress={() => this.props.navigation.navigate(routers.companyDepartment)}
+  //     />
+  //   );
+  // };
 
   render() {
     const {
@@ -104,8 +104,8 @@ class TeamMembers extends React.Component {
           onSearch={() => updateSearch(search)}
         />
         <MemberList
-          renderHeader={this.renderHeader}
-          headerHeight={theme.moderateScale(44)}
+          // renderHeader={this.renderHeader}
+          // headerHeight={theme.moderateScale(44)}
           dataList={filterTeamList}
           onPressItem={this.onPressItem}
         />

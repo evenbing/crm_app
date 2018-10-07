@@ -23,7 +23,7 @@ const ActivityDetailsItem = ({ item }) => (
     />
     {renderBasicItem('合同名称', item.theme)}
     {renderBasicItem('客户', item.customerName)}
-    {renderBasicItem('销售机会', item.salesOpportunitiesId)}
+    {renderBasicItem('销售机会', item.salesleadName)}
     {renderBasicItem('合同类型', PackType[item.type])}
     {renderBasicItem('合同状态', PackStatus[item.status])}
     {renderBasicItem('付款方式', PayType[item.payType])}

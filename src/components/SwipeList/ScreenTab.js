@@ -19,7 +19,7 @@ const ContainerView = styled.View``;
 
 const HeaderView = styled.View`
   background: ${theme.pageBackColor};
-  height: ${theme.moderateScale(44)};
+  height: 44px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -199,7 +199,7 @@ class ScreenTab extends React.PureComponent {
           onPressClose={this.onHideVisible}
           selectedIndex={selectedIndex}
           onPressItem={onPressFilterItem}
-          position={getHeaderHeight() + theme.moderateScale(88)}
+          position={getHeaderHeight() + 88}
           list={list}
         />
         <HeaderView>

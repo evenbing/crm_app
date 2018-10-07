@@ -147,8 +147,7 @@ class Contract extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContractModel.getContactListReq(obj);
-    ContractModel.getContractListReq({ pageNumber });
+    ContractModel.getContractListReq(obj);
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {

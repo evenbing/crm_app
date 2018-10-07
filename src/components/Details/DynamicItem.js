@@ -80,19 +80,35 @@ const TypeText = styled.Text`
 
 class DynamicItem extends React.PureComponent {
   render() {
-    const { onPress, item } = this.props;
+    const {
+      onPress,
+      item: {
+        createdByName,
+        content,
+        attachmentList = [],
+        contentType,
+        creationTime,
+      },
+    } = this.props;
     return (
       <ContainerView onPress={onPress}>
         <LeftView />
         <RightView>
-          <NameText>{item.createdByName}</NameText>
-          <ContentText>{item.content}</ContentText>
+          <NameText>{createdByName}</NameText>
+          <ContentText>{content}</ContentText>
           {
-            item.url ? <PicImage /> : null
+            attachmentList.length ? (
+              <PicImage
+                source={
+                  attachmentList[0].filePath ?
+                  { uri: attachmentList[0].filePath } : null
+                }
+              />
+            ) : null
           }
           <BottomView>
-            <TypeText>{DynamicRecordType[item.contentType]}</TypeText>
-            <TimeText>{moment(Number(item.creationTime)).format('HH:mm')}</TimeText>
+            <TypeText>{DynamicRecordType[contentType]}</TypeText>
+            <TimeText>{moment(Number(creationTime)).format('HH:mm')}</TimeText>
           </BottomView>
         </RightView>
 

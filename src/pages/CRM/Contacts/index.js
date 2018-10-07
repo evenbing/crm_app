@@ -11,12 +11,13 @@ import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import { ContactsType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
 import FlatListTable from '../../../components/FlatListTable';
 import LeftItem from './components/LeftItem';
@@ -151,7 +152,7 @@ class Contacts extends React.Component {
   renderItem = (itemProps) => {
     const { index, item } = itemProps;
     const {
-      navigation: { navigate },
+      navigation: { navigate, state, goBack },
     } = this.props;
     return (
       <SwipeRow
@@ -174,7 +175,16 @@ class Contacts extends React.Component {
             left={
               <LeftItem {...itemProps} />
             }
-            onPress={() => navigate(routers.contactDetails, { item })}
+            onPress={() => {
+              // from select customer
+              if (state.params.type === ContactsType) {
+                state.params.callback(item);
+                goBack();
+                return;
+              }
+              // form nav page
+              navigate(routers.contactDetails, { item });
+            }}
           />
         }
         right={
@@ -237,9 +247,6 @@ class Contacts extends React.Component {
       contactList: { list, refreshing, loadingMore },
     } = ContactsModel;
     const flatProps = {
-      //   data={[
-      //   { name: '李总', jobTitle: '市场总监', companyName: '阿里巴巴' },
-      // ]}
       data: list,
       renderItem: this.renderItem,
       onRefresh: this.getData,
@@ -278,23 +285,29 @@ class Contacts extends React.Component {
   }
 }
 
-Contacts.navigationOptions = ({ navigation }) => ({
-  title: '联系人',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+Contacts.navigationOptions = ({ navigation }) => {
+  const { onPressRight, type } = navigation.state.params || {};
+  const bool = type === ContactsType;
+  return {
+    title: bool ? '选择联系人' : '联系人',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      bool ? <DefaultHeaderView /> : (
+        <RightView
+          onPress={onPressRight || null}
+          right="新增"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+        />
+      )
+    ),
+  };
+};
 
 Contacts.defaultProps = {};
 

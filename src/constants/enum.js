@@ -2,6 +2,7 @@
 // 客户页面类型
 export const CustomerType = 'CUSTOMER/SELECT';
 export const SalesChanceType = 'SALES_CHANCE/SELECT';
+export const ContactsType = 'CONTACTS/SELECT';
 
 // 任务日程
 export const TASK_TYPE = 'TASK';

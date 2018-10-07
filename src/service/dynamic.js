@@ -15,6 +15,7 @@ import { post } from '../utils/rpc';
  *  moduleType  模块类型  must PRODUCT-产品,PACT-合同,CUSTOMER-客户,CONTACT-联系人,ACTIVITY-市场活动,LEADS-销售线索,OPPORTUNITY-销售机会,PRICE-价格,RECEIVABLE_PLAN-回款计划,RECEIVABLE_DETAIL-回款记录
  *  moduleId  模块ID  must
  *  createBy  创建人ID
+ *  needAttachments 需要附件
  * }
  * @return Promise<Object>
  */
@@ -24,6 +25,7 @@ export function getDynamicList({
   moduleType,
   moduleId,
   createBy,
+  needAttachments = true,
 } = {}) {
   return post({
     method: 'api.customerrelations.dynamic.find',
@@ -32,6 +34,7 @@ export function getDynamicList({
     moduleType,
     moduleId,
     createBy,
+    needAttachments,
   });
 }
 
@@ -39,6 +42,7 @@ export function getDynamicList({
  * @add by zhao
  * @params options
  * {
+ *  id 图片id
  *  moduleType 模块类型 must
  *  moduleId 模块ID must
  *  contentType 记录类型 must
@@ -47,6 +51,7 @@ export function getDynamicList({
  * @return Promise<Object>
  */
 export function createDynamic({
+  id,
   moduleType,
   moduleId,
   contentType,
@@ -54,6 +59,7 @@ export function createDynamic({
 } = {}) {
   return post({
     method: 'api.customerrelations.dynamic.create',
+    id,
     moduleType,
     moduleId,
     contentType,

@@ -8,7 +8,6 @@ import { post, upload } from '../utils/rpc';
 
 /**
  * 获取承租人信息和用户id
- * @param data
  * @returns {*}
  */
 export function getNewId() {

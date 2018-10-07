@@ -185,7 +185,7 @@ class Create extends React.Component {
               callback: (obj) => {
                 if (!Object.keys(obj).length) return;
                 this.setState({
-                  ownerId: obj.id,
+                  ownerId: obj.userId,
                   ownerName: obj.userName,
                 });
               },

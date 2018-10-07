@@ -41,6 +41,7 @@ class EditorMore extends React.Component {
     birthDate: null,
     description: null,
     companyName: null,
+    customerId: null,
     jobTitle: null,
     phoneNumber: null,
     mobilePhone: null,
@@ -66,6 +67,7 @@ class EditorMore extends React.Component {
         birthDate,
         description,
         companyName,
+        customerId,
         jobTitle,
         phoneNumber,
         mobilePhone,
@@ -90,6 +92,7 @@ class EditorMore extends React.Component {
         ContactsModel.createContactReq({
           name,
           companyName,
+          customerId,
           jobTitle,
           phoneNumber,
           mobilePhone,
@@ -119,6 +122,7 @@ class EditorMore extends React.Component {
         birthDate,
         description,
         companyName,
+        customerId,
         jobTitle,
         phoneNumber,
         mobilePhone,
@@ -252,6 +256,7 @@ class EditorMore extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
+                  customerId: item.key,
                   companyName: item.title,
                 });
               },

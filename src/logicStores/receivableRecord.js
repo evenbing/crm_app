@@ -29,9 +29,13 @@ class ReceivableRecordStore {
   @observable receivableRecordDetails = initDetailMap;
   @observable receivableRecordTotal = initTotal;
 
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
   // 列表
   @action async getReceivableRecordListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.receivableRecordList.refreshing = true;
       } else {
@@ -124,17 +128,17 @@ class ReceivableRecordStore {
   }
 
   // 编辑
-  @action async updateReceivableRecordReq(options) {
+  @action async updateReceivableRecordReq(options, callback) {
     try {
       const {
-        result = {},
         errors = [],
       } = await updateReceivableRecord(options);
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.contactDetails = { ...result };
+        this.getReceivableRecordDetailsReq({ id: options.id });
+        this.getReceivableRecordListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -151,6 +155,7 @@ class ReceivableRecordStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivableRecordDetailsReq({ id: options.id });
+        this.getReceivableRecordListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {

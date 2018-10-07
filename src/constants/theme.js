@@ -48,4 +48,9 @@ export default {
     height: 44,
     showNavIcon: true,
   },
+  navItemOnlyShowStyle: {
+    leftWidth: 80,
+    height: 44,
+    showNavIcon: false,
+  },
 };

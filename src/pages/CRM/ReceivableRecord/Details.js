@@ -11,6 +11,9 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
+import { getUserId } from '../../../utils/base';
+import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -25,6 +28,7 @@ import ActivityDetailsItem from './components/ActivityDetailsItem';
 
 import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 import DynamicModel from '../../../logicStores/dynamic';
+import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -56,6 +60,7 @@ const dynamicRecordList = `${ModuleType.record}List`;
 class Details extends React.Component {
   state = {
     tabIndex: 0,
+    cacheImageMap: {},
   };
   componentDidMount() {
     this.getDynamicList();
@@ -71,31 +76,61 @@ class Details extends React.Component {
       this.getDynamicList(pageNumber + 1);
     }
   };
+  onPressImage = async ({ file }) => {
+    try {
+      const businessId = await getNewId();
+      AttachmentModel.uploadImageReq({
+        file,
+        businessId,
+        businessType: ModuleType.record,
+      }, (result) => {
+        const { attachment = {} } = result;
+        this.setState({
+          cacheImageMap: {
+            businessId,
+            ...attachment,
+          },
+        });
+      });
+    } catch (err) {
+      Toast.showError(err.message);
+    }
+  };
   onPressSend = ({ content, contentType }, callback) => {
-    const { item } = this.props.navigation.state.params || {};
+    const {
+      state: {
+        cacheImageMap,
+      },
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item } = state.params || {};
     DynamicModel.createDynamicReq({
+      id: cacheImageMap.businessId,
       content,
       contentType,
       moduleId: item.id,
       moduleType: ModuleType.record,
     }, () => {
+      this.setState({ cacheImageMap: {} });
       callback && callback();
     });
   };
   onPressChoiceTeam = () => {
     const {
       props: {
-        navigation: { navigate, state },
+        navigation: { navigate },
       },
     } = this;
-    const { item } = state.params || {};
     const { receivableRecordDetails: { map } } = ReceivableRecordModel;
+    if (map.ownerId && (getUserId() !== map.ownerId)) return;
     navigate(routers.selectEmployee, {
       callback: (obj) => {
         ReceivableRecordModel.updateOwnerUserReq({
-          id: item.id,
+          id: map.pactId,
           ownerIdBefore: map.ownerId,
-          ownerIdAfter: obj.id,
+          ownerIdAfter: obj.userId,
           ownerNameBefore: map.ownerName,
           ownerNameAfter: obj.userName,
         });
@@ -188,9 +223,6 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-  renderDetailsItem = props => (
-    <ActivityDetailsItem {...props} />
-  );
   renderDetailsView = () => {
     const {
       receivableRecordDetails: { list = [], refreshing },
@@ -198,7 +230,7 @@ class Details extends React.Component {
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDetailsItem,
+      renderItemElem: <ActivityDetailsItem />,
       onRefresh: this.getRecordDetail,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -213,12 +245,15 @@ class Details extends React.Component {
     const {
       state: {
         tabIndex,
+        cacheImageMap,
       },
       props: {
-        navigation: { navigate, state },
+        navigation: { navigate },
       },
     } = this;
-    const { item } = state.params || {};
+    const {
+      receivableRecordDetails: { map },
+    } = ReceivableRecordModel;
     const bool = tabIndex === 0;
     return (
       <ContainerView
@@ -235,11 +270,13 @@ class Details extends React.Component {
         {
           bool ?
             <SendFooter
+              cacheImageMap={cacheImageMap}
               onPressSend={this.onPressSend}
+              onPressImage={this.onPressImage}
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.receivableRecordEditorMore, { item })}
+                onPress={() => navigate(routers.receivableRecordEditorMore, { item: map })}
               />
             )
         }

@@ -31,7 +31,7 @@ class DynamicStore {
     if (!moduleType) return [];
     const list = this.dynamicList[`${moduleType}List`] || [];
     if (!list.length) return [];
-    const resultList = list.sort((a, b) => (Number(a.creationTime) < Number(b.creationTime)));
+    const resultList = list.sort((a, b) => (Number(b.creationTime) - Number(a.creationTime)));
     const hashMap = new Map();
     return resultList.reduce((item, next) => {
       const nextDate = moment(Number(next.creationTime));

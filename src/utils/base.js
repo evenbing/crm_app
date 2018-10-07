@@ -125,7 +125,7 @@ export function formatMemberList(list) {
     throw new Error('params must be array');
   }
   if (!list.length) return list;
-  return list.map((value) => {
+  return list.filter(value => !!value.userId).map((value) => {
     if (!value.userName && (value.firstName || value.lastName)) {
       value.userName = `${value.lastName}${value.firstName}`;
     }

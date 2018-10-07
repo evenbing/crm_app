@@ -38,7 +38,7 @@ const ActivityDetailsItem = ({
     />
     <RemarkView>
       <RemarkText>
-        活动说明，活动说明，活动说明，活动说明，活动说明，活动说明，
+        {item.comment}
       </RemarkText>
     </RemarkView>
   </ContainerView>

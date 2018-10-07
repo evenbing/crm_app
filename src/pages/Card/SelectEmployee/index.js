@@ -103,23 +103,26 @@ class SelectEmployee extends React.Component {
   }
 }
 
-SelectEmployee.navigationOptions = ({ navigation }) => ({
-  title: '转移负责人',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
-      right="完成"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+SelectEmployee.navigationOptions = ({ navigation }) => {
+  const { onPressRight, title } = navigation.state.params || {};
+  return {
+    title: title || '转移负责人',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      <RightView
+        onPress={onPressRight || null}
+        right="完成"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+      />
+    ),
+  };
+};
 
 SelectEmployee.defaultProps = {};
 

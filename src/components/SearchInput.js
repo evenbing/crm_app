@@ -63,7 +63,12 @@ class SearchInput extends React.Component {
           textPadding={`${moderateScale(10)}px`}
           value={value}
         />
-        <SearchButtonView onPress={onSearch}>
+        <SearchButtonView
+          onPress={() => {
+            if (!value) return;
+            onSearch();
+          }}
+        >
           <SuffixImage
             source={require('../img/search.png')}
           />

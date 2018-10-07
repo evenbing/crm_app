@@ -29,6 +29,7 @@ class Create extends React.Component {
   state = {
     name: null,
     companyName: null,
+    customerId: null,
     jobTitle: null,
     phoneNumber: null,
     mobilePhone: null,
@@ -45,6 +46,7 @@ class Create extends React.Component {
       state: {
         name,
         companyName,
+        customerId,
         jobTitle,
         phoneNumber,
         mobilePhone,
@@ -61,6 +63,7 @@ class Create extends React.Component {
       ContactsModel.createContactReq({
         name,
         companyName,
+        customerId,
         jobTitle,
         phoneNumber,
         mobilePhone,
@@ -116,6 +119,7 @@ class Create extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
+                  customerId: item.key,
                   companyName: item.title,
                 });
               },
