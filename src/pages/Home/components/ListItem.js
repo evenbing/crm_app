@@ -119,25 +119,39 @@ class ListItem extends Component {
     };
   }
 
-  onToggleOperateView = () => {
-    const { operateList } = this.props;
+  onToggleOperateView = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => () => {
+    const { operateList, onPressItem } = this.props;
     if (operateList && operateList.length > 0) {
+      if (type === '任务') {
+        onPressItem({ id, type: 'TASK', startTime, endTime, moduleId, moduleType, rowVersion });
+      } else {
+        onPressItem({ id, type: 'SCHEDULE', startTime, endTime, moduleId, moduleType, rowVersion });
+      }
       this.setState({ showOperateView: !this.state.showOperateView });
     }
   }
 
   render() {
     const {
+      id,
       duration,
       type,
       name,
       comment,
+      startTime,
+      endTime,
+      moduleId,
+      moduleType,
+      rowVersion,
       operateList,
     } = this.props;
     const { showOperateView } = this.state;
     return (
       <Container>
-        <Up onPress={this.onToggleOperateView}>
+        <Up onPress={this.onToggleOperateView({
+          id, type, startTime, endTime, moduleId, moduleType, rowVersion,
+          })}
+        >
           <Lace />
           <TimeView>
             <Duration>{duration}</Duration>
@@ -178,18 +192,26 @@ class ListItem extends Component {
 ListItem.defaultProps = {
   comment: '',
   operateList: [],
+  startTime: null,
 };
 
 ListItem.propTypes = {
+  id: PropTypes.string.isRequired,
   duration: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   comment: PropTypes.string,
+  startTime: PropTypes.string,
+  endTime: PropTypes.string.isRequired,
+  moduleId: PropTypes.string.isRequired,
+  moduleType: PropTypes.string.isRequired,
+  rowVersion: PropTypes.string.isRequired,
   operateList: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string,
     text: PropTypes.string,
     onPress: PropTypes.func,
   })),
+  onPressItem: PropTypes.func.isRequired,
 };
 
 export default ListItem;

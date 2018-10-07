@@ -42,6 +42,7 @@ export function del({
  * isPrivate 是否私密 must
  * principal 责任人的ID
  * userIds 参与用户的ID的集合（数组格式）
+ * rowVersion 详情接口会返回该字段，更新时，需要上传
  * }
  * @return Promise<Object>
  */
@@ -54,13 +55,14 @@ export function update({
   moduleType,
   moduleId,
   comment,
-  needNotice,
+  needNotice = false,
   noticeTime,
   longitudeAndLatitude,
   locationInfo,
-  isPrivate,
+  isPrivate = true,
   principal,
   userIds,
+  rowVersion,
 } = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.update',
@@ -79,6 +81,7 @@ export function update({
     isPrivate,
     principal,
     userIds,
+    rowVersion,
   });
 }
 
@@ -94,7 +97,7 @@ export function update({
  *  moduleType  业务类型  是  “CUSTOMER”表示客户，“CONTACT”表示联系人，“ACTIVITY”表示市场活动，“LEADS”表示销售线索，“OPPORTUNITY”表示销售机会
  *  moduleId  业务ID  是
  *  comment 任务描述，日程备注  否  500字以内
- *  needNotice  是否开启提醒  是  true或者false
+ *  needNotice  是否开启提醒  是  true或者false, （甲方回复： 先固定设置为false）
  *  noticeTime  提醒时间  否  该值表示分钟数，表示开始前多少分钟开启提醒
  *  longitudeAndLatitude  位置信息的经纬度  否
  *  locationInfo  位置信息  否  位置信息的文字描述

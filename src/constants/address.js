@@ -3670,13 +3670,13 @@ const area = [
 const mapTree = prov.map((porvItem, index) => ({
   selected: index === 0,
   value: String(porvItem.id),
-	label: porvItem.name,
-	children: city.filter(obj => `${obj.pid}`.substr(0, 2) === `${porvItem.id}`.substr(0, 2)).map((cityObj, index) => ({
-		selected: index === 0,
+  label: porvItem.name,
+  children: city.filter(obj => `${obj.pid}`.substr(0, 2) === `${porvItem.id}`.substr(0, 2)).map((cityObj, index) => ({
+    selected: index === 0,
     value: String(cityObj.id),
     label: cityObj.name,
-		children: area.filter(obj => `${obj.pid}`.substr(0, 4) === `${cityObj.id}`.substr(0, 4)).map((areaObj, index) => ({
-			selected: index === 0,
+    children: area.filter(obj => `${obj.pid}`.substr(0, 4) === `${cityObj.id}`.substr(0, 4)).map((areaObj, index) => ({
+      selected: index === 0,
       value: String(areaObj.id),
       label: areaObj.name,
     })),

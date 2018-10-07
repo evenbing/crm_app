@@ -46,8 +46,9 @@ class AttachmentStore {
       formdata.append('businessCategory', businessCategory);
       const result = await uploadImage(formdata);
       this.updateImageResult = { ...result };
-      console.log(result);
+      console.log('upload image result:', result);
     } catch (e) {
+      console.log('upload image error:', e);
       Toast.showError(e.message);
     }
   }

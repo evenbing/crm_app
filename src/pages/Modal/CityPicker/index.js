@@ -38,10 +38,31 @@ class CityPicker extends Component {
       cityList,
       areaList,
     } = this.state;
-    const { label: province } = provinceList.filter(item => item.selected)[0];
-    const { label: city } = cityList.filter(item => item.selected)[0];
-    const { label: area } = areaList.filter(item => item.selected)[0];
-    callback && callback({ province, city, area });
+    const {
+      label: provinceName,
+      value: provinceId,
+    } = provinceList.filter(item => item.selected)[0];
+    const {
+      label: cityName,
+      value: cityId,
+    } = cityList.filter(item => item.selected)[0];
+    const {
+      label: areaName,
+      value: areaId,
+    } = areaList.filter(item => item.selected)[0];
+    callback && callback({
+      province: {
+        id: provinceId,
+        name: provinceName,
+      },
+      city: {
+        id: cityId,
+        name: cityName,
+      },
+      area: {
+        id: areaId,
+        name: areaName,
+      } });
     goBack();
   }
 

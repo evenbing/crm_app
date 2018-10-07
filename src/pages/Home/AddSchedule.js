@@ -287,10 +287,10 @@ class AddSchedule extends Component {
               navigate(routers.cityPicker, {
                 callback: ({ province, city, area }) => {
                   this.setState({
-                    locationInfo: `${province},${city},${area}`,
-                    provinceId: province,
-                    cityId: city,
-                    districtId: area,
+                    locationInfo: `${province.name},${city.name},${area.name}`,
+                    provinceId: province.id,
+                    cityId: city.id,
+                    districtId: area.id,
                   });
                 },
               });

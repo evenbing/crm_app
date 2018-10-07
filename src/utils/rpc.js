@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { NativeModules } from 'react-native';
 import MD5 from 'md5';
+import getConfig from '../config';
 
 export let config = {
   apiUrl: null,
@@ -182,10 +183,9 @@ export async function uploadImage(formData) {
     body: formData,
   };
   const passportId = await getPassportId();
+  console.log('REQ:', config.uploadUrl + "?passportId=" + passportId, options);
   const resp = await fetch(config.uploadUrl + "?passportId=" + passportId, options);
   const text = await resp.text();
-  console.log('REQ:' + config.uploadUrl + "?passportId=" + passportId, options);
-
   console.log('RESP:', text);
   const json = JSON.parse(text);
   // 如果请求失败

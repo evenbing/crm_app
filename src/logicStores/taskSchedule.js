@@ -101,14 +101,12 @@ class TaskScheduleStore {
   @action async updateTaskScheduleRelatedToMeReq(options) {
     try {
       const {
-        result = [],
+        result = null,
         errors = [],
       } = await update(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        console.log({ result });
-
-        this.taskSchedule.map = [...result];
+        this.taskSchedule.map = result;
       });
     } catch (e) {
       Toast.showError(e.message);

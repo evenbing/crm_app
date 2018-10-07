@@ -29,23 +29,37 @@ const ListItemSeparatorComponent = styled.View`
 
 @observer
 class taskScheduleList extends React.Component {
-  keyExtractor = item => item.key;
+  keyExtractor = item => item.id;
 
   renderItem = ({ item }) => {
     const {
+      id,
       duration,
       type,
       name,
       comment = '',
       operateList,
+      startTime,
+      endTime,
+      moduleId,
+      moduleType,
+      rowVersion,
+      onPressItem,
     } = item;
     return (
       <ListItem
+        id={id}
         duration={duration}
         type={type}
         name={name}
         comment={comment}
+        startTime={startTime}
+        endTime={endTime}
+        moduleId={moduleId}
+        moduleType={moduleType}
+        rowVersion={rowVersion}
         operateList={operateList}
+        onPressItem={onPressItem}
       />
     );
   }
@@ -67,16 +81,22 @@ class taskScheduleList extends React.Component {
 
 taskScheduleList.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.key,
+    id: PropTypes.string,
     duration: PropTypes.string,
     type: PropTypes.string,
     name: PropTypes.string,
     comment: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string.isRequired,
+    moduleId: PropTypes.string.isRequired,
+    moduleType: PropTypes.string.isRequired,
+    rowVersion: PropTypes.string.isRequired,
     operateList: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.string,
       text: PropTypes.string,
       onPress: PropTypes.func,
     })),
+    onPressItem: PropTypes.func,
   })).isRequired,
 };
 
