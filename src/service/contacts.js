@@ -79,7 +79,7 @@ export function getContactList({
  *   phoneNumber 电话
  *   mobilePhone  手机
  *   email 电子邮件
- *   location 地址+省份
+ *   locationId 地址Id
  *   description 备注
  *   departmentId 所属部门
  *   departmentName 部门
@@ -97,7 +97,7 @@ export function createContact({
   phoneNumber,
   mobilePhone,
   email,
-  location,
+  locationId,
   description,
   departmentId,
   departmentName,
@@ -114,7 +114,7 @@ export function createContact({
     phoneNumber,
     mobilePhone,
     email,
-    location,
+    locationId,
     description,
     departmentId,
     departmentName,
@@ -155,7 +155,7 @@ export function getContactDetails({
  *   mobilePhone 手机
  *   email 邮箱
  *   weibo 微博
- *   location 地址+省份
+ *   locationId 地址Id
  *   postCode 邮政编码
  *   departmentName 部门
  *   description 备注
@@ -174,7 +174,7 @@ export function updateContact({
   mobilePhone,
   email,
   weibo,
-  location,
+  locationId,
   postCode,
   departmentName,
   description,
@@ -192,7 +192,7 @@ export function updateContact({
     mobilePhone,
     email,
     weibo,
-    location,
+    locationId,
     postCode,
     departmentName,
     description,

@@ -13,7 +13,7 @@ import { ContactsEnum } from '../../../constants/form';
 import { CustomerType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
 import Toast from '../../../utils/toast';
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatLocationMap } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -35,7 +35,7 @@ class EditorMore extends React.Component {
     sex: {},
     weibo: null,
     postCode: null,
-    location: {},
+    locationInfo: {},
     address: null,
     email: null,
     birthDate: null,
@@ -53,14 +53,14 @@ class EditorMore extends React.Component {
     });
     this.initState();
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         name,
         sex,
         weibo,
         postCode,
-        location,
+        locationInfo,
         address,
         email,
         birthDate,
@@ -77,13 +77,13 @@ class EditorMore extends React.Component {
       },
     } = this;
     if (address) {
-      location.address = address;
+      locationInfo.address = address;
     }
-    const locationToString = JSON.stringify(location);
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
       if (!departmentId) throw new Error(ContactsEnum.departmentId);
+
       const { item: { id } = {} } = this.props.navigation.state.params || {};
       // 新增
       if (!id) {
@@ -94,7 +94,7 @@ class EditorMore extends React.Component {
           phoneNumber,
           mobilePhone,
           email,
-          location: locationToString,
+          locationInfo,
           description,
           departmentId,
           departmentName,
@@ -114,7 +114,7 @@ class EditorMore extends React.Component {
         name,
         sex: sex.name,
         weibo,
-        location: locationToString,
+        locationInfo,
         email,
         birthDate,
         description,
@@ -144,7 +144,12 @@ class EditorMore extends React.Component {
     } = this;
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
-    const { sex: sexKey, birthDate: birthDateTime, ...restProps } = item;
+    const {
+      sex: sexKey,
+      birthDate: birthDateTime,
+      location,
+      ...restProps
+    } = item;
     let sex = {};
     if (sexKey) {
       const name = SexTypes[sexKey] || sexKey;
@@ -154,7 +159,14 @@ class EditorMore extends React.Component {
     if (birthDateTime) {
       birthDate = formatDateByMoment(birthDateTime);
     }
-    this.setState({ sex, birthDate, ...restProps });
+    let locationInfo = null;
+    let address = null;
+    if (location) {
+      locationInfo = location;
+      locationInfo.formatLocation = formatLocationMap(location, false);
+      address = location.address || '';
+    }
+    this.setState({ sex, birthDate, locationInfo, address, ...restProps });
   };
   render() {
     const {
@@ -162,7 +174,7 @@ class EditorMore extends React.Component {
         name,
         sex,
         weibo,
-        formatLocation,
+        locationInfo,
         address,
         birthDate,
         email,
@@ -313,20 +325,14 @@ class EditorMore extends React.Component {
             onPress={() => navigate(routers.cityPicker, {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
-                const { province, city, area } = item;
                 this.setState({
-                  formatLocation: `${province}-${city}-${area}`,
-                  location: {
-                    provinceName: province,
-                    cityName: city,
-                    districtName: area,
-                  },
+                  locationInfo: item,
                 });
               },
             })}
             center={
-              <CenterText active={formatLocation}>
-                { formatLocation || ContactsEnum.location}
+              <CenterText active={locationInfo.formatLocation}>
+                { locationInfo.formatLocation || ContactsEnum.location}
               </CenterText>
             }
             {...theme.navItemStyle}

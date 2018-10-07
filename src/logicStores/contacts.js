@@ -16,6 +16,7 @@ import {
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { TASK_TYPE, SCHEDULE_TYPE, ModuleType } from '../constants/enum';
 import { getSalesChanceList } from '../service/salesChance';
+import { createLocationId } from '../service/app';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 
@@ -34,9 +35,13 @@ class ContactStore {
   @observable contactDetails = initDetailMap;
   @observable contactTotal = initTotal;
 
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
   // 列表
   @action async getContactListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.contactList.refreshing = true;
       } else {
@@ -135,14 +140,19 @@ class ContactStore {
   }
 
   // 新增
-  @action async createContactReq(options, callback) {
+  @action async createContactReq({ locationInfo, ...restProps }, callback) {
     try {
+      let locationId = null;
+      if (locationInfo) {
+        const { location: { id } } = await createLocationId(locationInfo);
+        locationId = id;
+      }
       const {
         errors = [],
-      } = await createContact(options);
+      } = await createContact({ locationId, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.getContactListReq();
+        this.getContactListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {
@@ -151,15 +161,19 @@ class ContactStore {
   }
 
   // 编辑
-  @action async updateContactReq(options, callback) {
+  @action async updateContactReq({ locationInfo, ...restProps }, callback) {
     try {
-      debugger;
+      let locationId = null;
+      if (locationInfo) {
+        const { location: { id } } = await createLocationId(locationInfo);
+        locationId = id;
+      }
       const {
         errors = [],
-      } = await updateContact(options);
+      } = await updateContact({ locationId, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.getContactDetailsReq({ id: options.id });
+        this.getContactDetailsReq({ id: restProps.id });
         callback && callback();
       });
     } catch (e) {
@@ -173,10 +187,10 @@ class ContactStore {
       const {
         errors = [],
       } = await updateOwnerUser(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContactDetailsReq({ id: options.id });
+        this.getContactListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {

@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { SexTypes } from '../../../../constants/enum';
-import { formatDateByMoment } from '../../../../utils/base';
+import { formatDateByMoment, formatLocationMap } from '../../../../utils/base';
 
 // components
 import TitleItemComponent from '../../../../components/Details/TitleItem';
@@ -35,7 +35,7 @@ const ActivityDetailsItem = ({
     {renderBasicItem('电话', item.phoneNumber)}
     {renderBasicItem('手机', item.mobilePhone)}
     {renderBasicItem('微博', item.weibo)}
-    {renderBasicItem('地址', item.location && item.cityName)}
+    {renderBasicItem('地址', formatLocationMap(item.location))}
     {renderBasicItem('邮箱', item.email)}
     {renderBasicItem('邮编', item.postCode)}
     <TitleItemComponent

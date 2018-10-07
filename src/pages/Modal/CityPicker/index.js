@@ -38,33 +38,20 @@ class CityPicker extends Component {
       cityList,
       areaList,
     } = this.state;
-    const {
-      label: provinceName,
-      value: provinceId,
-    } = provinceList.filter(item => item.selected)[0];
-    const {
-      label: cityName,
-      value: cityId,
-    } = cityList.filter(item => item.selected)[0];
-    const {
-      label: areaName,
-      value: areaId,
-    } = areaList.filter(item => item.selected)[0];
+    const { label: provinceName, value: provinceId } = provinceList.filter(item => item.selected)[0];
+    const { label: cityName, value: cityId } = cityList.filter(item => item.selected)[0];
+    const { label: districtName, value: districtId } = areaList.filter(item => item.selected)[0];
     callback && callback({
-      province: {
-        id: provinceId,
-        name: provinceName,
-      },
-      city: {
-        id: cityId,
-        name: cityName,
-      },
-      area: {
-        id: areaId,
-        name: areaName,
-      } });
+      formatLocation: `${provinceName}-${cityName}-${districtName}`,
+      provinceName,
+      provinceId,
+      cityName,
+      cityId,
+      districtName,
+      districtId,
+    });
     goBack();
-  }
+  };
 
   onPressProvinceItem = ({ selected, value, children }) => () => {
     if (selected) return;

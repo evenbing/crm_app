@@ -146,3 +146,24 @@ export function formatMemberList(list) {
  * @param {*} obj
  */
 export const mapToArray = (obj, name = 'name') => Object.keys(obj).map(key => ({ key, [name]: obj[key] }));
+
+
+// 格式化地址
+export function formatLocationMap(location = {}, needAddress = true) {
+  if (!Object.keys(location).length || !location) return null;
+  const {
+    // countryName,
+    address,
+    provinceName,
+    cityName,
+    districtName,
+  } = location;
+  const list = [];
+  // if (countryName) list.push(countryName);
+  if (provinceName) list.push(provinceName);
+  if (cityName) list.push(cityName);
+  if (districtName) list.push(districtName);
+  if (address && needAddress) list.push(address);
+  if (!list.length) return null;
+  return list.join('-');
+}
