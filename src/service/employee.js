@@ -1,13 +1,12 @@
 /**
  * @component employee.js
- * @description 成员 service
+ * @description 全部成员 service
  * @time 2018/8/28
  * @author zhao
  */
 import { post } from '../utils/rpc';
 
-/** 查询团队成员
- * @add by shiquan
+/** 查询全部成员
  * @param options
  * {
  *  pageNumber 页码
