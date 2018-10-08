@@ -76,6 +76,7 @@ export function getSalesChanceList({
  *  activityId  市场活动  否
  *  opportunityType 机会类型  否 OpportunityType Enum：NEW_CUSTOMER-新客户,OLD_CUSTOMER-老客户
  *  sourceType  机会来源  否 OpportunitySourceEnum：ADVERT-广告,SEMINAR-研讨会,SOLAR_ENGINE: 搜索引擎,SALES_OPPORTUNITY__INTRODUCTION-销售机会介绍,OTHER-其他
+ *  关于关联产品：通过 createBusinessDetail 关联 选择的产品和销售机会
  * }
  * @return Promise<Object>
  */

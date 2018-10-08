@@ -64,7 +64,9 @@ class SalesChance extends React.Component {
   onToggleType = () => {
     this.setState({ isBoard: !this.state.isBoard });
   };
-  onPressRight = () => alert('right');
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.createSalesChance);
+  }
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (index === 2) {
@@ -149,21 +151,6 @@ class SalesChance extends React.Component {
 
   keyExtractor = item => item.key;
 
-  renderBoard = () => {
-    if (this.state.isBoard) {
-      return (
-        <DashboardView
-          onPress={this.onToggleType}
-        />
-      );
-    }
-    return (
-      <DashboardView
-        backgroundColor="blue"
-        onPress={this.onToggleType}
-      />
-    );
-  };
   renderItem = (itemProps) => {
     const { index, item } = itemProps;
     const {

@@ -13,6 +13,7 @@ import { moderateScale } from '../../../utils/scale';
 import { ReceivableRecordEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
+import { DataTitleTypes, PayType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -46,6 +47,7 @@ class EditorMore extends React.Component {
   onPressRight = () => {
     const {
       state: {
+        id,
         pactId,
         issueId,
         planId,
@@ -60,6 +62,7 @@ class EditorMore extends React.Component {
       },
     } = this;
     try {
+      if (!id) throw new Error(ReceivableRecordEnum.id);
       if (!pactId) throw new Error(ReceivableRecordEnum.pactId);
       if (!issueId) throw new Error(ReceivableRecordEnum.issueId);
       if (!planId) throw new Error(ReceivableRecordEnum.planId);
@@ -68,10 +71,13 @@ class EditorMore extends React.Component {
       if (!payType) throw new Error(ReceivableRecordEnum.payType);
       if (!ownerId) throw new Error(ReceivableRecordEnum.ownerId);
       ReceivableRecordModel.updateReceivableRecordReq({
+        id,
         pactId,
         issueId,
+        planId,
         receivablePrice,
         receivableDate,
+        payType,
         ownerId,
         comment,
       }, () => {
@@ -113,7 +119,7 @@ class EditorMore extends React.Component {
   render() {
     const {
       state: {
-        issueId,
+        issueNumber,
         receivablePrice,
         ownerUserName,
         pactName,
@@ -121,6 +127,10 @@ class EditorMore extends React.Component {
         receivableDate,
         createdByName,
         creationTime,
+        departmentName,
+        customerName,
+        payType,
+        lastUpdatedByName,
       },
     } = this;
     return (
@@ -135,7 +145,12 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="回款期次"
             center={
-              <CenterText active>{issueId}</CenterText>
+              <CenterText active>
+                {
+                  typeof issueNumber !== 'undefined' ?
+                    DataTitleTypes[issueNumber - 1] : null
+                }
+              </CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
@@ -187,21 +202,25 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="客户名称"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{customerName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="付款方式"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>
+                {
+                  payType ? PayType[payType] : null
+                }
+              </CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="所属部门"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{departmentName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
@@ -222,7 +241,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="最近修改人"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{lastUpdatedByName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}

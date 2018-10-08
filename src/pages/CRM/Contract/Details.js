@@ -155,7 +155,10 @@ class Details extends React.Component {
   };
   getContractTotal = () => {
     const { item } = this.props.navigation.state.params || {};
-    ContractModel.getContactTotalReq(item);
+    ContractModel.getContactTotalReq({
+      ...item,
+      moduleType: ModuleType.pact,
+    });
   };
   renderTotalItem = () => {
     const {
@@ -174,8 +177,10 @@ class Details extends React.Component {
         title: '文档',
         text: attaTotal,
         onPress: () => {
-          if (!attaTotal) return;
-          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+          this.props.navigation.navigate(routers.relatedDocs, {
+            item: map,
+            moduleType: ModuleType.pact,
+          });
         },
       },
       { title: '回款', text: issueTotal, onPress: () => { navigate(routers.receivable, { id: item.id }); } },

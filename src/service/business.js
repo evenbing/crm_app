@@ -15,7 +15,7 @@ import { post } from '../utils/rpc';
  * }
  * @return Promise<Object>
  */
-export function detail({
+export function find({
   opportunityId,
 } = {}) {
   return post({

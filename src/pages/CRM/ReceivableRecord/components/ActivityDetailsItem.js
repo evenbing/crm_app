@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { formatDateByMoment } from '../../../../utils/base';
+import { DataTitleTypes, PayType } from '../../../../constants/enum';
 
 // components
 import TitleItemComponent from '../../../../components/Details/TitleItem';
@@ -19,19 +20,21 @@ const ActivityDetailsItem = ({
   item,
 }) => (
   <ContainerView>
-    {renderBasicItem('回款期次', '4')}
+    {
+      renderBasicItem('回款期次', typeof item.issueNumber !== 'undefined' ?
+        DataTitleTypes[item.issueNumber - 1] : null)
+    }
     {renderBasicItem('实际回款金额', item.receivablePrice, <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('实际回款日期', formatDateByMoment(item.receivableDate))}
     {renderBasicItem('负责人', item.ownerUserName)}
-    {renderBasicItem('合同', '西风网络合同')}
-    {renderBasicItem('客户名称', '西风网络')}
-    {renderBasicItem('付款方式', '现金')}
-    {renderBasicItem('所属部门', '市场部')}
-    {renderBasicItem('负责人', '张三')}
-    {renderBasicItem('所属部门', '市场部')}
-    {renderBasicItem('创建人', '张三')}
-    {renderBasicItem('创建时间', '2018-09-09')}
-    {renderBasicItem('最近修改人', '张三')}
+    {renderBasicItem('合同', item.pactName)}
+    {renderBasicItem('客户名称', item.customerName)}
+    {renderBasicItem('付款方式', item.payType ? PayType[item.payType] : null)}
+    {renderBasicItem('负责人', item.ownerUserName)}
+    {renderBasicItem('所属部门', item.departmentName)}
+    {renderBasicItem('创建人', item.createdByName)}
+    {renderBasicItem('创建时间', formatDateByMoment(item.creationTime))}
+    {renderBasicItem('最近修改人', item.lastUpdatedByName)}
     <TitleItemComponent
       text="备注"
       color="#373737"

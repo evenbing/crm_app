@@ -285,12 +285,12 @@ class AddSchedule extends Component {
             leftText="位置"
             onPress={() => {
               navigate(routers.cityPicker, {
-                callback: ({ province, city, area }) => {
+                callback: ({ formatLocation, provinceId, cityId, districtId }) => {
                   this.setState({
-                    locationInfo: `${province.name},${city.name},${area.name}`,
-                    provinceId: province.id,
-                    cityId: city.id,
-                    districtId: area.id,
+                    locationInfo: formatLocation,
+                    provinceId,
+                    cityId,
+                    districtId,
                   });
                 },
               });

@@ -5,11 +5,10 @@
  * @Last Modified time: 2018-09-24 20:14:20
  */
 
-import { action, observable, useStrict } from 'mobx/';
+import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import { uploadImage } from '../service/attachment';
 import Toast from '../utils/toast';
-import { ModuleType } from '../constants/enum';
 
 useStrict(true);
 
@@ -45,12 +44,16 @@ class AttachmentStore {
       formdata.append('businessId', businessId);
       formdata.append('businessType', `CRM_${businessType}`);
       formdata.append('businessCategory', businessCategory);
-      const result = await uploadImage(formdata);
-      this.updateImageResult = { ...result };
-      console.log('upload image result:', result);
-      callback && callback(result);
+      const {
+        errors = [],
+        ...restProps
+      } = await uploadImage(formdata);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.updateImageResult = { ...restProps };
+        callback && callback(restProps);
+      });
     } catch (e) {
-      console.log('upload image error:', e);
       Toast.showError(e.message);
     }
   }

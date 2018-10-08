@@ -1,6 +1,7 @@
 
 // 客户页面类型
 export const CustomerType = 'CUSTOMER/SELECT';
+export const MarkActivityType = 'MarkActivity/SELECT';
 export const SalesChanceType = 'SALES_CHANCE/SELECT';
 export const ContactsType = 'CONTACTS/SELECT';
 

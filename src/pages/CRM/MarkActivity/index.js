@@ -16,7 +16,7 @@ import * as drawerUtils from '../../../utils/drawer';
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
@@ -29,6 +29,7 @@ import {
   DrawerFilterMap,
 } from '../../../constants/screenTab';
 import { formatDate } from '../../../utils/base';
+import { MarkActivityType } from '../../../constants/enum';
 
 useStrict(true);
 
@@ -53,7 +54,9 @@ class SalesClues extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.markActivityEditor);
+    this.props.navigation.navigate(routers.markActivityEditor, {
+      reFetchDataList: this.getData,
+    });
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
@@ -101,7 +104,6 @@ class SalesClues extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
@@ -138,15 +140,15 @@ class SalesClues extends React.Component {
 
   keyExtractor = item => item.key;
 
-  renderItem = (props) => {
-    const { index } = props;
+  renderItem = (itemProps) => {
+    const { index, item } = itemProps;
     const {
-      navigation: { navigate },
+      navigation: { navigate, state, goBack },
     } = this.props;
     return (
       <SwipeRow
         disableRightSwipe
-        ref={(row) => { this[`rows.${props.index}`] = row; }}
+        ref={(row) => { this[`rows.${index}`] = row; }}
         rightOpenValue={-theme.moderateScale(44 + 15 + 15)}
         style={{
           paddingTop: 0,
@@ -159,10 +161,17 @@ class SalesClues extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...props}
-            onPress={() => navigate(routers.markActivityDetails, {
-              item: props.item,
-            })}
+            {...itemProps}
+            onPress={() => {
+              // from select customer
+              if (state.params.type === MarkActivityType) {
+                state.params.callback(item);
+                goBack();
+                return;
+              }
+              // form nav page
+              navigate(routers.markActivityDetails, { item });
+            }}
           />
         }
         right={
@@ -274,23 +283,29 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation }) => ({
-  title: '市场活动',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={() => { navigation.navigate(routers.markActivityEditor); }}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+SalesClues.navigationOptions = ({ navigation }) => {
+  const { onPressRight, type } = navigation.state.params || {};
+  const bool = type === MarkActivityType;
+  return ({
+    title: '市场活动',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      bool ? <DefaultHeaderView /> : (
+        <RightView
+          onPress={onPressRight || null}
+          right="新增"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+        />
+      )
+    ),
+  });
+};
 
 SalesClues.defaultProps = {
   index: '',
