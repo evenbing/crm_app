@@ -17,7 +17,7 @@ import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../.
 const ContainerView = styled.View``;
 
 // 回款状态
-function getReceivablePriceStatus({ receivableDetailTotalPrice, unreceivableTotalPrice }) {
+function getReceivablePriceStatus({ receivableDetailTotalPrice = 0, unreceivableTotalPrice = 0 }) {
   if (receivableDetailTotalPrice > 0 && unreceivableTotalPrice > 0) return '部分回款';
   if (receivableDetailTotalPrice === 0) return '未回款';
   if (unreceivableTotalPrice === 0) return '已回款';

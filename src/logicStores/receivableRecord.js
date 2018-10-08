@@ -133,7 +133,6 @@ class ReceivableRecordStore {
         errors = [],
       } = await updateReceivableRecord(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getReceivableRecordDetailsReq({ id: options.id });
         this.getReceivableRecordListReq(this.queryProps);

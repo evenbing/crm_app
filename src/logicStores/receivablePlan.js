@@ -129,12 +129,10 @@ class ReceivablePlanStore {
   // 编辑
   @action async updateReceivablePlanReq(options, callback) {
     try {
-      debugger;
       const {
         errors = [],
       } = await updateReceivablePlan(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getReceivablePlanDetailsReq({ id: options.id });
         this.getReceivablePlanListReq(this.queryProps);

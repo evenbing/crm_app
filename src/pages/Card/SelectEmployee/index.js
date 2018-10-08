@@ -106,7 +106,7 @@ class SelectEmployee extends React.Component {
 SelectEmployee.navigationOptions = ({ navigation }) => {
   const { onPressRight, title } = navigation.state.params || {};
   return {
-    title: title || '转移负责人',
+    title: title || '选择负责人',
     headerLeft: (
       <LeftBackIcon
         onPress={() => navigation.goBack()}
