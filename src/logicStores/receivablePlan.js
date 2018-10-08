@@ -11,7 +11,6 @@ import {
   getReceivablePlanDetails,
   updateReceivablePlan,
 } from '../service/receivablePlan';
-import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
@@ -130,30 +129,9 @@ class ReceivablePlanStore {
   // 编辑
   @action async updateReceivablePlanReq(options, callback) {
     try {
-      debugger;
       const {
         errors = [],
       } = await updateReceivablePlan(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        this.getReceivablePlanDetailsReq({ id: options.id });
-        this.getReceivablePlanListReq(this.queryProps);
-        callback && callback();
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-  // 转移负责人
-  @action async updateOwnerUserReq(options, callback) {
-    try {
-      debugger;
-      const {
-        errors = [],
-      } = await updateOwnerUser(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivablePlanDetailsReq({ id: options.id });

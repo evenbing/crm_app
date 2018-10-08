@@ -11,7 +11,6 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -117,26 +116,6 @@ class Details extends React.Component {
       callback && callback();
     });
   };
-  onPressChoiceTeam = () => {
-    const {
-      props: {
-        navigation: { navigate },
-      },
-    } = this;
-    const { receivableRecordDetails: { map } } = ReceivableRecordModel;
-    if (map.ownerId && (getUserId() !== map.ownerId)) return;
-    navigate(routers.selectEmployee, {
-      callback: (obj) => {
-        ReceivableRecordModel.updateOwnerUserReq({
-          id: map.pactId,
-          ownerIdBefore: map.ownerId,
-          ownerIdAfter: obj.userId,
-          ownerNameBefore: map.ownerName,
-          ownerNameAfter: obj.userName,
-        });
-      },
-    });
-  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -185,7 +164,6 @@ class Details extends React.Component {
     const { receivableRecordDetails: { map } } = ReceivableRecordModel;
     const detailHeaderProps = {
       item: map,
-      onPressChoiceTeam: this.onPressChoiceTeam,
     };
     return (
       <View>

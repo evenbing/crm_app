@@ -7,11 +7,11 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
 
+import { theme } from '../../../../constants';
 // components
-import NavItemComponent from '../NavItem';
-import TitleItemComponent from './TitleItem';
+import NavItemComponent from '../../../../components/NavItem';
+import TitleItemComponent from '../../../../components/Details/TitleItem';
 
 const ContainerView = styled.View``;
 
@@ -46,26 +46,24 @@ const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLa
 );
 
 const ActivityDetailsItem = ({
-  item: {
-    expectedDate, // '1536422400000',
-    follow, // false,
-    id, // '1032876348290502657',
-    inActive, // false,
-    lastPhaseUpdateTime, // '1535092474000',
-    name, // '更新机会123',
-    ownerUserId, // '801689539444879360',
-    ownerUserName, // '大佬5',
-    planAmount, // 33,
-    rowVersion, // '3',
-    salesPhaseId, // '3333333333',
-    tenantId, // '801689539428098048',
-  },
-}) => (
+  expectedDate, // "1536422400000",
+  follow, // false,
+  id, // "1032876348290502657",
+  inActive, // false,
+  lastPhaseUpdateTime, // "1535092474000",
+  name, // "更新机会123",
+  ownerUserId, // "801689539444879360",
+  ownerUserName, // "大佬5",
+  planAmount, // 33,
+  rowVersion, // "3",
+  salesPhaseId, // "1027551196627734528",
+  tenantId, // "801689539428098048",
+} = {}) => (
   <ContainerView>
     <TitleItemComponent
       text="基本信息"
     />
-    {renderBasicItem('姓名', name)}
+    {renderBasicItem('机会名称', name)}
     {renderBasicItem('客户', '2018-09-09')}
     {renderBasicItem('价格表', '2018-09-09')}
     {renderBasicItem('机会类型', '部门部门部门')}

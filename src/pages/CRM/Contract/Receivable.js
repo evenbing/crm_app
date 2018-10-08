@@ -58,7 +58,7 @@ class Receivable extends Component {
     }
   };
   getData = () => {
-    const { id = TEST_ID } = this.props.navigation.state.params || {};
+    const { id } = this.props.navigation.state.params || {};
     ReceivableModel.getReceivableIssueReq({ pactId: id });
   };
 

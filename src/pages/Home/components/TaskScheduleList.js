@@ -30,7 +30,7 @@ const ListItemSeparatorComponent = styled.View`
 @observer
 class taskScheduleList extends React.Component {
   keyExtractor = (item) => {
-    console.log('item.id:', item.id);
+    // console.log('item.id:', item.id);
     
     return item.id;
   };

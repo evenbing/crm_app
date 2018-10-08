@@ -11,7 +11,6 @@ import {
   getReceivableRecordDetails,
   updateReceivableRecord,
 } from '../service/receivableRecord';
-import { updateOwnerUser } from '../service/contract';
 import Toast from '../utils/toast';
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
@@ -133,25 +132,6 @@ class ReceivableRecordStore {
       const {
         errors = [],
       } = await updateReceivableRecord(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        this.getReceivableRecordDetailsReq({ id: options.id });
-        this.getReceivableRecordListReq(this.queryProps);
-        callback && callback();
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-  // 转移负责人
-  @action async updateOwnerUserReq(options, callback) {
-    try {
-      const {
-        errors = [],
-      } = await updateOwnerUser(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getReceivableRecordDetailsReq({ id: options.id });

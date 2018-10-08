@@ -11,8 +11,6 @@ import { theme } from '../../../../constants';
 
 // components
 import { HeaderBack } from '../../../../components/Details';
-import Thumbnail from '../../../../components/Thumbnail';
-import TouchableView from '../../../../components/TouchableView';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -41,7 +39,7 @@ const PersonText = NameText.extend`
   margin-right: ${theme.moderateScale(5)};
 `;
 
-const OwnerUserNameView = styled(TouchableView)`
+const OwnerUserNameView = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -55,7 +53,6 @@ class DetailsHead extends React.PureComponent {
   render() {
     const {
       item,
-      onPressChoiceTeam,
     } = this.props;
     return (
       <HeaderBack>
@@ -67,14 +64,9 @@ class DetailsHead extends React.PureComponent {
             <CompanyText>客户：{item.customerName}</CompanyText>
           </ItemView>
           <OwnerUserNameView
-            onPress={onPressChoiceTeam}
             marginTop={8}
           >
             <PersonText>负责人: {item.ownerUserName}</PersonText>
-            <Thumbnail
-              source={require('../../../../img/crm/details/principalGo.png')}
-              size={15}
-            />
           </OwnerUserNameView>
           <ItemView
             marginTop={11}
@@ -90,12 +82,10 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
-  onPressChoiceTeam: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
-  onPressChoiceTeam: PropTypes.func,
 };
 
 export default DetailsHead;

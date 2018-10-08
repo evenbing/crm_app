@@ -16,6 +16,31 @@ import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../.
 
 const ContainerView = styled.View``;
 
+// 回款状态
+function getReceivablePriceStatus({ receivableDetailTotalPrice = 0, unreceivableTotalPrice = 0 }) {
+  if (receivableDetailTotalPrice > 0 && unreceivableTotalPrice > 0) return '部分回款';
+  if (receivableDetailTotalPrice === 0) return '未回款';
+  if (unreceivableTotalPrice === 0) return '已回款';
+  return null;
+}
+
+// 逾期状态
+function getDateTimeStatus(item) {
+  const { endDate } = item;
+  const nowTime = new Date().getTime();
+  const res = getReceivablePriceStatus(item);
+  if (nowTime < endDate) return '未逾期';
+  if (nowTime >= endDate && res == null) return null;
+  if (nowTime >= endDate && res !== '已回款') return '已逾期';
+  return '未逾期';
+}
+
+// 回款进度
+function getReceivableRoate({ totalMoney, receivableDetailTotalPrice }) {
+  if (!totalMoney || totalMoney === 0 || receivableDetailTotalPrice === 0) return '0%';
+  return `${(receivableDetailTotalPrice / totalMoney).toFixed(4) * 100}%`;
+}
+
 const ActivityDetailsItem = ({ item }) => (
   <ContainerView>
     <TitleItemComponent
@@ -33,12 +58,12 @@ const ActivityDetailsItem = ({ item }) => (
     <TitleItemComponent
       text="回款信息"
     />
-    {renderBasicItem('开票金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('未回款金额', '120,000.00', <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('回款状态', '部分回款')}
-    {renderBasicItem('逾期状态', '已逾期')}
-    {renderBasicItem('回款进度', '张三', null, null, true)}
+    {renderBasicItem('开票金额', item.invoiceDetailTotalPrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('回款金额', item.receivableDetailTotalPrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('未回款金额', item.unreceivableTotalPrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('回款状态', getReceivablePriceStatus(item))}
+    {renderBasicItem('逾期状态', getDateTimeStatus(item))}
+    {renderBasicItem('回款进度', getReceivableRoate(item), null, null, true)}
     <TitleItemComponent
       text="其他信息"
     />

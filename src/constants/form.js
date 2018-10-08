@@ -126,6 +126,7 @@ export const ContractEnum = {
 
 // 回款计划
 export const ReceivablePlanEnum = {
+  id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',
   receivablePrice: '请输入回款金额',
@@ -136,6 +137,7 @@ export const ReceivablePlanEnum = {
 
 // 回款记录
 export const ReceivableRecordEnum = {
+  id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',
   planId: '请选择回款计划',

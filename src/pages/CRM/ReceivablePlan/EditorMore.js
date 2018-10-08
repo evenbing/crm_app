@@ -13,6 +13,7 @@ import { moderateScale } from '../../../utils/scale';
 import { ReceivablePlanEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
+import { DataTitleTypes } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -22,7 +23,7 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
-
+import { getReceivablePriceStatus, getDateTimeStatus } from './components/ActivityDetailsItem';
 
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
 
@@ -47,6 +48,7 @@ class EditorMore extends React.Component {
   onPressRight = () => {
     const {
       state: {
+        id,
         pactId,
         issueId,
         receivablePrice,
@@ -59,12 +61,14 @@ class EditorMore extends React.Component {
       },
     } = this;
     try {
+      if (!id) throw new Error(ReceivablePlanEnum.id);
       if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
       if (!issueId) throw new Error(ReceivablePlanEnum.issueId);
       if (!receivablePrice) throw new Error(ReceivablePlanEnum.receivablePrice);
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
       ReceivablePlanModel.updateReceivablePlanReq({
+        id,
         pactId,
         issueId,
         receivablePrice,
@@ -100,17 +104,21 @@ class EditorMore extends React.Component {
     if (creationTime) {
       creationTime = formatDateByMoment(creationTime);
     }
+    const formatPriceStatus = getReceivablePriceStatus(item) || null;
+    const formatDateTimeStatus = getDateTimeStatus(item) || null;
     this.setState({
       ...item,
       receivableDate,
       receivablePrice,
       creationTime,
+      formatPriceStatus,
+      formatDateTimeStatus,
     });
   };
   render() {
     const {
       state: {
-        issueId,
+        issueNumber,
         receivablePrice,
         ownerUserName,
         pactName,
@@ -118,6 +126,12 @@ class EditorMore extends React.Component {
         creationTime,
         comment,
         receivableDate,
+        customerName,
+        receivableFactPrice,
+        departmentName,
+        lastUpdatedByName,
+        formatPriceStatus,
+        formatDateTimeStatus,
       },
     } = this;
     return (
@@ -132,7 +146,12 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="回款期次"
             center={
-              <CenterText active>{issueId}</CenterText>
+              <CenterText active>
+                {
+                  typeof issueNumber !== 'undefined' ?
+                    DataTitleTypes[issueNumber - 1] : null
+                }
+              </CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
@@ -185,14 +204,14 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="客户名称"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{customerName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
           <NavInputItem
             leftText="实际回款金额"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{receivableFactPrice}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
@@ -200,7 +219,9 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="本期回款状态"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>
+                {formatPriceStatus}
+              </CenterText>
             }
             {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
@@ -208,7 +229,9 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="本期逾期状态"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>
+                {formatDateTimeStatus}
+              </CenterText>
             }
             {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
@@ -216,7 +239,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="所属部门"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{departmentName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
@@ -237,18 +260,20 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="最近修改人"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{lastUpdatedByName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
             leftWidth={LeftViewWidth}
           />
-          <NavInputItem
+          {/*
+           <NavInputItem
             leftText="最近时间"
             center={
-              <CenterText active>{}</CenterText>
+              <CenterText active>{lastUpdatedByName}</CenterText>
             }
             {...theme.navItemOnlyShowStyle}
           />
+           */}
           <NavInputItem
             leftText="备注"
             center={<View />}

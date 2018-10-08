@@ -22,7 +22,7 @@ import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
-import ActivityDetailsItem from '../../../components/Details/ActivityDetailsItem';
+import ActivityDetailsItem from './components/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 
