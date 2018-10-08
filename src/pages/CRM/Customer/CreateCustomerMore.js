@@ -282,13 +282,13 @@ class CreateCustomerMore extends Component {
         <NavInputItem
           leftText="省份地市"
           onPress={() => {
-              navigate(routers.cityPicker, {
-                callback: ({ province, city, area }) => {
-                  this.setState({
-                    locationDivision: `${province},${city},${area}`,
-                    provinceId: province,
-                    cityId: city,
-                    districtId: area,
+            navigate(routers.cityPicker, {
+              callback: ({ formatLocation, provinceId, cityId, districtId }) => {
+                this.setState({
+                  locationInfo: formatLocation,
+                  provinceId,
+                  cityId,
+                  districtId,
                   });
                 },
               });
