@@ -64,7 +64,9 @@ class SalesChance extends React.Component {
   onToggleType = () => {
     this.setState({ isBoard: !this.state.isBoard });
   };
-  onPressRight = () => alert('right');
+  onPressRight = () => {
+    this.props.navigation.navigate(routers.createSalesChance);
+  }
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (index === 2) {
