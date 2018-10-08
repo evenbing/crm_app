@@ -18,6 +18,7 @@ import Toast from '../../../utils/toast';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
+import { HorizontalDivider } from '../../../components/Styles/Divider';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
@@ -188,6 +189,11 @@ class Details extends React.Component {
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
+        <HorizontalDivider
+          height={1}
+          boarderBottomWidth={1}
+          boarderBottomColor={theme.borderColor}
+        />
         <TabContainer {...tabProps} />
       </View>
     );

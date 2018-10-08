@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
+import { getUserId } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -18,13 +19,13 @@ import Toast from '../../../utils/toast';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
+import DetailsHead from './components/DetailsHead';
 
 import MarkActivityModel from '../../../logicStores/markActivity';
 import DynamicModel from '../../../logicStores/dynamic';
@@ -61,20 +62,17 @@ class Details extends React.Component {
     tabIndex: 0,
     cacheImageMap: {},
   };
-
   componentDidMount() {
     this.getDynamicList();
     this.getMarkActivityDetail();
+    this.getMarkActivityTotal();
   }
-
   componentWillUnmount() {
     DynamicModel.clearModuleType();
   }
-
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-
   onEndReached = () => {
     const {
       total = 0,
@@ -86,7 +84,6 @@ class Details extends React.Component {
       this.getDynamicList(pageNumber + 1);
     }
   };
-
   onPressImage = async ({ file }) => {
     try {
       const businessId = await getNewId();
@@ -107,7 +104,6 @@ class Details extends React.Component {
       Toast.showError(err.message);
     }
   };
-
   onPressSend = ({ content, contentType }, callback) => {
     const {
       state: {
@@ -122,35 +118,70 @@ class Details extends React.Component {
       id: cacheImageMap.businessId,
       content,
       contentType,
-      moduleId: item.key,
+      moduleId: item.id,
       moduleType: ModuleType.activity,
     }, () => {
       this.setState({ cacheImageMap: {} });
       callback && callback();
     });
   };
-
+  onPressFollow = () => {
+    const { markActivityDetail: { map } } = MarkActivityModel;
+    MarkActivityModel.updateFollowStatusReq({
+      followList: [
+        `objectType-${ModuleType.activity}`,
+        `objectId-${map.id}`,
+        `objectName-${map.name}`,
+        `followTime-${new Date().getTime()}`,
+      ],
+    });
+  };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    const { markActivityDetail: { map } } = MarkActivityModel;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        MarkActivityModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.userId,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
       moduleType: ModuleType.activity,
-      moduleId: item.key,
+      moduleId: item.id,
     });
   };
-
   getMarkActivityDetail = () => {
-    const { item: { key } } = this.props.navigation.state.params || {};
-    MarkActivityModel.getMarkActivityDetailReq({ id: key });
+    const { item } = this.props.navigation.state.params || {};
+    MarkActivityModel.getMarkActivityDetailReq(item);
   };
-
+  getMarkActivityTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    MarkActivityModel.getMarkActivityTotalReq(item);
+  };
   renderTotalItem = () => {
+    const {
+      markActivityTotal: {
+        scheduleTotal, taskTotal, saleClueTotal, saleChanceTotal,
+      },
+    } = MarkActivityModel;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '2' },
-      { title: '联系人', text: '5' },
-      { title: '销售线索', text: '11' },
-      { title: '销售机会', text: '8' },
+      { title: '日程', text: scheduleTotal },
+      { title: '任务', text: taskTotal },
+      { title: '销售线索', text: saleClueTotal },
+      { title: '销售机会', text: saleChanceTotal },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -166,14 +197,20 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const { markActivityDetail: { map } } = MarkActivityModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressFollow: this.onPressFollow,
+    };
     return (
       <View>
-        <DetailsHead />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
         <HorizontalDivider
-          height={15}
+          height={1}
           boarderBottomWidth={1}
           boarderBottomColor={theme.borderColor}
         />
@@ -181,7 +218,6 @@ class Details extends React.Component {
       </View>
     );
   };
-
   renderDynamicView = () => {
     const {
       dynamicList: {
@@ -208,30 +244,23 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-
-  renderDetailsItem = ({ item }) => (
-    <ActivityDetailsItem {...item} />
-  );
   renderDetailsView = () => {
     const {
       markActivityDetail: {
         refreshing,
-        map,
+        list,
       },
     } = MarkActivityModel;
-    const list = map ? [map] : [];
     const flatProps = {
       keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
-      renderItem: this.renderDetailsItem,
+      renderItemElem: <ActivityDetailsItem />,
       onRefresh: this.getMarkActivityDetail,
-      onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
       refreshing,
-      noDataBool: !refreshing && list.length === 0,
     };
     return (
       <FlatListTable {...flatProps} />

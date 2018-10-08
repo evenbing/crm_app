@@ -8,6 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { MarketActivityStatus } from '../../../../constants/enum';
+import { formatDateByMoment, formatDateType } from '../../../../utils/base';
 
 // static source
 import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
@@ -15,11 +17,12 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import TouchableView from '../../../../components/TouchableView';
 
 // padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
-const PhoneView = styled.View`
+const PhoneView = styled(TouchableView)`
   width: ${theme.moderateScale(54)};
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(15)};
@@ -74,50 +77,77 @@ const PlanStatusText = styled.Text`
   margin-right: ${theme.moderateScale(2)};
 `;
 
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+`;
+
 class DetailsHead extends React.PureComponent {
   render() {
+    const {
+      item,
+      onPressFollow,
+      onPressChoiceTeam,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
-          <PhoneView>
+          <PhoneView
+            onPress={onPressFollow}
+          >
             <Thumbnail
               source={require('../../../../img/crm/details/follow.png')}
               size={14}
             />
-            <PhoneText>关注</PhoneText>
+            <PhoneText>
+              {
+                item.follow ? '取消关注' : '关注'
+              }
+            </PhoneText>
           </PhoneView>
           <ItemView
             marginTop={10}
           >
-            <NameText>网络技术研讨会</NameText>
+            <NameText>{item.name}</NameText>
           </ItemView>
           {/*
           <ItemView marginTop={2}>
             <CompanyText>西风网络</CompanyText>
           </ItemView>
           */}
-          <ItemView
+          <OwnerUserNameView
             marginTop={23}
+            onPress={onPressChoiceTeam}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
             />
-          </ItemView>
+          </OwnerUserNameView>
           <ItemView
             marginTop={7}
             marginBottom={34}
           >
-            <TimeText>2018-09-09 至 2018-09-09</TimeText>
+            <TimeText>
+              { formatDateByMoment(item.beginDate, formatDateType) }
+                至
+              { formatDateByMoment(item.endDate, formatDateType) }
+            </TimeText>
           </ItemView>
           <FooterView>
             <TimeText>活动状态：</TimeText>
-            <PlanStatusText>已计划</PlanStatusText>
-            <Thumbnail
+            <PlanStatusText>
+              {item.status ? MarketActivityStatus[item.status] : null}
+            </PlanStatusText>
+            {/* <Thumbnail
               source={PrincipalIcon}
               size={15}
-            />
+            /> */}
           </FooterView>
         </ContainerView>
       </HeaderBack>
@@ -127,10 +157,14 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressChoiceTeam: () => null,
+  onPressFollow: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressChoiceTeam: PropTypes.func,
+  onPressFollow: PropTypes.func,
 };
 
 export default DetailsHead;

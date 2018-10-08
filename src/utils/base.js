@@ -8,6 +8,7 @@ import moment from 'moment';
 import { NativeModules } from 'react-native';
 import { pinyin } from './pinyin';
 
+export const formatDateType = 'YYYY-MM-DD';
 // 格式化
 export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
   if (!str) return null;

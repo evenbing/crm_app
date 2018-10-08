@@ -174,7 +174,11 @@ class Details extends React.Component {
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
-        <HorizontalDivider height={15} />
+        <HorizontalDivider
+          height={1}
+          boarderBottomWidth={1}
+          boarderBottomColor={theme.borderColor}
+        />
         <TabContainer {...tabProps} />
       </View>
     );
