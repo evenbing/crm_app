@@ -47,7 +47,7 @@ const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLa
 );
 
 const ActivityDetailsItem = ({
-  data: {
+  item: {
     name, // '更新机会123',
     level,
     superiorCustomerId,

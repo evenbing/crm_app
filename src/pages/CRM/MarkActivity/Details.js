@@ -10,6 +10,9 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
+import { ModuleType } from '../../../constants/enum';
+import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -22,9 +25,10 @@ import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
-import { ModuleType } from '../../../constants/enum';
+
 import MarkActivityModel from '../../../logicStores/markActivity';
 import DynamicModel from '../../../logicStores/dynamic';
+import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -55,6 +59,7 @@ const dynamicPactList = `${ModuleType.activity}List`;
 class Details extends React.Component {
   state = {
     tabIndex: 0,
+    cacheImageMap: {},
   };
 
   componentDidMount() {
@@ -80,6 +85,49 @@ class Details extends React.Component {
     if (list.length < total && loadingMore === false) {
       this.getDynamicList(pageNumber + 1);
     }
+  };
+
+  onPressImage = async ({ file }) => {
+    try {
+      const businessId = await getNewId();
+      AttachmentModel.uploadImageReq({
+        file,
+        businessId,
+        businessType: ModuleType.activity,
+      }, (result) => {
+        const { attachment = {} } = result;
+        this.setState({
+          cacheImageMap: {
+            businessId,
+            ...attachment,
+          },
+        });
+      });
+    } catch (err) {
+      Toast.showError(err.message);
+    }
+  };
+
+  onPressSend = ({ content, contentType }, callback) => {
+    const {
+      state: {
+        cacheImageMap,
+      },
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    DynamicModel.createDynamicReq({
+      id: cacheImageMap.businessId,
+      content,
+      contentType,
+      moduleId: item.key,
+      moduleType: ModuleType.activity,
+    }, () => {
+      this.setState({ cacheImageMap: {} });
+      callback && callback();
+    });
   };
 
   getDynamicList = (pageNumber = 1) => {
@@ -148,7 +196,6 @@ class Details extends React.Component {
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <DynamicList />,
       onRefresh: this.getDynamicList,
-      keyExtractor: item => item.key,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -194,11 +241,18 @@ class Details extends React.Component {
     const {
       state: {
         tabIndex,
+        cacheImageMap,
       },
       props: {
         navigation: { navigate },
       },
     } = this;
+    const bool = tabIndex === 0;
+    const {
+      markActivityDetail: {
+        map,
+      },
+    } = MarkActivityModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -206,18 +260,21 @@ class Details extends React.Component {
       >
         <CommStatusBar />
         {
-          tabIndex === 0
-            ?
+          bool ?
             this.renderDynamicView()
             :
             this.renderDetailsView()
         }
         {
-          tabIndex === 0 ?
-            <SendFooter />
+          bool ?
+            <SendFooter
+              cacheImageMap={cacheImageMap}
+              onPressSend={this.onPressSend}
+              onPressImage={this.onPressImage}
+            />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactsEditor)}
+                onPress={() => navigate(routers.markActivityEditorMore, { item: map })}
               />
             )
         }

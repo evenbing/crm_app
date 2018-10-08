@@ -46,7 +46,7 @@ const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLa
 );
 
 const ActivityDetailsItem = ({
-  data: {
+  item: {
     expectedDate, // '1536422400000',
     follow, // false,
     id, // '1032876348290502657',

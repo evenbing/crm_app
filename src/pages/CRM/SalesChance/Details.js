@@ -1,6 +1,6 @@
 /**
  * @component Details.js
- * @description 详情页面
+ * @description 销售机会详情页面
  * @time 2018/8/14
  * @author JUSTIN XU
  */
@@ -10,7 +10,9 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
-// import { moderateScale } from '../../../utils/scale';
+import { ModuleType } from '../../../constants/enum';
+import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -23,11 +25,10 @@ import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-// import TouchableView from '../../../components/TouchableView';
 
 import SalesChanceModel from '../../../logicStores/salesChance';
 import DynamicModel from '../../../logicStores/dynamic';
-import { ModuleType } from '../../../constants/enum';
+import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -53,20 +54,13 @@ const TitleText = styled.Text`
 `;
 
 const dynamicPactList = `${ModuleType.opportunity}List`;
+
 @observer
 class Details extends React.Component {
   state = {
     tabIndex: 0,
+    cacheImageMap: {},
   };
-
-  // componentDidMount() {
-  //   const { id } = this.props.navigation.state.params;
-  //   SalesChanceStore.getSalesChanceReq({ id });
-  // DynamicStore.getDynamicListReq({
-  //   moduleType: ModuleType.opportunity,
-  //   moduleId: id,
-  // });
-  // }
 
   componentDidMount() {
     this.getDynamicList();
@@ -91,6 +85,49 @@ class Details extends React.Component {
     if (list.length < total && loadingMore === false) {
       this.getDynamicList(pageNumber + 1);
     }
+  };
+
+  onPressImage = async ({ file }) => {
+    try {
+      const businessId = await getNewId();
+      AttachmentModel.uploadImageReq({
+        file,
+        businessId,
+        businessType: ModuleType.opportunity,
+      }, (result) => {
+        const { attachment = {} } = result;
+        this.setState({
+          cacheImageMap: {
+            businessId,
+            ...attachment,
+          },
+        });
+      });
+    } catch (err) {
+      Toast.showError(err.message);
+    }
+  };
+
+  onPressSend = ({ content, contentType }, callback) => {
+    const {
+      state: {
+        cacheImageMap,
+      },
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    DynamicModel.createDynamicReq({
+      id: cacheImageMap.businessId,
+      content,
+      contentType,
+      moduleId: item.key,
+      moduleType: ModuleType.opportunity,
+    }, () => {
+      this.setState({ cacheImageMap: {} });
+      callback && callback();
+    });
   };
 
   getDynamicList = (pageNumber = 1) => {
@@ -146,10 +183,6 @@ class Details extends React.Component {
     );
   };
 
-  renderDynamicItem = ({ item, index }) => (
-    <DynamicList isFrist={index === 0} data={item} />
-  );
-
   renderDynamicView = () => {
     const {
       dynamicList: {
@@ -164,7 +197,6 @@ class Details extends React.Component {
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <DynamicList />,
       onRefresh: this.getDynamicList,
-      keyExtractor: item => item.key,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
@@ -212,11 +244,18 @@ class Details extends React.Component {
     const {
       state: {
         tabIndex,
+        cacheImageMap,
       },
       props: {
         navigation: { navigate },
       },
     } = this;
+    const bool = tabIndex === 0;
+    const {
+      salesChanceDetail: {
+        map,
+      },
+    } = SalesChanceModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -224,18 +263,21 @@ class Details extends React.Component {
       >
         <CommStatusBar />
         {
-          tabIndex === 0
-            ?
+          bool ?
             this.renderDynamicView()
             :
             this.renderDetailsView()
         }
         {
-          tabIndex === 0 ?
-            <SendFooter />
+          bool ?
+            <SendFooter
+              cacheImageMap={cacheImageMap}
+              onPressSend={this.onPressSend}
+              onPressImage={this.onPressImage}
+            />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.contactCreate)}
+                onPress={() => navigate(routers.salesChanceEditorMore, { item: map })}
               />
             )
         }

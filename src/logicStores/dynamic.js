@@ -79,7 +79,9 @@ class DynamicStore {
       const {
         result = [],
         totalCount = 0,
+        errors = [],
       } = await getDynamicList({ pageNumber, moduleType, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.dynamicList.total = totalCount;
         this.dynamicList.pageNumber = pageNumber;
@@ -111,7 +113,10 @@ class DynamicStore {
   // 新增
   @action async createDynamicReq({ moduleType, moduleId, ...restProps }, callback) {
     try {
-      await createDynamic({ moduleType, moduleId, ...restProps });
+      const {
+        errors = [],
+      } = await createDynamic({ moduleType, moduleId, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
       callback && callback();
       runInAction(() => {
         this.getDynamicListReq({ moduleType, moduleId });

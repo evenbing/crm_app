@@ -53,6 +53,7 @@ export function getReceivableRecordDetails({
 /** 更新回款记录表
  * @params options
  * {
+ *   id 主键ID must
  *   pactId 合同ID must
  *   issueId 回款期次ID must
  *   planId 回款计划ID must
@@ -65,6 +66,7 @@ export function getReceivableRecordDetails({
  * @return Promise<Object>
  */
 export function updateReceivableRecord({
+  id,
   pactId,
   issueId,
   planId,
@@ -76,6 +78,7 @@ export function updateReceivableRecord({
 } = {}) {
   return post({
     method: 'api.customerrelations.receivableDetail.update',
+    id,
     pactId,
     issueId,
     planId,

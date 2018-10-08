@@ -1,3 +1,9 @@
+/**
+ * @component initState.js
+ * @description 全部成员store
+ * @time 2018/9/11
+ * @author JUSTIN XU
+ */
 import { action, observable, computed, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
@@ -35,7 +41,7 @@ class EmployeeStore {
     });
   }
 
-  // 查询团队成员
+  // 查询全部成员列表
   @action async getEmployeeListReq(options) {
     try {
       this.employeeList = [];
