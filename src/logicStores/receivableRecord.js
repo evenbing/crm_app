@@ -103,12 +103,13 @@ class ReceivableRecordStore {
   }
 
   // 总计
-  @action async getReceivableRecordTotalReq({ id, pageSize = 1 }) {
+  @action async getReceivableRecordTotalReq({ id, moduleType, pageSize = 1 }) {
     try {
       const {
         totalCount: attaTotal = 0,
         errors: attaErrors = [],
       } = await getAttachmentList({
+        businessType: moduleType,
         businessId: id,
         pageSize,
       });

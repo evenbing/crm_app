@@ -94,7 +94,7 @@ class ContractStore {
   }
 
   // 总计
-  @action async getContactTotalReq({ id, pageSize = 1 }) {
+  @action async getContactTotalReq({ id, moduleType, pageSize = 1 }) {
     try {
       const {
         totalCount: issueTotal = 0,
@@ -108,6 +108,7 @@ class ContractStore {
         totalCount: attaTotal = 0,
         errors: attaErrors = [],
       } = await getAttachmentList({
+        businessType: moduleType,
         businessId: id,
         pageSize,
       });

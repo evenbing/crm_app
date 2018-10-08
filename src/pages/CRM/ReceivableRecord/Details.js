@@ -130,7 +130,10 @@ class Details extends React.Component {
   };
   getRecordTotal = () => {
     const { item } = this.props.navigation.state.params || {};
-    ReceivableRecordModel.getReceivableRecordTotalReq(item);
+    ReceivableRecordModel.getReceivableRecordTotalReq({
+      ...item,
+      moduleType: ModuleType.record,
+    });
   };
   renderTotalItem = () => {
     const {
@@ -142,8 +145,10 @@ class Details extends React.Component {
         title: '文档',
         text: attaTotal,
         onPress: () => {
-          if (!attaTotal) return;
-          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+          this.props.navigation.navigate(routers.relatedDocs, {
+            item: map,
+            moduleType: ModuleType.record,
+          });
         },
       },
     ];
