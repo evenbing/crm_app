@@ -89,6 +89,19 @@ export const ContactsEnum = {
   description: '请输入备注说明',
 };
 
+// 销售机会表单
+export const SalesChanceEnum = {
+  name: '请输入机会名称',
+  customer: '请选择客户名称',
+  planAmount: '请输入销售金额',
+  salesPhaseId: '请选择销售阶段',
+  expectedDate: '请选择结单日期',
+  description: '请输入备注',
+  department: '请选择所属部门',
+  activity: '请选择市场活动',
+  opportunityType: '请选择机会类型',
+  sourceType: '请选择机会来源',
+};
 // 合同表单
 export const ContractEnum = {
   theme: '请输入合同名称',

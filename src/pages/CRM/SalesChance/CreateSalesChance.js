@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import uuidv1 from 'uuid/v1';
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
 import { theme, routers } from '../../../constants';
@@ -11,6 +11,10 @@ import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import ProductItem from './components/ProductItem';
 import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
+import { SalesChanceEnum } from '../../../constants/form';
+import { CustomerType, MarkActivityType } from '../../../constants/enum';
+import { CenterText } from '../../../components/Styles/Form';
+import SalesChanceStore from '../../../logicStores/salesChance';
 
 const products = [
   {
@@ -42,84 +46,179 @@ const products = [
   },
 ];
 
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterTet = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const NavItemStyle = {
-  leftWidth: theme.moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
-
 class CreateSalesChance extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: null,
+      customerId: null,
+      customerName: null,
+      planAmount: null,
+      salesPhaseId: null,
+      expectedDate: null,
+      description: null,
+      departmentId: null,
+      departmentName: null,
+      activityId: null,
+      activityName: null,
+      opportunityType: null,
+      sourceType: null,
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+  }
+
+  onPressRight = async () => {
+    const {
+      state: {
+        name,
+        customerId,
+        customerName,
+        planAmount,
+        salesPhaseId,
+        expectedDate,
+        description,
+        departmentId,
+        departmentName,
+        activityId,
+        activityName,
+        opportunityType,
+        sourceType,
+      },
+      props: { navigation: {
+        goBack,
+        state: { params: { reFetchDataList } },
+      } },
+    } = this;
+    try {
+      if (!name) throw new Error(SalesChanceEnum.name);
+      if (!customerId || !customerName) throw new Error(SalesChanceEnum.customer);
+      if (!activityId || !activityName) throw new Error(SalesChanceEnum.activity);
+      if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
+
+      SalesChanceStore.createSalesChanceReq({
+        name,
+        phone,
+        locationId,
+        isActive,
+        departmentId,
+      }, () => {
+        reFetchDataList();
+        goBack();
+      });
+    } catch (error) {
+      Toast.error(error.message);
+    }
   }
 
   render() {
     const {
-      navigation: { navigate },
-    } = this.props;
+      state: {
+        name,
+        customerId,
+        customerName,
+        planAmount,
+        salesPhaseId,
+        expectedDate,
+        description,
+        departmentId,
+        departmentName,
+        activityId,
+        activityName,
+        opportunityType,
+        sourceType,
+      },
+      props: { navigation: { navigate } },
+    } = this;
     return (
       <ContainerView>
         <ContainerScrollView
           bottomPadding
+          backgroundColor={theme.whiteColor}
         >
           <CommStatusBar />
-          <ListView>
-            <TitleItem
-              text="基本信息"
-              fontSize={16}
-              titleBackColor="transparent"
-            />
-            <NavInputItem
-              leftText="姓名"
-              inputProps={{
-                'placeholder': '请输入姓名',
-                fontSize: theme.moderateScale(16),
-              }}
-              leftTextStyle={{
-                color: '#373737',
-                width: theme.moderateScale(80),
-              }}
-              height={44}
-            />
-            <NavInputItem
-              leftText="公司名称"
-              inputProps={{
-                'placeholder': '请输入公司名称',
-                fontSize: theme.moderateScale(16),
-              }}
-              leftTextStyle={{
-                color: '#373737',
-                width: theme.moderateScale(80),
-              }}
-              height={44}
-            />
-            <NavInputItem
-              leftText="市场活动"
-              center={
-                <CenterTet>请选择活动</CenterTet>
+          <TitleItem
+            text="基本信息"
+            fontSize={16}
+            titleBackColor="transparent"
+          />
+          <NavInputItem
+            leftText="姓名"
+            {...theme.getLeftStyle({
+                placeholder: SalesChanceEnum.name,
+                value: name,
+                onChangeText: name => this.setState({ name }),
+              })}
+          />
+          <NavInputItem
+            leftText="客户名称"
+            onPress={() => navigate(routers.customer, {
+                type: CustomerType,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    customerId: item.key,
+                    customerName: item.title,
+                  });
+                },
+              })}
+            center={
+              <CenterText active={customerId && customerName}>
+                {
+                    (customerId && customerName) ? customerName :
+                      SalesChanceEnum.customer
+                  }
+              </CenterText>
               }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="所属部门"
-              center={
-                <CenterTet>请选择所属部门</CenterTet>
+            {...theme.navItemStyle}
+          />
+          {/* <NavInputItem
+            leftText="市场活动"
+            onPress={() => navigate(routers.markActivity, {
+                type: MarkActivityType,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    activityId: item.key,
+                    activityName: item.title,
+                  });
+                },
+              })}
+            center={
+              <CenterText active={activityId && activityName}>
+                {
+                    (activityId && activityName) ? activityName :
+                      SalesChanceEnum.activity
+                  }
+              </CenterText>
               }
-              {...NavItemStyle}
-            />
-          </ListView>
+            {...theme.navItemStyle}
+          /> */}
+          <NavInputItem
+            leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
+                id: departmentId,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    departmentId: item.id,
+                    departmentName: item.name,
+                  });
+                },
+              })}
+            center={
+              <CenterText active={departmentId && departmentName}>
+                {
+                    (departmentId && departmentName) ? departmentName : SalesChanceEnum.department
+                  }
+              </CenterText>
+              }
+            {...theme.navItemStyle}
+          />
           <HorizontalDivider
             height={20}
           />
@@ -158,22 +257,42 @@ class CreateSalesChance extends Component {
   }
 }
 
-CreateSalesChance.navigationOptions = ({ navigation }) => ({
-  title: '新建销售机会',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={() => alert(1)}
-      right="完成"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+CreateSalesChance.navigationOptions = ({ navigation }) => {
+  const { 
+    state: { param: { onPressRight = () => {} } },
+    goBack,
+  } = navigation;
+  return ({
+    title: '新建销售机会',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => goBack()}
+      />
+    ),
+    headerRight: (
+      <RightView
+        onPress={onPressRight}
+        right="完成"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+      />
+    ),
+  });
+};
+
+CreateSalesChance.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default CreateSalesChance;
