@@ -84,7 +84,7 @@ export function getSalesClueList({
  *   companyName 公司名称 must
  *   activityId 市场活动 must
  *   departmentId 所属部门  must
- *   status  跟进状态 [枚举类型（LeadsStatusEnum）]
+ *   status  跟进状态 [枚举类型（LeadsStatus）]
  *   sex 性别
  *   leadsDepartmentName 部门名称 [线索人的部门名称]
  *   jobTitle 职务
@@ -92,10 +92,10 @@ export function getSalesClueList({
  *   mobilePhone 手机
  *   email 电子邮件
  *   weibo 微博
- *   location 省份+地址
+ *   locationId 地址Id
  *   postCode 邮政编码
- *   source 线索来源  [枚举类型（LeadsSource）]
- *   description 备注  [枚举类型（IndustryTypeEnum）]
+ *   source 线索来源 [枚举类型（LeadsSource）]
+ *   description 备注
  * }
  * @return Promise<Object>
  */
@@ -112,7 +112,7 @@ export function createSalesClue({
   mobilePhone,
   email,
   weibo,
-  location,
+  locationId,
   postCode,
   source,
   description,
@@ -131,7 +131,7 @@ export function createSalesClue({
     mobilePhone,
     email,
     weibo,
-    location,
+    locationId,
     postCode,
     source,
     description,
@@ -162,12 +162,13 @@ export function getSalesClueDetail({
  *   sex 性别
  *   companyName 公司名称 must
  *   leadsDepartmentName 部门名称
+ *   status  跟进状态 [枚举类型（LeadsStatus）]
  *   jobTitle 职务
- *   phone 公司总机
- *   mobilePhone 邮编
+ *   phone 电话
+ *   mobilePhone 手机
  *   email 电子邮件
  *   weibo 微博
- *   location 省份+地址
+ *   locationId 地址Id
  *   postCode 邮政编码
  *   source 线索来源
  *   activityId 市场活动
@@ -182,12 +183,13 @@ export function updateSalesClue({
   sex,
   companyName,
   leadsDepartmentName,
+  status,
   jobTitle,
   phone,
   mobilePhone,
   email,
   weibo,
-  location,
+  locationId,
   postCode,
   source,
   activityId,
@@ -201,12 +203,13 @@ export function updateSalesClue({
     sex,
     companyName,
     leadsDepartmentName,
+    status,
     jobTitle,
     phone,
     mobilePhone,
     email,
     weibo,
-    location,
+    locationId,
     postCode,
     source,
     activityId,

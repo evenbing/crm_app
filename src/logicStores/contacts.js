@@ -174,6 +174,7 @@ class ContactStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContactDetailsReq({ id: restProps.id });
+        this.getContactListReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {

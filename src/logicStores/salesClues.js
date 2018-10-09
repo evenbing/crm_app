@@ -19,6 +19,7 @@ import Toast from '../utils/toast';
 import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
+import { createLocationId } from '../service/app';
 
 useStrict(true);
 
@@ -78,13 +79,13 @@ class SalesClueStore {
     try {
       if (!id) throw new Error('id 不为空');
       const {
-        result = {},
+        leads = {},
         errors = [],
       } = await getSalesClueDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.salesClueDetail.list = [result];
-        this.salesClueDetail.map = result;
+        this.salesClueDetail.list = [leads];
+        this.salesClueDetail.map = leads;
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -129,11 +130,16 @@ class SalesClueStore {
   }
 
   // 新增
-  @action async createSalesClueReq(options, callback) {
+  @action async createSalesClueReq({ locationInfo, ...restProps }, callback) {
     try {
+      let locationId = null;
+      if (locationInfo) {
+        const { location: { id } } = await createLocationId(locationInfo);
+        locationId = id;
+      }
       const {
         errors = [],
-      } = await createSalesClue(options);
+      } = await createSalesClue({ locationId, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
@@ -146,15 +152,20 @@ class SalesClueStore {
   }
 
   // 编辑
-  @action async updateSalesClueReq(options, callback) {
+  @action async updateSalesClueReq({ locationInfo, ...restProps }, callback) {
     try {
+      let locationId = null;
+      if (locationInfo) {
+        const { location: { id } } = await createLocationId(locationInfo);
+        locationId = id;
+      }
       const {
         errors = [],
-      } = await updateSalesClue(options);
+      } = await updateSalesClue({ locationId, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        this.getSalesClueDetailReq({ id: options.id });
+        this.getSalesClueDetailReq({ id: restProps.id });
         this.getSalesClueListReq(this.queryProps);
         callback && callback();
       });

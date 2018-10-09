@@ -1,3 +1,9 @@
+/**
+ * @component EditorMore.js
+ * @description 新建市场活动/编辑页面
+ * @time 2018/8/15
+ * @author
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
@@ -27,9 +33,7 @@ class EditorMore extends React.Component {
     departmentId: null,
     departmentName: null,
     status: null,
-    statusName: null,
     sourceType: null,
-    sourceTypeName: null,
     description: null,
     budgetCost: null,
     budgetRevenue: null,
@@ -54,16 +58,6 @@ class EditorMore extends React.Component {
         endDate,
         departmentId,
         description,
-        status,
-        sourceType,
-        budgetCost,
-        budgetRevenue,
-        budgetPeopleNumber,
-        effect,
-        actualPeopleNumber,
-        actualCost,
-        actualRevenue,
-        executeDetail,
       },
       props: {
         navigation: { pop, state },
@@ -78,45 +72,13 @@ class EditorMore extends React.Component {
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
-        MarkActivityStore.createMarkActivityReq({
-          name,
-          beginDate,
-          endDate,
-          departmentId,
-          description,
-          status,
-          sourceType,
-          budgetCost,
-          budgetRevenue,
-          budgetPeopleNumber,
-          effect,
-          actualPeopleNumber,
-          actualCost,
-          executeDetail,
-        }, () => {
+        MarkActivityStore.createMarkActivityReq(this.state, () => {
           pop(2);
         });
         return;
       }
       if (!id) throw new Error('id 不为空');
-      MarkActivityStore.updateMarkActivityReq({
-        id,
-        name,
-        beginDate,
-        endDate,
-        departmentId,
-        description,
-        status,
-        sourceType,
-        budgetCost,
-        budgetRevenue,
-        budgetPeopleNumber,
-        effect,
-        actualPeopleNumber,
-        actualCost,
-        actualRevenue,
-        executeDetail,
-      }, () => {
+      MarkActivityStore.updateMarkActivityReq(this.state, () => {
         pop(1);
       });
     } catch (error) {
@@ -135,24 +97,16 @@ class EditorMore extends React.Component {
       beginDate,
       endDate,
     } = item;
-    const {
-      status,
-      sourceType,
-    } = item;
     if (beginDate) {
       beginDate = formatDateByMoment(beginDate);
     }
     if (endDate) {
       endDate = formatDateByMoment(endDate);
     }
-    const statusName = status ? MarketActivityStatus[status] : null;
-    const sourceTypeName = sourceType ? MarketActivityTypes[sourceType] : null;
     this.setState({
       ...formatNumberToString(item),
       beginDate,
       endDate,
-      statusName,
-      sourceTypeName,
     });
   };
 
@@ -166,9 +120,7 @@ class EditorMore extends React.Component {
         departmentName,
         description,
         status,
-        statusName,
         sourceType,
-        sourceTypeName,
         budgetCost,
         budgetRevenue,
         budgetPeopleNumber,
@@ -209,17 +161,16 @@ class EditorMore extends React.Component {
             onPress={() => navigate(routers.typePicker, {
               selectedKey: status,
               typeEnum: MarketActivityStatus,
-              callback: (key, value) => {
+              callback: (key) => {
                 this.setState({
                   status: key,
-                  statusName: value,
                 });
               },
             })}
             center={
 
-              <CenterText active={status && statusName}>
-                { (status && statusName) ? statusName : MarkActivityEnum.status }
+              <CenterText active={status}>
+                { status ? MarketActivityStatus[status] : MarkActivityEnum.status }
               </CenterText>
             }
             isLast
@@ -252,16 +203,15 @@ class EditorMore extends React.Component {
             onPress={() => navigate(routers.typePicker, {
               selectedKey: sourceType,
               typeEnum: MarketActivityTypes,
-              callback: (key, value) => {
+              callback: (key) => {
                 this.setState({
                   sourceType: key,
-                  sourceTypeName: value,
                 });
               },
             })}
             center={
-              <CenterText active={sourceType && sourceTypeName}>
-                { (sourceType && sourceTypeName) ? sourceTypeName : MarkActivityEnum.sourceType }
+              <CenterText active={sourceType}>
+                { sourceType ? MarketActivityTypes[sourceType] : MarkActivityEnum.sourceType }
               </CenterText>
             }
             isLast

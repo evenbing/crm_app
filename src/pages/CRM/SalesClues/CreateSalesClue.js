@@ -175,7 +175,7 @@ class CreateSalesClue extends React.Component {
           />
           <NavInputItem
             leftText="市场活动"
-            onPress={() => navigate(routers.salesChance, {
+            onPress={() => navigate(routers.markActivity, {
               type: SalesClueType,
               callback: (item) => {
                 debugger;

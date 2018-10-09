@@ -52,13 +52,12 @@ export const CustomerEnum = {
 
 // 市场活动表单
 export const MarkActivityEnum = {
-  // 必填
   name: '请输入活动名称',
   beginDate: '请选择开始日期',
   endDate: '请选择结束日期',
   departmentName: '请选择所属部门',
   description: '请输入活动说明',
-  // 可选
+  // more
   status: '请选择活动状态',
   sourceType: '请选择活动类型',
   budgetCost: '请输入活动成本',
@@ -92,21 +91,23 @@ export const ContactsEnum = {
 
 // 销售线索表单
 export const SalesClueEnum = {
-  // 必填
   name: '请输入姓名',
   companyName: '请输入公司名称',
   activityId: '请选择市场活动',
   departmentId: '请选择所属部门',
-  // 可选
-  status: '请选择活动状态',
-  sourceType: '请选择活动类型',
-  budgetCost: '请输入活动成本',
-  budgetRevenue: '请输入预期收入',
-  budgetPeopleNumber: '请输入邀请人数',
-  effect: '请输入预期响应',
-  actualPeopleNumber: '请输入实际人数',
-  actualCost: '请输入实际成本',
-  executeDetail: '请输入备注',
+  // more
+  id: '缺失主键ID',
+  sex: '请选择性别',
+  jobTitle: '请输入职务',
+  phone: '请输入电话',
+  mobilePhone: '请输入手机',
+  email: '请输入电子邮件',
+  weibo: '请输入微博',
+  location: '请选择省份',
+  address: '请输入地址',
+  postCode: '请输入邮政编码',
+  source: '请选择线索来源',
+  description: '请输入备注',
 };
 
 // 销售机会表单

@@ -42,7 +42,8 @@ class Create extends React.Component {
   }
   onPressRight = () => {
     const {
-      state: { name,
+      state: {
+        name,
         beginDate,
         endDate,
         departmentId,
@@ -60,13 +61,7 @@ class Create extends React.Component {
       if (!endDate) throw new Error(MarkActivityEnum.endDate);
       if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
       if (!description) throw new Error(MarkActivityEnum.description);
-      MarkActivityStore.createMarkActivityReq({
-        name,
-        beginDate,
-        endDate,
-        departmentId,
-        description,
-      }, () => {
+      MarkActivityStore.createMarkActivityReq(this.state, () => {
         goBack();
       });
     } catch (error) {
