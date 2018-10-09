@@ -258,8 +258,8 @@ class CreateSalesChance extends Component {
 }
 
 CreateSalesChance.navigationOptions = ({ navigation }) => {
-  const { 
-    state: { param: { onPressRight = () => {} } },
+  const {
+    state: { params: { onPressRight = () => {} } },
     goBack,
   } = navigation;
   return ({
