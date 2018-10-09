@@ -1,6 +1,6 @@
 /**
- * @component Editor.js
- * @description 编辑资料页面
+ * @component Create.js
+ * @description 新建市场活动页面
  * @time 2018/9/2
  * @author JUSTIN XU
  */
@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { View } from 'react-native';
 import moment from 'moment';
 import { routers, theme } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -37,7 +36,7 @@ const ListView = styled.View`
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
-class Editor extends React.Component {
+class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,19 +89,6 @@ class Editor extends React.Component {
     }
   }
 
-  getLeftStyle = (placeholder, width = 80) => {
-    return {
-      inputProps: {
-        placeholder,
-        fontSize: moderateScale(16),
-      },
-      leftTextStyle: {
-        color: '#373737',
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
-  };
   render() {
     const {
       props: {
@@ -233,7 +219,7 @@ class Editor extends React.Component {
   }
 }
 
-Editor.navigationOptions = ({ navigation }) => ({
+Create.navigationOptions = ({ navigation }) => ({
   title: '新增市场活动',
   headerLeft: (
     <LeftBackIcon
@@ -251,9 +237,9 @@ Editor.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-Editor.defaultProps = {};
+Create.defaultProps = {};
 
-Editor.propTypes = {
+Create.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -267,4 +253,4 @@ Editor.propTypes = {
   }).isRequired,
 };
 
-export default Editor;
+export default Create;

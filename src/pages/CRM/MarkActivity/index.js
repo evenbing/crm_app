@@ -1,6 +1,6 @@
 /**
  * @component index.js
- * @description 销售线索页面
+ * @description 市场活动页面
  * @time 2018/8/6
  * @author JUSTIN XU
  */
@@ -12,35 +12,37 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
-
-// components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
-import FlatListTable from '../../../components/FlatListTable';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
-
-import { FilterList } from './_fieldCfg';
-import MarkActivityStore from '../../../logicStores/markActivity';
 import {
   MarkActivityTimeTypeFilterMap,
   MarkActivityResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
-import { formatDate } from '../../../utils/base';
-import { MarkActivityType } from '../../../constants/enum';
+import { formatDateByMoment, formatDateType } from '../../../utils/base';
+import { MarkActivityType, MarketActivityStatus } from '../../../constants/enum';
+
+// components
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
+import SearchInput from '../../../components/SearchInput';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
+import FlatListTable from '../../../components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+
+import { FilterList } from './_fieldCfg';
+import MarkActivityStore from '../../../logicStores/markActivity';
 
 useStrict(true);
 
 @observer
-class SalesClues extends React.Component {
+class MarkActivity extends React.Component {
   state = {
     activeIndex: 0,
     drawerVisible: false,
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
+    // screenTab
     screenTabList: [
       MarkActivityTimeTypeFilterMap,
       MarkActivityResponsibilityTypeFilterMap,
@@ -54,7 +56,7 @@ class SalesClues extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.markActivityEditor, {
+    this.props.navigation.navigate(routers.markActivityCreate, {
       reFetchDataList: this.getData,
     });
   };
@@ -64,6 +66,12 @@ class SalesClues extends React.Component {
       // TODO open drawer
       this.onOpenDrawer();
     }
+  };
+  onPressFilterItem = async ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    await this.setState({ screenTabList });
+    this.getData();
   };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
@@ -107,14 +115,12 @@ class SalesClues extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = MarkActivityStore.markActivityList;
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
   };
-
   getData = (pageNumber = 1) => {
     const { screenTabList, searchValue } = this.state;
     const obj = {
@@ -128,20 +134,30 @@ class SalesClues extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContractModel.getContactListReq(obj);
-    MarkActivityStore.getMarkActivityListReq({ pageNumber });
+    MarkActivityStore.getMarkActivityListReq(obj);
   };
-
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-
-  keyExtractor = item => item.key;
-
   renderItem = (itemProps) => {
-    const { index, item } = itemProps;
+    const { index, item: prevItem } = itemProps;
+    const statusText = prevItem.status ? MarketActivityStatus[prevItem.status] : null;
+    const statusColor = statusText === '已计划' ? theme.primaryColor : null;
+    // 格式化item
+    const item = {
+      ...prevItem,
+      key: prevItem.id,
+      title: prevItem.name,
+      tipList: [
+        `开始时间：${formatDateByMoment(prevItem.beginDate, formatDateType)}`,
+        `结束时间：${formatDateByMoment(prevItem.endDate, formatDateType)}`,
+      ],
+      statusText,
+      statusColor,
+    };
+    itemProps.item = item;
     const {
       navigation: { navigate, state, goBack },
     } = this.props;
@@ -225,34 +241,16 @@ class SalesClues extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        searchValue,
         screenTabList,
       },
     } = this;
     const {
       markActivityList: { list, refreshing, loadingMore },
     } = MarkActivityStore;
-    const data = list.map((item) => {
-      const {
-        id,
-        name,
-        beginDate,
-        endDate = '1535990400000',
-        status = 0,
-      } = item;
-      return ({
-        key: id,
-        title: name,
-        tipList: [
-          `开始时间：${formatDate(new Date(parseInt(beginDate, 10)), 'yyyy-MM-dd')}`,
-          `结束时间：${formatDate(new Date(parseInt(endDate, 10)), 'yyyy-MM-dd')}`,
-        ],
-        status,
-      });
-    });
     const flatProps = {
-      data,
+      data: list,
       renderItem: this.renderItem,
-      keyExtractor: this.keyExtractor,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,
@@ -269,11 +267,17 @@ class SalesClues extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入客户名称"
+            value={searchValue}
+            onChangeText={searchValue => this.setState({ searchValue })}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
             list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
           <FlatListTable {...flatProps} />
@@ -283,7 +287,7 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation }) => {
+MarkActivity.navigationOptions = ({ navigation }) => {
   const { onPressRight, type } = navigation.state.params || {};
   const bool = type === MarkActivityType;
   return ({
@@ -307,11 +311,9 @@ SalesClues.navigationOptions = ({ navigation }) => {
   });
 };
 
-SalesClues.defaultProps = {
-  index: '',
-};
+MarkActivity.defaultProps = {};
 
-SalesClues.propTypes = {
+MarkActivity.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -323,8 +325,7 @@ SalesClues.propTypes = {
       params: PropTypes.object,
     }),
   }).isRequired,
-  index: PropTypes.string,
 };
 
-export default SalesClues;
+export default MarkActivity;
 

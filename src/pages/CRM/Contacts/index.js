@@ -112,7 +112,6 @@ class Contacts extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
@@ -142,7 +141,6 @@ class Contacts extends React.Component {
       obj[v] = true;
     });
     ContactsModel.getContactListReq(obj);
-    // ContactsModel.getContactListReq({ pageNumber });
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {

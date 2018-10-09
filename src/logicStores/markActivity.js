@@ -17,18 +17,36 @@ import {
 } from '../service/markActivity';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
+import { find as getTaskScheduleList } from '../service/taskSchedule';
+import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
+import { getSalesChanceList } from '../service/salesChance';
+import { getSalesClueList } from '../service/salesClues';
 
 useStrict(true);
+
+const initTotal = {
+  scheduleTotal: 0,
+  taskTotal: 0,
+  saleClueTotal: 0,
+  saleChanceTotal: 0,
+};
+
 @autobind
 class MarkActivityStore {
   // 列表
   @observable markActivityList = initFlatList;
   // 详情
   @observable markActivityDetail = initDetailMap;
+  // 总计
+  @observable markActivityTotal = initTotal;
+
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
 
   // 列表
   @action async getMarkActivityListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.markActivityList.refreshing = true;
       } else {
@@ -70,6 +88,7 @@ class MarkActivityStore {
       } = await getMarkActivityDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
+        this.markActivityDetail.list = [activity];
         this.markActivityDetail.map = activity;
       });
     } catch (e) {
@@ -77,16 +96,101 @@ class MarkActivityStore {
     }
   }
 
+  // 总计
+  @action async getMarkActivityTotalReq({ id, pageSize = 1 }) {
+     try {
+       const {
+         totalCount: taskTotal = 0,
+         errors: taskErrors = [],
+       } = await getTaskScheduleList({
+         type: TASK_TYPE,
+         moduleId: id,
+         moduleType: ModuleType.activity,
+         pageSize,
+       });
+       if (taskErrors.length) throw new Error(taskErrors[0].message);
+       const {
+         totalCount: scheduleTotal = 0,
+         errors: scheduleErrors = [],
+       } = await getTaskScheduleList({
+         type: SCHEDULE_TYPE,
+         moduleId: id,
+         moduleType: ModuleType.activity,
+         pageSize,
+       });
+       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
+       const {
+         totalCount: saleClueTotal = 0,
+         errors: saleClueErrors = [],
+       } = await getSalesClueList({ activityId: id, pageSize });
+       if (saleClueErrors.length) throw new Error(saleClueErrors[0].message);
+       const {
+         totalCount: saleChanceTotal = 0,
+         errors: saleChanceErrors = [],
+       } = await getSalesChanceList({ customerId: id, pageSize });
+       if (saleChanceErrors.length) throw new Error(saleChanceErrors[0].message);
+       runInAction(() => {
+         this.contactTotal = {
+           scheduleTotal,
+           taskTotal,
+           saleClueTotal,
+           saleChanceTotal,
+         };
+       });
+     } catch (e) {
+       Toast.showError(e.message);
+       runInAction(() => {
+         this.contactTotal = initTotal;
+       });
+     }
+   }
+
   // 新增
   @action async createMarkActivityReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await createMarkActivity(options);
+      if (errors.length) throw new Error(errors[0].message);
+      debugger;
+      runInAction(() => {
+        this.getMarkActivityListReq(this.queryProps);
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+   // 编辑
+   @action async updateMarkActivityReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateMarkActivity(options);
+      if (errors.length) throw new Error(errors[0].message);
+      debugger;
+      runInAction(() => {
+        this.getMarkActivityDetailReq({ id: options.id });
+        this.getMarkActivityListReq(this.queryProps);
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+   // 转移负责人
+   @action async updateOwnerUserReq(options, callback) {
      try {
        const {
          errors = [],
-       } = await createMarkActivity(options);
+       } = await changeOwnerUser(options);
        if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
-         this.getMarkActivityListReq();
+         this.getMarkActivityDetailReq({ id: options.id });
+         this.getMarkActivityListReq(this.queryProps);
          callback && callback();
        });
      } catch (e) {
@@ -94,58 +198,8 @@ class MarkActivityStore {
      }
    }
 
-   // 编辑
-   @action async updateMarkActivityReq(options) {
-    try {
-      const {
-        result = {},
-        errors = [],
-      } = await updateMarkActivity(options);
-      if (errors.length) throw new Error(errors[0].message);
-      debugger;
-      runInAction(() => {
-        // TODO next
-        this.markActivityDetail = { ...result };
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-   //  // 合并相同的客户
-   //  @action async mergeSalesChanceReq(options) {
-   //    try {
-   //      const {
-   //        result = {},
-   //      } = await mergeSalesChance(options);
-   //      debugger;
-   //      runInAction(() => {
-   //        // TODO next
-   //        this.markActivityDetail = { ...result };
-   //      });
-   //    } catch (e) {
-   //      Toast.showError(e.message);
-   //    }
-   //  }
-
-   // 转移客户负责人
-   @action async changeOwnerUserReq(options) {
-     try {
-       const {
-         result = {},
-       } = await changeOwnerUser(options);
-       debugger;
-       runInAction(() => {
-         // TODO next
-         this.markActivityDetail = { ...result };
-       });
-     } catch (e) {
-       Toast.showError(e.message);
-     }
-   }
-
    // 关注
-   @action async batchCreateFollowReq(options) {
+   @action async updateFollowStatusReq(options, callback) {
      try {
        const {
          errors = [],
@@ -153,7 +207,9 @@ class MarkActivityStore {
        if (errors.length) throw new Error(errors[0].message);
        debugger;
        runInAction(() => {
-         this.getMarkActivityListReq();
+         this.getMarkActivityDetailReq({ id: options.id });
+         this.getMarkActivityListReq(this.queryProps);
+         callback && callback();
        });
      } catch (e) {
        Toast.showError(e.message);
