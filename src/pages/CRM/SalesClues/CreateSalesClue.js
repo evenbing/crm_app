@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import { theme, routers } from '../../../constants';
 import { SalesClueEnum } from '../../../constants/form';
-import { SalesClueType, MarkActivityType } from '../../../constants/enum';
+import { MarkActivityType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
 
 // components
@@ -66,7 +66,7 @@ class CreateSalesClue extends React.Component {
         goBack();
       });
     } catch (error) {
-      Toast.showError(error.message);
+      Toast.showWarning(error.message);
     }
   };
   render() {

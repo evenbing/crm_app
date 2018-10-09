@@ -291,7 +291,7 @@ MarkActivity.navigationOptions = ({ navigation }) => {
   const { onPressRight, type } = navigation.state.params || {};
   const bool = type === MarkActivityType;
   return ({
-    title: '市场活动',
+    title: bool ? '选择市场活动' : '市场活动',
     headerLeft: (
       <LeftBackIcon
         onPress={() => navigation.goBack()}

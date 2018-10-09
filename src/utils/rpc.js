@@ -29,7 +29,7 @@ export const isArray = (o) => {
 
 export function getPassportId(){
   return new Promise(function (resolve, reject) {
-    resolve('1034738035494883328');
+    __DEV__ && resolve('1034738035494883328');
     NativeModules.security.getPassportId().then((result) => {
         resolve(result);
       }
@@ -41,7 +41,7 @@ export function getPassportId(){
 
 function identityId(){
   return  new Promise(function (resolve, reject) {
-    resolve('801689539428098048');
+    __DEV__ && resolve('801689539428098048');
     NativeModules.security.getIdentityId().then((result) => {
         resolve(result);
       }

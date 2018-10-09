@@ -15,7 +15,7 @@ import theme from '../../constants/theme';
 
 // components
 import FooterGroup from './FooterGroup';
-import AddButton from './AddButton';
+// import AddButton from './AddButton';
 import LabelItem from './LabelItem';
 import {
   ContainerView,
@@ -88,7 +88,7 @@ class FilterSideBar extends React.PureComponent {
       props: {
         onReset,
         onFilter,
-        onPressAdd,
+        // onPressAdd,
       },
     } = this;
     return (
@@ -96,9 +96,11 @@ class FilterSideBar extends React.PureComponent {
         <HeaderView>
           <TopTitleText>字段筛选</TopTitleText>
           {this.renderLabelList()}
-          <AddButton
+          {/*
+           <AddButton
             onPress={onPressAdd}
           />
+           */}
         </HeaderView>
         <FooterGroup
           onReset={onReset}

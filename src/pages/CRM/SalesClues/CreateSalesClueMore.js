@@ -82,7 +82,7 @@ class CreateSalesClueMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showError(e.message);
+      Toast.showWarning(e.message);
     }
   };
   initState = () => {

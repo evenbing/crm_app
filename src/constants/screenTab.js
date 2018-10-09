@@ -15,7 +15,7 @@ import listIcon from '../img/crm/screenTab/list.png';
 // import boardIcon from '../img/crm/screenTab/board.png';
 
 // 下拉
-const initFilterListMap = {
+export const initFilterListMap = {
   selectedIndex: 0,
   focusIcon: triangleFocusIcon,
   icon: triangleIcon,
@@ -23,7 +23,7 @@ const initFilterListMap = {
   showFilter: true,
 };
 
-const initBoardOrListMap = {
+export const initBoardOrListMap = {
   selectedIndex: 0,
   focusIcon: listIcon,
   icon: listIcon,
@@ -31,7 +31,7 @@ const initBoardOrListMap = {
   showFilter: false,
 };
 
-const initDrawerMap = {
+export const initDrawerMap = {
   selectedIndex: 0,
   focusIcon: screenFocusIcon,
   icon: screenIcon,
@@ -207,46 +207,6 @@ export const SalesCluesTimeTypeFilterMap = {
   *  销售线索 责任类型
   */
 export const SalesCluesResponsibilityTypeFilterMap = {
-  ...initFilterListMap,
-  list: [
-    {
-      key: 'my',
-      name: '我负责的',
-    },
-    {
-      key: 'myParticipate',
-      name: '我参与的',
-    },
-    {
-      key: 'sevenDaysUninvolved',
-      name: '7天未跟进的',
-    },
-    {
-      key: 'all',
-      name: '全部',
-    },
-  ],
-};
-
-/**
- * 市场活动 时间类型
- */
-export const ContactsTimeTypeFilterMap = {
-  ...initFilterListMap,
-  list: [
-    {
-      key: 'createTime',
-      name: '创建时间',
-    },
-    {
-      key: 'followTime',
-      name: '跟进时间',
-    },
-  ],
-};
-
-// 联系人 责任类型
-export const ContactsResponsibilityTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {

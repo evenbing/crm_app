@@ -73,7 +73,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      Toast.showWarning(e.message);
     }
   };
   render() {

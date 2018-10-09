@@ -13,6 +13,11 @@ import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { CustomerType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
+import {
+  CustomerTimeTypeFilterMap,
+  CustomerResponsibilityTypeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -24,11 +29,6 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 
 import { FilterList } from './_fieldCfg';
 import CustomerStore from '../../../logicStores/customer';
-import {
-  CustomerTimeTypeFilterMap,
-  CustomerResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
 
 useStrict(true);
 
@@ -41,32 +41,37 @@ class Customer extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
+    // screenTab
     screenTabList: [
       CustomerTimeTypeFilterMap,
       CustomerResponsibilityTypeFilterMap,
       DrawerFilterMap,
     ],
   };
-
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
     this.getData();
   }
-
   onPressRight = () => {
     this.props.navigation.navigate(routers.createCustomer, {
       reFetchDataList: this.getData,
     });
   };
-  
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
       // TODO open drawer
       this.onOpenDrawer();
     }
+  };
+  onPressFilterItem = async ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    await this.setState({ screenTabList });
+    this.getData();
   };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
@@ -110,14 +115,12 @@ class Customer extends React.Component {
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = CustomerStore.customerList;
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
   };
-
   getData = (pageNumber = 1) => {
     const { screenTabList, searchValue } = this.state;
     const obj = {
@@ -131,20 +134,25 @@ class Customer extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContractModel.getContactListReq(obj);
-    CustomerStore.getCustomerListReq({ pageNumber });
+    CustomerStore.getCustomerListReq(obj);
   };
-
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-
-  keyExtractor = item => item.key;
-
   renderItem = (itemProps) => {
-    const { index, item } = itemProps;
+    const { index, item: prevItem } = itemProps;
+    // 格式化item
+    const item = {
+      ...prevItem,
+      key: prevItem.id,
+      title: prevItem.name,
+      tipList: [
+        `最近跟进时间：${prevItem.pinyin}`,
+      ],
+    };
+    itemProps.item = item;
     const {
       navigation: { navigate, state, goBack },
     } = this.props;
@@ -231,22 +239,15 @@ class Customer extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        searchValue,
         screenTabList,
       },
     } = this;
     const {
       customerList: { list, refreshing, loadingMore },
     } = CustomerStore;
-    const data = list.map((item) => {
-      const { id, name, pinyin } = item;
-      return ({
-        key: id,
-        title: name,
-        tipList: [`最近跟进时间：${pinyin}`],
-      });
-    });
     const flatProps = {
-      data,
+      data: list,
       renderItem: this.renderItem,
       keyExtractor: this.keyExtractor,
       onRefresh: this.getData,
@@ -265,11 +266,17 @@ class Customer extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入客户名称"
+            value={searchValue}
+            onChangeText={searchValue => this.setState({ searchValue })}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
             list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
           <FlatListTable {...flatProps} />
@@ -303,8 +310,7 @@ Customer.navigationOptions = ({ navigation }) => {
   };
 };
 
-Customer.defaultProps = {
-};
+Customer.defaultProps = {};
 
 Customer.propTypes = {
   navigation: PropTypes.shape({

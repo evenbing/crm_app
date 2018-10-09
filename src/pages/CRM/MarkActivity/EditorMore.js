@@ -82,7 +82,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (error) {
-      Toast.showError(error.message);
+      Toast.showWarning(error.message);
     }
   };
   initState = () => {

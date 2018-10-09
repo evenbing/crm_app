@@ -65,7 +65,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (error) {
-      Toast.showError(error.message);
+      Toast.showWarning(error.message);
     }
   };
   render() {

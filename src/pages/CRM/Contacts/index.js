@@ -23,15 +23,17 @@ import FlatListTable from '../../../components/FlatListTable';
 import LeftItem from './components/LeftItem';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
-import { FilterList } from './_fieldCfg';
 import ContactsModel from '../../../logicStores/contacts';
 
-// screenTab
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 import {
   ContactsTimeTypeFilterMap,
   ContactsResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+  FilterList,
+} from './_fieldCfg';
 
 useStrict(true);
 

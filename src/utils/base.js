@@ -21,7 +21,21 @@ export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
 
 // nav go back
 export function nativeGoBack() {
-  NativeModules.system && NativeModules.system.navTo('BACK');
+  try {
+    NativeModules.system.navTo('BACK');
+  } catch (e) {
+    console.log("system don't support navTo");
+  }
+}
+
+// call telPhone
+export function nativeCallPhone(telPhone) {
+  if (!telPhone) return;
+  try {
+    NativeModules.system.call(telPhone);
+  } catch (e) {
+    console.log("system don't support call");
+  }
 }
 
 // 递归生产二维数组

@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId } from '../../../utils/base';
+import { getUserId, nativeCallPhone } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -140,7 +140,12 @@ class Details extends React.Component {
     });
   };
   onPressPhone = () => {
-    // TODO
+    const {
+      salesClueDetail: {
+        map,
+      },
+    } = SalesCluesModel;
+    nativeCallPhone(map.mobilePhone || map.phone);
   };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};

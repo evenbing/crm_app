@@ -24,7 +24,9 @@ import { post } from '../utils/rpc';
  *   phoneNumber 电话
  *   mobilePhone 手机
  *   email 性别
- *   sortColumn 表头排序 目前不支持
+ *   province 省份
+ *   address 地址
+ *   sortColumn 表头排序
  *   customerId 客户id
  * }
  * @return Promise<ArrayList>
@@ -45,6 +47,8 @@ export function getContactList({
   phoneNumber,
   mobilePhone,
   email,
+  province,
+  address,
   sortColumn,
   customerId,
 } = {}) {
@@ -65,6 +69,8 @@ export function getContactList({
     phoneNumber,
     mobilePhone,
     email,
+    province,
+    address,
     sortColumn,
     customerId,
   });
