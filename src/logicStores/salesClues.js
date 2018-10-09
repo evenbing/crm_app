@@ -2,6 +2,7 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-11 10:20:55
  * @Last Modified by: Edmond.Shi
+ * @Add JUSTIN XU 2018-10-9
  * @Last Modified time: 2018-09-20 16:14:55
  */
 
@@ -15,19 +16,30 @@ import {
   changeOwnerUser,
 } from '../service/salesClues';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initDetailMap, initFlatList } from './initState';
+import { find as getTaskScheduleList } from '../service/taskSchedule';
+import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
 
 useStrict(true);
+
+const initTotal = {
+  scheduleTotal: 0,
+  taskTotal: 0,
+};
 
 @autobind
 class SalesClueStore {
   // 列表
   @observable salesClueList = initFlatList;
-
   // 详情
-  @observable salesClueDetail = {};
+  @observable salesClueDetail = initDetailMap;
+  // 详情
+  @observable salesClueTotal = initTotal;
 
-  // 获取列表
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
+  // 列表
   @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
@@ -71,25 +83,62 @@ class SalesClueStore {
       } = await getSalesClueDetail({ id });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.salesClueDetail = { ...result };
+        this.salesClueDetail.list = [result];
+        this.salesClueDetail.map = result;
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   }
 
-  // 新增
-  @action async createSalesClueReq(options) {
+  // 总计
+  @action async getSalesClueTotalReq({ id, pageSize = 1 }) {
     try {
       const {
-        result = {},
+        totalCount: taskTotal = 0,
+        errors: taskErrors = [],
+      } = await getTaskScheduleList({
+        type: TASK_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.activity,
+        pageSize,
+      });
+      if (taskErrors.length) throw new Error(taskErrors[0].message);
+      const {
+        totalCount: scheduleTotal = 0,
+        errors: scheduleErrors = [],
+      } = await getTaskScheduleList({
+        type: SCHEDULE_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.activity,
+        pageSize,
+      });
+      if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
+      runInAction(() => {
+        this.contactTotal = {
+          scheduleTotal,
+          taskTotal,
+        };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+      runInAction(() => {
+        this.contactTotal = initTotal;
+      });
+    }
+  }
+
+  // 新增
+  @action async createSalesClueReq(options, callback) {
+    try {
+      const {
         errors = [],
       } = await createSalesClue(options);
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.salesClueDetail = { ...result };
+        this.getSalesClueListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -97,49 +146,35 @@ class SalesClueStore {
   }
 
   // 编辑
-  @action async updateSalesClueReq(options) {
+  @action async updateSalesClueReq(options, callback) {
     try {
       const {
-        result = {},
         errors = [],
       } = await updateSalesClue(options);
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.salesClueDetail = { ...result };
+        this.getSalesClueDetailReq({ id: options.id });
+        this.getSalesClueListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
     }
   }
 
-  // 合并相同的客户
-  // @action async mergeSalesClueReq(options) {
-  //   try {
-  //     const {
-  //       result = {},
-  //     } = await mergeSalesClue(options);
-  //     debugger;
-  //     runInAction(() => {
-  //       // TODO next
-  //       this.salesClueDetail = { ...result };
-  //     });
-  //   } catch (e) {
-  //     Toast.showError(e.message);
-  //   }
-  // }
-
   // 转移负责人
-  @action async changeOwnerUserReq(options) {
+  @action async updateOwnerUserReq(options, callback) {
     try {
       const {
-        result = {},
+        errors = [],
       } = await changeOwnerUser(options);
+      if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {
-        // TODO next
-        this.salesClueDetail = { ...result };
+        this.getSalesClueDetailReq({ id: options.id });
+        this.getSalesClueListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

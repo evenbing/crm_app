@@ -6,10 +6,11 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { View } from 'react-native';
-import moment from 'moment';
-import { routers, theme } from '../../../constants';
+import { theme, routers } from '../../../constants';
+import { formatDateByMoment } from '../../../utils/base';
+import { MarkActivityEnum } from '../../../constants/form';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -19,42 +20,26 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import NavInputItem from '../../../components/NavInputItem';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import TitleItem from '../../../components/Details/TitleItem';
-import { formatDate } from '../../../utils/base';
 import DateTimePicker from '../../../components/DateTimePicker';
-import { MarkActivityEnum } from '../../../constants/form';
-import { CenterText } from '../../../components/Styles/Form';
+import { ListView, CenterText } from '../../../components/Styles/Form';
+
 import MarkActivityStore from '../../../logicStores/markActivity';
-import Toast from '../../../utils/toast';
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-// const RightText = CenterText.extend`
-//   color: ${theme.textColor};
-// `;
-
-const formatDateType = 'yyyy-MM-dd hh:mm';
 
 class Create extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: null,
-      beginDate: null,
-      endDate: null,
-      departmentId: null,
-      departmentName: null,
-      description: null,
-    };
-  }
+  state = {
+    name: null,
+    beginDate: null,
+    endDate: null,
+    departmentId: null,
+    departmentName: null,
+    description: null,
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-
   onPressRight = () => {
     const {
       state: { name,
@@ -77,8 +62,8 @@ class Create extends React.Component {
       if (!description) throw new Error(MarkActivityEnum.description);
       MarkActivityStore.createMarkActivityReq({
         name,
-        beginDate: moment(beginDate).format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss'),
+        beginDate,
+        endDate,
         departmentId,
         description,
       }, () => {
@@ -87,16 +72,9 @@ class Create extends React.Component {
     } catch (error) {
       Toast.showError(error.message);
     }
-  }
-
+  };
   render() {
     const {
-      props: {
-        navigation: {
-          push,
-          navigate,
-        },
-      },
       state: {
         name,
         beginDate,
@@ -104,6 +82,12 @@ class Create extends React.Component {
         departmentId,
         departmentName,
         description,
+      },
+      props: {
+        navigation: {
+          push,
+          navigate,
+        },
       },
     } = this;
     return (
@@ -128,7 +112,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  beginDate: `${formatDate(date, formatDateType)}`,
+                  beginDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -147,7 +131,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDate(date, formatDateType)}`,
+                  endDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -185,7 +169,7 @@ class Create extends React.Component {
             {...theme.navItemStyle}
           />
           <NavInputItem
-            leftText="备注"
+            leftText="活动说明"
             center={<View />}
             right={<View />}
             height={44}
@@ -206,12 +190,7 @@ class Create extends React.Component {
         />
         <CreateMoreButton
           onPress={() => push(routers.markActivityEditorMore, {
-            name,
-            beginDate,
-            endDate,
-            departmentId,
-            departmentName,
-            description,
+            item: this.state,
           })}
         />
       </ContainerView>

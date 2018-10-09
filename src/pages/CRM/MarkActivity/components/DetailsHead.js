@@ -19,11 +19,11 @@ import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
 import TouchableView from '../../../../components/TouchableView';
 
-// padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
 const PhoneView = styled(TouchableView)`
-  width: ${theme.moderateScale(54)};
+  min-width: ${theme.moderateScale(54)};
+  padding: 0 ${theme.moderateScale(3)}px;
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(15)};
   border: 1px solid ${theme.whiteColor};

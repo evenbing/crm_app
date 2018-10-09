@@ -67,6 +67,7 @@ export const MarkActivityEnum = {
   effect: '请输入预期响应',
   actualPeopleNumber: '请输入实际人数',
   actualCost: '请输入实际成本',
+  actualRevenue: '请输入实际收入',
   executeDetail: '请输入备注',
 };
 
@@ -89,6 +90,25 @@ export const ContactsEnum = {
   description: '请输入备注说明',
 };
 
+// 销售线索表单
+export const SalesClueEnum = {
+  // 必填
+  name: '请输入姓名',
+  companyName: '请输入公司名称',
+  activityId: '请选择市场活动',
+  departmentId: '请选择所属部门',
+  // 可选
+  status: '请选择活动状态',
+  sourceType: '请选择活动类型',
+  budgetCost: '请输入活动成本',
+  budgetRevenue: '请输入预期收入',
+  budgetPeopleNumber: '请输入邀请人数',
+  effect: '请输入预期响应',
+  actualPeopleNumber: '请输入实际人数',
+  actualCost: '请输入实际成本',
+  executeDetail: '请输入备注',
+};
+
 // 销售机会表单
 export const SalesChanceEnum = {
   name: '请输入机会名称',
@@ -104,28 +124,6 @@ export const SalesChanceEnum = {
   activity: '请选择市场活动',
   opportunityType: '请选择机会类型',
   sourceType: '请选择机会来源',
-};
-
-// 销售线索
-export const SalesClueEnum = {
-  name: '请输入姓名',
-  companyName: '请输入公司名称',
-  activity: '请选择市场活动',
-  department: '请选择所属部门',
-  status: '请选择跟进状态',
-  sex: '请选择性别',
-  leadsDepartmentName: '请输入部门名称',
-  jobTitle: '请输入职务',
-  phone: '请输入电话',
-  mobilePhone: '请输入手机',
-  email: '请输入电子邮件',
-  weibo: '请输入微博',
-  districts: '请选择省、市、区',
-  address: '请输入地址',
-  location: '请选择地址',
-  postCode: '请输入邮政编码',
-  source: '请选择线索来源',
-  description: '请输入备注',
 };
 
 // 合同表单
@@ -152,6 +150,7 @@ export const ContractEnum = {
 
 // 回款计划
 export const ReceivablePlanEnum = {
+  code: '缺失编号',
   id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',
@@ -163,6 +162,7 @@ export const ReceivablePlanEnum = {
 
 // 回款记录
 export const ReceivableRecordEnum = {
+  code: '缺失编号',
   id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',

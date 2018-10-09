@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
+import { getUserId } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -18,13 +19,13 @@ import Toast from '../../../utils/toast';
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
-import ActivityDetailsItem from './components/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
+import DetailsHead from './components/DetailsHead';
+import ActivityDetailsItem from './components/ActivityDetailsItem';
 
 import SalesCluesModel from '../../../logicStores/salesClues';
 import DynamicModel from '../../../logicStores/dynamic';
@@ -61,34 +62,30 @@ class Details extends React.Component {
     tabIndex: 0,
     cacheImageMap: {},
   };
-
   componentDidMount() {
     this.getDynamicList();
     this.getSalesCuleDetail();
+    this.getSalesCuleTotal();
   }
-
   componentWillUnmount() {
     DynamicModel.clearModuleType();
   }
-
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-
   onEndReached = () => {
     const { total = 0, [dynamicPactList]: list = [], pageNumber = 1, loadingMore } = DynamicModel.dynamicList;
     if (list.length < total && loadingMore === false) {
       this.getDynamicList(pageNumber + 1);
     }
   };
-
   onPressImage = async ({ file }) => {
     try {
       const businessId = await getNewId();
       AttachmentModel.uploadImageReq({
         file,
         businessId,
-        businessType: ModuleType.pact,
+        businessType: ModuleType.clues,
       }, (result) => {
         const { attachment = {} } = result;
         this.setState({
@@ -102,7 +99,6 @@ class Details extends React.Component {
       Toast.showError(err.message);
     }
   };
-
   onPressSend = ({ content, contentType }, callback) => {
     const {
       state: {
@@ -118,40 +114,56 @@ class Details extends React.Component {
       content,
       contentType,
       moduleId: item.key,
-      moduleType: ModuleType.pact,
+      moduleType: ModuleType.clues,
     }, () => {
       this.setState({ cacheImageMap: {} });
       callback && callback();
     });
   };
-
-  onPressTeamMember = () => {
+  onPressChoiceTeam = () => {
     const {
-      navigation: {
-        navigate,
+      props: {
+        navigation: { navigate, state },
       },
-    } = this.props;
-    navigate(routers.teamMembers);
-  }
-
+    } = this;
+    const { item } = state.params || {};
+    const { salesClueDetail: { map } } = SalesCluesModel;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        SalesCluesModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.userId,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
-      moduleType: ModuleType.pact,
+      moduleType: ModuleType.clues,
       moduleId: item.key,
     });
   };
-
   getSalesCuleDetail = () => {
-    const { item: { key } } = this.props.navigation.state.params || {};
-    SalesCluesModel.getSalesClueDetailReq({ id: key });
+    const { item } = this.props.navigation.state.params || {};
+    SalesCluesModel.getSalesClueDetailReq(item);
   };
-
+  getSalesCuleTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    SalesCluesModel.getSalesClueTotalReq(item);
+  };
   renderTotalItem = () => {
+    const {
+      salesClueTotal: {
+        scheduleTotal, taskTotal,
+      },
+    } = SalesCluesModel;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '10' },
+      { title: '日程', text: scheduleTotal },
+      { title: '任务', text: taskTotal },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -160,7 +172,6 @@ class Details extends React.Component {
       </ItemView>
     ));
   };
-
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
@@ -168,9 +179,18 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const {
+      salesClueDetail: {
+        map,
+      },
+    } = SalesCluesModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+    };
     return (
       <View>
-        <DetailsHead onPressTeamMember={this.onPressTeamMember} />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
@@ -183,7 +203,6 @@ class Details extends React.Component {
       </View>
     );
   };
-
   renderDynamicView = () => {
     const {
       dynamicList: {
@@ -210,28 +229,22 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-
   renderDetailsView = () => {
-    const list = [
-      {
-        type: 1,
-        list: [{ url: true }, {}, {}],
+    const {
+      salesClueDetail: {
+        refreshing,
+        list,
       },
-    ];
-    const { refreshing = false, loadingMore = false } = {};
+    } = SalesCluesModel;
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <ActivityDetailsItem />,
-      ItemSeparatorComponent: null,
       onRefresh: this.onRefresh,
-      onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
       refreshing,
-      noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <FlatListTable {...flatProps} />
@@ -248,6 +261,11 @@ class Details extends React.Component {
       },
     } = this;
     const bool = tabIndex === 0;
+    const {
+      salesClueDetail: {
+        map,
+      },
+    } = SalesCluesModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -269,7 +287,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.salesChanceEditorMore)}
+                onPress={() => navigate(routers.salesChanceEditorMore, { item: map })}
               />
             )
         }

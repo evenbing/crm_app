@@ -55,12 +55,14 @@ class EditorMore extends React.Component {
         receivableDate,
         ownerId,
         comment,
+        code,
       },
       props: {
         navigation: { pop },
       },
     } = this;
     try {
+      if (!code) throw new Error(ReceivablePlanEnum.code);
       if (!id) throw new Error(ReceivablePlanEnum.id);
       if (!pactId) throw new Error(ReceivablePlanEnum.pactId);
       if (!issueId) throw new Error(ReceivablePlanEnum.issueId);
@@ -68,6 +70,7 @@ class EditorMore extends React.Component {
       if (!receivableDate) throw new Error(ReceivablePlanEnum.receivableDate);
       if (!ownerId) throw new Error(ReceivablePlanEnum.ownerId);
       ReceivablePlanModel.updateReceivablePlanReq({
+        code,
         id,
         pactId,
         issueId,

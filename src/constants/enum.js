@@ -1,8 +1,9 @@
 
-// 客户页面类型
+// CRM页面选择类型
 export const CustomerType = 'CUSTOMER/SELECT';
-export const MarkActivityType = 'MarkActivity/SELECT';
+export const MarkActivityType = 'MARK_ACTIVITY/SELECT';
 export const SalesChanceType = 'SALES_CHANCE/SELECT';
+export const SalesClueType = 'SALES_CLUE/SELECT';
 export const ContactsType = 'CONTACTS/SELECT';
 export const PriceListType = 'PRICELIST/SELECT';
 

@@ -91,7 +91,7 @@ class EditorMore extends React.Component {
         ownerId,
       },
       props: {
-        navigation: { pop },
+        navigation: { pop, state },
       },
     } = this;
     try {
@@ -103,7 +103,7 @@ class EditorMore extends React.Component {
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
       if (!ownerId) throw new Error(ContractEnum.ownerId);
-      const { item: { id } = {} } = this.props.navigation.state.params || {};
+      const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
         ContractModel.createContractReq({

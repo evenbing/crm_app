@@ -145,8 +145,14 @@ export function getMarkActivityDetail({
 /** 编辑市场活动
  * @params options
  * {
- *   sourceType 机会来源 [枚举类型（OpportunityEnum）]
- *   name 机会名称 must
+ *   id 主键ID must
+ *   name  活动名称  是
+ *   beginDate 开始日期  是
+ *   endDate 结束日期  是
+ *   departmentId  所属部门  是
+ *   status  活动状态  否  ActivityStatusEnum：其中PLANNED-已计划，ONGOING-进行中,END-已结束,SUSPEND-终止
+ *   sourceType  活动类型  否  ActivityTypeEnum：其中ADVERT-广告，SEMINAR-研讨会/会议EMAIL-电子邮件,TELEMARKETING-电话营销,PUBLIC_RELATIONS-公共关系,PARTNER-合作伙伴,OTHER-其他
+ *   description 活动说明  是
  *   budgetCost 活动成本
  *   budgetRevenue 预期收入
  *   budgetPeopleNumber 邀请人数 创建时的邀请人数应为：预期人数
@@ -159,8 +165,14 @@ export function getMarkActivityDetail({
  * @return Promise<Object>
  */
 export function updateMarkActivity({
-  sourceType,
+  id,
   name,
+  beginDate,
+  endDate,
+  departmentId,
+  status,
+  sourceType,
+  description,
   budgetCost,
   budgetRevenue,
   budgetPeopleNumber,
@@ -172,8 +184,14 @@ export function updateMarkActivity({
 } = {}) {
   return post({
     method: 'api.customerrelations.activity.update',
-    sourceType,
+    id,
     name,
+    beginDate,
+    endDate,
+    departmentId,
+    status,
+    sourceType,
+    description,
     budgetCost,
     budgetRevenue,
     budgetPeopleNumber,
@@ -210,18 +228,25 @@ export function changeOwnerUser({
 }
 
 /** 关注市场活动
- *
- * @param
+ * @add by zhao
+ * @params options
  * {
- * followList 关注对象集合  是
- * 其中对象的参数：关注对象类型：objectType-ACTIVITY，关注对象id:objectId-活动id，关注对象名称：objectName-活动名称，关注时间：followTime-当前时间
- * } options
+ *  followList 关注列表
+ *   [{
+ *      objectType 模块类型
+ *      objectId    活动ID
+ *      objectName: 活动名称
+ *      followTime: 当前时间
+ *      userId:     用户id
+ *   }]
+ * }
+ * @return Promise<Object>
  */
 export function batchCreateFollow({
   followList,
 } = {}) {
   return post({
-    method: 'api.customerrelations.changeOwnerUser.activity',
+    method: 'api.customerrelations.follow.batch.create',
     followList,
   });
 }

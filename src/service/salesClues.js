@@ -82,7 +82,7 @@ export function getSalesClueList({
  * {
  *   name 姓名 must
  *   companyName 公司名称 must
- *   activityId 市场活动
+ *   activityId 市场活动 must
  *   departmentId 所属部门  must
  *   status  跟进状态 [枚举类型（LeadsStatusEnum）]
  *   sex 性别
@@ -94,7 +94,7 @@ export function getSalesClueList({
  *   weibo 微博
  *   location 省份+地址
  *   postCode 邮政编码
- *   source 线索来源  [枚举类型（LeadsSourceEnum）]
+ *   source 线索来源  [枚举类型（LeadsSource）]
  *   description 备注  [枚举类型（IndustryTypeEnum）]
  * }
  * @return Promise<Object>
