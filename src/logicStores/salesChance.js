@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-10-09 10:10:43
+ * @Last Modified time: 2018-10-09 14:27:18
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -29,6 +29,9 @@ class SalesChanceStore {
   // 销售机会详情
   @observable salesChanceDetail = initDetailMap;
 
+  // 销售阶段列表
+  @observable salesPhaseList = initFlatList;
+  
   // 销售阶段详情
   @observable salesPhaseDetail = initDetailMap;
 
@@ -155,12 +158,12 @@ class SalesChanceStore {
   @action async findSalesPhaseReq(options) {
     try {
       const {
-        result = {},
+        result = [],
       } = await findSalesPhase(options);
       // debugger;
       runInAction(() => {
         // TODO next
-        this.salesPhaseDetail = { ...result };
+        this.salesPhaseList.list = result;
       });
     } catch (e) {
       Toast.showError(e.message);

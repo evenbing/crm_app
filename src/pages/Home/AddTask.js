@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-13 23:12:01
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-10-09 09:57:28
+ * @Last Modified time: 2018-10-09 14:51:07
  */
 import React, { Component } from 'react';
 import { View } from 'react-native';

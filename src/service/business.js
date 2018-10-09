@@ -67,9 +67,24 @@ export function find({
  * 备注
  *private String comment;
  *
+ *
+集合中元素属性：
+机会ID - opportunityId，
+产品ID - productId，
+价格表id - priceId，
+产品名 - productName，
+标准价格 - standardPrice，
+销售价格 - salesPrice，
+折扣 - discount，
+销售数量 - salesNumber，
+销售总价 - salesTotalPrice，
+备注 - comment
+ * 
  * }
  * @return Promise<Object>
  */
+
+
 export function create({
   businessDetails,
 } = {}) {
@@ -78,3 +93,4 @@ export function create({
     businessDetails,
   });
 }
+// api.customerrelations.businessDetail.create

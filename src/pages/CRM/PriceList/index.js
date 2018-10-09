@@ -21,6 +21,7 @@ import NavItem from '../../../components/NavItem';
 import FlatListTable from '../../../components/FlatListTable';
 
 import PriceListModel from '../../../logicStores/priceList';
+import { PriceListType } from '../../../constants/enum';
 
 const NavItemView = styled.View`
   background-color: #FFFFFF;
@@ -51,14 +52,26 @@ class PriceList extends React.Component {
   };
   renderItem = (itemProps) => {
     const { item, index } = itemProps;
+    const {
+      navigation: { state, goBack },
+    } = this.props;
     return (
       <NavItemView>
         <NavItem
           leftText={item.name}
           height={44}
-          onPress={() => this.onPressItem({ item, index })}
+          onPress={() => {
+            // from select customer
+            if (state.params.type === PriceListType) {
+              state.params.callback(item);
+              goBack();
+              return;
+            }
+            this.onPressItem({ item, index });
+          }}
           right={
             <Switch
+              disabled={state.params.type === PriceListType}
               value={!!item.isActive}
               onValueChange={() => this.onToggleSwitch({ item, index })}
               onTintColor={theme.primaryColor}

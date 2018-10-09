@@ -4,6 +4,7 @@ export const CustomerType = 'CUSTOMER/SELECT';
 export const MarkActivityType = 'MarkActivity/SELECT';
 export const SalesChanceType = 'SALES_CHANCE/SELECT';
 export const ContactsType = 'CONTACTS/SELECT';
+export const PriceListType = 'PRICELIST/SELECT';
 
 // 任务日程
 export const TASK_TYPE = 'TASK';

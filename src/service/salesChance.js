@@ -68,7 +68,13 @@ export function getSalesChanceList({
  * {
  *  name  机会名称  是
  *  customerId  客户名称  是
+ *  isLocked 是否锁定 否
+ *  isSubmited 是否提交 否
+ *  budgetCost 项目预算 否
+ *  actualCost 实际花费 否
+ *  isPending 是否搁置 否
  *  planAmount  销售金额  是
+ *  requirement 需求说明 否
  *  salesPhaseId  销售阶段  是
  *  expectedDate  结单日期  是
  *  description 备注  否
@@ -77,13 +83,21 @@ export function getSalesChanceList({
  *  opportunityType 机会类型  否 OpportunityType Enum：NEW_CUSTOMER-新客户,OLD_CUSTOMER-老客户
  *  sourceType  机会来源  否 OpportunitySourceEnum：ADVERT-广告,SEMINAR-研讨会,SOLAR_ENGINE: 搜索引擎,SALES_OPPORTUNITY__INTRODUCTION-销售机会介绍,OTHER-其他
  *  关于关联产品：通过 createBusinessDetail 关联 选择的产品和销售机会
+ *  关于 关联 价格表，通过 createBusinessDetail 存
  * }
  * @return Promise<Object>
  */
 export function createSalesChance({
+  id,
   name,
   customerId,
+  isLocked,
+  isSubmited,
+  budgetCost,
+  actualCost,
+  isPending,
   planAmount,
+  requirement,
   salesPhaseId,
   expectedDate,
   description,
@@ -94,9 +108,16 @@ export function createSalesChance({
 } = {}) {
   return post({
     method: 'api.customerrelations.opportunity.create',
+    id,
     name,
     customerId,
+    isLocked,
+    isSubmited,
+    budgetCost,
+    actualCost,
+    isPending,
     planAmount,
+    requirement,
     salesPhaseId,
     expectedDate,
     description,

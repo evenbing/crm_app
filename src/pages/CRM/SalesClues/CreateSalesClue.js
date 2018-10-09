@@ -6,9 +6,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { theme, routers } from '../../../constants';
+import { observer } from 'mobx-react/native';
 
+import { theme, routers } from '../../../constants';
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
@@ -17,37 +17,67 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 // import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+import { SalesClueEnum } from '../../../constants/form';
+import { MarkActivityType } from '../../../constants/enum';
+import SalesClueStore from '../../../logicStores/salesClues';
+import Toast from '../../../utils/toast';
+import { CenterText } from '../../../components/Styles/Form';
 
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const NavItemStyle = {
-  leftWidth: theme.moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
-
+@observer
 class CreateSalesClue extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
+
+  onPressRight = async () => {
+    const {
+      state: {
+        name,
+        companyName,
+        activityId,
+        activityName,
+        departmentId,
+        departmentName,
+      },
+      props: { navigation: {
+        goBack,
+        state: { params: { reFetchDataList = null } },
+      } },
+    } = this;
+    try {
+      if (!name) throw new Error(SalesClueEnum.name);
+      if (!companyName) throw new Error(SalesClueEnum.companyName);
+      if (!activityId || !activityName) throw new Error(SalesClueEnum.activity);
+      if (!departmentId || !departmentName) throw new Error(SalesClueEnum.department);
+
+      SalesClueStore.createSalesChanceReq({
+        name,
+        companyName,
+        activityId,
+        departmentId,
+      }, () => {
+        reFetchDataList && reFetchDataList();
+        goBack();
+      });
+    } catch (error) {
+      Toast.error(error.message);
+    }
+  }
+
   render() {
     const {
-      navigation: {
-        navigate,
+      props: { navigation: { navigate } },
+      state: {
+        name,
+        companyName,
+        activityId,
+        activityName,
+        departmentId,
+        departmentName,
       },
-    } = this.props;
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
@@ -59,47 +89,66 @@ class CreateSalesClue extends React.Component {
         <TitleItem
           text="必填信息"
           fontSize={16}
+        />                                                                                    
+        <NavInputItem
+          leftText="姓名"
+          {...theme.getLeftStyle({
+            placeholder: SalesClueEnum.name,
+            value: name,
+            onChangeText: name => this.setState({ name }),
+          })}
         />
-        <ListView>
-          <NavInputItem
-            leftText="姓名"
-            inputProps={{
-              'placeholder': '请输入姓名',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
-          />
-          <NavInputItem
-            leftText="公司名称"
-            inputProps={{
-              'placeholder': '请输入公司名称',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
-          />
-          <NavInputItem
-            leftText="市场活动"
-            center={
-              <CenterText>请选择市场活动</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText>请选择所属部门</CenterText>
-            }
-            {...NavItemStyle}
-          />
-        </ListView>
+        <NavInputItem
+          leftText="公司名称"
+          {...theme.getLeftStyle({
+            placeholder: SalesClueEnum.companyName,
+            value: companyName,
+            onChangeText: companyName => this.setState({ companyName }),
+          })}
+        />
+        <NavInputItem
+          leftText="市场活动"
+          onPress={() => navigate(routers.markActivity, {
+            type: MarkActivityType,
+            callback: (item) => {
+              if (!Object.keys(item).length) return;
+              this.setState({
+                activityId: item.key,
+                activityName: item.title,
+              });
+            },
+          })}
+          center={
+            <CenterText active={activityId && activityName}>
+              {
+                (activityId && activityName) ? activityName :
+                  SalesClueEnum.activity
+              }
+            </CenterText>
+          }
+          {...theme.navItemStyle}
+        />
+        <NavInputItem
+          leftText="所属部门"
+          onPress={() => navigate(routers.selectDepartment, {
+            id: departmentId,
+            callback: (item) => {
+              if (!Object.keys(item).length) return;
+              this.setState({
+                departmentId: item.id,
+                departmentName: item.name,
+              });
+            },
+          })}
+          center={
+            <CenterText active={departmentId && departmentName}>
+              {
+                (departmentId && departmentName) ? departmentName : SalesClueEnum.department
+              }
+            </CenterText>
+          }
+          {...theme.navItemStyle}
+        />
         <HorizontalDivider
           height={41}
         />

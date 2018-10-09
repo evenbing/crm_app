@@ -92,7 +92,10 @@ export const ContactsEnum = {
 // 销售机会表单
 export const SalesChanceEnum = {
   name: '请输入机会名称',
-  customer: '请选择客户名称',
+  customer: '请选择客户',
+  price: '请选择价格表',
+  budgetCost: '请输入项目预算',
+  actualCost: '请输入实际花费',
   planAmount: '请输入销售金额',
   salesPhase: '请选择销售阶段',
   expectedDate: '请选择结单日期',
@@ -102,6 +105,29 @@ export const SalesChanceEnum = {
   opportunityType: '请选择机会类型',
   sourceType: '请选择机会来源',
 };
+
+// 销售线索
+export const SalesClueEnum = {
+  name: '请输入姓名',
+  companyName: '请输入公司名称',
+  activity: '请选择市场活动',
+  department: '请选择所属部门',
+  status: '请选择跟进状态',
+  sex: '请选择性别',
+  leadsDepartmentName: '请输入部门名称',
+  jobTitle: '请输入职务',
+  phone: '请输入电话',
+  mobilePhone: '请输入手机',
+  email: '请输入电子邮件',
+  weibo: '请输入微博',
+  districts: '请选择省、市、区',
+  address: '请输入地址',
+  location: '请选择地址',
+  postCode: '请输入邮政编码',
+  source: '请选择线索来源',
+  description: '请输入备注',
+};
+
 // 合同表单
 export const ContractEnum = {
   theme: '请输入合同名称',

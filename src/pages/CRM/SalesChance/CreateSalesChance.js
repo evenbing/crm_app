@@ -15,12 +15,16 @@ import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
 import { SalesChanceEnum } from '../../../constants/form';
 import { CustomerType, MarkActivityType } from '../../../constants/enum';
-import { CenterText } from '../../../components/Styles/Form';
+import { CenterText, RightText } from '../../../components/Styles/Form';
 import SalesChanceStore from '../../../logicStores/salesChance';
 import DateTimePicker from '../../../components/DateTimePicker';
-import { formatDate } from '../../../utils/base';
+import { formatDateByMoment } from '../../../utils/base';
+import Toast from '../../../utils/toast';
+import { getNewId } from '../../../service/app';
 
-const formatDateType = 'yyyy-MM-dd hh:mm';
+const formatDateType = 'YYYY-MM-DD HH:mm:ss';
+const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
+
 const products = [
   {
     key: uuidv1(),
@@ -50,7 +54,6 @@ const products = [
     totalPrice: 460000,
   },
 ];
-
 @observer
 class CreateSalesChance extends Component {
   constructor(props) {
@@ -63,13 +66,11 @@ class CreateSalesChance extends Component {
       salesPhaseId: null,
       salesPhaseName: null,
       expectedDate: null,
-      description: null,
+      expectedDateShow: null,
       departmentId: null,
       departmentName: null,
       activityId: null,
       activityName: null,
-      opportunityType: null,
-      sourceType: null,
     };
   }
 
@@ -89,13 +90,9 @@ class CreateSalesChance extends Component {
         salesPhaseId,
         salesPhaseName,
         expectedDate,
-        description,
         departmentId,
         departmentName,
         activityId,
-        activityName,
-        opportunityType,
-        sourceType,
       },
       props: { navigation: {
         goBack,
@@ -104,18 +101,25 @@ class CreateSalesChance extends Component {
     } = this;
     try {
       if (!name) throw new Error(SalesChanceEnum.name);
+      if (!expectedDate) throw new Error(SalesChanceEnum.expectedDate);
       if (!customerId || !customerName) throw new Error(SalesChanceEnum.customer);
-      if (!activityId || !activityName) throw new Error(SalesChanceEnum.activity);
+      if (!salesPhaseId || !salesPhaseName) throw new Error(SalesChanceEnum.salesPhase);
+      if (!planAmount) throw new Error(SalesChanceEnum.planAmount);
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
 
+      const businessId = await getNewId();
+
       SalesChanceStore.createSalesChanceReq({
+        id: businessId,
         name,
-        phone,
-        locationId,
-        isActive,
+        customerId,
+        planAmount,
+        salesPhaseId,
+        expectedDate,
         departmentId,
+        activityId,
       }, () => {
-        reFetchDataList();
+        reFetchDataList && reFetchDataList();
         goBack();
       });
     } catch (error) {
@@ -132,14 +136,11 @@ class CreateSalesChance extends Component {
         planAmount,
         salesPhaseId,
         salesPhaseName,
-        expectedDate,
-        description,
+        expectedDateShow,
         departmentId,
         departmentName,
         activityId,
         activityName,
-        opportunityType,
-        sourceType,
       },
       props: { navigation: { navigate } },
     } = this;
@@ -192,11 +193,20 @@ class CreateSalesChance extends Component {
               value: planAmount,
               onChangeText: planAmount => this.setState({ planAmount }),
             })}
+            right={
+              <RightText>元</RightText>
+            }
           />
           <NavInputItem
             leftText="销售阶段"
             onPress={() => navigate(routers.salesPhasePicker, {
-              callback: () => {},
+              selectedKey: salesPhaseId,
+              callback: (salesPhaseId, salesPhaseName) => {
+                this.setState({
+                  salesPhaseId,
+                  salesPhaseName,
+                });
+              },
             })}
             center={
               <CenterText active={salesPhaseId && salesPhaseName}>
@@ -212,22 +222,23 @@ class CreateSalesChance extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  expectedDate: `${formatDate(date, formatDateType)}`,
+                  expectedDate: formatDateByMoment(date, formatDateType),
+                  expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
                 })
             }
           >
             <NavInputItem
-              leftText="截止时间"
+              leftText="结单日期"
               needPress={false}
               center={
-                <CenterText active={expectedDate}>
-                  {expectedDate || SalesChanceEnum.expectedDate}
+                <CenterText active={expectedDateShow}>
+                  {expectedDateShow || SalesChanceEnum.expectedDate}
                 </CenterText>
               }
               {...theme.navItemStyle}
             />
           </DateTimePicker>
-          {/* <NavInputItem
+          <NavInputItem
             leftText="市场活动"
             onPress={() => navigate(routers.markActivity, {
                 type: MarkActivityType,
@@ -248,7 +259,7 @@ class CreateSalesChance extends Component {
               </CenterText>
               }
             {...theme.navItemStyle}
-          /> */}
+          />
           <NavInputItem
             leftText="所属部门"
             onPress={() => navigate(routers.selectDepartment, {
@@ -298,21 +309,18 @@ class CreateSalesChance extends Component {
               />
             ))
           }
+          <AddProduct
+            count="20"
+            totalPrice="900000"
+          />
         </ContainerScrollView>
-        <AddProduct
-          count="20"
-          totalPrice="900000"
-        />
       </ContainerView>
     );
   }
 }
 
 CreateSalesChance.navigationOptions = ({ navigation }) => {
-  const {
-    state: { params: { onPressRight = () => {} } },
-    goBack,
-  } = navigation;
+  const { goBack } = navigation;
   return ({
     title: '新建销售机会',
     headerLeft: (
@@ -322,7 +330,7 @@ CreateSalesChance.navigationOptions = ({ navigation }) => {
     ),
     headerRight: (
       <RightView
-        onPress={onPressRight}
+        onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
         right="完成"
         rightStyle={{
           color: theme.primaryColor,

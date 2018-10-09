@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { View } from 'react-native';
 import uuidv1 from 'uuid/v1';
+import { observer } from 'mobx-react/native';
 
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
@@ -12,11 +12,23 @@ import { ContainerScrollView, ContainerView } from '../../../components/Styles/L
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
 import ProductItem from './components/ProductItem';
 import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
+import { SalesChanceEnum } from '../../../constants/form';
+import { routers } from '../../../constants';
+import { CustomerType, MarkActivityType, OpportunityTypes, OpportunitySource, PriceListType } from '../../../constants/enum';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { formatDateByMoment } from '../../../utils/base';
+import { CenterText, RightText } from '../../../components/Styles/Form';
+import SalesChanceStore from '../../../logicStores/salesChance';
+import BusinessStore from '../../../logicStores/business';
+import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
+import NavInputItem from '../../../components/NavInputItem';
 
+const formatDateType = 'YYYY-MM-DD HH:mm:ss';
+const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 const products = [
   {
     key: uuidv1(),
@@ -46,34 +58,102 @@ const products = [
     totalPrice: 460000,
   },
 ];
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
-
-const NavItemStyle = {
-  leftWidth: moderateScale(113),
-  height: 44,
-  showNavIcon: true,
-};
-
+@observer
 class EditorMore extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: null,
+      customerId: null,
+      customerName: null,
+      priceId: null,
+      priceName: null,
+      budgetCost: null,
+      actualCost: null,
+      planAmount: null,
+      salesPhaseId: null,
+      salesPhaseName: null,
+      expectedDate: null,
+      expectedDateShow: null,
+      description: null,
+      departmentId: null,
+      departmentName: null,
+      activityId: null,
+      activityName: null,
+      opportunityType: null,
+      opportunityTypeName: null,
+      sourceType: null,
+      sourceTypeName: null,
+    };
+  }
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
+  onPressRight = async () => {
+    const {
+      state: {
+        name,
+        customerId,
+        customerName,
+        budgetCost,
+        actualCost,
+        priceId,
+        planAmount,
+        salesPhaseId,
+        salesPhaseName,
+        expectedDate,
+        description,
+        departmentId,
+        departmentName,
+        activityId,
+        opportunityType,
+        sourceType,
+      },
+      props: { navigation: {
+        pop,
+        state: { params: { reFetchDataList } },
+      } },
+    } = this;
+    try {
+      if (!name) throw new Error(SalesChanceEnum.name);
+      if (!expectedDate) throw new Error(SalesChanceEnum.expectedDate);
+      if (!customerId || !customerName) throw new Error(SalesChanceEnum.customer);
+      if (!salesPhaseId || !salesPhaseName) throw new Error(SalesChanceEnum.salesPhase);
+      if (!planAmount) throw new Error(SalesChanceEnum.planAmount);
+      if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
+
+      const businessId = await getNewId();
+      BusinessStore.createBusinessReq({
+        businessDetails: {
+          opportunityId: businessId,
+          priceId,
+        },
+      });
+      SalesChanceStore.createSalesChanceReq({
+        id: businessId,
+        name,
+        customerId,
+        budgetCost,
+        actualCost,
+        planAmount,
+        salesPhaseId,
+        expectedDate,
+        description,
+        departmentId,
+        activityId,
+        opportunityType,
+        sourceType,
+      }, () => {
+        reFetchDataList && reFetchDataList();
+        pop(2);
+      });
+    } catch (error) {
+      Toast.error(error.message);
+    }
+  }
+
   getLeftStyle = (placeholder, width = 110) => {
     return {
       inputProps: {
@@ -88,115 +168,275 @@ class EditorMore extends React.Component {
     };
   };
   render() {
+    const {
+      state: {
+        name,
+        customerId,
+        customerName,
+        budgetCost,
+        actualCost,
+        planAmount,
+        priceId,
+        priceName,
+        salesPhaseId,
+        salesPhaseName,
+        expectedDateShow,
+        description,
+        departmentId,
+        departmentName,
+        activityId,
+        activityName,
+        opportunityType,
+        opportunityTypeName,
+        sourceType,
+        sourceTypeName,
+      },
+      props: { navigation: { navigate } },
+    } = this;
     return (
       <ContainerView>
         <ContainerScrollView
           bottomPadding
+          backgroundColor={theme.whiteColor}
         >
           <CommStatusBar />
-          <HorizontalDivider
-            height={12}
+          <TitleItem
+            text="基本信息"
+            fontSize={16}
+            titleBackColor="transparent"
           />
-          <ListView>
-            <TitleItem text="基本信息" />
-            <NavInputItem
-              leftText="活动名称"
-              {...this.getLeftStyle('请输入活动名称')}
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="客户"
-              center={
-                <CenterText>请选择客户</CenterText>
+          <NavInputItem
+            leftText="姓名"
+            {...theme.getLeftStyle({
+              placeholder: SalesChanceEnum.name,
+              value: name,
+              onChangeText: name => this.setState({ name }),
+            })}
+          />
+          <NavInputItem
+            leftText="客户"
+            onPress={() => navigate(routers.customer, {
+                type: CustomerType,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    customerId: item.key,
+                    customerName: item.title,
+                  });
+                },
+              })}
+            center={
+              <CenterText active={customerId && customerName}>
+                {
+                    (customerId && customerName) ? customerName :
+                      SalesChanceEnum.customer
+                  }
+              </CenterText>
+              }
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="价格表"
+            onPress={() => navigate(routers.priceList, {
+              type: PriceListType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  priceId: item.id,
+                  priceName: item.name,
+                });
+              },
+            })}
+            center={
+              <CenterText active={priceId && priceName}>
+                {
+                  (priceId && priceName) ? priceName :
+                    SalesChanceEnum.price
+                }
+              </CenterText>
             }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="价格表"
-              center={
-                <CenterText>请选择价格表</CenterText>
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="机会类型"
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: opportunityType,
+              typeEnum: OpportunityTypes,
+              callback: (key, value) => {
+                this.setState({
+                  opportunityType: key,
+                  opportunityTypeName: value,
+                });
+              },
+            })}
+            center={
+              <CenterText active={opportunityType && opportunityTypeName}>
+                {(opportunityType && opportunityTypeName) ? opportunityTypeName : SalesChanceEnum.opportunityType}
+              </CenterText>
             }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="机会类型"
-              center={
-                <CenterText>请选择机会类型</CenterText>
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="销售金额"
+            {...theme.getLeftStyle({
+              placeholder: SalesChanceEnum.planAmount,
+              value: planAmount,
+              onChangeText: planAmount => this.setState({ planAmount }),
+            })}
+            right={
+              <RightText>元</RightText>
             }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="销售金额"
-              {...this.getLeftStyle('请输入销售金额')}
-              right={
-                <RightText>元</RightText>
+          />
+          <NavInputItem
+            leftText="销售阶段"
+            onPress={() => navigate(routers.salesPhasePicker, {
+              selectedKey: salesPhaseId,
+              callback: (salesPhaseId, salesPhaseName) => {
+                this.setState({
+                  salesPhaseId,
+                  salesPhaseName,
+                });
+              },
+            })}
+            center={
+              <CenterText active={salesPhaseId && salesPhaseName}>
+                {
+                  (salesPhaseId && salesPhaseName) ? salesPhaseName :
+                    SalesChanceEnum.salesPhase
+                }
+              </CenterText>
             }
-            />
-            <NavInputItem
-              leftText="来源"
-              center={
-                <CenterText>请选择来源</CenterText>
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="机会来源"
+            onPress={() => navigate(routers.typePicker, {
+              selectedKey: sourceType,
+              typeEnum: OpportunitySource,
+              callback: (key, value) => {
+                this.setState({
+                  sourceType: key,
+                  sourceTypeName: value,
+                });
+              },
+            })}
+            center={
+              <CenterText active={sourceType && sourceTypeName}>
+                {(sourceType && sourceTypeName) ? sourceTypeName : SalesChanceEnum.sourceType}
+              </CenterText>
             }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="市场活动"
-              center={
-                <CenterText>请选择市场活动</CenterText>
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="市场活动"
+            onPress={() => navigate(routers.markActivity, {
+                type: MarkActivityType,
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    activityId: item.key,
+                    activityName: item.title,
+                  });
+                },
+              })}
+            center={
+              <CenterText active={activityId && activityName}>
+                {
+                    (activityId && activityName) ? activityName :
+                      SalesChanceEnum.activity
+                  }
+              </CenterText>
+              }
+            {...theme.navItemStyle}
+          />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  expectedDate: formatDateByMoment(date, formatDateType),
+                  expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
+                })
             }
-              {...NavItemStyle}
-            />
+          >
             <NavInputItem
               leftText="结单日期"
+              needPress={false}
               center={
-                <CenterText>请选择结单日期</CenterText>
+                <CenterText active={expectedDateShow}>
+                  {expectedDateShow || SalesChanceEnum.expectedDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <NavInputItem
+            leftText="项目预算"
+            {...theme.getLeftStyle({
+              placeholder: SalesChanceEnum.budgetCost,
+              value: budgetCost,
+              onChangeText: budgetCost => this.setState({ budgetCost }),
+            })}
+            right={
+              <RightText>元</RightText>
             }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="项目预算"
-              {...this.getLeftStyle('请输入金额')}
-              right={
-                <RightText>元</RightText>
+          />
+          <NavInputItem
+            leftText="实际花费"
+            {...theme.getLeftStyle({
+              placeholder: SalesChanceEnum.actualCost,
+              value: actualCost,
+              onChangeText: actualCost => this.setState({ actualCost }),
+            })}
+            right={
+              <RightText>元</RightText>
             }
-            />
-            <NavInputItem
-              leftText="实际花费"
-              {...this.getLeftStyle('请输入金额')}
-              right={
-                <RightText>元</RightText>
+          />
+          <TitleItem text="其他信息" />
+          <NavInputItem
+            leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
+            center={
+              <CenterText active={departmentId && departmentName}>
+                {
+                  (departmentId && departmentName) ? departmentName : SalesChanceEnum.department
+                }
+              </CenterText>
             }
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="备注"
+            height={44}
+            center={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={description}
+              onChangeText={description => this.setState({ description })}
+              placeholder={SalesChanceEnum.description}
+              placeholderTextColor={theme.textPlaceholderColor}
             />
-            <TitleItem text="其它信息" />
-            <NavInputItem
-              leftText="所属部门"
-              center={
-                <CenterText>请选择所属部门</CenterText>
-            }
-              {...NavItemStyle}
-            />
-            <NavInputItem
-              leftText="备注"
-              center={<View />}
-              right={<View />}
-            />
-            <TextareaGroup>
-              <TextareaView
-                rowSpan={5}
-                bordered
-                placeholder="请输入备注说明"
-                placeholderTextColor={theme.textPlaceholderColor}
-              />
-            </TextareaGroup>
-            <HorizontalDivider
-              height={40}
-            />
-            <TitleItem
-              text="产品清单"
-              fontSize={16}
-              color="#969696"
-            />
-            {
+          </TextareaGroup>
+          <HorizontalDivider
+            height={40}
+          />
+          <TitleItem
+            text="产品清单"
+            fontSize={16}
+            color="#969696"
+          />
+          {
             products.map(item => (
               <ProductItem
                 key={item.key}
@@ -210,13 +450,12 @@ class EditorMore extends React.Component {
               />
             ))
           }
-          </ListView>
           <HorizontalDivider height={20} />
+          <AddProduct
+            count="20"
+            totalPrice="900000"
+          />
         </ContainerScrollView>
-        <AddProduct
-          count="20"
-          totalPrice="900000"
-        />
       </ContainerView>
     );
   }
