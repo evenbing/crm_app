@@ -60,7 +60,7 @@ const ReceivableTitle = ({ pactPrice, totalPrice }) => {
     unfilledColor: '#191919',
     borderWidth: 0,
     borderColor: 'transparent',
-    useNativeDriver: true,
+    // useNativeDriver: true,
     borderRadius: moderateScale(2),
   };
   return (

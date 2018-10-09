@@ -1,41 +1,47 @@
+/**
+ * @component index.js
+ * @description 相关文档页面
+ * @time 2018/8/12
+ * @author JUSTIN XU
+ */
 import React, { Component } from 'react';
-import uuidv1 from 'uuid/v1';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { observer } from 'mobx-react/native';
 import { ListItem, Left, Thumbnail, Body, Text, Right, Icon } from 'native-base';
 
 import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
-import wordIcon from '../../../img/word.png';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { ContainerView } from '../../../components/Styles/Layout';
+import FlatListTable from '../../../components/FlatListTable';
 
-const List = styled.FlatList``;
+import RelatedDocsModel from '../../../logicStores/relatedDocs';
 
+@observer
 class RelatedDocs extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {
-          key: uuidv1(),
-          docIcon: wordIcon,
-          docName: '反馈结果文档',
-          company: '西风网络',
-          time: '2018-09-09 19:00',
-        },
-        {
-          key: uuidv1(),
-          docIcon: wordIcon,
-          docName: '反馈结果文档',
-          company: '西风网络',
-          time: '2018-09-09 19:00',
-        },
-      ],
-    };
+  componentDidMount() {
+    this.getData();
   }
 
-  keyExtractor = item => item.key;
+  componentWillUnmount() {
+    RelatedDocsModel.clearAttachmentList();
+  }
 
-  renderItemSeparatorComponent = () => <HorizontalDivider height={1} />
+  onEndReached = () => {
+    const {
+      relatedDocsList: { total = 0, list = [], pageNumber = 1, loadingMore },
+    } = RelatedDocsModel;
+    if (list.length < total && loadingMore === false) {
+      this.getDynamicList(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    const { item, moduleType } = this.props.navigation.state.params || {};
+    RelatedDocsModel.getAttachmentList({
+      pageNumber,
+      businessType: moduleType,
+      businessId: item.id,
+    });
+  };
 
   renderItem = ({ item }) => {
     const {
@@ -44,7 +50,6 @@ class RelatedDocs extends Component {
       company,
       time,
     } = item;
-
     return (
       <ListItem thumbnail noBorder style={{ backgroundColor: 'white' }}>
         <Left>
@@ -63,16 +68,26 @@ class RelatedDocs extends Component {
   }
 
   render() {
+    const {
+      relatedDocsList: {
+        list = [],
+        loadingMore,
+        refreshing,
+      },
+    } = RelatedDocsModel;
+    const flatProps = {
+      data: list,
+      renderItem: this.renderItem,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <ContainerView>
         <CommStatusBar />
-        <List
-          data={this.state.data}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          ItemSeparatorComponent={this.renderItemSeparatorComponent}
-          key
-        />
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
@@ -86,5 +101,19 @@ RelatedDocs.navigationOptions = ({ navigation }) => ({
     />
   ),
 });
+
+RelatedDocs.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default RelatedDocs;

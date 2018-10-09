@@ -53,6 +53,7 @@ const RightView = styled.View`
   justify-content: center;
   height: ${theme.moderateScale(36)};
   border-left-width: 1px;
+  min-width: ${theme.moderateScale(60)};
   border-left-color: ${theme.borderColor};
 `;
 
@@ -88,18 +89,17 @@ class ListItem extends React.PureComponent {
   };
   renderRight = () => {
     const {
-      item: { status },
+      item: { statusText, statusColor },
       right,
     } = this.props;
     if (React.isValidElement(right)) return right;
     if (right === 'hidden') return null;
-    const bool = status === 1;
     return (
       <RightView>
         <RightText
-          color={bool ? theme.primaryColor : '#5374C7'}
+          color={statusColor || '#5374C7'}
         >
-          {bool ? '进行中' : '已计划'}
+          {statusText}
         </RightText>
       </RightView>
     );

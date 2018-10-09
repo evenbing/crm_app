@@ -133,7 +133,10 @@ class Details extends React.Component {
   };
   getPlanTotal = () => {
     const { item } = this.props.navigation.state.params || {};
-    ReceivablePlanModel.getReceivablePlanTotalReq(item);
+    ReceivablePlanModel.getReceivablePlanTotalReq({
+      ...item,
+      moduleType: ModuleType.plan,
+    });
   };
   renderTotalItem = () => {
     const {
@@ -145,8 +148,10 @@ class Details extends React.Component {
         title: '文档',
         text: attaTotal,
         onPress: () => {
-          if (!attaTotal) return;
-          this.props.navigation.navigate(routers.relatedDocs, { item: map });
+          this.props.navigation.navigate(routers.relatedDocs, {
+            item: map,
+            moduleType: ModuleType.plan,
+          });
         },
       },
     ];

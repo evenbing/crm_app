@@ -15,7 +15,7 @@ import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import ScanCard from '../../../components/Create/ScanCard';
+// import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 
 
@@ -53,9 +53,9 @@ class CreateSalesClue extends React.Component {
         bottomPadding
       >
         <CommStatusBar />
-        <ScanCard
+        {/* <ScanCard
           onPress={() => alert(1)}
-        />
+        /> */}
         <TitleItem
           text="必填信息"
           fontSize={16}

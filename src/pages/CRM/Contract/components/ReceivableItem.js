@@ -32,8 +32,6 @@ const ListHeaderText = styled.Text.attrs({
 })`
   color: ${theme.textColor};
   font-size: ${moderateScale(16)}px;
-  height: ${moderateScale(43)}px;
-  line-height: ${moderateScale(43)}px;
 `;
 
 const ListHeaderRightView = styled.View`

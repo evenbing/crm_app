@@ -12,6 +12,13 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
+import {
+  SalesCluesTimeTypeFilterMap,
+  SalesCluesResponsibilityTypeFilterMap,
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import { formatDate, formatDateByMoment, formatDateType } from '../../../utils/base';
+import { LeadsStatus } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -23,12 +30,6 @@ import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/D
 
 import { FilterList } from './_fieldCfg';
 import SalesCluesStore from '../../../logicStores/salesClues';
-import {
-  SalesCluesTimeTypeFilterMap,
-  SalesCluesResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
-import { formatDate } from '../../../utils/base';
 
 useStrict(true);
 
@@ -40,6 +41,8 @@ class SalesClues extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
+    // screenTab
     screenTabList: [
       SalesCluesTimeTypeFilterMap,
       SalesCluesResponsibilityTypeFilterMap,
@@ -52,11 +55,9 @@ class SalesClues extends React.Component {
     });
     this.getData();
   }
-
   onPressRight = () => {
     this.props.navigation.navigate(routers.createSalesClue);
   };
-
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
     if (isLast) {
@@ -64,17 +65,20 @@ class SalesClues extends React.Component {
       this.onOpenDrawer();
     }
   };
-
+  onPressFilterItem = async ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    await this.setState({ screenTabList });
+    this.getData();
+  };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
   };
-
   onOpenDrawer = () => {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  
   onToggleItem = ({ type, currIndex, pareIndex, value }) => {
     const list = drawerUtils.handleToggleItem({
       list: this.state.filterList,
@@ -106,18 +110,15 @@ class SalesClues extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
-
   onEndReached = () => {
     const { total, list, pageNumber, loadingMore } = SalesCluesStore.salesClueList;
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
   };
-
   getData = (pageNumber = 1) => {
     const { screenTabList, searchValue } = this.state;
     const obj = {
@@ -131,20 +132,27 @@ class SalesClues extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContractModel.getContactListReq(obj);
-    SalesCluesStore.getSalesClueListReq({ pageNumber });
+    SalesCluesStore.getSalesClueListReq(obj);
   };
-
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-
-  keyExtractor = item => item.key;
-
-  renderItem = ({ index, item }) => {
-    // const { index, item } = props;
+  renderItem = (itemProps) => {
+    const { index, item: prevItem } = itemProps;
+    const statusText = prevItem.status ? LeadsStatus[prevItem.status] : null;
+    const statusColor = statusText === '已联系' ? theme.primaryColor : null;
+    // 格式化item
+    const item = {
+      ...prevItem,
+      key: prevItem.id,
+      title: prevItem.name,
+      tipList: [prevItem.companyName],
+      statusText,
+      statusColor,
+    };
+    itemProps.item = item;
     const {
       navigation: { navigate },
     } = this.props;
@@ -220,32 +228,15 @@ class SalesClues extends React.Component {
         activeIndex,
         drawerVisible,
         selectedList,
+        searchValue,
         screenTabList,
       },
     } = this;
     const {
       salesClueList: { list, refreshing, loadingMore },
     } = SalesCluesStore;
-    const data = list.map((item) => {
-      const {
-        id,
-        name,
-        beginDate = '1535990400000',
-        endDate = '1535990400000',
-        status = 0,
-      } = item;
-      return ({
-        key: id,
-        title: name,
-        tipList: [
-          `开始时间：${formatDate(new Date(parseInt(beginDate, 10)), 'yyyy-MM-dd')}`,
-          `结束时间：${formatDate(new Date(parseInt(endDate, 10)), 'yyyy-MM-dd')}`,
-        ],
-        status,
-      });
-    });
     const flatProps = {
-      data,
+      data: list,
       renderItem: this.renderItem,
       keyExtractor: this.keyExtractor,
       onRefresh: this.getData,
@@ -264,11 +255,17 @@ class SalesClues extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入客户名称"
+            value={searchValue}
+            onChangeText={searchValue => this.setState({ searchValue })}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
             list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
           <FlatListTable {...flatProps} />

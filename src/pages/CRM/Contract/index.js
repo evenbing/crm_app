@@ -19,7 +19,6 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
-import { ActionSheet } from '../../../components/Modal';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 
@@ -39,7 +38,6 @@ useStrict(true);
 class Contract extends React.Component {
   state = {
     activeIndex: 0,
-    amountVisible: false,
     drawerVisible: false,
     filterList: FilterList,
     selectedList: [],
@@ -67,17 +65,8 @@ class Contract extends React.Component {
       this.onOpenDrawer();
     }
   };
-  onToggleAmountVisible = () => {
-    this.setState({
-      amountVisible: !this.state.amountVisible,
-    });
-  };
   onPressButtonItem = ({ index, item }) => {
-    if (index === 0) {
-      // TODO
-      this.onToggleAmountVisible();
-      return;
-    }
+    // TODO
     alert(`item:${JSON.stringify(item)}, index: ${index}`);
   };
   onPressFilterItem = async ({ index }) => {
@@ -234,23 +223,12 @@ class Contract extends React.Component {
     const {
       state: {
         activeIndex,
-        amountVisible,
         drawerVisible,
         selectedList,
         searchValue,
         screenTabList,
       },
     } = this;
-    const amountActionSheetProps = {
-      isVisible: amountVisible,
-      onPressClose: this.onToggleAmountVisible,
-      itemNeedPress: false,
-      list: [
-        { leftText: '总金额', rightText: '¥100,000,00', rightStyle: { color: theme.dangerColor } },
-        { leftText: '未回款金额', rightText: '¥100,000,00' },
-        { leftText: '回款金额', rightText: '¥100,000,00' },
-      ],
-    };
     const {
       contractList: { list, refreshing, loadingMore },
     } = ContractModel;
@@ -273,7 +251,6 @@ class Contract extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <ActionSheet {...amountActionSheetProps} />
           <SearchInput
             placeholder="输入客户名称"
             value={searchValue}
