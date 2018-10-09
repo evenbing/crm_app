@@ -1,39 +1,123 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+/**
+ * @component CreateSalesClueMore.js
+ * @description 新增线索更多/编辑页面
+ * @time 2018/8/15
+ * @author
+ */
+import React from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react/native';
-
-import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
+import { View } from 'react-native';
 import { theme, routers } from '../../../constants';
+import { SalesClueEnum } from '../../../constants/form';
+import { formatNumberToString } from '../../../utils/base';
+import { LeadsSource, MarkActivityType, SexTypes } from '../../../constants/enum';
+import Toast from '../../../utils/toast';
+
+// components
+import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import { SalesClueEnum } from '../../../constants/form';
-import { CenterText } from '../../../components/Styles/Form';
-import { MarkActivityType, LeadsSource, LeadsStatus } from '../../../constants/enum';
+import { ListView, CenterText } from '../../../components/Styles/Form';
+import FormActionSheet from '../../../components/Modal/FormActionSheet';
 
-@observer
-class CreateSalesClueMore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
+import SalesCluesModel from '../../../logicStores/salesClues';
+
+class CreateSalesClueMore extends React.Component {
+  state = {
+    name: null,
+    sex: null,
+    companyName: null,
+    jobTitle: null,
+    phone: null,
+    mobilePhone: null,
+    email: null,
+    weibo: null,
+    locationInfo: {},
+    address: null,
+    postCode: null,
+    source: null,
+    activityId: null,
+    activityName: null,
+    departmentId: null,
+    leadsDepartmentName: null,
+    description: null,
+  };
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressRight: this.onPressRight,
+    });
+    this.initState();
   }
-
-  render() {
+  onPressRight = async () => {
     const {
-      props: { navigation: { navigate } },
       state: {
+        status,
+        name,
+        sex,
+        companyName,
+        jobTitle,
+        phone,
+        mobilePhone,
+        email,
+        weibo,
+        locationInfo,
+        address,
+        postCode,
+        source,
+        activityId,
+        departmentId,
+        leadsDepartmentName,
+        description,
+      },
+      props: {
+        navigation: { pop, state },
+      },
+    } = this;
+    if (address) {
+      locationInfo.address = address;
+    }
+
+    try {
+      if (!name) throw new Error(SalesClueEnum.name);
+      if (!companyName) throw new Error(SalesClueEnum.companyName);
+      if (!activityId) throw new Error(SalesClueEnum.activityId);
+      if (!departmentId) throw new Error(SalesClueEnum.departmentId);
+      debugger;
+      const { item: { id } = {} } = state.params || {};
+      // 新增
+      if (!id) {
+        SalesCluesModel.createSalesClueReq({
+          name,
+          companyName,
+          activityId,
+          departmentId,
+          sex,
+          leadsDepartmentName,
+          jobTitle,
+          phone,
+          mobilePhone,
+          email,
+          weibo,
+          locationInfo,
+          postCode,
+          source,
+          description,
+        }, () => {
+          pop(2);
+        });
+        return;
+      }
+      if (!id) throw new Error('id 不为空');
+      SalesCluesModel.updateSalesClueReq({
+        id,
+        status,
         name,
         companyName,
         activityId,
-        activityName,
         departmentId,
-        departmentName,
-        status,
-        statusName,
         sex,
         leadsDepartmentName,
         jobTitle,
@@ -41,12 +125,54 @@ class CreateSalesClueMore extends Component {
         mobilePhone,
         email,
         weibo,
-        districts,
+        locationInfo,
+        postCode,
+        source,
+        description,
+      }, () => {
+        pop(1);
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item).length) return;
+    this.setState({
+      ...formatNumberToString(item),
+    });
+  };
+  render() {
+    const {
+      state: {
+        name,
+        sex,
+        companyName,
+        jobTitle,
+        phone,
+        mobilePhone,
+        email,
+        weibo,
+        locationInfo,
         address,
         postCode,
         source,
-        sourceName,
+        activityId,
+        activityName,
+        departmentId,
+        leadsDepartmentName,
         description,
+      },
+      props: {
+        navigation: {
+          navigate,
+        },
       },
     } = this;
     return (
@@ -59,220 +185,213 @@ class CreateSalesClueMore extends Component {
           fontSize={16}
           titleBackColor="transparent"
         />
-        <NavInputItem
-          leftText="姓名"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.name,
-            value: name,
-            onChangeText: name => this.setState({ name }),
-          })}
-        />
-        <NavInputItem
-          leftText="公司名称"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.companyName,
-            value: companyName,
-            onChangeText: companyName => this.setState({ companyName }),
-          })}
-        />
-        <NavInputItem
-          leftText="性别"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.sex,
-            value: sex,
-            onChangeText: sex => this.setState({ sex }),
-          })}
-        />
-        <NavInputItem
-          leftText="部门"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.leadsDepartmentName,
-            value: leadsDepartmentName,
-            onChangeText: leadsDepartmentName => this.setState({ leadsDepartmentName }),
-          })}
-        />
-        <NavInputItem
-          leftText="职务"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.jobTitle,
-            value: jobTitle,
-            onChangeText: jobTitle => this.setState({ jobTitle }),
-          })}
-        />
-        <NavInputItem
-          leftText="跟进状态"
-          onPress={() => navigate(routers.typePicker, {
-            selectedKey: status,
-            typeEnum: LeadsStatus,
-            callback: (key, value) => {
-              this.setState({
-                status: key,
-                statusName: value,
-              });
-            },
-          })}
-          center={
-            <CenterText active={status && statusName}>
-              {(status && statusName) ? statusName : SalesClueEnum.status}
-            </CenterText>
-          }
-          isLast
-          {...theme.navItemStyle}
-        />
-        <TitleItem
-          text="联系信息"
-          fontSize={16}
-          titleBackColor="transparent"
-        />
-        <NavInputItem
-          leftText="电话"
-          {...theme.getLeftStyle({
-              placeholder: SalesClueEnum.phone,
-              value: phone,
-              onChangeText: phone => this.setState({ phone }),
+        <ListView>
+          <NavInputItem
+            leftText="姓名"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.name,
+              value: name,
+              onChangeText: name => this.setState({ name }),
             })}
-        />
-        <NavInputItem
-          leftText="手机"
-          {...theme.getLeftStyle({
-              placeholder: SalesClueEnum.mobilePhone,
-              value: mobilePhone,
-              onChangeText: mobilePhone => this.setState({ mobilePhone }),
-            })}
-        />
-        <NavInputItem
-          leftText="邮件"
-          {...theme.getLeftStyle({
-              placeholder: SalesClueEnum.email,
-              value: email,
-              onChangeText: email => this.setState({ email }),
-            })}
-        />
-        <NavInputItem
-          leftText="微博"
-          {...theme.getLeftStyle({
-              placeholder: SalesClueEnum.weibo,
-              value: weibo,
-              onChangeText: weibo => this.setState({ weibo }),
-            })}
-        />
-        <NavInputItem
-          leftText="省份"
-          onPress={() => {
-            navigate(routers.cityPicker, {
-              callback: ({ formatLocation }) => {
-                this.setState({
-                  districts: formatLocation,
-                });
-              },
-            });
-          }}
-          center={
-            <CenterText active={districts}>
-              {
-                districts || SalesClueEnum.districts
+          />
+          <FormActionSheet
+            onConfirm={({ key }) => {
+              this.setState({ sex: key });
+            }}
+            typeEnum={SexTypes}
+          >
+            <NavInputItem
+              leftText="性别"
+              needPress={false}
+              center={
+                <CenterText
+                  active={sex}
+                >
+                  {sex ? SexTypes[sex] : SalesClueEnum.sex}
+                </CenterText>
               }
-            </CenterText>
-          }
-          {...theme.navItemStyle}
-        />
-        <NavInputItem
-          leftText="地址"
-          {...theme.getLeftStyle({
-              placeholder: SalesClueEnum.address,
-              value: address,
-              onChangeText: address => this.setState({ address }),
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
+          <NavInputItem
+            leftText="公司名称"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.companyName,
+              value: companyName,
+              onChangeText: companyName => this.setState({ companyName }),
             })}
-        />
-        <NavInputItem
-          leftText="邮编"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.postCode,
-            value: postCode,
-            onChangeText: postCode => this.setState({ postCode }),
-          })}
-        />
-        <NavInputItem
-          leftText="线索来源"
-          onPress={() => navigate(routers.typePicker, {
-            selectedKey: source,
-            typeEnum: LeadsSource,
-            callback: (key, value) => {
-              this.setState({
-                source: key,
-                sourceName: value,
-              });
-            },
-          })}
-          center={
-            <CenterText active={source && sourceName}>
-              {(source && sourceName) ? sourceName : SalesClueEnum.source}
-            </CenterText>
-          }
-          isLast
-          {...theme.navItemStyle}
-        />
-        <NavInputItem
-          leftText="市场活动"
-          onPress={() => navigate(routers.markActivity, {
-              type: MarkActivityType,
-              callback: (item) => {
-                if (!Object.keys(item).length) return;
-                this.setState({
-                  activityId: item.key,
-                  activityName: item.title,
-                });
-              },
-            })}
-          center={
-            <CenterText active={activityId && activityName}>
-              {
-                  (activityId && activityName) ? activityName :
-                    SalesClueEnum.activity
-                }
-            </CenterText>
-            }
-          {...theme.navItemStyle}
-        />
-        <NavInputItem
-          leftText="所属部门"
-          onPress={() => navigate(routers.selectDepartment, {
+          />
+          <NavInputItem
+            leftText="部门"
+            onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
                   departmentId: item.id,
-                  departmentName: item.name,
+                  leadsDepartmentName: item.name,
                 });
               },
             })}
-          center={
-            <CenterText active={departmentId && departmentName}>
-              {
-                  (departmentId && departmentName) ? departmentName : SalesClueEnum.department
+            center={
+              <CenterText active={departmentId && leadsDepartmentName}>
+                {
+                  (departmentId && leadsDepartmentName) ? leadsDepartmentName : SalesClueEnum.departmentId
                 }
-            </CenterText>
+              </CenterText>
             }
-          {...theme.navItemStyle}
-        />
-        <NavInputItem
-          leftText="备注"
-          height={44}
-          center={<View />}
-        />
-        <TextareaGroup>
-          <TextareaView
-            rowSpan={5}
-            bordered
-            value={description}
-            onChangeText={description => this.setState({ description })}
-            placeholder="请输入备注"
-            placeholderTextColor={theme.textPlaceholderColor}
+            {...theme.navItemStyle}
           />
-        </TextareaGroup>
-        <HorizontalDivider
-          height={20}
+          <NavInputItem
+            leftText="职务"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.jobTitle,
+              value: jobTitle,
+              onChangeText: jobTitle => this.setState({ jobTitle }),
+            })}
+            isLast
+          />
+        </ListView>
+        <TitleItem
+          text="联系信息"
+          fontSize={16}
+          titleBackColor="transparent"
         />
+        <ListView>
+          <NavInputItem
+            leftText="电话"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.phone,
+              value: phone,
+              onChangeText: phone => this.setState({ phone }),
+            })}
+          />
+          <NavInputItem
+            leftText="手机"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.mobilePhone,
+              value: mobilePhone,
+              onChangeText: mobilePhone => this.setState({ mobilePhone }),
+            })}
+          />
+          <NavInputItem
+            leftText="邮箱"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.email,
+              value: email,
+              onChangeText: email => this.setState({ email }),
+            })}
+          />
+          <NavInputItem
+            leftText="微博"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.weibo,
+              value: weibo,
+              onChangeText: weibo => this.setState({ weibo }),
+            })}
+          />
+          <NavInputItem
+            leftText="省份"
+            onPress={() => navigate(routers.cityPicker, {
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  locationInfo: item,
+                });
+              },
+            })}
+            center={
+              <CenterText active={locationInfo.formatLocation}>
+                { locationInfo.formatLocation || SalesClueEnum.location}
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="详细地址"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.address,
+              value: address,
+              onChangeText: address => this.setState({ address }),
+            })}
+          />
+          <NavInputItem
+            leftText="邮编"
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.postCode,
+              value: postCode,
+              onChangeText: postCode => this.setState({ postCode }),
+            })}
+            isLast
+          />
+        </ListView>
+        <TitleItem
+          text="其它信息"
+          fontSize={16}
+          titleBackColor="transparent"
+        />
+        <ListView>
+          <FormActionSheet
+            onConfirm={({ key }) => {
+              this.setState({ source: key });
+            }}
+            typeEnum={LeadsSource}
+          >
+            <NavInputItem
+              leftText="线索来源"
+              needPress={false}
+              center={
+                <CenterText
+                  active={source}
+                >
+                  {source ? LeadsSource[source] : SalesClueEnum.source}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
+          <NavInputItem
+            leftText="市场活动"
+            onPress={() => navigate(routers.markActivity, {
+              type: MarkActivityType,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  activityId: item.id,
+                  activityName: item.name,
+                });
+              },
+            })}
+            center={
+              <CenterText active={activityId && activityName}>
+                {
+                  (activityId && activityName) ? activityName : SalesClueEnum.activityId
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+        </ListView>
+        <ListView>
+          <NavInputItem
+            leftText="备注"
+            center={<View />}
+            right={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={description}
+              onChangeText={description => this.setState({ description })}
+              placeholder="请输入备注说明"
+              placeholderTextColor={theme.textPlaceholderColor}
+            />
+          </TextareaGroup>
+          <HorizontalDivider
+            height={20}
+          />
+        </ListView>
       </ContainerScrollView>
     );
   }
@@ -287,7 +406,7 @@ CreateSalesClueMore.navigationOptions = ({ navigation }) => ({
   ),
   headerRight: (
     <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : () => { }}
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
       rightStyle={{
         color: theme.primaryColor,
@@ -295,6 +414,8 @@ CreateSalesClueMore.navigationOptions = ({ navigation }) => ({
     />
   ),
 });
+
+CreateSalesClueMore.defaultProps = {};
 
 CreateSalesClueMore.propTypes = {
   navigation: PropTypes.shape({

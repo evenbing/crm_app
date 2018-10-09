@@ -7,11 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { LeadsSource } from '../../../../constants/enum';
+import { LeadsSource, SexTypes } from '../../../../constants/enum';
+import { formatLocationMap } from '../../../../utils/base';
 
 // components
 import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import { renderBasicItem, RemarkView, RemarkText } from '../../../../components/Details/Styles';
 
 const ContainerView = styled.View``;
 
@@ -20,18 +21,19 @@ const ActivityDetailsItem = ({
     name,
     sex,
     companyName,
-    departmentName,
-    jobTitle,
-    ownerUserName, // "大佬5",
     leadsDepartmentName,
-    planAmount, // 33,
-    salesPhaseId, // "1027551196627734528",
-    expectedDate, // "1536422400000",
-    follow, // false,
-    id, // "1032876348290502657",
-    inActive, // false,
-    lastPhaseUpdateTime, // "1535092474000",
+    jobTitle,
+
+    phone,
+    mobilePhone,
+    email,
+    weibo,
+    location,
+    postCode,
+
     source,
+    activityName,
+
     description,
   },
 } = {}) => (
@@ -40,30 +42,24 @@ const ActivityDetailsItem = ({
       text="基本信息"
     />
     {renderBasicItem('姓名', name)}
-    {renderBasicItem('性别', sex)}
+    {renderBasicItem('性别', SexTypes[sex])}
     {renderBasicItem('公司名称', companyName)}
     {renderBasicItem('部门', leadsDepartmentName)}
     {renderBasicItem('职务', jobTitle, null, null, true)}
     <TitleItemComponent
       text="联系信息"
     />
-    {renderBasicItem('开始时间', '')}
-    {renderBasicItem('结束时间', '')}
-    {renderBasicItem('活动成本', '', <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('预期收入', '', <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('邀请人数', '')}
-    {renderBasicItem('预期响应', '')}
-    {renderBasicItem('实际成本', '', <RightSuffix>元</RightSuffix>, null, true)}
+    {renderBasicItem('电话', phone)}
+    {renderBasicItem('手机', mobilePhone)}
+    {renderBasicItem('邮箱', email)}
+    {renderBasicItem('微博', weibo)}
+    {renderBasicItem('地址', formatLocationMap(location))}
+    {renderBasicItem('邮政编码', postCode)}
     <TitleItemComponent
       text="其他信息"
     />
-    {renderBasicItem('负责人', ownerUserName)}
-    {renderBasicItem('所属部门', departmentName)}
-    {renderBasicItem('创建人', '')}
-    {renderBasicItem('创建时间', '')}
-    {renderBasicItem('最近修改时间', '')}
-    {renderBasicItem('最近跟进人', '')}
-    {renderBasicItem('最近跟进时间', '', null, null, true)}
+    {renderBasicItem('线索来源', LeadsSource[source])}
+    {renderBasicItem('市场活动', activityName)}
     <TitleItemComponent
       text="备注"
       color="#373737"

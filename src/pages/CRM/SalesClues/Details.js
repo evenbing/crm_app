@@ -54,7 +54,7 @@ const TitleText = styled.Text`
   font-family: ${theme.fontRegular};
 `;
 
-const dynamicPactList = `${ModuleType.pact}List`;
+const dynamicPactList = `${ModuleType.clues}List`;
 
 @observer
 class Details extends React.Component {
@@ -139,6 +139,9 @@ class Details extends React.Component {
       },
     });
   };
+  onPressPhone = () => {
+    // TODO
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -187,6 +190,7 @@ class Details extends React.Component {
     const detailHeaderProps = {
       item: map,
       onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressPhone: this.onPressPhone,
     };
     return (
       <View>
@@ -240,7 +244,7 @@ class Details extends React.Component {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <ActivityDetailsItem />,
-      onRefresh: this.onRefresh,
+      onRefresh: this.getSalesCuleDetail,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
       },
@@ -287,7 +291,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.salesChanceEditorMore, { item: map })}
+                onPress={() => navigate(routers.createSalesClueMore, { item: map })}
               />
             )
         }

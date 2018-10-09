@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../../../../constants';
+import { LeadsStatus } from '../../../../constants/enum';
 
 // static source
 import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
@@ -19,7 +20,7 @@ import Thumbnail from '../../../../components/Thumbnail';
 // padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
-const PhoneView = styled.View`
+const PhoneView = styled.TouchableOpacity`
   width: ${theme.moderateScale(82)};
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(15)};
@@ -52,6 +53,10 @@ const NameText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
+const CompanyText = NameText.extend`
+  font-size: ${theme.moderateScale(14)};
+`;
+
 const TimeText = NameText.extend`
   font-size: ${theme.moderateScale(14)};
 `;
@@ -77,12 +82,16 @@ const PlanStatusText = styled.Text`
 class DetailsHead extends React.PureComponent {
   render() {
     const {
-      onPressTeamMember,
+      item,
+      onPressChoiceTeam,
+      onPressPhone,
     } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
-          <PhoneView>
+          <PhoneView
+            onPress={onPressPhone}
+          >
             <Thumbnail
               source={require('../../../../img/crm/details/phone.png')}
               size={14}
@@ -90,32 +99,25 @@ class DetailsHead extends React.PureComponent {
             <PhoneText>电话联系</PhoneText>
           </PhoneView>
           <ItemView>
-            <NameText>李总</NameText>
+            <NameText>{item.name}</NameText>
           </ItemView>
-          {/*
           <ItemView marginTop={2}>
-            <CompanyText>西风网络</CompanyText>
+            <CompanyText>{item.companyName}</CompanyText>
           </ItemView>
-          */}
           <ItemView
             marginTop={23}
-            onPress={onPressTeamMember}
+            marginBottom={34}
+            onPress={onPressChoiceTeam}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
             />
           </ItemView>
-          <ItemView
-            marginTop={7}
-            marginBottom={34}
-          >
-            <TimeText>2018-09-09 至 2018-09-09</TimeText>
-          </ItemView>
           <FooterView>
             <TimeText>活动状态：</TimeText>
-            <PlanStatusText>已计划</PlanStatusText>
+            <PlanStatusText>{LeadsStatus[item.status] || '--'}</PlanStatusText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
@@ -129,10 +131,14 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressChoiceTeam: () => null,
+  onPressPhone: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressChoiceTeam: PropTypes.func,
+  onPressPhone: PropTypes.func,
 };
 
 export default DetailsHead;
