@@ -6,6 +6,7 @@ export const SalesChanceType = 'SALES_CHANCE/SELECT';
 export const SalesClueType = 'SALES_CLUE/SELECT';
 export const ContactsType = 'CONTACTS/SELECT';
 export const PriceListType = 'PRICELIST/SELECT';
+export const ProductType = 'PRODUCT/SELECT';
 
 // 任务日程
 export const TASK_TYPE = 'TASK';

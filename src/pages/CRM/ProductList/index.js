@@ -10,6 +10,7 @@ import FlatListTable from '../../../components/FlatListTable';
 import ProductItemList from './components/ProductItemList';
 
 import ProductListModel from '../../../logicStores/productList';
+import { ProductType } from '../../../constants/enum';
 
 useStrict(true);
 
@@ -30,6 +31,20 @@ class ProductList extends React.Component {
     }
   };
 
+  onPressItem = ({ item }) => {
+    const {
+      state: { params: {
+        type,
+        callback,
+      } }, 
+      goBack,
+    } = this.props.navigation;
+    if (type === ProductType) {
+      callback && callback(item);
+      goBack();
+    }
+  }
+
   getData = (pageNumber = 1) => {
     ProductListModel.getProductClazzListReq({ pageNumber });
   };
@@ -41,7 +56,7 @@ class ProductList extends React.Component {
     return (
       <ProductItemList
         onPressSelectIndex={onPressSelectIndex}
-        // onPressItem={this.onPressItem}
+        onPressItem={this.onPressItem}
         {...itemProps}
       />
     );

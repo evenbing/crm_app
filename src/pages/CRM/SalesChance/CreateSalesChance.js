@@ -14,7 +14,7 @@ import ProductItem from './components/ProductItem';
 import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
 import { SalesChanceEnum } from '../../../constants/form';
-import { CustomerType, MarkActivityType } from '../../../constants/enum';
+import { CustomerType, MarkActivityType, ProductType } from '../../../constants/enum';
 import { CenterText, RightText } from '../../../components/Styles/Form';
 import SalesChanceStore from '../../../logicStores/salesChance';
 import DateTimePicker from '../../../components/DateTimePicker';
@@ -25,35 +25,35 @@ import { getNewId } from '../../../service/app';
 const formatDateType = 'YYYY-MM-DD HH:mm:ss';
 const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 
-const products = [
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: '标准价格：2300',
-    count: '数量：200',
-    remark: '备注：被猪猪这猪',
-    totalPrice: '总价：460000',
-  },
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: 2300,
-    count: 200,
-    remark: '被猪猪这猪',
-    totalPrice: 460000,
-  },
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: 2300,
-    count: 200,
-    remark: '被猪猪这猪',
-    totalPrice: 460000,
-  },
-];
+// const products = [
+//   {
+//     key: uuidv1(),
+//     discount: '折扣：80%',
+//     name: '电脑主机',
+//     price: '标准价格：2300',
+//     count: '数量：200',
+//     remark: '备注：被猪猪这猪',
+//     totalPrice: '总价：460000',
+//   },
+//   {
+//     key: uuidv1(),
+//     discount: '折扣：80%',
+//     name: '电脑主机',
+//     price: 2300,
+//     count: 200,
+//     remark: '被猪猪这猪',
+//     totalPrice: 460000,
+//   },
+//   {
+//     key: uuidv1(),
+//     discount: '折扣：80%',
+//     name: '电脑主机',
+//     price: 2300,
+//     count: 200,
+//     remark: '被猪猪这猪',
+//     totalPrice: 460000,
+//   },
+// ];
 @observer
 class CreateSalesChance extends Component {
   constructor(props) {
@@ -71,6 +71,8 @@ class CreateSalesChance extends Component {
       departmentName: null,
       activityId: null,
       activityName: null,
+
+      products: [],
     };
   }
 
@@ -125,6 +127,29 @@ class CreateSalesChance extends Component {
     } catch (error) {
       Toast.error(error.message);
     }
+  }
+  // creationTime, // "1534843302000"
+  // departmentId, // "938971633597943808"
+  // describe, // "单元测试的数据呀"
+  // id, // "1031833807046709248"
+  // lastUpdateTime, // "1534844566000"
+  // name, // "产品No.one"
+  // price, // 20
+  // productClazzId, // "1031843015657918464"
+  // rowVersion, // "1"
+  // salesUnit, // "台"
+  // status, // 1
+  // tenantId, // "801689539428098048"
+  onAddProduct = () => {
+    const { navigate } = this.props.navigation;
+    navigate(routers.productList, {
+      type: ProductType,
+      callback: (item) => {
+        const arr = this.state.products.map(item => ({ ...item }));
+        arr.push(item);
+        this.setState({ products: arr });
+      },
+    });
   }
 
   render() {
@@ -295,23 +320,32 @@ class CreateSalesChance extends Component {
             fontSize={16}
             color="#969696"
           />
+
+          {/* key: uuidv1(),
+          discount: '折扣：80%',
+          name: '电脑主机',
+          price: '标准价格：2300',
+          count: '数量：200',
+          remark: '备注：被猪猪这猪',
+          totalPrice: '总价：460000', */}
           {
-            products.map(item => (
+            this.state.products.map(item => (
               <ProductItem
-                key={item.key}
+                key={item.id}
                 image={productImage}
-                discount={item.discount}
+                discount="折扣:80%"
                 name={item.name}
-                price={item.price}
-                count={item.count}
-                remark={item.remark}
-                totalPrice={item.totalPrice}
+                price={`标准价格:${item.price}`}
+                count={`数量:1 ${item.salesUnit}`}
+                remark={`备注:${item.remark}`}
+                totalPrice={`${item.price * 1}`}
               />
             ))
           }
           <AddProduct
             count="20"
             totalPrice="900000"
+            onPress={this.onAddProduct}
           />
         </ContainerScrollView>
       </ContainerView>
