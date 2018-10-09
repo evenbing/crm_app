@@ -6,8 +6,10 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
+import { SalesClueEnum } from '../../../constants/form';
+import { SalesClueType } from '../../../constants/enum';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -17,45 +19,79 @@ import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
 // import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
+import { ListView, CenterText } from '../../../components/Styles/Form';
 
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const CenterText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-  font-family: ${theme.fontRegular};
-`;
-
-const NavItemStyle = {
-  leftWidth: theme.moderateScale(83),
-  height: 44,
-  showNavIcon: true,
-};
+import SalesCluesModel from '../../../logicStores/salesClues';
 
 class CreateSalesClue extends React.Component {
+  state = {
+    name: null,
+    companyName: null,
+    departmentId: null,
+    departmentName: null,
+    activityId: null,
+    activityName: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => alert('finish');
+  onPressRight = () => {
+    const {
+      state: {
+        name,
+        companyName,
+        departmentId,
+        activityId,
+      },
+      props: {
+        navigation: {
+          goBack,
+        },
+      },
+    } = this;
+    try {
+      if (!name) throw new Error(SalesClueEnum.name);
+      if (!companyName) throw new Error(SalesClueEnum.companyName);
+      if (!departmentId) throw new Error(SalesClueEnum.departmentId);
+      if (!activityId) throw new Error(SalesClueEnum.activityId);
+      SalesCluesModel.createSalesClueReq({
+        name,
+        companyName,
+        departmentId,
+        activityId,
+      }, () => {
+        goBack();
+      });
+    } catch (error) {
+      Toast.showError(error.message);
+    }
+  };
   render() {
     const {
-      navigation: {
-        navigate,
+      state: {
+        name,
+        companyName,
+        departmentId,
+        departmentName,
+        activityId,
+        activityName,
       },
-    } = this.props;
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
     return (
       <ContainerScrollView
         bottomPadding
       >
         <CommStatusBar />
-        {/* <ScanCard
-          onPress={() => alert(1)}
-        /> */}
+        {/*
+         <ScanCard
+           onPress={() => alert(1)}
+         />
+         */}
         <TitleItem
           text="必填信息"
           fontSize={16}
@@ -63,41 +99,63 @@ class CreateSalesClue extends React.Component {
         <ListView>
           <NavInputItem
             leftText="姓名"
-            inputProps={{
-              'placeholder': '请输入姓名',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.name,
+              value: name,
+              onChangeText: name => this.setState({ name }),
+            })}
           />
           <NavInputItem
             leftText="公司名称"
-            inputProps={{
-              'placeholder': '请输入公司名称',
-              fontSize: theme.moderateScale(16),
-            }}
-            leftTextStyle={{
-              color: '#373737',
-              width: theme.moderateScale(80),
-            }}
-            height={44}
+            {...theme.getLeftStyle({
+              placeholder: SalesClueEnum.companyName,
+              value: companyName,
+              onChangeText: companyName => this.setState({ companyName }),
+            })}
           />
           <NavInputItem
             leftText="市场活动"
+            onPress={() => navigate(routers.salesChance, {
+              type: SalesClueType,
+              callback: (item) => {
+                debugger;
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  activityId: item.id,
+                  activityName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择市场活动</CenterText>
+              <CenterText active={activityId && activityName}>
+                {
+                  (activityId && activityName) ? activityName : SalesClueEnum.activityId
+                }
+              </CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
           />
           <NavInputItem
             leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
+              id: departmentId,
+              callback: (item) => {
+                if (!Object.keys(item).length) return;
+                this.setState({
+                  departmentId: item.id,
+                  departmentName: item.name,
+                });
+              },
+            })}
             center={
-              <CenterText>请选择所属部门</CenterText>
+              <CenterText active={departmentId && departmentName}>
+                {
+                  (departmentId && departmentName) ? departmentName : SalesClueEnum.departmentId
+                }
+              </CenterText>
             }
-            {...NavItemStyle}
+            {...theme.navItemStyle}
+            isLast
           />
         </ListView>
         <HorizontalDivider

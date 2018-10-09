@@ -10,7 +10,7 @@ import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
-import { ReceivableRecordEnum } from '../../../constants/form';
+import {ReceivablePlanEnum, ReceivableRecordEnum} from '../../../constants/form';
 import Toast from '../../../utils/toast';
 import { formatDateByMoment } from '../../../utils/base';
 import { DataTitleTypes, PayType } from '../../../constants/enum';
@@ -47,6 +47,7 @@ class EditorMore extends React.Component {
   onPressRight = () => {
     const {
       state: {
+        code,
         id,
         pactId,
         issueId,
@@ -62,6 +63,7 @@ class EditorMore extends React.Component {
       },
     } = this;
     try {
+      if (!code) throw new Error(ReceivablePlanEnum.code);
       if (!id) throw new Error(ReceivableRecordEnum.id);
       if (!pactId) throw new Error(ReceivableRecordEnum.pactId);
       if (!issueId) throw new Error(ReceivableRecordEnum.issueId);
@@ -71,6 +73,7 @@ class EditorMore extends React.Component {
       if (!payType) throw new Error(ReceivableRecordEnum.payType);
       if (!ownerId) throw new Error(ReceivableRecordEnum.ownerId);
       ReceivableRecordModel.updateReceivableRecordReq({
+        code,
         id,
         pactId,
         issueId,

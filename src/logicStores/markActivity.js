@@ -2,9 +2,9 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-11 10:26:48
  * @Last Modified by: Edmond.Shi
+ * @Add JUSTIN XU 2018-10-8
  * @Last Modified time: 2018-09-11 11:36:39
  */
-
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
@@ -15,6 +15,7 @@ import {
   changeOwnerUser,
   batchCreateFollow,
 } from '../service/markActivity';
+import { deleteFollow } from '../service/app';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
@@ -78,8 +79,8 @@ class MarkActivityStore {
     }
   }
 
-   // 详情
-   @action async getMarkActivityDetailReq({ id }) {
+  // 详情
+  @action async getMarkActivityDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
       const {
@@ -98,52 +99,52 @@ class MarkActivityStore {
 
   // 总计
   @action async getMarkActivityTotalReq({ id, pageSize = 1 }) {
-     try {
-       const {
-         totalCount: taskTotal = 0,
-         errors: taskErrors = [],
-       } = await getTaskScheduleList({
-         type: TASK_TYPE,
-         moduleId: id,
-         moduleType: ModuleType.activity,
-         pageSize,
-       });
-       if (taskErrors.length) throw new Error(taskErrors[0].message);
-       const {
-         totalCount: scheduleTotal = 0,
-         errors: scheduleErrors = [],
-       } = await getTaskScheduleList({
-         type: SCHEDULE_TYPE,
-         moduleId: id,
-         moduleType: ModuleType.activity,
-         pageSize,
-       });
-       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
-       const {
-         totalCount: saleClueTotal = 0,
-         errors: saleClueErrors = [],
-       } = await getSalesClueList({ activityId: id, pageSize });
-       if (saleClueErrors.length) throw new Error(saleClueErrors[0].message);
-       const {
-         totalCount: saleChanceTotal = 0,
-         errors: saleChanceErrors = [],
-       } = await getSalesChanceList({ customerId: id, pageSize });
-       if (saleChanceErrors.length) throw new Error(saleChanceErrors[0].message);
-       runInAction(() => {
-         this.contactTotal = {
-           scheduleTotal,
-           taskTotal,
-           saleClueTotal,
-           saleChanceTotal,
-         };
-       });
-     } catch (e) {
-       Toast.showError(e.message);
-       runInAction(() => {
-         this.contactTotal = initTotal;
-       });
-     }
-   }
+    try {
+      const {
+        totalCount: taskTotal = 0,
+        errors: taskErrors = [],
+      } = await getTaskScheduleList({
+        type: TASK_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.activity,
+        pageSize,
+      });
+      if (taskErrors.length) throw new Error(taskErrors[0].message);
+      const {
+        totalCount: scheduleTotal = 0,
+        errors: scheduleErrors = [],
+      } = await getTaskScheduleList({
+        type: SCHEDULE_TYPE,
+        moduleId: id,
+        moduleType: ModuleType.activity,
+        pageSize,
+      });
+      if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
+      const {
+        totalCount: saleClueTotal = 0,
+        errors: saleClueErrors = [],
+      } = await getSalesClueList({ activityId: id, pageSize });
+      if (saleClueErrors.length) throw new Error(saleClueErrors[0].message);
+      const {
+        totalCount: saleChanceTotal = 0,
+        errors: saleChanceErrors = [],
+      } = await getSalesChanceList({ customerId: id, pageSize });
+      if (saleChanceErrors.length) throw new Error(saleChanceErrors[0].message);
+      runInAction(() => {
+        this.contactTotal = {
+          scheduleTotal,
+          taskTotal,
+          saleClueTotal,
+          saleChanceTotal,
+        };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+      runInAction(() => {
+        this.contactTotal = initTotal;
+      });
+    }
+  }
 
   // 新增
   @action async createMarkActivityReq(options, callback) {
@@ -152,7 +153,6 @@ class MarkActivityStore {
         errors = [],
       } = await createMarkActivity(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getMarkActivityListReq(this.queryProps);
         callback && callback();
@@ -169,7 +169,6 @@ class MarkActivityStore {
         errors = [],
       } = await updateMarkActivity(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getMarkActivityDetailReq({ id: options.id });
         this.getMarkActivityListReq(this.queryProps);
@@ -187,7 +186,6 @@ class MarkActivityStore {
          errors = [],
        } = await changeOwnerUser(options);
        if (errors.length) throw new Error(errors[0].message);
-       debugger;
        runInAction(() => {
          this.getMarkActivityDetailReq({ id: options.id });
          this.getMarkActivityListReq(this.queryProps);
@@ -199,15 +197,23 @@ class MarkActivityStore {
    }
 
    // 关注
-   @action async updateFollowStatusReq(options, callback) {
+   @action async updateFollowStatusReq({ follow, followId, ...restProps }, callback) {
      try {
-       const {
-         errors = [],
-       } = await batchCreateFollow(options);
-       if (errors.length) throw new Error(errors[0].message);
-       debugger;
+       // 已经关注则删除
+       if (follow) {
+         const {
+           errors = [],
+         } = await deleteFollow({ id: followId });
+         if (errors.length) throw new Error(errors[0].message);
+       } else {
+         // 执行关注
+         const {
+           errors = [],
+         } = await batchCreateFollow(restProps);
+         if (errors.length) throw new Error(errors[0].message);
+       }
        runInAction(() => {
-         this.getMarkActivityDetailReq({ id: options.id });
+         this.getMarkActivityDetailReq({ id: restProps.id });
          this.getMarkActivityListReq(this.queryProps);
          callback && callback();
        });

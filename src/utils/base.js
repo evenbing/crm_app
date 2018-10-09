@@ -24,12 +24,12 @@ export function nativeGoBack() {
 }
 
 // 递归生产二维数组
-export const getArrayByPid = (list = [], pid) => {
+export function getArrayByPid(list = [], pid) {
   return list.filter(obj => obj.parentId === pid).map(obj => ({
     ...obj,
     children: getArrayByPid(list, obj.id),
   }));
-};
+}
 
 function padLeftZero(str) {
   return (`00${str}`).substr(str.length);
@@ -107,4 +107,17 @@ export function formatLocationMap(location = {}, needAddress = true) {
   if (address && needAddress) list.push(address);
   if (!list.length) return null;
   return list.join('-');
+}
+
+// 兼容TextInput value 不识别number
+export function formatNumberToString(obj) {
+  const map = {};
+  Object.keys(obj).forEach((key) => {
+    if (typeof obj[key] === 'number') {
+      map[key] = String(obj[key]);
+    } else {
+      map[key] = obj[key];
+    }
+  });
+  return map;
 }

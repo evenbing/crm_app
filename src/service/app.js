@@ -100,3 +100,18 @@ export function updateLocationId({
     address,
   });
 }
+
+/** 取消关注
+ * @params options
+ * {
+ *   id 主键id(followId) must
+ * }
+ */
+export function deleteFollow({
+  id,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.follow.delete',
+    id,
+  });
+}

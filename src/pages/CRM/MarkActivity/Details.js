@@ -1,6 +1,6 @@
 /**
  * @component Details.js
- * @description 详情页面
+ * @description 市场活动详情页面
  * @time 2018/8/14
  * @author JUSTIN XU
  */
@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId } from '../../../utils/base';
+import { getUserId, formatDateByMoment } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -24,8 +24,8 @@ import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
-import ActivityDetailsItem from './components/ActivityDetailsItem';
 import DetailsHead from './components/DetailsHead';
+import ActivityDetailsItem from './components/ActivityDetailsItem';
 
 import MarkActivityModel from '../../../logicStores/markActivity';
 import DynamicModel from '../../../logicStores/dynamic';
@@ -128,12 +128,16 @@ class Details extends React.Component {
   onPressFollow = () => {
     const { markActivityDetail: { map } } = MarkActivityModel;
     MarkActivityModel.updateFollowStatusReq({
-      followList: [
-        `objectType-${ModuleType.activity}`,
-        `objectId-${map.id}`,
-        `objectName-${map.name}`,
-        `followTime-${new Date().getTime()}`,
-      ],
+      followList: [{
+        objectType: ModuleType.activity,
+        objectId: map.id,
+        objectName: map.name,
+        followTime: formatDateByMoment(new Date()),
+        userId: getUserId(),
+      }],
+      follow: map.follow,
+      id: map.id,
+      followId: map.followId,
     });
   };
   onPressChoiceTeam = () => {

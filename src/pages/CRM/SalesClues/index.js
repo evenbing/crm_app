@@ -12,18 +12,17 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
+import { SalesClueType, LeadsStatus } from '../../../constants/enum';
 import {
   SalesCluesTimeTypeFilterMap,
   SalesCluesResponsibilityTypeFilterMap,
   DrawerFilterMap,
 } from '../../../constants/screenTab';
-import { formatDate, formatDateByMoment, formatDateType } from '../../../utils/base';
-import { LeadsStatus } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
@@ -154,7 +153,7 @@ class SalesClues extends React.Component {
     };
     itemProps.item = item;
     const {
-      navigation: { navigate },
+      navigation: { navigate, state, goBack },
     } = this.props;
     return (
       <SwipeRow
@@ -172,8 +171,17 @@ class SalesClues extends React.Component {
         onRowOpen={() => this.onRowOpen(index)}
         body={
           <ListItem
-            {...{ index, item }}
-            onPress={() => navigate(routers.salesClueDetails, { item })}
+            {...itemProps}
+            onPress={() => {
+              // from select customer
+              if (state.params.type === SalesClueType) {
+                state.params.callback(item);
+                goBack();
+                return;
+              }
+              // form nav page
+              navigate(routers.salesClueDetails, { item });
+            }}
           />
         }
         right={
@@ -275,23 +283,29 @@ class SalesClues extends React.Component {
   }
 }
 
-SalesClues.navigationOptions = ({ navigation }) => ({
-  title: '销售线索',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
-      right="新增"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+SalesClues.navigationOptions = ({ navigation }) => {
+  const { onPressRight, type } = navigation.state.params || {};
+  const bool = type === SalesClueType;
+  return {
+    title: bool ? '选择销售线索' : '销售线索',
+    headerLeft: (
+      <LeftBackIcon
+        onPress={() => navigation.goBack()}
+      />
+    ),
+    headerRight: (
+      bool ? <DefaultHeaderView /> : (
+        <RightView
+          onPress={onPressRight || null}
+          right="新增"
+          rightStyle={{
+            color: theme.primaryColor,
+          }}
+        />
+      )
+    ),
+  };
+};
 
 SalesClues.propTypes = {
   navigation: PropTypes.shape({

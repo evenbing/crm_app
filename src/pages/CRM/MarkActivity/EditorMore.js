@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { View } from 'react-native';
-import moment from 'moment';
-import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
+import { routers, theme } from '../../../constants';
+import { MarkActivityEnum } from '../../../constants/form';
+import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/enum';
+import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -13,68 +14,38 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import { MarkActivityEnum } from '../../../constants/form';
-import { CenterText } from '../../../components/Styles/Form';
-import { routers } from '../../../constants';
-import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/enum';
+import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
-import { formatDate } from '../../../utils/base';
+
 import MarkActivityStore from '../../../logicStores/markActivity';
-import Toast from '../../../utils/toast';
-
-const formatDateType = 'yyyy-MM-dd hh:mm';
-
-const ListView = styled.View`
-  background: ${theme.whiteColor};
-`;
-
-const RightText = CenterText.extend`
-  color: ${theme.textColor};
-`;
 
 class EditorMore extends React.Component {
-  constructor(props) {
-    super(props);
-    const {
-      navigation: {
-        state: {
-          params: {
-            name,
-            beginDate,
-            endDate,
-            departmentId,
-            departmentName,
-            description,
-          },
-        },
-      },
-    } = props;
-    this.state = {
-      name,
-      beginDate,
-      endDate,
-      departmentId,
-      departmentName,
-      status: null,
-      statusName: null,
-      sourceType: null,
-      sourceTypeName: null,
-      description,
-      budgetCost: null,
-      budgetRevenue: null,
-      budgetPeopleNumber: null,
-      effect: null,
-      actualPeopleNumber: null,
-      actualCost: null,
-      executeDetail: null,
-    };
-  }
+  state = {
+    name: null,
+    beginDate: null,
+    endDate: null,
+    departmentId: null,
+    departmentName: null,
+    status: null,
+    statusName: null,
+    sourceType: null,
+    sourceTypeName: null,
+    description: null,
+    budgetCost: null,
+    budgetRevenue: null,
+    budgetPeopleNumber: null,
+    effect: null,
+    actualPeopleNumber: null,
+    actualCost: null,
+    actualRevenue: null,
+    executeDetail: null,
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
-
   onPressRight = () => {
     const {
       state: {
@@ -91,12 +62,11 @@ class EditorMore extends React.Component {
         effect,
         actualPeopleNumber,
         actualCost,
+        actualRevenue,
         executeDetail,
       },
       props: {
-        navigation: {
-          pop,
-        },
+        navigation: { pop, state },
       },
     } = this;
     try {
@@ -105,10 +75,35 @@ class EditorMore extends React.Component {
       if (!endDate) throw new Error(MarkActivityEnum.endDate);
       if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
       if (!description) throw new Error(MarkActivityEnum.description);
-      MarkActivityStore.createMarkActivityReq({
+      const { item: { id } = {} } = state.params || {};
+      // 新增
+      if (!id) {
+        MarkActivityStore.createMarkActivityReq({
+          name,
+          beginDate,
+          endDate,
+          departmentId,
+          description,
+          status,
+          sourceType,
+          budgetCost,
+          budgetRevenue,
+          budgetPeopleNumber,
+          effect,
+          actualPeopleNumber,
+          actualCost,
+          executeDetail,
+        }, () => {
+          pop(2);
+        });
+        return;
+      }
+      if (!id) throw new Error('id 不为空');
+      MarkActivityStore.updateMarkActivityReq({
+        id,
         name,
-        beginDate: moment(beginDate).format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss'),
+        beginDate,
+        endDate,
         departmentId,
         description,
         status,
@@ -119,27 +114,46 @@ class EditorMore extends React.Component {
         effect,
         actualPeopleNumber,
         actualCost,
+        actualRevenue,
         executeDetail,
       }, () => {
-        pop(2);
+        pop(1);
       });
     } catch (error) {
       Toast.showError(error.message);
     }
   };
-
-  getLeftStyle = (placeholder, width = 110) => {
-    return {
-      inputProps: {
-        placeholder,
-        fontSize: moderateScale(16),
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
       },
-      leftTextStyle: {
-        color: '#373737',
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item).length) return;
+    let {
+      beginDate,
+      endDate,
+    } = item;
+    const {
+      status,
+      sourceType,
+    } = item;
+    if (beginDate) {
+      beginDate = formatDateByMoment(beginDate);
+    }
+    if (endDate) {
+      endDate = formatDateByMoment(endDate);
+    }
+    const statusName = status ? MarketActivityStatus[status] : null;
+    const sourceTypeName = sourceType ? MarketActivityTypes[sourceType] : null;
+    this.setState({
+      ...formatNumberToString(item),
+      beginDate,
+      endDate,
+      statusName,
+      sourceTypeName,
+    });
   };
 
   render() {
@@ -162,13 +176,16 @@ class EditorMore extends React.Component {
         actualPeopleNumber,
         actualCost,
         executeDetail,
+        actualRevenue,
       },
       props: {
         navigation: {
-          navigate,
+          navigate, state,
         },
       },
     } = this;
+    const { item = {} } = state.params || {};
+    const isCreateBool = !item.id;
     return (
       <ContainerScrollView
         bottomPadding
@@ -271,7 +288,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  beginDate: `${formatDate(date, formatDateType)}`,
+                  beginDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -290,7 +307,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDate(date, formatDateType)}`,
+                  endDate: `${formatDateByMoment(date)}`,
                 })
             }
           >
@@ -360,56 +377,19 @@ class EditorMore extends React.Component {
               onChangeText: actualCost => this.setState({ actualCost }),
             })}
           />
+          {
+            isCreateBool ? null : (
+              <NavInputItem
+                leftText="实际收入"
+                {...theme.getLeftStyle({
+                  placeholder: MarkActivityEnum.actualRevenue,
+                  value: actualRevenue,
+                  onChangeText: actualRevenue => this.setState({ actualRevenue }),
+                })}
+              />
+            )
+          }
           <TitleItem text="其它信息" />
-          {/* <NavInputItem
-            leftText="负责人"
-            center={
-              <CenterText>请选择负责人</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText>请选择所属部门</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="创建人"
-            center={
-              <CenterText>请选择创建人</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="创建时间"
-            center={
-              <CenterText>请选择创建时间</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="最近修改时间"
-            center={
-              <CenterText>请选择最近修改时间</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="最近跟进人"
-            center={
-              <CenterText>请选择最近跟进人</CenterText>
-            }
-            {...NavItemStyle}
-          />
-          <NavInputItem
-            leftText="最近跟进时间"
-            center={
-              <CenterText>请选择最近跟进时间</CenterText>
-            }
-            {...NavItemStyle}
-          /> */}
           <NavInputItem
             leftText="备注"
             center={<View />}

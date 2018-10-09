@@ -75,7 +75,7 @@ class EditorMore extends React.Component {
         departmentName,
       },
       props: {
-        navigation: { pop },
+        navigation: { pop, state },
       },
     } = this;
     if (address) {
@@ -86,7 +86,7 @@ class EditorMore extends React.Component {
       if (!companyName) throw new Error(ContactsEnum.companyName);
       if (!departmentId) throw new Error(ContactsEnum.departmentId);
 
-      const { item: { id } = {} } = this.props.navigation.state.params || {};
+      const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
         ContactsModel.createContactReq({
@@ -111,7 +111,6 @@ class EditorMore extends React.Component {
         return;
       }
       if (!id) throw new Error('id 不为空');
-      debugger;
       ContactsModel.updateContactReq({
         id,
         name,

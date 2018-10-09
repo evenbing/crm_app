@@ -67,6 +67,7 @@ export const MarkActivityEnum = {
   effect: '请输入预期响应',
   actualPeopleNumber: '请输入实际人数',
   actualCost: '请输入实际成本',
+  actualRevenue: '请输入实际收入',
   executeDetail: '请输入备注',
 };
 
@@ -89,6 +90,25 @@ export const ContactsEnum = {
   description: '请输入备注说明',
 };
 
+// 销售线索表单
+export const SalesClueEnum = {
+  // 必填
+  name: '请输入姓名',
+  companyName: '请输入公司名称',
+  activityId: '请选择市场活动',
+  departmentId: '请选择所属部门',
+  // 可选
+  status: '请选择活动状态',
+  sourceType: '请选择活动类型',
+  budgetCost: '请输入活动成本',
+  budgetRevenue: '请输入预期收入',
+  budgetPeopleNumber: '请输入邀请人数',
+  effect: '请输入预期响应',
+  actualPeopleNumber: '请输入实际人数',
+  actualCost: '请输入实际成本',
+  executeDetail: '请输入备注',
+};
+
 // 销售机会表单
 export const SalesChanceEnum = {
   name: '请输入机会名称',
@@ -102,6 +122,7 @@ export const SalesChanceEnum = {
   opportunityType: '请选择机会类型',
   sourceType: '请选择机会来源',
 };
+
 // 合同表单
 export const ContractEnum = {
   theme: '请输入合同名称',
@@ -126,6 +147,7 @@ export const ContractEnum = {
 
 // 回款计划
 export const ReceivablePlanEnum = {
+  code: '缺失编号',
   id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',
@@ -137,6 +159,7 @@ export const ReceivablePlanEnum = {
 
 // 回款记录
 export const ReceivableRecordEnum = {
+  code: '缺失编号',
   id: '缺失主键ID',
   pactId: '请选择合同ID',
   issueId: '请选择回款期次',
