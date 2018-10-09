@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import uuidv1 from 'uuid/v1';
+import { observer } from 'mobx-react/native';
+
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
 import { theme, routers } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
@@ -15,7 +17,10 @@ import { SalesChanceEnum } from '../../../constants/form';
 import { CustomerType, MarkActivityType } from '../../../constants/enum';
 import { CenterText } from '../../../components/Styles/Form';
 import SalesChanceStore from '../../../logicStores/salesChance';
+import DateTimePicker from '../../../components/DateTimePicker';
+import { formatDate } from '../../../utils/base';
 
+const formatDateType = 'yyyy-MM-dd hh:mm';
 const products = [
   {
     key: uuidv1(),
@@ -46,6 +51,7 @@ const products = [
   },
 ];
 
+@observer
 class CreateSalesChance extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +61,7 @@ class CreateSalesChance extends Component {
       customerName: null,
       planAmount: null,
       salesPhaseId: null,
+      salesPhaseName: null,
       expectedDate: null,
       description: null,
       departmentId: null,
@@ -80,6 +87,7 @@ class CreateSalesChance extends Component {
         customerName,
         planAmount,
         salesPhaseId,
+        salesPhaseName,
         expectedDate,
         description,
         departmentId,
@@ -123,6 +131,7 @@ class CreateSalesChance extends Component {
         customerName,
         planAmount,
         salesPhaseId,
+        salesPhaseName,
         expectedDate,
         description,
         departmentId,
@@ -169,13 +178,55 @@ class CreateSalesChance extends Component {
             center={
               <CenterText active={customerId && customerName}>
                 {
-                    (customerId && customerName) ? customerName :
-                      SalesChanceEnum.customer
-                  }
+                  (customerId && customerName) ? customerName :
+                    SalesChanceEnum.customer
+                }
               </CenterText>
               }
             {...theme.navItemStyle}
           />
+          <NavInputItem
+            leftText="销售金额"
+            {...theme.getLeftStyle({
+              placeholder: SalesChanceEnum.planAmount,
+              value: planAmount,
+              onChangeText: planAmount => this.setState({ planAmount }),
+            })}
+          />
+          <NavInputItem
+            leftText="销售阶段"
+            onPress={() => navigate(routers.salesPhasePicker, {
+              callback: () => {},
+            })}
+            center={
+              <CenterText active={salesPhaseId && salesPhaseName}>
+                {
+                  (salesPhaseId && salesPhaseName) ? salesPhaseName :
+                    SalesChanceEnum.salesPhase
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <DateTimePicker
+            onConfirm={
+              date =>
+                this.setState({
+                  expectedDate: `${formatDate(date, formatDateType)}`,
+                })
+            }
+          >
+            <NavInputItem
+              leftText="截止时间"
+              needPress={false}
+              center={
+                <CenterText active={expectedDate}>
+                  {expectedDate || SalesChanceEnum.expectedDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
           {/* <NavInputItem
             leftText="市场活动"
             onPress={() => navigate(routers.markActivity, {

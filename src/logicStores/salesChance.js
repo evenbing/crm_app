@@ -1,8 +1,8 @@
 /*
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
- * @Last Modified by: ShiQuan
- * @Last Modified time: 2018-09-16 08:21:38
+ * @Last Modified by: Edmond.Shi
+ * @Last Modified time: 2018-10-09 10:10:43
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -14,6 +14,7 @@ import {
   updateSalesChance,
   mergeSalesChance,
   changeOwnerUser,
+  findSalesPhase,
 } from '../service/salesChance';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
@@ -25,8 +26,11 @@ class SalesChanceStore {
   // 列表
   @observable salesChanceList = initFlatList;
 
-  // 客户详情
+  // 销售机会详情
   @observable salesChanceDetail = initDetailMap;
+
+  // 销售阶段详情
+  @observable salesPhaseDetail = initDetailMap;
 
   // 列表
   @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
@@ -141,6 +145,22 @@ class SalesChanceStore {
       runInAction(() => {
         // TODO next
         this.salesChanceDetail = { ...result };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 高级查询销售阶段
+  @action async findSalesPhaseReq(options) {
+    try {
+      const {
+        result = {},
+      } = await findSalesPhase(options);
+      // debugger;
+      runInAction(() => {
+        // TODO next
+        this.salesPhaseDetail = { ...result };
       });
     } catch (e) {
       Toast.showError(e.message);

@@ -72,6 +72,7 @@ export default {
   typePicker: 'app.tabView.root.model.typePicker',
   moduleTypePicker: 'app.tabView.root.model.moduleTypePicker',
   cityPicker: 'app.tabView.root.model.cityPicker',
+  salesPhasePicker: 'app.tabView.root.model.salesPhasePicker',
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
   teamMembers: 'app.tabView.root.card.teamMembers',

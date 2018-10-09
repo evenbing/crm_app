@@ -234,3 +234,19 @@ export function changeOwnerUser({
     ownerUserName,
   });
 }
+
+/** 高级查询销售阶段
+ * 
+ * @param 
+ * {
+ * isActive 是否启用 否
+ * } param0 
+ */
+export function findSalesPhase({
+  isActive,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.salesPhase.find',
+    isActive,
+  });
+}

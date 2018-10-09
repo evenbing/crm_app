@@ -98,6 +98,7 @@ import RelatedDocs from './pages/Card/RelatedDocs';
 import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
 import CityPickerScreen from './pages/Modal/CityPicker';
+import SalesPhasePickerScreen from './pages/Modal/SalesPhasePicker';
 // root page -> Demo page
 import MobxDemoScreen from './pages/Demo/MobxDemo';
 import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
@@ -236,6 +237,7 @@ const CrmRouteConfig = {
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
   [routers.typePicker]: { screen: TypePickerScreen },
+  [routers.salesPhasePicker]: { screen: SalesPhasePickerScreen },
   [routers.cityPicker]: { screen: CityPickerScreen },
   [routers.selectEmployee]: { screen: SelectEmployeeScreen },
 };
