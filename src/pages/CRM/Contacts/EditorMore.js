@@ -13,7 +13,7 @@ import { ContactsEnum } from '../../../constants/form';
 import { CustomerType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
 import Toast from '../../../utils/toast';
-import { formatDateByMoment, formatLocationMap } from '../../../utils/base';
+import { formatDateByMoment, formatLocationMap, formatNumberToString } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -32,11 +32,10 @@ import ContactsModel from '../../../logicStores/contacts';
 class EditorMore extends React.Component {
   state = {
     name: null,
-    sex: {},
+    sex: null,
     weibo: null,
     postCode: null,
     locationInfo: {},
-    address: null,
     email: null,
     birthDate: null,
     description: null,
@@ -58,29 +57,13 @@ class EditorMore extends React.Component {
     const {
       state: {
         name,
-        sex,
-        weibo,
-        postCode,
-        locationInfo,
-        address,
-        email,
-        birthDate,
-        description,
         companyName,
-        customerId,
-        jobTitle,
-        phoneNumber,
-        mobilePhone,
         departmentId,
-        departmentName,
       },
       props: {
         navigation: { pop, state },
       },
     } = this;
-    if (address) {
-      locationInfo.address = address;
-    }
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
@@ -89,55 +72,18 @@ class EditorMore extends React.Component {
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
-        ContactsModel.createContactReq({
-          name,
-          companyName,
-          customerId,
-          jobTitle,
-          phoneNumber,
-          mobilePhone,
-          email,
-          locationInfo,
-          description,
-          departmentId,
-          departmentName,
-          weibo,
-          postCode,
-          sex: sex.name,
-          birthDate,
-        }, () => {
+        ContactsModel.createContactReq(this.state, () => {
           pop(2);
         });
         return;
       }
       if (!id) throw new Error('id 不为空');
-      ContactsModel.updateContactReq({
-        id,
-        name,
-        sex: sex.name,
-        weibo,
-        locationInfo,
-        email,
-        birthDate,
-        description,
-        companyName,
-        customerId,
-        jobTitle,
-        phoneNumber,
-        mobilePhone,
-        departmentId,
-        departmentName,
-      }, () => {
+      ContactsModel.updateContactReq(this.state, () => {
         pop(1);
       });
     } catch (e) {
       Toast.showError(e.message);
     }
-  };
-  onPressSexItem = ({ key, value }) => {
-    this.setState({
-      sex: { name: value, key },
-    });
   };
   initState = () => {
     const {
@@ -148,28 +94,26 @@ class EditorMore extends React.Component {
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
     const {
-      sex: sexKey,
-      birthDate: birthDateTime,
       location,
-      ...restProps
     } = item;
-    let sex = {};
-    if (sexKey) {
-      const name = SexTypes[sexKey] || sexKey;
-      sex = { name, key: sexKey };
+    let {
+      birthDate,
+    } = item;
+
+    if (birthDate) {
+      birthDate = formatDateByMoment(birthDate);
     }
-    let birthDate = null;
-    if (birthDateTime) {
-      birthDate = formatDateByMoment(birthDateTime);
-    }
-    let locationInfo = null;
-    let address = null;
+    let locationInfo = {};
     if (location) {
       locationInfo = location;
       locationInfo.formatLocation = formatLocationMap(location, false);
-      address = location.address || '';
+      locationInfo.address = location.address || '';
     }
-    this.setState({ sex, birthDate, locationInfo, address, ...restProps });
+    this.setState({
+      ...formatNumberToString(item),
+      birthDate,
+      locationInfo,
+    });
   };
   render() {
     const {
@@ -178,7 +122,6 @@ class EditorMore extends React.Component {
         sex,
         weibo,
         locationInfo,
-        address,
         birthDate,
         email,
         postCode,
@@ -213,7 +156,11 @@ class EditorMore extends React.Component {
             })}
           />
           <FormActionSheet
-            onConfirm={this.onPressSexItem}
+            onConfirm={({ key }) =>
+              this.setState({
+                sex: key,
+              })
+            }
             typeEnum={SexTypes}
           >
             <NavInputItem
@@ -221,9 +168,9 @@ class EditorMore extends React.Component {
               needPress={false}
               center={
                 <CenterText
-                  active={sex.name}
+                  active={sex}
                 >
-                  {sex.name ? sex.name : ContactsEnum.sex}
+                  {sex ? SexTypes[sex] : ContactsEnum.sex}
                 </CenterText>
               }
               {...theme.navItemStyle}
@@ -330,7 +277,10 @@ class EditorMore extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
-                  locationInfo: item,
+                  locationInfo: {
+                    ...locationInfo,
+                    ...item,
+                  },
                 });
               },
             })}
@@ -345,8 +295,13 @@ class EditorMore extends React.Component {
             leftText="地址"
             {...theme.getLeftStyle({
               placeholder: ContactsEnum.address,
-              value: address,
-              onChangeText: address => this.setState({ address }),
+              value: locationInfo.address,
+              onChangeText: address => this.setState({
+                locationInfo: {
+                  ...locationInfo,
+                  address,
+                },
+              }),
             })}
           />
           <NavInputItem

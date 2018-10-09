@@ -161,9 +161,8 @@ class SalesClueStore {
       }
       const {
         errors = [],
-      } = await updateSalesClue({ locationId, ...restProps });
+      } = await updateSalesClue({ ...restProps, locationId });
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getSalesClueDetailReq({ id: restProps.id });
         this.getSalesClueListReq(this.queryProps);

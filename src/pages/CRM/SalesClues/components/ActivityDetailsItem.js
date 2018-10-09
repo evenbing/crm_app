@@ -21,7 +21,7 @@ const ActivityDetailsItem = ({
     name,
     sex,
     companyName,
-    leadsDepartmentName,
+    departmentName,
     jobTitle,
 
     phone,
@@ -44,7 +44,7 @@ const ActivityDetailsItem = ({
     {renderBasicItem('姓名', name)}
     {renderBasicItem('性别', SexTypes[sex])}
     {renderBasicItem('公司名称', companyName)}
-    {renderBasicItem('部门', leadsDepartmentName)}
+    {renderBasicItem('部门', departmentName)}
     {renderBasicItem('职务', jobTitle, null, null, true)}
     <TitleItemComponent
       text="联系信息"

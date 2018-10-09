@@ -8,10 +8,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
-import { theme, routers } from '../../../constants';
+import { theme as themeVar, routers } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
 import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayType } from '../../../constants/enum';
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
 // components
@@ -30,23 +30,14 @@ import ContractModel from '../../../logicStores/contract';
 @observer
 class EditorMore extends React.Component {
   state = {
-    name: null,
+    theme: null,
     customerId: null,
     customerName: null,
     salesOpportunitiesId: null,
     salesOpportunitiesName: null,
-    typeMap: {
-      key: null,
-      value: null,
-    },
-    statusMap: {
-      key: null,
-      value: null,
-    },
-    payMap: {
-      key: null,
-      value: null,
-    },
+    type: null,
+    status: null,
+    payType: null,
     totalMoney: null,
     startDate: null,
     endDate: null,
@@ -70,24 +61,14 @@ class EditorMore extends React.Component {
   onPressRight = () => {
     const {
       state: {
-        name,
+        theme,
         customerId,
         customerName,
-        salesOpportunitiesId,
-        typeMap: { key: type },
-        statusMap: { key: status },
-        payMap: { key: payType },
+        type,
         totalMoney,
         startDate,
         endDate,
-        number,
-        pactDate,
-        ourContractId,
-        customerContractId,
-        customerContractName,
         departmentId,
-        content,
-        comment,
         ownerId,
       },
       props: {
@@ -95,7 +76,7 @@ class EditorMore extends React.Component {
       },
     } = this;
     try {
-      if (!name) throw new Error(ContractEnum.theme);
+      if (!theme) throw new Error(ContractEnum.theme);
       if (!type) throw new Error(ContractEnum.type);
       if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
       if (!totalMoney) throw new Error(ContractEnum.totalMoney);
@@ -106,54 +87,13 @@ class EditorMore extends React.Component {
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
-        ContractModel.createContractReq({
-          theme: name,
-          type,
-          customerId,
-          customerName,
-          salesOpportunitiesId,
-          status,
-          payType,
-          totalMoney,
-          startDate,
-          endDate,
-          number,
-          pactDate,
-          ourContractId,
-          customerContractId,
-          customerContractName,
-          departmentId,
-          ownerId,
-          content,
-          comment,
-        }, () => {
+        ContractModel.createContractReq(this.state, () => {
           pop(2);
         });
         return;
       }
       if (!id) throw new Error('id 不为空');
-      ContractModel.updateContractReq({
-        id,
-        theme: name,
-        type,
-        customerId,
-        customerName,
-        salesOpportunitiesId,
-        status,
-        payType,
-        totalMoney,
-        startDate,
-        endDate,
-        number,
-        pactDate,
-        ourContractId,
-        customerContractId,
-        customerContractName,
-        departmentId,
-        ownerId,
-        content,
-        comment,
-      }, () => {
+      ContractModel.updateContractReq(this.state, () => {
         pop(1);
       });
     } catch (e) {
@@ -168,69 +108,38 @@ class EditorMore extends React.Component {
     } = this;
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
-    const {
-      theme: name,
-      payType: payKey,
-      status: statusKey,
-      type: typeKey,
-      startDate: startDateTime,
-      endDate: endDateTime,
-      pactDate: pactDateTime,
-      ...restProps
-    } = item;
-    let startDate = null;
-    if (startDateTime) {
-      startDate = formatDateByMoment(startDateTime);
-    }
-    let endDate = null;
-    if (endDateTime) {
-      endDate = formatDateByMoment(endDateTime);
-    }
-    let pactDate = null;
-    if (pactDateTime) {
-      pactDate = formatDateByMoment(pactDateTime);
-    }
-    let payMap = {};
-    if (payKey) {
-      const value = PayType[payKey] || payKey;
-      payMap = { value, key: payKey };
-    }
-    let statusMap = {};
-    if (statusKey || statusKey === 0) {
-      const value = PackStatus[statusKey] || statusKey;
-      statusMap = { value, key: statusKey };
-    }
-    let typeMap = {};
-    if (typeKey) {
-      const value = PackType[typeKey] || typeKey;
-      typeMap = { value, key: typeKey };
-    }
-    let { totalMoney = '' } = restProps;
-    if (totalMoney) totalMoney = String(totalMoney);
-
-    this.setState({
-      name,
+    let {
       startDate,
       endDate,
       pactDate,
-      payMap,
-      statusMap,
-      typeMap,
-      ...restProps,
-      totalMoney,
+    } = item;
+    if (startDate) {
+      startDate = formatDateByMoment(startDate);
+    }
+    if (endDate) {
+      endDate = formatDateByMoment(endDate);
+    }
+    if (pactDate) {
+      pactDate = formatDateByMoment(pactDate);
+    }
+    this.setState({
+      ...formatNumberToString(item),
+      startDate,
+      endDate,
+      pactDate,
     });
   };
   render() {
     const {
       state: {
-        name,
+        theme,
         customerId,
         customerName,
         salesOpportunitiesId,
         salesOpportunitiesName,
-        typeMap,
-        statusMap,
-        payMap,
+        type,
+        status,
+        payType,
         totalMoney,
         startDate,
         endDate,
@@ -263,10 +172,10 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同名称"
-            {...theme.getLeftStyle({
+            {...themeVar.getLeftStyle({
               placeholder: ContractEnum.theme,
-              value: name,
-              onChangeText: name => this.setState({ name }),
+              value: theme,
+              onChangeText: theme => this.setState({ theme }),
             })}
           />
           <NavInputItem
@@ -289,7 +198,7 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <NavInputItem
             leftText="销售机会"
@@ -311,12 +220,12 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <FormActionSheet
-            onConfirm={({ key, value }) => {
+            onConfirm={({ key }) => {
               this.setState({
-                typeMap: { key, value },
+                type: key,
               });
             }}
             typeEnum={PackType}
@@ -325,17 +234,17 @@ class EditorMore extends React.Component {
               leftText="合同类型"
               needPress={false}
               center={
-                <CenterText active={typeMap.value}>
-                  { typeMap.value || ContractEnum.type }
+                <CenterText active={type}>
+                  { type ? PackType[type] : ContractEnum.type }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </FormActionSheet>
           <FormActionSheet
-            onConfirm={({ key, value }) => {
+            onConfirm={({ key }) => {
               this.setState({
-                statusMap: { key, value },
+                status: key,
               });
             }}
             typeEnum={PackStatus}
@@ -344,17 +253,17 @@ class EditorMore extends React.Component {
               leftText="合同状态"
               needPress={false}
               center={
-                <CenterText active={statusMap.value}>
-                  { statusMap.value || ContractEnum.status }
+                <CenterText active={status}>
+                  { status ? PackStatus[status] : ContractEnum.status }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </FormActionSheet>
           <FormActionSheet
-            onConfirm={({ key, value }) => {
+            onConfirm={({ key }) => {
               this.setState({
-                payMap: { key, value },
+                payType: key,
               });
             }}
             typeEnum={PayType}
@@ -363,16 +272,16 @@ class EditorMore extends React.Component {
               leftText="付款方式"
               needPress={false}
               center={
-                <CenterText active={payMap.value}>
-                  { payMap.value || ContractEnum.payType }
+                <CenterText active={payType}>
+                  { payType ? PayType[payType] : ContractEnum.payType }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </FormActionSheet>
           <NavInputItem
             leftText="总金额"
-            {...theme.getLeftStyle({
+            {...themeVar.getLeftStyle({
               placeholder: ContractEnum.totalMoney,
               value: totalMoney,
               onChangeText: totalMoney => this.setState({ totalMoney }),
@@ -380,7 +289,7 @@ class EditorMore extends React.Component {
             right={
               <RightText>元</RightText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <DateTimePicker
             onConfirm={
@@ -398,7 +307,7 @@ class EditorMore extends React.Component {
                   { startDate || ContractEnum.startDate }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </DateTimePicker>
           <DateTimePicker
@@ -418,7 +327,7 @@ class EditorMore extends React.Component {
                 </CenterText>
               }
               isLast
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </DateTimePicker>
         </ListView>
@@ -426,7 +335,7 @@ class EditorMore extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同编号"
-            {...theme.getLeftStyle({
+            {...themeVar.getLeftStyle({
               placeholder: ContractEnum.number,
               value: number,
               onChangeText: number => this.setState({ number }),
@@ -449,7 +358,7 @@ class EditorMore extends React.Component {
                   { pactDate || ContractEnum.pactDate }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </DateTimePicker>
           <NavInputItem
@@ -472,7 +381,7 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
             leftWidth={110}
           />
           <NavInputItem
@@ -502,7 +411,7 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
             leftWidth={110}
           />
           <NavInputItem
@@ -525,7 +434,7 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <NavInputItem
             leftText="负责人"
@@ -546,7 +455,7 @@ class EditorMore extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <NavInputItem
             leftText="合同正文"
@@ -561,7 +470,7 @@ class EditorMore extends React.Component {
               value={content}
               onChangeText={content => this.setState({ content })}
               placeholder="请输入合同正文"
-              placeholderTextColor={theme.textPlaceholderColor}
+              placeholderTextColor={themeVar.textPlaceholderColor}
             />
           </TextareaGroup>
           <NavInputItem
@@ -577,7 +486,7 @@ class EditorMore extends React.Component {
               value={comment}
               onChangeText={comment => this.setState({ comment })}
               placeholder="请输入备注说明"
-              placeholderTextColor={theme.textPlaceholderColor}
+              placeholderTextColor={themeVar.textPlaceholderColor}
             />
           </TextareaGroup>
         </ListView>
@@ -599,7 +508,7 @@ EditorMore.navigationOptions = ({ navigation }) => ({
       onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
       rightStyle={{
-        color: theme.primaryColor,
+        color: themeVar.primaryColor,
       }}
     />
   ),

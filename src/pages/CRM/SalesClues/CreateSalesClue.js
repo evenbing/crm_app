@@ -29,7 +29,7 @@ class CreateSalesClue extends React.Component {
     name: null,
     companyName: null,
     departmentId: null,
-    departmentName: null,
+    leadsDepartmentName: null,
     activityId: null,
     activityName: null,
   };
@@ -75,7 +75,7 @@ class CreateSalesClue extends React.Component {
         name,
         companyName,
         departmentId,
-        departmentName,
+        leadsDepartmentName,
         activityId,
         activityName,
       },
@@ -96,65 +96,6 @@ class CreateSalesClue extends React.Component {
         <TitleItem
           text="必填信息"
           fontSize={16}
-        />                                                                                    
-        <NavInputItem
-          leftText="姓名"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.name,
-            value: name,
-            onChangeText: name => this.setState({ name }),
-          })}
-        />
-        <NavInputItem
-          leftText="公司名称"
-          {...theme.getLeftStyle({
-            placeholder: SalesClueEnum.companyName,
-            value: companyName,
-            onChangeText: companyName => this.setState({ companyName }),
-          })}
-        />
-        <NavInputItem
-          leftText="市场活动"
-          onPress={() => navigate(routers.markActivity, {
-            type: MarkActivityType,
-            callback: (item) => {
-              if (!Object.keys(item).length) return;
-              this.setState({
-                activityId: item.key,
-                activityName: item.title,
-              });
-            },
-          })}
-          center={
-            <CenterText active={activityId && activityName}>
-              {
-                (activityId && activityName) ? activityName :
-                  SalesClueEnum.activity
-              }
-            </CenterText>
-          }
-          {...theme.navItemStyle}
-        />
-        <NavInputItem
-          leftText="所属部门"
-          onPress={() => navigate(routers.selectDepartment, {
-            id: departmentId,
-            callback: (item) => {
-              if (!Object.keys(item).length) return;
-              this.setState({
-                departmentId: item.id,
-                departmentName: item.name,
-              });
-            },
-          })}
-          center={
-            <CenterText active={departmentId && departmentName}>
-              {
-                (departmentId && departmentName) ? departmentName : SalesClueEnum.department
-              }
-            </CenterText>
-          }
-          {...theme.navItemStyle}
         />
         <ListView>
           <NavInputItem
@@ -176,9 +117,8 @@ class CreateSalesClue extends React.Component {
           <NavInputItem
             leftText="市场活动"
             onPress={() => navigate(routers.markActivity, {
-              type: SalesClueType,
+              type: MarkActivityType,
               callback: (item) => {
-                debugger;
                 if (!Object.keys(item).length) return;
                 this.setState({
                   activityId: item.id,
@@ -203,14 +143,14 @@ class CreateSalesClue extends React.Component {
                 if (!Object.keys(item).length) return;
                 this.setState({
                   departmentId: item.id,
-                  departmentName: item.name,
+                  leadsDepartmentName: item.name,
                 });
               },
             })}
             center={
-              <CenterText active={departmentId && departmentName}>
+              <CenterText active={departmentId && leadsDepartmentName}>
                 {
-                  (departmentId && departmentName) ? departmentName : SalesClueEnum.departmentId
+                  (departmentId && leadsDepartmentName) ? leadsDepartmentName : SalesClueEnum.departmentId
                 }
               </CenterText>
             }
@@ -222,7 +162,9 @@ class CreateSalesClue extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => navigate(routers.createSalesClueMore)}
+          onPress={() => navigate(routers.createSalesClueMore, {
+            item: this.state,
+          })}
         />
       </ContainerScrollView>
     );

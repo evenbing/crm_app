@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { routers, theme } from '../../../constants';
+import { routers, theme as themeVar } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
 import { CustomerType, PackType } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
@@ -29,7 +29,7 @@ import ContractModel from '../../../logicStores/contract';
 @observer
 class Create extends React.Component {
   state = {
-    name: null,
+    theme: null,
     customerId: null,
     customerName: null,
     totalMoney: null,
@@ -37,10 +37,7 @@ class Create extends React.Component {
     endDate: null,
     departmentId: null,
     departmentName: null,
-    typeMap: {
-      key: null,
-      value: null,
-    },
+    type: null,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -50,10 +47,10 @@ class Create extends React.Component {
   onPressRight = () => {
     const {
       state: {
-        name,
+        theme,
         customerId,
         customerName,
-        typeMap: { key: type },
+        type,
         totalMoney,
         startDate,
         endDate,
@@ -65,7 +62,7 @@ class Create extends React.Component {
       },
     } = this;
     try {
-      if (!name) throw new Error(ContractEnum.theme);
+      if (!theme) throw new Error(ContractEnum.theme);
       if (!type) throw new Error(ContractEnum.type);
       if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
       if (!totalMoney) throw new Error(ContractEnum.totalMoney);
@@ -74,7 +71,7 @@ class Create extends React.Component {
       if (!departmentId) throw new Error(ContractEnum.departmentName);
       if (!ownerId) throw new Error(ContractEnum.ownerId);
       ContractModel.createContractReq({
-        theme: name,
+        theme,
         type,
         customerId,
         customerName,
@@ -90,15 +87,10 @@ class Create extends React.Component {
       Toast.showError(e.message);
     }
   };
-  onPressActionSheetItem = ({ key, value }) => {
-    this.setState({
-      typeMap: { key, value },
-    });
-  };
   render() {
     const {
       state: {
-        name,
+        theme,
         customerId,
         customerName,
         totalMoney,
@@ -106,7 +98,7 @@ class Create extends React.Component {
         departmentName,
         startDate,
         endDate,
-        typeMap,
+        type,
         ownerId,
         ownerName,
       },
@@ -126,25 +118,29 @@ class Create extends React.Component {
         <ListView>
           <NavInputItem
             leftText="合同名称"
-            {...theme.getLeftStyle({
+            {...themeVar.getLeftStyle({
               placeholder: ContractEnum.theme,
-              value: name,
-              onChangeText: name => this.setState({ name }),
+              value: theme,
+              onChangeText: theme => this.setState({ theme }),
             })}
           />
           <FormActionSheet
-            onConfirm={this.onPressActionSheetItem}
+            onConfirm={({ key }) => {
+              this.setState({
+                type: key,
+              });
+            }}
             typeEnum={PackType}
           >
             <NavInputItem
               leftText="合同类型"
               needPress={false}
               center={
-                <CenterText active={typeMap.value}>
-                  { typeMap.value || ContractEnum.type }
+                <CenterText active={type}>
+                  { type ? PackType[type] : ContractEnum.type }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </FormActionSheet>
           <NavInputItem
@@ -167,11 +163,11 @@ class Create extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <NavInputItem
             leftText="总金额"
-            {...theme.getLeftStyle({
+            {...themeVar.getLeftStyle({
               placeholder: ContractEnum.totalMoney,
               value: totalMoney,
               onChangeText: totalMoney => this.setState({ totalMoney }),
@@ -179,7 +175,7 @@ class Create extends React.Component {
             right={
               <RightText>元</RightText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <DateTimePicker
             onConfirm={
@@ -197,7 +193,7 @@ class Create extends React.Component {
                   { startDate || ContractEnum.startDate }
                 </CenterText>
             }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </DateTimePicker>
           <DateTimePicker
@@ -216,7 +212,7 @@ class Create extends React.Component {
                   { endDate || ContractEnum.endDate }
                 </CenterText>
               }
-              {...theme.navItemStyle}
+              {...themeVar.navItemStyle}
             />
           </DateTimePicker>
           <NavInputItem
@@ -239,7 +235,7 @@ class Create extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
           <NavInputItem
             leftText="负责人"
@@ -260,12 +256,14 @@ class Create extends React.Component {
                 }
               </CenterText>
             }
-            {...theme.navItemStyle}
+            {...themeVar.navItemStyle}
           />
         </ListView>
         <HorizontalDivider height={41} />
         <CreateMoreButton
-          onPress={() => navigate(routers.contractEditorMore)}
+          onPress={() => navigate(routers.contractEditorMore, {
+            item: this.state,
+          })}
         />
       </ContainerScrollView>
     );
@@ -284,7 +282,7 @@ Create.navigationOptions = ({ navigation }) => ({
       onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
       right="完成"
       rightStyle={{
-        color: theme.primaryColor,
+        color: themeVar.primaryColor,
       }}
     />
   ),

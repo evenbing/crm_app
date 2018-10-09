@@ -168,7 +168,6 @@ class EditorMore extends React.Component {
               },
             })}
             center={
-
               <CenterText active={status}>
                 { status ? MarketActivityStatus[status] : MarkActivityEnum.status }
               </CenterText>

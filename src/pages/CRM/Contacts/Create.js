@@ -182,7 +182,9 @@ class Create extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => navigate(routers.contactEditorMore)}
+          onPress={() => navigate(routers.contactEditorMore, {
+            item: this.state,
+          })}
         />
       </ContainerScrollView>
     );

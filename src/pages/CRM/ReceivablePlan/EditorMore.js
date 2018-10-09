@@ -12,7 +12,7 @@ import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
 import { ReceivablePlanEnum } from '../../../constants/form';
 import Toast from '../../../utils/toast';
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
 import { DataTitleTypes } from '../../../constants/enum';
 
 // components
@@ -95,14 +95,10 @@ class EditorMore extends React.Component {
     if (!Object.keys(item).length) return;
     let {
       receivableDate,
-      receivablePrice,
       creationTime,
     } = item;
     if (receivableDate) {
       receivableDate = formatDateByMoment(receivableDate);
-    }
-    if (receivablePrice) {
-      receivablePrice = String(receivablePrice);
     }
     if (creationTime) {
       creationTime = formatDateByMoment(creationTime);
@@ -110,9 +106,8 @@ class EditorMore extends React.Component {
     const formatPriceStatus = getReceivablePriceStatus(item) || null;
     const formatDateTimeStatus = getDateTimeStatus(item) || null;
     this.setState({
-      ...item,
+      ...formatNumberToString(item),
       receivableDate,
-      receivablePrice,
       creationTime,
       formatPriceStatus,
       formatDateTimeStatus,

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { theme, routers } from '../../../constants';
 import { SalesClueEnum } from '../../../constants/form';
-import { formatNumberToString } from '../../../utils/base';
+import { formatLocationMap, formatNumberToString } from '../../../utils/base';
 import { LeadsSource, MarkActivityType, SexTypes } from '../../../constants/enum';
 import Toast from '../../../utils/toast';
 
@@ -36,7 +36,6 @@ class CreateSalesClueMore extends React.Component {
     email: null,
     weibo: null,
     locationInfo: {},
-    address: null,
     postCode: null,
     source: null,
     activityId: null,
@@ -54,31 +53,15 @@ class CreateSalesClueMore extends React.Component {
   onPressRight = async () => {
     const {
       state: {
-        status,
         name,
-        sex,
         companyName,
-        jobTitle,
-        phone,
-        mobilePhone,
-        email,
-        weibo,
-        locationInfo,
-        address,
-        postCode,
-        source,
         activityId,
         departmentId,
-        leadsDepartmentName,
-        description,
       },
       props: {
         navigation: { pop, state },
       },
     } = this;
-    if (address) {
-      locationInfo.address = address;
-    }
 
     try {
       if (!name) throw new Error(SalesClueEnum.name);
@@ -89,47 +72,13 @@ class CreateSalesClueMore extends React.Component {
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
-        SalesCluesModel.createSalesClueReq({
-          name,
-          companyName,
-          activityId,
-          departmentId,
-          sex,
-          leadsDepartmentName,
-          jobTitle,
-          phone,
-          mobilePhone,
-          email,
-          weibo,
-          locationInfo,
-          postCode,
-          source,
-          description,
-        }, () => {
+        SalesCluesModel.createSalesClueReq(this.state, () => {
           pop(2);
         });
         return;
       }
       if (!id) throw new Error('id 不为空');
-      SalesCluesModel.updateSalesClueReq({
-        id,
-        status,
-        name,
-        companyName,
-        activityId,
-        departmentId,
-        sex,
-        leadsDepartmentName,
-        jobTitle,
-        phone,
-        mobilePhone,
-        email,
-        weibo,
-        locationInfo,
-        postCode,
-        source,
-        description,
-      }, () => {
+      SalesCluesModel.updateSalesClueReq(this.state, () => {
         pop(1);
       });
     } catch (e) {
@@ -144,8 +93,24 @@ class CreateSalesClueMore extends React.Component {
     } = this;
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
+    const {
+      location,
+      departmentName,
+    } = item;
+    let locationInfo = {};
+    if (location) {
+      locationInfo = location;
+      locationInfo.formatLocation = formatLocationMap(location, false);
+      locationInfo.address = location.address || '';
+    }
+    let leadsDepartmentName = null;
+    if (departmentName) {
+      leadsDepartmentName = departmentName;
+    }
     this.setState({
       ...formatNumberToString(item),
+      locationInfo,
+      leadsDepartmentName,
     });
   };
   render() {
@@ -160,7 +125,6 @@ class CreateSalesClueMore extends React.Component {
         email,
         weibo,
         locationInfo,
-        address,
         postCode,
         source,
         activityId,
@@ -296,7 +260,10 @@ class CreateSalesClueMore extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
-                  locationInfo: item,
+                  locationInfo: {
+                    ...locationInfo,
+                    ...item,
+                  },
                 });
               },
             })}
@@ -311,8 +278,13 @@ class CreateSalesClueMore extends React.Component {
             leftText="详细地址"
             {...theme.getLeftStyle({
               placeholder: SalesClueEnum.address,
-              value: address,
-              onChangeText: address => this.setState({ address }),
+              value: locationInfo.address,
+              onChangeText: address => this.setState({
+                locationInfo: {
+                  ...locationInfo,
+                  address,
+                },
+              }),
             })}
           />
           <NavInputItem

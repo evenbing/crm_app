@@ -170,7 +170,7 @@ class ContactStore {
       }
       const {
         errors = [],
-      } = await updateContact({ locationId, ...restProps });
+      } = await updateContact({ ...restProps, locationId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContactDetailsReq({ id: restProps.id });
