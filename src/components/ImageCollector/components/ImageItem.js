@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { theme } from '../../../constants';
 import { width } from '../../../utils/scale';
 import { KEY_ADD } from '../Constants';
+import { FormActionSheet } from '../../Modal';
+import { CameraOrPickerType } from '../../../constants/enum';
 
 
-const ImageView = styled.TouchableOpacity`
+const ImageView = styled.View`
   justify-content: center;
   align-items: center;
   background-color: #F5F5F5;
@@ -26,13 +28,27 @@ const ImageItem = ({
   },
   onPressAdd,
   onPressItem,
-}) => (
-  <ImageView
-    onPress={key === KEY_ADD ? onPressAdd : onPressItem}
-  >
-    <Image source={image} />
-  </ImageView>
-);
+}) => {
+  if (key === KEY_ADD) {
+    return (
+      <FormActionSheet
+        onConfirm={onPressAdd}
+        typeEnum={CameraOrPickerType}
+      >
+        <ImageView >
+          <Image source={image} />
+        </ImageView>
+      </FormActionSheet>
+    );
+  }
+  return (
+    <ImageView
+      onPress={key === KEY_ADD ? onPressAdd : onPressItem}
+    >
+      <Image source={image} />
+    </ImageView>
+  );
+};
 
 ImageItem.propTypes = {
   item: PropTypes.shape({

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import uuidv1 from 'uuid/v1';
 
 import addIcon from '../../img/add.png';
@@ -10,6 +10,13 @@ import { theme } from '../../constants';
 import { KEY_ADD } from './Constants';
 import ImageItem from './components/ImageItem';
 import ImagePager from './components/ImagePager';
+import { formatPickerImage } from '../../utils/base';
+
+const configOptions = {
+  // width: 400,
+  // height: 400,
+  cropping: false,
+};
 
 const options = {
   title: 'Select Avatar',
@@ -48,7 +55,7 @@ class ImageCollector extends React.PureComponent {
     };
   }
 
-  onPickImage =() => {
+  onPickImage1 =() => {
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -75,6 +82,51 @@ class ImageCollector extends React.PureComponent {
         this.props.onConfirm && this.props.onConfirm(pagerData);
       }
     });
+  }
+
+  onPickImage = async ({ value }) => {
+    // const {
+    //   props: {
+    //     onPressImage,
+    //   },
+    // } = this;
+    // StatusBar.setBarStyle('dark-content');
+    try {
+      let image;
+      console.log('onPickImage');
+
+      if (value === '相机') {
+        image = await ImagePicker.openCamera(configOptions);
+      }
+      if (value === '相册') {
+        console.log('onPickImage');
+        image = await ImagePicker.openPicker(configOptions);
+      }
+      console.log({ image });
+
+      if (!Object.keys(image).length) return;
+      // onPressImage(formatPickerImage(image));
+      const source = {
+        uri: image.sourceURL,
+        path: image.path,
+      };
+      const pagerData = [...this.state.pagerData];
+      pagerData.push({
+        key: uuidv1(),
+        image: source,
+      });
+      const data = [...pagerData];
+      data.push(addIconObject);
+      this.setState({
+        pagerData,
+        data,
+      });
+      // this.props.onConfirm && this.props.onConfirm(pagerData);
+    } catch (e) {
+      //
+    } finally {
+      // StatusBar.setBarStyle('light-content');
+    }
   }
 
   onPressItem = index => () => {
@@ -106,7 +158,7 @@ class ImageCollector extends React.PureComponent {
       });
     } else {
       this.setState({
-        pagerData,
+        // pagerData,
         data,
       });
     }
