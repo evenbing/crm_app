@@ -99,15 +99,10 @@ import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
 import CityPickerScreen from './pages/Modal/CityPicker';
 import SalesPhasePickerScreen from './pages/Modal/SalesPhasePicker';
-// root page -> Demo page
-import MobxDemoScreen from './pages/Demo/MobxDemo';
-import ActionSheetDemoScreen from './pages/Demo/ActionSheetDemo';
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
   [routers.selectYear]: { screen: SelectYear },
-  [routers.actionSheetDemo]: { screen: ActionSheetDemoScreen },
-  [routers.mobxDemo]: { screen: MobxDemoScreen },
   [routers.messageList]: { screen: MessageList },
   [routers.upcomingScheduleList]: { screen: UpcomingScheduleList },
   [routers.upcomingTaskList]: { screen: UpcomingTaskList },

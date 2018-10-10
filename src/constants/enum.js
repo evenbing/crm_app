@@ -1,3 +1,9 @@
+/**
+ * @component enum.js
+ * @description 通用常量
+ * @time 2018/9/4
+ * @author zhao
+ */
 
 // CRM页面选择类型
 export const CustomerType = 'CUSTOMER/SELECT';
@@ -11,6 +17,12 @@ export const ProductType = 'PRODUCT/SELECT';
 // 任务日程
 export const TASK_TYPE = 'TASK';
 export const SCHEDULE_TYPE = 'SCHEDULE';
+
+// 选择相片或者拍照
+export const CameraOrPickerType = {
+  Camera: '相机',
+  Picker: '相册',
+};
 
 // 模块类型枚举
 export const ModuleType = {
@@ -91,7 +103,7 @@ export const PackStatus = {
 };
 
 // 行业
-export const industryTypes = {
+export const IndustryTypes = {
   FINANCIAL: '金融',
   TELECOM: '电信',
   HIGH_TECH: '高科技',

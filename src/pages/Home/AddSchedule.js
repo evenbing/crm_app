@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-24 20:50:41
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-10-09 13:29:28
+ * @Last Modified time: 2018-10-10 16:44:36
  */
 
 import React, { Component } from 'react';
@@ -133,12 +133,12 @@ class AddSchedule extends Component {
       const businessId = await getNewId();
       // 上传图片
       for (let index = 0; index < images.length; index++) {
-        const { path } = images[index];
+        const { image: { path } } = images[index];
         AttachmentModel.uploadImageReq({
           file: {
             uri: path,
             type: 'multipart/form-data',
-            name: path.substr(path.lastIndexOf('/') + 1),
+            name: path.substring(path.lastIndexOf('/') + 1),
           },
           businessId,
         });
@@ -297,9 +297,7 @@ class AddSchedule extends Component {
             }}
             center={
               <CenterText active={locationInfo}>
-                {
-                  locationInfo || TaskEnum.locationInfo
-                }
+                { locationInfo || TaskEnum.locationInfo }
               </CenterText>
             }
             {...theme.navItemStyle}

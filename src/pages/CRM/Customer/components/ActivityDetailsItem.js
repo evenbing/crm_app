@@ -12,7 +12,7 @@ import { theme } from '../../../../constants';
 // components
 import NavItemComponent from '../../../../components/NavItem';
 import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { CustomerLevelTypes, industryTypes } from '../../../../constants/enum';
+import { CustomerLevelTypes, IndustryTypes } from '../../../../constants/enum';
 
 const ContainerView = styled.View``;
 
@@ -70,7 +70,7 @@ const ActivityDetailsItem = ({
     {renderBasicItem('客户姓名', name)}
     {renderBasicItem('客户级别', CustomerLevelTypes[level])}
     {renderBasicItem('上级客户', superiorCustomerId)}
-    {renderBasicItem('行业', industryTypes[industry])}
+    {renderBasicItem('行业', IndustryTypes[industry])}
     <TitleItemComponent
       text="联系信息"
     />

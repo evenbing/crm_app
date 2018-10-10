@@ -28,14 +28,19 @@ import BoardList from './components/BoardList';
 import listIcon from '../../../img/crm/screenTab/list.png';
 import boardIcon from '../../../img/crm/screenTab/board.png';
 
-import { FilterList } from './_fieldCfg';
 import SalesChanceStore from '../../../logicStores/salesChance';
+
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 import {
   SalesChanceAmountTypeFilterMap,
   SalesChanceResponsibilityTypeFilterMap,
   IsBoardTypeMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+  FilterList,
+} from './_fieldCfg';
+import { filterObject } from '../../../utils/base';
 
 useStrict(true);
 
@@ -77,6 +82,12 @@ class SalesChance extends React.Component {
       this.onOpenDrawer();
     }
   };
+  onPressFilterItem = async ({ index }) => {
+    const { screenTabList, activeIndex } = this.state;
+    screenTabList[activeIndex].selectedIndex = index;
+    await this.setState({ screenTabList });
+    this.getData();
+  };
   onCloseDrawer = () => {
     StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
@@ -105,15 +116,15 @@ class SalesChance extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -131,7 +142,13 @@ class SalesChance extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -143,8 +160,11 @@ class SalesChance extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // SalesChanceStore.getSalesChanceListReq(obj);
-    SalesChanceStore.getSalesChanceListReq({ pageNumber });
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    SalesChanceStore.getSalesChanceListReq(filterObject(obj));
   };
 
   safeCloseOpenRow = (index) => {
@@ -183,7 +203,7 @@ class SalesChance extends React.Component {
             }
             onPress={() => {
               // from select salesChance
-              if (state.params.type === SalesChanceType) {
+              if (state.params && state.params.type === SalesChanceType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -296,6 +316,7 @@ class SalesChance extends React.Component {
             list={screenTabList}
             activeIndex={activeIndex}
             onChange={this.onChange}
+            onPressFilterItem={this.onPressFilterItem}
             selectedList={selectedList}
           />
           {this.renderSection()}
@@ -318,7 +339,7 @@ SalesChance.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

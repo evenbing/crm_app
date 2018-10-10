@@ -18,7 +18,7 @@ const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
 `;
 
-const PhoneView = styled.View`
+const PhoneView = styled(TouchableView)`
   width: ${theme.moderateScale(82)};
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(20)};
@@ -72,12 +72,15 @@ class DetailsHead extends React.PureComponent {
   render() {
     const {
       item,
+      onPressPhone,
       onPressChoiceTeam,
     } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
-          <PhoneView>
+          <PhoneView
+            onPress={onPressPhone}
+          >
             <Thumbnail
               source={require('../../../../img/crm/details/phone.png')}
               size={14}
@@ -109,11 +112,13 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressPhone: () => null,
   onPressChoiceTeam: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressPhone: () => null,
   onPressChoiceTeam: PropTypes.func,
 };
 

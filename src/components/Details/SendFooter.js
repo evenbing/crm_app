@@ -1,24 +1,25 @@
 /**
  * @component SendFooter.js
- * @description 发送底部
+ * @description 发送底部组件
  * @time 2018/8/14
  * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ImagePicker from 'react-native-image-picker';
+import { StatusBar } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import { moderateScale } from '../../utils/scale';
 import { theme } from '../../constants';
 import { getFooterBottom } from '../../utils/utils';
-import { mapToArray } from '../../utils/base';
+import { mapToArray, formatPickerImage } from '../../utils/base';
 import Toast from '../../utils/toast';
-import { DynamicRecordType } from '../../constants/enum';
+import { DynamicRecordType, CameraOrPickerType } from '../../constants/enum';
 
 // components
 import Thumbnail from '../Thumbnail';
 import TouchableView from '../TouchableView';
-import { SendFilterList } from '../Modal';
+import { SendFilterList, FormActionSheet } from '../Modal';
 import TextInput from '../TextInput';
 
 const ContainerView = styled.View`
@@ -68,7 +69,7 @@ const SendText = styled.Text`
   padding-right: ${moderateScale(8)};
 `;
 
-const IconView = styled(TouchableView)`
+const IconView = styled.View`
   width: ${moderateScale(30)};
   height: ${moderateScale(30)};
   margin-left: ${props => moderateScale(props.marginLeft || 0)};
@@ -77,12 +78,10 @@ const IconView = styled(TouchableView)`
   align-items: center;
 `;
 
-const options = {
-  title: 'Select Avatar',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
+const configOptions = {
+  width: 400,
+  height: 400,
+  cropping: true,
 };
 
 class SendFooter extends React.PureComponent {
@@ -100,31 +99,28 @@ class SendFooter extends React.PureComponent {
     this.setState({ selectedIndex: index });
   };
 
-  onPickImage =() => {
+  onPickImage = async ({ value }) => {
     const {
       props: {
         onPressImage,
       },
     } = this;
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const { uri, path = '' } = response;
-        onPressImage({
-          file: {
-            uri,
-            type: 'multipart/form-data',
-            name: path.substr(path.lastIndexOf('/') + 1),
-          },
-          path,
-        });
+    StatusBar.setBarStyle('dark-content');
+    try {
+      let image;
+      if (value === '相机') {
+        image = await ImagePicker.openCamera(configOptions);
       }
-    });
+      if (value === '相册') {
+        image = await ImagePicker.openPicker(configOptions);
+      }
+      if (!Object.keys(image).length) return;
+      onPressImage(formatPickerImage(image));
+    } catch (e) {
+      //
+    } finally {
+      StatusBar.setBarStyle('light-content');
+    }
   }
 
   onPressSend = () => {
@@ -207,17 +203,21 @@ class SendFooter extends React.PureComponent {
           />
         </IconView>
          */}
-        <IconView
-          marginLeft={8}
-          marginRight={13}
-          onPress={this.onPickImage}
+        <FormActionSheet
+          onConfirm={this.onPickImage}
+          typeEnum={CameraOrPickerType}
         >
-          <Thumbnail
-            imgUri={cacheImageMap.filePath}
-            source={require('../../img/picture.png')}
-            size={27}
-          />
-        </IconView>
+          <IconView
+            marginLeft={8}
+            marginRight={13}
+          >
+            <Thumbnail
+              imgUri={cacheImageMap.filePath}
+              source={require('../../img/picture.png')}
+              size={27}
+            />
+          </IconView>
+        </FormActionSheet>
       </ContainerView>
     );
   }

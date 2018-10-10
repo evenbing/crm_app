@@ -15,14 +15,17 @@ import { TimeTypes } from '../../../constants/enum';
 import { mapToArray } from '../../../utils/base';
 
 // 筛选常量
+// currStatus 0-筛选页面已选择 1-选择页面未选择 2-选择页面已选择
 export const FilterList = [
   {
+    key: 'name',
     label: '联系人姓名',
     placeholder: '请输入关键字',
     type: TYPE_INPUT,
     value: null,
   },
   {
+    key: 'followTimeType',
     label: '最近跟进日期',
     type: TYPE_LIST,
     selectedIndex: -1,
@@ -30,19 +33,19 @@ export const FilterList = [
   },
 ];
 
-/**
- * 时间类型
- */
+// -----------------------------------------
+// 列表头部筛选
+// sortColumn 表头排行
 export const ContactsTimeTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'createTime',
-      name: '创建时间',
+      key: 'NAME',
+      name: '名称',
     },
     {
-      key: 'followTime',
-      name: '跟进时间',
+      key: 'LAST_UPDATE_TIME',
+      name: '最近更新时间',
     },
   ],
 };

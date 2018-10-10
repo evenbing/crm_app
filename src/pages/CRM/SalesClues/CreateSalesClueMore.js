@@ -68,7 +68,6 @@ class CreateSalesClueMore extends React.Component {
       if (!companyName) throw new Error(SalesClueEnum.companyName);
       if (!activityId) throw new Error(SalesClueEnum.activityId);
       if (!departmentId) throw new Error(SalesClueEnum.departmentId);
-      debugger;
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {
@@ -108,9 +107,9 @@ class CreateSalesClueMore extends React.Component {
       leadsDepartmentName = departmentName;
     }
     this.setState({
+      leadsDepartmentName,
       ...formatNumberToString(item),
       locationInfo,
-      leadsDepartmentName,
     });
   };
   render() {

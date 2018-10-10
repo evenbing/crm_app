@@ -157,6 +157,7 @@ class EditorMore extends React.Component {
             leftText="计划回款金额"
             {...theme.navItemOnlyShowStyle}
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: ReceivablePlanEnum.receivablePrice,
               value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),

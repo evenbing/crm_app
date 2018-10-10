@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
+import styled from 'styled-components';
 
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import ListItem from './components/ListItem';
@@ -9,6 +10,12 @@ import TaskScheduleStore from '../../logicStores/taskSchedule';
 import FlatListTable from '../../components/FlatListTable';
 import { ContainerView } from '../../components/Styles/Layout';
 import { theme } from '../../constants';
+import { moderateScale } from '../../utils/scale';
+
+const ListItemSeparatorComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(10)}px;
+`;
 
 useStrict(true);
 
@@ -43,22 +50,26 @@ class UpcomingTaskList extends Component {
     });
   };
 
-  keyExtractor = item => item.key;
+  keyExtractor = item => item.id;
+
+  renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
 
   renderItem = ({ item }) => {
     const {
+      id,
       duration,
       type,
       name,
       comment,
-      operateList,
+      // operateList,
     } = item;
     return (<ListItem
+      id={id}
       duration={duration}
       type={type}
       name={name}
       comment={comment}
-      operateList={operateList}
+      operateList={[]}
     />);
   }
 
@@ -92,7 +103,7 @@ class UpcomingTaskList extends Component {
           break;
       }
       return ({
-        key: id,
+        id,
         type: typeText,
         duration,
         name,
@@ -112,6 +123,7 @@ class UpcomingTaskList extends Component {
           refreshing={refreshing}
           noDataBool={!refreshing && list.length === 0}
           loadingMore={loadingMore}
+          ItemSeparatorComponent={this.renderItemSeparatorComponent}
         />
       </ContainerView>
     );

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
+import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -61,6 +62,10 @@ class NotificationList extends Component {
     super(props);
     this.state = {
     };
+  }
+
+  componentDidMount() {
+    TaskScheduleStore.getMessageReq();
   }
 
   keyExtractor = item => item.key;

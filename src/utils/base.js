@@ -5,7 +5,7 @@
  * @author JUSTIN XU
  */
 import moment from 'moment';
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
 
 export const formatDateType = 'YYYY-MM-DD';
@@ -30,6 +30,7 @@ export function nativeGoBack() {
 
 // call telPhone
 export function nativeCallPhone(telPhone) {
+  console.log(`@phone:${telPhone}`);
   if (!telPhone) return;
   try {
     NativeModules.system.call(telPhone);
@@ -126,13 +127,36 @@ export function formatLocationMap(location = {}, needAddress = true) {
 
 // 兼容TextInput value 不识别number
 export function formatNumberToString(obj) {
-  const map = {};
+  const hashMap = {};
   Object.keys(obj).forEach((key) => {
     if (typeof obj[key] === 'number') {
-      map[key] = String(obj[key]);
+      hashMap[key] = String(obj[key]);
     } else {
-      map[key] = obj[key];
+      hashMap[key] = obj[key];
     }
   });
-  return map;
+  return hashMap;
+}
+
+// 处理image格式
+export function formatPickerImage(image) {
+  const { path = '' } = image;
+  return {
+    file: {
+      uri: Platform.OS === 'android' ? path : path.replace('file://', ''),
+      type: 'multipart/form-data',
+      name: path.substr(path.lastIndexOf('/') + 1),
+    },
+    path,
+  };
+}
+
+// 去除object中的'', null
+export function filterObject(obj) {
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key] && obj[key] !== 0) {
+      delete obj[key];
+    }
+  });
+  return obj;
 }

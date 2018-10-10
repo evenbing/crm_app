@@ -115,3 +115,12 @@ export function deleteFollow({
     id,
   });
 }
+
+/**
+ * 获取用户的通知列表
+ */
+export function getMessage() {
+  return post({
+    method: 'api.base.message.find',
+  });
+}

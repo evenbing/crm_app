@@ -14,6 +14,10 @@ import { post } from '../utils/rpc';
  *   pactId 合同ID
  *   issueId 回款期次ID
  *   participateType 参与类型 [ CHARGE-我负责的，ALL-全部 ]
+ *   customerId 客户ID
+ *   planPrice 计划回款金额
+ *   planDate 计划回款时间
+ *   sortColumn 排序类型
  *   ids 回款计划ID集合
  * }
  * @return Promise<ArrayList>
@@ -24,6 +28,10 @@ export function getReceivablePlanList({
   pactId,
   issueId,
   participateType,
+  customerId,
+  planPrice,
+  planDate,
+  sortColumn,
   ids,
 } = {}) {
   return post({
@@ -33,6 +41,10 @@ export function getReceivablePlanList({
     pactId,
     issueId,
     participateType,
+    customerId,
+    planPrice,
+    planDate,
+    sortColumn,
     ids,
   });
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import uuidv1 from 'uuid/v1';
 import { observer } from 'mobx-react/native';
 
 import theme from '../../../constants/theme';
@@ -17,7 +16,7 @@ import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
 import { SalesChanceEnum } from '../../../constants/form';
 import { routers } from '../../../constants';
-import { CustomerType, MarkActivityType, OpportunityTypes, OpportunitySource, PriceListType } from '../../../constants/enum';
+import { CustomerType, MarkActivityType, OpportunityTypes, OpportunitySource, PriceListType, ProductType } from '../../../constants/enum';
 import DateTimePicker from '../../../components/DateTimePicker';
 import { formatDateByMoment } from '../../../utils/base';
 import { CenterText, RightText } from '../../../components/Styles/Form';
@@ -27,63 +26,50 @@ import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 import NavInputItem from '../../../components/NavInputItem';
 
-const formatDateType = 'YYYY-MM-DD HH:mm:ss';
 const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
-const products = [
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: '标准价格：2300',
-    count: '数量：200',
-    remark: '备注：被猪猪这猪',
-    totalPrice: '总价：460000',
-  },
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: 2300,
-    count: 200,
-    remark: '被猪猪这猪',
-    totalPrice: 460000,
-  },
-  {
-    key: uuidv1(),
-    discount: '折扣：80%',
-    name: '电脑主机',
-    price: 2300,
-    count: 200,
-    remark: '被猪猪这猪',
-    totalPrice: 460000,
-  },
-];
+
 @observer
 class EditorMore extends React.Component {
   constructor(props) {
+    const {
+      name,
+      customerId,
+      customerName,
+      planAmount,
+      salesPhaseId,
+      salesPhaseName,
+      expectedDate,
+      expectedDateShow,
+      departmentId,
+      departmentName,
+      activityId,
+      activityName,
+      products,
+    } = props.navigation.state.params;
     super(props);
     this.state = {
-      name: null,
-      customerId: null,
-      customerName: null,
+      name,
+      customerId,
+      customerName,
       priceId: null,
       priceName: null,
       budgetCost: null,
       actualCost: null,
-      planAmount: null,
-      salesPhaseId: null,
-      salesPhaseName: null,
-      expectedDate: null,
-      expectedDateShow: null,
+      planAmount,
+      salesPhaseId,
+      salesPhaseName,
+      expectedDate,
+      expectedDateShow,
       description: null,
-      departmentId: null,
-      departmentName: null,
-      activityId: null,
-      activityName: null,
+      departmentId,
+      departmentName,
+      activityId,
+      activityName,
       opportunityType: null,
       opportunityTypeName: null,
       sourceType: null,
       sourceTypeName: null,
+      products,
     };
   }
   componentDidMount() {
@@ -110,6 +96,7 @@ class EditorMore extends React.Component {
         activityId,
         opportunityType,
         sourceType,
+        products,
       },
       props: { navigation: {
         pop,
@@ -125,12 +112,23 @@ class EditorMore extends React.Component {
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
 
       const businessId = await getNewId();
-      BusinessStore.createBusinessReq({
-        businessDetails: {
+      let businessDetails = [];
+      if (products.length > 0) {
+        businessDetails = products.map(item => ({
+          opportunityId: businessId,
+          productId: item.id,
+        }));
+      }
+      if (priceId) {
+        businessDetails.push({
           opportunityId: businessId,
           priceId,
-        },
-      });
+        });
+      }
+      if (businessDetails.length > 0) {
+        BusinessStore.createBusinessReq({ businessDetails });
+      }
+
       SalesChanceStore.createSalesChanceReq({
         id: businessId,
         name,
@@ -150,8 +148,19 @@ class EditorMore extends React.Component {
         pop(2);
       });
     } catch (error) {
-      Toast.error(error.message);
+      Toast.showError(error.message);
     }
+  }
+  onAddProduct = () => {
+    const { navigate } = this.props.navigation;
+    navigate(routers.productList, {
+      type: ProductType,
+      callback: (item) => {
+        const arr = this.state.products.map(item => ({ ...item }));
+        arr.push(item);
+        this.setState({ products: arr });
+      },
+    });
   }
 
   getLeftStyle = (placeholder, width = 110) => {
@@ -190,6 +199,7 @@ class EditorMore extends React.Component {
         opportunityTypeName,
         sourceType,
         sourceTypeName,
+        products,
       },
       props: { navigation: { navigate } },
     } = this;
@@ -279,6 +289,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="销售金额"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesChanceEnum.planAmount,
               value: planAmount,
               onChangeText: planAmount => this.setState({ planAmount }),
@@ -351,11 +362,12 @@ class EditorMore extends React.Component {
           />
           <DateTimePicker
             onConfirm={
-              date =>
+              (date) => {
                 this.setState({
-                  expectedDate: formatDateByMoment(date, formatDateType),
+                  expectedDate: formatDateByMoment(date),
                   expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
-                })
+                });
+              }
             }
           >
             <NavInputItem
@@ -372,6 +384,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="项目预算"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesChanceEnum.budgetCost,
               value: budgetCost,
               onChangeText: budgetCost => this.setState({ budgetCost }),
@@ -383,6 +396,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="实际花费"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesChanceEnum.actualCost,
               value: actualCost,
               onChangeText: actualCost => this.setState({ actualCost }),
@@ -439,23 +453,24 @@ class EditorMore extends React.Component {
           {
             products.map(item => (
               <ProductItem
-                key={item.key}
+                key={item.id}
                 image={productImage}
-                discount={item.discount}
+                discount="折扣:80%"
                 name={item.name}
-                price={item.price}
-                count={item.count}
-                remark={item.remark}
-                totalPrice={item.totalPrice}
+                price={`标准价格:${item.price}`}
+                count={`数量:1 ${item.salesUnit}`}
+                remark={`备注:${item.remark}`}
+                totalPrice={`${item.price * 1}`}
               />
             ))
           }
           <HorizontalDivider height={20} />
-          <AddProduct
-            count="20"
-            totalPrice="900000"
-          />
         </ContainerScrollView>
+        <AddProduct
+          count="20"
+          totalPrice="900000"
+          onPress={this.onAddProduct}
+        />
       </ContainerView>
     );
   }

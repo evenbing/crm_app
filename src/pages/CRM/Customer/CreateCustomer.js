@@ -6,6 +6,8 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react/native';
+
 import { theme, routers } from '../../../constants';
 
 // components
@@ -23,6 +25,7 @@ import Toast from '../../../utils/toast';
 import CustomerModel from '../../../logicStores/customer';
 import { createLocationId } from '../../../service/app';
 
+@observer
 class CreateCustomer extends React.Component {
   constructor(props) {
     super(props);
@@ -106,11 +109,12 @@ class CreateCustomer extends React.Component {
 
       // 获取位置信息
       let locationId = null;
-      if (locationInfo) {
+      if (locationDivision) {
         const { location: { id } } = await createLocationId({
           provinceId,
           cityId,
           districtId,
+          address: locationInfo,
         });
         locationId = id;
       }
@@ -199,7 +203,7 @@ class CreateCustomer extends React.Component {
             navigate(routers.cityPicker, {
               callback: ({ formatLocation, provinceId, cityId, districtId }) => {
                 this.setState({
-                  locationInfo: formatLocation,
+                  locationDivision: formatLocation,
                   provinceId,
                   cityId,
                   districtId,
@@ -209,9 +213,7 @@ class CreateCustomer extends React.Component {
             }}
           center={
             <CenterText active={locationDivision}>
-              {
-                  locationDivision || CustomerEnum.locationDivision
-                }
+              { locationDivision || CustomerEnum.locationDivision }
             </CenterText>
             }
           {...theme.navItemStyle}

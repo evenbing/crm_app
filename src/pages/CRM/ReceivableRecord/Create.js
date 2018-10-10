@@ -134,6 +134,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="实际回款金额"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: ReceivableRecordEnum.receivablePrice,
               value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),

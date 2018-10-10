@@ -12,6 +12,7 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ContactsType } from '../../../constants/enum';
+import { nativeCallPhone, filterObject } from '../../../utils/base';
 import * as drawerUtils from '../../../utils/drawer';
 
 // components
@@ -103,15 +104,15 @@ class Contacts extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -124,13 +125,20 @@ class Contacts extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
     const {
-      customerId, // false 单选 true 多选
-    } = this.props.navigation.state.params || {};
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { customerId } = state.params || {};
     const obj = {
       pageNumber,
-      name: searchValue,
+      companyName: searchValue,
     };
     if (customerId) {
       obj.customerId = customerId;
@@ -139,10 +147,18 @@ class Contacts extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 0) {
+        obj.sortColumn = v;
+      } else {
+        obj[v] = true;
+      }
     });
-    ContactsModel.getContactListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    ContactsModel.getContactListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -177,7 +193,7 @@ class Contacts extends React.Component {
             }
             onPress={() => {
               // from select customer
-              if (state.params.type === ContactsType) {
+              if (state.params && state.params.type === ContactsType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -193,7 +209,13 @@ class Contacts extends React.Component {
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 1) {
+                nativeCallPhone(item.mobilePhone || item.phoneNumber);
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />
@@ -268,7 +290,10 @@ class Contacts extends React.Component {
           <SearchInput
             placeholder="输入客户名称"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab
@@ -298,7 +323,7 @@ Contacts.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

@@ -12,12 +12,7 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
-import {
-  MarkActivityTimeTypeFilterMap,
-  MarkActivityResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
-import { formatDateByMoment, formatDateType } from '../../../utils/base';
+import { filterObject, formatDateByMoment, formatDateType } from '../../../utils/base';
 import { MarkActivityType, MarketActivityStatus } from '../../../constants/enum';
 
 // components
@@ -28,8 +23,17 @@ import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
-import { FilterList } from './_fieldCfg';
 import MarkActivityStore from '../../../logicStores/markActivity';
+
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import {
+  MarkActivityTimeTypeFilterMap,
+  MarkActivityResponsibilityTypeFilterMap,
+  FilterList,
+} from './_fieldCfg';
 
 useStrict(true);
 
@@ -101,15 +105,15 @@ class MarkActivity extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -122,7 +126,13 @@ class MarkActivity extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -131,10 +141,19 @@ class MarkActivity extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 0) {
+        obj.sortColumn = v;
+      } else {
+        obj[v] = true;
+      }
     });
-    MarkActivityStore.getMarkActivityListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    console.log(obj);
+    MarkActivityStore.getMarkActivityListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -180,7 +199,7 @@ class MarkActivity extends React.Component {
             {...itemProps}
             onPress={() => {
               // from select customer
-              if (state.params.type === MarkActivityType) {
+              if (state.params && state.params.type === MarkActivityType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -268,9 +287,12 @@ class MarkActivity extends React.Component {
         >
           <CommStatusBar />
           <SearchInput
-            placeholder="输入客户名称"
+            placeholder="输入市场活动名称"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab
@@ -300,7 +322,7 @@ MarkActivity.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

@@ -43,6 +43,7 @@ class SalesClueStore {
   // 列表
   @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.salesClueList.refreshing = true;
       } else {
@@ -180,7 +181,6 @@ class SalesClueStore {
         errors = [],
       } = await changeOwnerUser(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getSalesClueDetailReq({ id: options.id });
         this.getSalesClueListReq(this.queryProps);

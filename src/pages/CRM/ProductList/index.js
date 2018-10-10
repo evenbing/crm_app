@@ -36,7 +36,7 @@ class ProductList extends React.Component {
       state: { params: {
         type,
         callback,
-      } }, 
+      } = {} },
       goBack,
     } = this.props.navigation;
     if (type === ProductType) {

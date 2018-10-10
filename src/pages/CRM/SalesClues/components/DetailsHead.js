@@ -16,8 +16,8 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import { FormActionSheet } from '../../../../components/Modal';
 
-// padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
 const PhoneView = styled.TouchableOpacity`
@@ -83,8 +83,9 @@ class DetailsHead extends React.PureComponent {
   render() {
     const {
       item,
-      onPressChoiceTeam,
       onPressPhone,
+      onPressChoiceTeam,
+      onPressStatus,
     } = this.props;
     return (
       <HeaderBack>
@@ -115,14 +116,19 @@ class DetailsHead extends React.PureComponent {
               size={15}
             />
           </ItemView>
-          <FooterView>
-            <TimeText>活动状态：</TimeText>
-            <PlanStatusText>{LeadsStatus[item.status] || '--'}</PlanStatusText>
-            <Thumbnail
-              source={PrincipalIcon}
-              size={15}
-            />
-          </FooterView>
+          <FormActionSheet
+            onConfirm={onPressStatus}
+            typeEnum={LeadsStatus}
+          >
+            <FooterView>
+              <TimeText>活动状态：</TimeText>
+              <PlanStatusText>{LeadsStatus[item.status] || '--'}</PlanStatusText>
+              <Thumbnail
+                source={PrincipalIcon}
+                size={15}
+              />
+            </FooterView>
+          </FormActionSheet>
         </ContainerView>
       </HeaderBack>
     );
@@ -131,14 +137,16 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
-  onPressChoiceTeam: () => null,
   onPressPhone: () => null,
+  onPressChoiceTeam: () => null,
+  onPressStatus: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
-  onPressChoiceTeam: PropTypes.func,
   onPressPhone: PropTypes.func,
+  onPressChoiceTeam: PropTypes.func,
+  onPressStatus: PropTypes.func,
 };
 
 export default DetailsHead;

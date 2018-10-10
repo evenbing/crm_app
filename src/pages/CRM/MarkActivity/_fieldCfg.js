@@ -6,48 +6,84 @@
  */
 import {
   TYPE_LIST,
-  TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+import {
+  MarketActivityStatus,
+  MarketActivityTypes,
+  TimeTypes,
+} from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [
   {
+    key: 'status',
     label: '合同状态',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(MarketActivityStatus),
   },
   {
-    label: '行业',
+    key: 'sourceType',
+    label: '活动类型',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
-    ],
+    list: mapToArray(MarketActivityTypes),
   },
   {
-    label: '客户名称',
+    key: 'beginDateType',
+    label: '开始日期',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(TimeTypes),
   },
   {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
+    key: 'endDateType',
+    label: '结束日期',
+    type: TYPE_LIST,
+    selectedIndex: -1,
+    list: mapToArray(TimeTypes),
   },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+// sortColumn 表头排行
+export const MarkActivityTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'NAME',
+      name: '名称',
+    },
+    {
+      key: 'CREATION_TIME',
+      name: '创建时间',
+    },
+  ],
+};
+
+// 责任类型
+export const MarkActivityResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'my',
+      name: '我负责的',
+    },
+    {
+      key: 'myFollowed',
+      name: '我关注的',
+    },
+    {
+      key: 'sevenDaysUninvolved',
+      name: '7天未跟进的',
+    },
+    {
+      key: 'all',
+      name: '全部',
+    },
+  ],
+};

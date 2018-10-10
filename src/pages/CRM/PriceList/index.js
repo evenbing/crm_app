@@ -62,7 +62,7 @@ class PriceList extends React.Component {
           height={44}
           onPress={() => {
             // from select customer
-            if (state.params.type === PriceListType) {
+            if (state.params && state.params.type === PriceListType) {
               state.params.callback(item);
               goBack();
               return;
@@ -71,7 +71,7 @@ class PriceList extends React.Component {
           }}
           right={
             <Switch
-              disabled={state.params.type === PriceListType}
+              disabled={state.params && state.params.type === PriceListType}
               value={!!item.isActive}
               onValueChange={() => this.onToggleSwitch({ item, index })}
               onTintColor={theme.primaryColor}
