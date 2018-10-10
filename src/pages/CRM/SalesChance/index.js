@@ -179,7 +179,7 @@ class SalesChance extends React.Component {
             }
             onPress={() => {
               // from select salesChance
-              if (state.params.type === SalesChanceType) {
+              if (state.params && state.params.type === SalesChanceType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -314,7 +314,7 @@ SalesChance.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

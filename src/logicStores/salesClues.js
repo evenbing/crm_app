@@ -180,7 +180,6 @@ class SalesClueStore {
         errors = [],
       } = await changeOwnerUser(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getSalesClueDetailReq({ id: options.id });
         this.getSalesClueListReq(this.queryProps);

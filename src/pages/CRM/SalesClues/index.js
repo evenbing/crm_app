@@ -174,7 +174,7 @@ class SalesClues extends React.Component {
             {...itemProps}
             onPress={() => {
               // from select customer
-              if (state.params.type === SalesClueType) {
+              if (state.params && state.params.type === SalesClueType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -296,7 +296,7 @@ SalesClues.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

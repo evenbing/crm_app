@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId, nativeCallPhone } from '../../../utils/base';
+import {formatLocationMap, getUserId, nativeCallPhone} from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -120,6 +120,10 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressPhone = () => {
+    const { salesClueDetail: { map } } = SalesCluesModel;
+    nativeCallPhone(map.mobilePhone || map.phone);
+  };
   onPressChoiceTeam = () => {
     const {
       props: {
@@ -139,13 +143,29 @@ class Details extends React.Component {
       },
     });
   };
-  onPressPhone = () => {
+  onPressStatus = ({ key }) => {
+    const { salesClueDetail: { map } } = SalesCluesModel;
+    if (map.status === key) return;
     const {
-      salesClueDetail: {
-        map,
-      },
-    } = SalesCluesModel;
-    nativeCallPhone(map.mobilePhone || map.phone);
+      location,
+      departmentName,
+    } = map;
+    let locationInfo = {};
+    if (location) {
+      locationInfo = location;
+      locationInfo.formatLocation = formatLocationMap(location, false);
+      locationInfo.address = location.address || '';
+    }
+    let leadsDepartmentName = null;
+    if (departmentName) {
+      leadsDepartmentName = departmentName;
+    }
+    SalesCluesModel.updateSalesClueReq({
+      leadsDepartmentName,
+      ...map,
+      locationInfo,
+      status: key,
+    });
   };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
@@ -194,8 +214,9 @@ class Details extends React.Component {
     } = SalesCluesModel;
     const detailHeaderProps = {
       item: map,
-      onPressChoiceTeam: this.onPressChoiceTeam,
       onPressPhone: this.onPressPhone,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressStatus: this.onPressStatus,
     };
     return (
       <View>

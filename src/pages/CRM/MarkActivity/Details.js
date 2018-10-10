@@ -159,6 +159,26 @@ class Details extends React.Component {
       },
     });
   };
+  onPressStatus = ({ key }) => {
+    const { markActivityDetail: { map } } = MarkActivityModel;
+    if (map.status === key) return;
+    let {
+      beginDate,
+      endDate,
+    } = map;
+    if (beginDate) {
+      beginDate = formatDateByMoment(beginDate);
+    }
+    if (endDate) {
+      endDate = formatDateByMoment(endDate);
+    }
+    MarkActivityModel.updateMarkActivityReq({
+      ...map,
+      beginDate,
+      endDate,
+      status: key,
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -204,8 +224,9 @@ class Details extends React.Component {
     const { markActivityDetail: { map } } = MarkActivityModel;
     const detailHeaderProps = {
       item: map,
-      onPressChoiceTeam: this.onPressChoiceTeam,
       onPressFollow: this.onPressFollow,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressStatus: this.onPressStatus,
     };
     return (
       <View>
@@ -256,7 +277,6 @@ class Details extends React.Component {
       },
     } = MarkActivityModel;
     const flatProps = {
-      keyExtractor: (item, index) => index,
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <ActivityDetailsItem />,

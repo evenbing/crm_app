@@ -17,6 +17,7 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
 import TouchableView from '../../../../components/TouchableView';
+import { FormActionSheet } from '../../../../components/Modal';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -78,6 +79,7 @@ class DetailsHead extends React.PureComponent {
     const {
       item,
       onPressChoiceTeam,
+      onPressStatus,
     } = this.props;
     return (
       <HeaderBack>
@@ -103,19 +105,22 @@ class DetailsHead extends React.PureComponent {
             marginBottom={20}
           >
             <MoneyText>总金额：¥{item.totalMoney}</MoneyText>
-            {/* <MoneyText marginLeft={13}>未回款：¥100,000,000.00</MoneyText> */}
+            <MoneyText marginLeft={13}>未回款：¥${item.unreceivableTotalPrice}</MoneyText>
           </ItemView>
         </ContainerView>
-        <FooterView>
-          <MoneyText>活动状态：</MoneyText>
-          <PlanStatusText>{PackStatus[item.status] || '--'}</PlanStatusText>
-          {/*
-           <Thumbnail
-            source={PrincipalIcon}
-            size={15}
-          />
-           */}
-        </FooterView>
+        <FormActionSheet
+          onConfirm={onPressStatus}
+          typeEnum={PackStatus}
+        >
+          <FooterView>
+            <MoneyText>活动状态：</MoneyText>
+            <PlanStatusText>{PackStatus[item.status] || '--'}</PlanStatusText>
+            <Thumbnail
+              source={PrincipalIcon}
+              size={15}
+            />
+          </FooterView>
+        </FormActionSheet>
       </HeaderBack>
     );
   }
@@ -124,11 +129,13 @@ class DetailsHead extends React.PureComponent {
 DetailsHead.defaultProps = {
   item: {},
   onPressChoiceTeam: () => null,
+  onPressStatus: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   onPressChoiceTeam: PropTypes.func,
+  onPressStatus: PropTypes.func,
 };
 
 export default DetailsHead;
