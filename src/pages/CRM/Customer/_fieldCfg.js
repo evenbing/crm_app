@@ -6,48 +6,77 @@
  */
 import {
   TYPE_LIST,
-  TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+import { CustomerLevelTypes, IndustryTypes, TimeTypes } from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [
   {
-    label: '合同状态',
+    key: 'level',
+    label: '客户级别',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(CustomerLevelTypes),
   },
   {
+    key: 'industry',
     label: '行业',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
-    ],
+    list: mapToArray(IndustryTypes),
   },
   {
-    label: '客户名称',
+    key: 'followTimeType',
+    label: '跟进时间范围',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
-  },
-  {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
+    list: mapToArray(TimeTypes),
   },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+// sortColumn 表头排行
+export const CustomerTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'NAME',
+      name: '名称',
+    },
+    {
+      key: 'CREATION_TIME',
+      name: '创建时间',
+    },
+  ],
+};
+
+// 责任类型
+export const CustomerResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'my',
+      name: '我负责的',
+    },
+    {
+      key: 'myFollow',
+      name: '我关注的',
+    },
+    {
+      key: 'myParticipate',
+      name: '我参与的',
+    },
+    {
+      key: 'sevenDaysUninvolved',
+      name: '7天未跟进的',
+    },
+    {
+      key: 'all',
+      name: '全部',
+    },
+  ],
+};

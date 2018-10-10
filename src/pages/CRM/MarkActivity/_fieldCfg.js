@@ -10,7 +10,11 @@ import {
 import {
   initFilterListMap,
 } from '../../../constants/screenTab';
-import { MarketActivityStatus, MarketActivityTypes, TimeTypes } from '../../../constants/enum';
+import {
+  MarketActivityStatus,
+  MarketActivityTypes,
+  TimeTypes,
+} from '../../../constants/enum';
 import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [

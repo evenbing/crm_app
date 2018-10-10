@@ -43,6 +43,7 @@ class SalesClueStore {
   // 列表
   @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.salesClueList.refreshing = true;
       } else {

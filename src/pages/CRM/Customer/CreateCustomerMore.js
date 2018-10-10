@@ -10,7 +10,7 @@ import TouchableView from '../../../components/TouchableView';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import { CustomerEnum } from '../../../constants/form';
-import { CustomerLevelTypes, industryTypes, CustomerType } from '../../../constants/enum';
+import { CustomerLevelTypes, IndustryTypes, CustomerType } from '../../../constants/enum';
 import { CenterText, RightText } from '../../../components/Styles/Form';
 import { createLocationId } from '../../../service/app';
 import CustomerModel from '../../../logicStores/customer';
@@ -104,9 +104,9 @@ class CreateCustomerMore extends Component {
         industryName,
       },
       props: {
-        navigation: { 
+        navigation: {
           pop,
-          state: { params: { reFetchDataList } }, 
+          state: { params: { reFetchDataList } },
         },
       },
     } = this;
@@ -258,7 +258,7 @@ class CreateCustomerMore extends Component {
           leftText="所属行业"
           onPress={() => navigate(routers.typePicker, {
             selectedKey: industry,
-            typeEnum: industryTypes,
+            typeEnum: IndustryTypes,
             callback: (key, value) => {
               this.setState({
                 industry: key,

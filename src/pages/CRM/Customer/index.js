@@ -13,11 +13,7 @@ import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { CustomerType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
-import {
-  CustomerTimeTypeFilterMap,
-  CustomerResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+import { filterObject } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -27,11 +23,19 @@ import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
-import { FilterList } from './_fieldCfg';
 import CustomerStore from '../../../logicStores/customer';
 
-useStrict(true);
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import {
+  FilterList,
+  CustomerTimeTypeFilterMap,
+  CustomerResponsibilityTypeFilterMap,
+} from './_fieldCfg';
 
+useStrict(true);
 
 @observer
 class Customer extends React.Component {
@@ -101,15 +105,15 @@ class Customer extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -122,7 +126,13 @@ class Customer extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -131,10 +141,19 @@ class Customer extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 0) {
+        obj.sortColumn = v;
+      } else {
+        obj[v] = true;
+      }
     });
-    CustomerStore.getCustomerListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    console.log(obj);
+    CustomerStore.getCustomerListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -269,7 +288,10 @@ class Customer extends React.Component {
           <SearchInput
             placeholder="输入客户名称"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab

@@ -1,5 +1,9 @@
 ## react-native
 
+### 在线原型
+
+>> https://run.mockplus.cn/rOs13rLy8ED1voWL/index.html?to=42B2F30D-BA75-4DE2-A5D2-AFC3874D95D5
+
 ###版本环境
 ```html
 node 8.0+(v8.11.1)
@@ -53,7 +57,7 @@ java (v1.8.0_172)
         |--index.js                 列表页面
       |--PriceList                  价格表模块
         |--index.js                 列表页面
-        |--PriceDetailLists     内部价格表页面 ( 两个价格表一样, 需要优化 )
+        |--PriceDetailLists         价格表页面
         |--StandardPriceList.js     标准价格表页面
       |--ProductList                产品目录模块
         |--index.js                 列表页面
@@ -79,9 +83,6 @@ java (v1.8.0_172)
     |--Home        Home tab
     |--Modal       共用modal
       |--QueryBusiness              工商信息查询
-    |-- 未完成
-       添加产品
-       关联业务
   |--service        服务API
   |--utils          工具文件夹
   |--app.js         

@@ -103,7 +103,7 @@ export const PackStatus = {
 };
 
 // 行业
-export const industryTypes = {
+export const IndustryTypes = {
   FINANCIAL: '金融',
   TELECOM: '电信',
   HIGH_TECH: '高科技',
