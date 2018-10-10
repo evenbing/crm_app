@@ -180,7 +180,7 @@ class MarkActivity extends React.Component {
             {...itemProps}
             onPress={() => {
               // from select customer
-              if (state.params.type === MarkActivityType) {
+              if (state.params && state.params.type === MarkActivityType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -300,7 +300,7 @@ MarkActivity.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

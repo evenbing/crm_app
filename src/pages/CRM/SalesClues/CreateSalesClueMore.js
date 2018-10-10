@@ -108,9 +108,9 @@ class CreateSalesClueMore extends React.Component {
       leadsDepartmentName = departmentName;
     }
     this.setState({
+      leadsDepartmentName,
       ...formatNumberToString(item),
       locationInfo,
-      leadsDepartmentName,
     });
   };
   render() {

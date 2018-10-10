@@ -177,7 +177,7 @@ class Contacts extends React.Component {
             }
             onPress={() => {
               // from select customer
-              if (state.params.type === ContactsType) {
+              if (state.params && state.params.type === ContactsType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -298,7 +298,7 @@ Contacts.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,

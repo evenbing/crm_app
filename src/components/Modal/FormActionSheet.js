@@ -132,6 +132,7 @@ class FormActionSheet extends React.PureComponent {
               onConfirm({
                 key,
                 value,
+                index,
               });
               this.onHideModal();
             }}

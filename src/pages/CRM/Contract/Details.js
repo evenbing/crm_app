@@ -11,7 +11,7 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId } from '../../../utils/base';
+import {formatDateByMoment, getUserId} from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -141,6 +141,39 @@ class Details extends React.Component {
       },
     });
   };
+  onPressStatus = ({ key }) => {
+    const { contractDetails: { map } } = ContractModel;
+    if (map.status === key) return;
+    let {
+      startDate,
+      endDate,
+      pactDate,
+    } = map;
+    const {
+      salesleadName,
+    } = map;
+    if (startDate) {
+      startDate = formatDateByMoment(startDate);
+    }
+    if (endDate) {
+      endDate = formatDateByMoment(endDate);
+    }
+    if (pactDate) {
+      pactDate = formatDateByMoment(pactDate);
+    }
+    let salesOpportunitiesName = null;
+    if (salesleadName) {
+      salesOpportunitiesName = salesleadName;
+    }
+    ContractModel.updateContractReq({
+      salesOpportunitiesName,
+      ...map,
+      startDate,
+      endDate,
+      pactDate,
+      status: key,
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -203,6 +236,7 @@ class Details extends React.Component {
     const detailHeaderProps = {
       item: map,
       onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressStatus: this.onPressStatus,
     };
     return (
       <View>

@@ -113,6 +113,9 @@ class EditorMore extends React.Component {
       endDate,
       pactDate,
     } = item;
+    const {
+      salesleadName,
+    } = item;
     if (startDate) {
       startDate = formatDateByMoment(startDate);
     }
@@ -122,7 +125,12 @@ class EditorMore extends React.Component {
     if (pactDate) {
       pactDate = formatDateByMoment(pactDate);
     }
+    let salesOpportunitiesName = null;
+    if (salesleadName) {
+      salesOpportunitiesName = salesleadName;
+    }
     this.setState({
+      salesOpportunitiesName,
       ...formatNumberToString(item),
       startDate,
       endDate,

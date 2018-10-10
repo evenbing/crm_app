@@ -176,7 +176,7 @@ class Customer extends React.Component {
             right="hidden"
             onPress={() => {
               // from select customer
-              if (state.params.type === CustomerType) {
+              if (state.params && state.params.type === CustomerType) {
                 state.params.callback(item);
                 goBack();
                 return;
@@ -299,7 +299,7 @@ Customer.navigationOptions = ({ navigation }) => {
     headerRight: (
       bool ? <DefaultHeaderView /> : (
         <RightView
-          onPress={onPressRight || null}
+          onPress={onPressRight || (() => null)}
           right="新增"
           rightStyle={{
             color: theme.primaryColor,
