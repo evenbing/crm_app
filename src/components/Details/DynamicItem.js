@@ -1,4 +1,3 @@
-
 /**
  * @component DynamicItem.jsm.js
  * @description ProductItem
@@ -15,6 +14,7 @@ import { moderateScale } from '../../utils/scale';
 
 // components
 import TouchableView from '../TouchableView';
+import Thumbnail from '../Thumbnail';
 
 const ContainerView = styled(TouchableView)`
   flex-direction: row;
@@ -28,7 +28,7 @@ const LeftView = styled.View`
   width: ${moderateScale(32)};
   height: ${moderateScale(32)};
   background-color: #D8D8D8;
-  border-radius: 4;
+  border-radius: 4px;
   margin-right: ${moderateScale(17)};
 `;
 const RightView = styled.View`
@@ -51,10 +51,9 @@ const ContentText = styled.Text`
   margin-bottom: ${moderateScale(5)};
 `;
 
-const PicImage = styled.View`
+const PicImage = styled(Thumbnail)`
   width: ${moderateScale(108)};
   height: ${moderateScale(140)};
-  background: #D8D8D8;
   margin-top: ${moderateScale(3)};
   margin-bottom: ${moderateScale(5)};
 `;
@@ -99,10 +98,7 @@ class DynamicItem extends React.PureComponent {
           {
             attachmentList.length ? (
               <PicImage
-                source={
-                  attachmentList[0].filePath ?
-                  { uri: attachmentList[0].filePath } : null
-                }
+                imgUri={attachmentList[0].filePath || null}
               />
             ) : null
           }

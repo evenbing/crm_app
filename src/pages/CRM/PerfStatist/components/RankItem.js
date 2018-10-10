@@ -114,6 +114,7 @@ class RankItem extends React.PureComponent {
               </RankView>
               <Thumbnail
                 imgUri={item.headImg ? item.headImg.trim() : null}
+                // imgUri={item.headImg ? 'https://sqimg.qq.com/qq_product_operations/im/2015/qblog_fig2.png' : null}
                 size={52}
                 round
               />
