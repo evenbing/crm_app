@@ -6,8 +6,13 @@
  */
 import {
   TYPE_LIST,
-  TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+// import { MarketActivityStatus, MarketActivityTypes, TimeTypes } from '../../../constants/enum';
+// import { mapToArray } from '../../../utils/base';
+
 
 export const FilterList = [
   {
@@ -33,21 +38,35 @@ export const FilterList = [
       { name: '其他' },
     ],
   },
-  {
-    label: '客户名称',
-    type: TYPE_LIST,
-    selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
-  },
-  {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
-  },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+export const ReceivablePlanTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'FACT_RECEIVE_DATE',
+      name: '实际回款时间',
+    },
+    {
+      key: 'PLAN_RECEIVE_DATE',
+      name: '计划回款时间',
+    },
+  ],
+};
+
+// 回款计划
+export const ReceivablePlanResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'CHARGE',
+      name: '我负责的',
+    },
+    {
+      key: 'ALL',
+      name: '全部',
+    },
+  ],
+};

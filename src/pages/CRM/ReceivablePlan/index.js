@@ -12,6 +12,7 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
+import { filterObject, nativeCallPhone } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -23,15 +24,17 @@ import { ActionSheet } from '../../../components/Modal';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 
-import { FilterList } from './_fieldCfg';
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
 
-// screenTab
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 import {
   ReceivablePlanTimeTypeFilterMap,
   ReceivablePlanResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+  FilterList,
+} from './_fieldCfg';
 
 useStrict(true);
 
@@ -90,7 +93,6 @@ class ReceivablePlan extends React.Component {
     });
   };
   onFilter = () => {
-    // TODO
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
@@ -98,6 +100,7 @@ class ReceivablePlan extends React.Component {
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onToggleAmountVisible = () => {
     this.setState({
@@ -115,7 +118,13 @@ class ReceivablePlan extends React.Component {
     this.prevNodeIndex = index;
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -125,11 +134,18 @@ class ReceivablePlan extends React.Component {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
     }).filter(_ => !!_).forEach((v, i) => {
-      if (i === 1) {
+      if (i === 0) {
+        obj.sortColumn = v;
+      } else if (i === 1) {
         obj.participateType = v;
       }
     });
-    ReceivablePlanModel.getReceivablePlanListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    console.log(obj);
+    ReceivablePlanModel.getReceivablePlanListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -171,7 +187,13 @@ class ReceivablePlan extends React.Component {
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 1) {
+                nativeCallPhone(item.mobilePhone || item.phone);
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />
@@ -266,9 +288,12 @@ class ReceivablePlan extends React.Component {
         >
           <CommStatusBar />
           <SearchInput
-            placeholder="输入客户名称"
+            placeholder="输入计划编号"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab

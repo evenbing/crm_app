@@ -6,48 +6,79 @@
  */
 import {
   TYPE_LIST,
-  TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+import { LeadsStatus, LeadsSource, TimeTypes } from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
+
 
 export const FilterList = [
   {
-    label: '合同状态',
+    key: 'status',
+    label: '线索状态',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(LeadsStatus),
   },
   {
-    label: '行业',
+    key: 'source',
+    label: '线索来源',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
-    ],
+    list: mapToArray(LeadsSource),
   },
   {
-    label: '客户名称',
+    key: 'beginDateType',
+    label: '最近跟进日期',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
-  },
-  {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
+    list: mapToArray(TimeTypes),
   },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+// sortColumn 表头排行
+export const SalesCluesTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'NAME',
+      name: '名称',
+    },
+    {
+      key: 'CREATION_TIME',
+      name: '创建时间',
+    },
+  ],
+};
+
+// 责任类型
+export const SalesCluesResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'isMyManger',
+      name: '我负责的',
+    },
+    {
+      key: 'myParticipate',
+      name: '我参与的',
+    },
+    {
+      key: 'sevenDaysUninvolved',
+      name: '7天未跟进的',
+    },
+    {
+      key: 'myFollow',
+      name: '我关注的',
+    },
+    {
+      key: 'all',
+      name: '全部',
+    },
+  ],
+};
+

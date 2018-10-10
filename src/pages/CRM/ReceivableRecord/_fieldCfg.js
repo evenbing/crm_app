@@ -8,6 +8,12 @@ import {
   TYPE_LIST,
   TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+// import { MarketActivityStatus, MarketActivityTypes, TimeTypes } from '../../../constants/enum';
+// import { mapToArray } from '../../../utils/base';
+
 
 export const FilterList = [
   {
@@ -54,3 +60,35 @@ export const FilterList = [
     value: null,
   },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+// sortColumn 表头排行
+export const ReceivableRecordTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'FACT_RECEIVE_DATE',
+      name: '实际回款时间',
+    },
+    {
+      key: 'PLAN_RECEIVE_DATE',
+      name: '计划回款时间',
+    },
+  ],
+};
+
+// 回款记录
+export const ReceivableRecordResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'CHARGE',
+      name: '我负责的',
+    },
+    {
+      key: 'ALL',
+      name: '全部',
+    },
+  ],
+};

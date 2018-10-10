@@ -76,13 +76,17 @@ export function handleFilterItem({
   list.forEach((_) => {
     const obj = {};
     obj.label = _.label;
+    obj.key = _.key;
     if (_.type === TYPE_LIST) {
       if (_.selectedIndex === -1) return;
-      obj.name = _.list[_.selectedIndex].name;
+      const res =  _.list[_.selectedIndex];
+      obj.name = res.name;
+      obj.value = res.key;
     }
     if (_.type === TYPE_INPUT) {
       if (!_.value) return;
       obj.name = _.value;
+      obj.value = _.value;
     }
     arr.push(obj);
   });

@@ -16,14 +16,14 @@ import { deviceWidth, deviceHeight } from '../../utils/utils';
 import TouchableView from '../../components/TouchableView';
 import Thumbnail from '../../components/Thumbnail';
 
-const ContainerView = styled.View``;
+const ContainerView = styled.View`
+  background-color: ${theme.whiteColor};
+`;
 
 const ItemPressView = styled(TouchableView)`
-  background-color: ${theme.whiteColor};
   padding: 0 ${moderateScale(16)}px;
   height: ${moderateScale(44)};
   border-bottom-width: ${props => props.isLast ? '0px' : '1px'};
-  border-style: solid;
   border-bottom-color: ${props => props.isLast ? 'transparent' : theme.borderColor};
   flex-direction: row;
   align-items: center;

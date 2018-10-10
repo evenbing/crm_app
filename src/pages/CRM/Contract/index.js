@@ -12,6 +12,7 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
+import { filterObject, nativeCallPhone } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -22,15 +23,17 @@ import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 
-import { FilterList } from './_fieldCfg';
 import ContractModel from '../../../logicStores/contract';
 
-// screenTab
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
 import {
   ContractTimeTypeFilterMap,
   ResponsibResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+  FilterList,
+} from './_fieldCfg';
 
 useStrict(true);
 
@@ -64,10 +67,6 @@ class Contract extends React.Component {
     if (isLast) {
       this.onOpenDrawer();
     }
-  };
-  onPressButtonItem = ({ index, item }) => {
-    // TODO
-    alert(`item:${JSON.stringify(item)}, index: ${index}`);
   };
   onPressFilterItem = async ({ index }) => {
     const { screenTabList, activeIndex } = this.state;
@@ -103,15 +102,15 @@ class Contract extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -124,7 +123,13 @@ class Contract extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -133,10 +138,19 @@ class Contract extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 1) {
+        obj.pactParticipateType = v;
+      } else {
+        obj[v] = true;
+      }
     });
-    ContractModel.getContractListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    console.log(obj);
+    ContractModel.getContractListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -152,7 +166,7 @@ class Contract extends React.Component {
       <SwipeRow
         disableRightSwipe
         ref={(row) => { this[`rows.${index}`] = row; }}
-        rightOpenValue={-theme.moderateScale((44 * 3) + 15 + 15)}
+        rightOpenValue={-theme.moderateScale((44 * 2) + 15 + 15)}
         style={{
           paddingTop: 0,
           paddingLeft: 0,
@@ -175,11 +189,17 @@ class Contract extends React.Component {
         right={
           <ButtonList
             list={[
-              require('../../../img/crm/buttonList/follow.png'),
+              // require('../../../img/crm/buttonList/follow.png'),
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={this.onPressButtonItem}
+            onPressItem={({ index }) => {
+              if (index === 1) {
+                nativeCallPhone(item.mobilePhone || item.phoneNumber);
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />
@@ -252,9 +272,12 @@ class Contract extends React.Component {
         >
           <CommStatusBar />
           <SearchInput
-            placeholder="输入客户名称"
+            placeholder="输入市场活动名称"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab

@@ -13,11 +13,7 @@ import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
 import { SalesClueType, LeadsStatus } from '../../../constants/enum';
-import {
-  SalesCluesTimeTypeFilterMap,
-  SalesCluesResponsibilityTypeFilterMap,
-  DrawerFilterMap,
-} from '../../../constants/screenTab';
+import { filterObject, nativeCallPhone } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -27,8 +23,17 @@ import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
-import { FilterList } from './_fieldCfg';
 import SalesCluesStore from '../../../logicStores/salesClues';
+
+// constants config
+import {
+  DrawerFilterMap,
+} from '../../../constants/screenTab';
+import {
+  SalesCluesTimeTypeFilterMap,
+  SalesCluesResponsibilityTypeFilterMap,
+  FilterList,
+} from './_fieldCfg';
 
 useStrict(true);
 
@@ -98,15 +103,15 @@ class SalesClues extends React.Component {
       filterList: list,
     });
   };
-  onFilter = () => {
-    // TODO
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();
+    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -119,7 +124,13 @@ class SalesClues extends React.Component {
     }
   };
   getData = (pageNumber = 1) => {
-    const { screenTabList, searchValue } = this.state;
+    const {
+      state: {
+        screenTabList,
+        searchValue,
+        selectedList,
+      },
+    } = this;
     const obj = {
       pageNumber,
       name: searchValue,
@@ -128,10 +139,19 @@ class SalesClues extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 0) {
+        // obj.sortColumn = v;
+      } else {
+        obj[v] = true;
+      }
     });
-    SalesCluesStore.getSalesClueListReq(obj);
+    // query sideBar
+    selectedList.forEach((v) => {
+      obj[v.key] = v.value;
+    });
+    console.log(obj);
+    SalesCluesStore.getSalesClueListReq(filterObject(obj));
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
@@ -190,7 +210,13 @@ class SalesClues extends React.Component {
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 1) {
+                nativeCallPhone(item.mobilePhone || item.phone);
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />
@@ -264,9 +290,12 @@ class SalesClues extends React.Component {
         >
           <CommStatusBar />
           <SearchInput
-            placeholder="输入客户名称"
+            placeholder="输入销售线索名称"
             value={searchValue}
-            onChangeText={searchValue => this.setState({ searchValue })}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
             onSearch={() => this.getData()}
           />
           <ScreenTab
