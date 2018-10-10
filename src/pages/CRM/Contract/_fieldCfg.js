@@ -6,44 +6,79 @@
  */
 import {
   TYPE_LIST,
-  TYPE_INPUT,
+  // TYPE_INPUT,
 } from '../../../constants/drawer';
+import {
+  initFilterListMap,
+} from '../../../constants/screenTab';
+import { PackStatus, PackType } from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [
+  // {
+  //   label: '输入关键字',
+  //   placeholder: '请输入关键字',
+  //   type: TYPE_INPUT,
+  //   value: null,
+  // },
   {
+    key: 'status',
     label: '合同状态',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '执行中' },
-      { name: '结束' },
-      { name: '意外终止' },
-    ],
+    list: mapToArray(PackStatus),
   },
   {
-    label: '行业',
+    key: 'type',
+    label: '合同类型',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
-    ],
+    list: mapToArray(PackType),
   },
   {
-    label: '客户名称',
+    label: '客户',
     type: TYPE_LIST,
     selectedIndex: -1,
     list: [
       { name: '西风网络' },
     ],
   },
-  {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
-  },
 ];
+
+// -----------------------------------------
+// 列表头部筛选
+export const ContractTimeTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'startDate',
+      name: '开始日期',
+    },
+    {
+      key: 'endDate',
+      name: '结束日期',
+    },
+    {
+      key: 'pactDate',
+      name: '签约日期',
+    },
+  ],
+};
+
+export const ResponsibResponsibilityTypeFilterMap = {
+  ...initFilterListMap,
+  list: [
+    {
+      key: 'CHARGE',
+      name: '我负责的',
+    },
+    {
+      key: 'JOIN',
+      name: '我参与的',
+    },
+    {
+      key: 'ALL',
+      name: '全部',
+    },
+  ],
+};

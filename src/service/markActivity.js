@@ -10,6 +10,7 @@ import { post } from '../utils/rpc';
  *
  * @param options
  * {
+ *  name 市场活动名称 否
  *  my  我负责的  否
  *  myFollowed  我关注的  否  关注对象类型必须传参
  *  objectType  关注对象类型  否  当选择为我关注的和全部时必填
@@ -31,6 +32,7 @@ import { post } from '../utils/rpc';
 export function getMarkActivityList({
   pageNumber = 1,
   pageSize = 15,
+  name,
   my,
   myFollowed,
   objectType,
@@ -52,6 +54,7 @@ export function getMarkActivityList({
     method: 'api.customerrelations.activity.find',
     pageNumber,
     pageSize,
+    name,
     my,
     myFollowed,
     objectType,

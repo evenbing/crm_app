@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getUserId } from '../../../utils/base';
+import { getUserId, nativeCallPhone } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -122,6 +122,10 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressPhone = () => {
+    const { contactDetails: { map } } = ContactsModel;
+    nativeCallPhone(map.mobilePhone || map.phoneNumber);
+  };
   onPressChoiceTeam = () => {
     const {
       props: {
@@ -181,6 +185,7 @@ class Details extends React.Component {
     const { contactDetails: { map } } = ContactsModel;
     const detailHeaderProps = {
       item: map,
+      onPressPhone: this.onPressPhone,
       onPressChoiceTeam: this.onPressChoiceTeam,
     };
     return (

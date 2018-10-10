@@ -5,7 +5,7 @@
  * @author JUSTIN XU
  */
 import moment from 'moment';
-import {NativeModules, Platform} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
 
 export const formatDateType = 'YYYY-MM-DD';
@@ -30,6 +30,7 @@ export function nativeGoBack() {
 
 // call telPhone
 export function nativeCallPhone(telPhone) {
+  console.log(`@phone:${telPhone}`);
   if (!telPhone) return;
   try {
     NativeModules.system.call(telPhone);
@@ -148,4 +149,14 @@ export function formatPickerImage(image) {
     },
     path,
   };
+}
+
+// 去除object中的'', null
+export function filterObject(obj) {
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key] && obj[key] !== 0) {
+      delete obj[key];
+    }
+  });
+  return obj;
 }

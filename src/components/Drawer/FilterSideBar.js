@@ -15,7 +15,7 @@ import theme from '../../constants/theme';
 
 // components
 import FooterGroup from './FooterGroup';
-import AddButton from './AddButton';
+// import AddButton from './AddButton';
 import LabelItem from './LabelItem';
 import {
   ContainerView,
@@ -70,12 +70,12 @@ class FilterSideBar extends React.PureComponent {
           borderColor={theme.borderColor}
           borderWidth="1"
           borderRadius="4"
-          searchStyle={{
-            paddingLeft: theme.moderateScale(10),
-            paddingRight: theme.moderateScale(10),
-            paddingTop: theme.moderateScale(11),
-            paddingBottom: 0,
-          }}
+          // searchStyle={{
+          //   paddingLeft: theme.moderateScale(10),
+          //   paddingRight: theme.moderateScale(10),
+          //   paddingTop: theme.moderateScale(11),
+          //   paddingBottom: 0,
+          // }}
           placeholder={placeholder}
           value={value}
           onChangeText={value => onToggle({ type, value, pareIndex })}
@@ -88,7 +88,7 @@ class FilterSideBar extends React.PureComponent {
       props: {
         onReset,
         onFilter,
-        onPressAdd,
+        // onPressAdd,
       },
     } = this;
     return (
@@ -96,9 +96,11 @@ class FilterSideBar extends React.PureComponent {
         <HeaderView>
           <TopTitleText>字段筛选</TopTitleText>
           {this.renderLabelList()}
+          {/*
           <AddButton
             onPress={onPressAdd}
           />
+          */}
         </HeaderView>
         <FooterGroup
           onReset={onReset}
