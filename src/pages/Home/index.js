@@ -21,6 +21,7 @@ import { get2Date } from '../../utils/date';
 import TaskScheduleList from './components/TaskScheduleList';
 import { ContainerView } from '../../components/Styles/Layout';
 import { formatDateByMoment } from '../../utils/base';
+import Toast from '../../utils/toast';
 
 const createTypes = [
   { leftText: '新建日程' },
@@ -32,7 +33,7 @@ const delayTypes = [
   { leftText: '3小时以后' },
   { leftText: '明天' },
   { leftText: '后天' },
-  { leftText: '自定义' },
+  // { leftText: '自定义' },
 ];
 
 @observer
@@ -74,25 +75,25 @@ class Home extends React.Component {
     switch (item.leftText) {
       case '1小时以后':
         this.updateTaskAndSchedule({
-          noticeTime: 60,
+          time: 60 * 1000,
         });
         this.setState({ delayActionSheetVisible: false });
         break;
       case '3小时以后':
         this.updateTaskAndSchedule({
-          noticeTime: 3 * 60,
+          time: 3 * 60 * 1000,
         });
         this.setState({ delayActionSheetVisible: false });
         break;
       case '明天':
         this.updateTaskAndSchedule({
-          noticeTime: 24 * 60,
+          time: 24 * 60 * 1000,
         });
         this.setState({ delayActionSheetVisible: false });
         break;
       case '后天':
         this.updateTaskAndSchedule({
-          noticeTime: 2 * 24 * 60,
+          time: 2 * 24 * 60 * 1000,
         });
         this.setState({ delayActionSheetVisible: false });
         break;
@@ -127,13 +128,19 @@ class Home extends React.Component {
     });
   }
 
-  updateTaskAndSchedule = ({ noticeTime }) => {
+  updateTaskAndSchedule = ({ time }) => {
+    console.log('this.selectedStartTime:', this.selectedStartTime);
+    console.log('Math.round(new Date()):', Math.round(new Date()));
+    
+    if (this.selectedStartTime && Number(this.selectedStartTime) < Number(Math.round(new Date()))) {
+      Toast.showWarning('该任务已经开始');
+      return;
+    }
     TaskScheduleStore.updateTaskScheduleRelatedToMeReq({
       id: this.selectedItemId,
       type: this.selectedItemType,
-      noticeTime,
       startTime: this.selectedStartTime ? formatDateByMoment(this.selectedStartTime, 'YYYY-MM-DD HH:mm:ss') : null,
-      endTime: formatDateByMoment(Number(this.selectedEndTime) + (Number(noticeTime) * 60 * 1000), 'YYYY-MM-DD HH:mm:ss'),
+      endTime: formatDateByMoment(Number(this.selectedEndTime) + time, 'YYYY-MM-DD HH:mm:ss'),
       moduleId: this.selectedMoudleId,
       moduleType: this.selectedMoudleType,
       rowVersion: this.selectedRowVersion,
