@@ -117,18 +117,14 @@ class Home extends React.Component {
     this.selectedMoudleId = moduleId;
     this.selectedMoudleType = moduleType;
     this.selectedRowVersion = rowVersion;
-    console.log('this.selectedEndTime:', this.selectedEndTime);
-    console.log('this.selectedStartTime:', this.selectedStartTime);
   }
 
   getTaskScheduleList = (date) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq(
-      10,
-      {
-        startDateId: date,
-        endDateId: date,
-      },
-    );
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq(1, {
+      pageSize: 50,
+      startDateId: date,
+      endDateId: date,
+    });
   }
 
   updateTaskAndSchedule = ({ noticeTime }) => {
@@ -145,10 +141,11 @@ class Home extends React.Component {
   }
 
   reFetchTaskScheduleList = () => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      startDateId: this.curSelectedDate,
-      endDateId: this.curSelectedDate,
-    });
+    this.getTaskScheduleList(this.curSelectedDate);
+    // TaskScheduleStore.getTaskScheduleRelatedToMeReq({
+    //   startDateId: this.curSelectedDate,
+    //   endDateId: this.curSelectedDate,
+    // });
   }
 
   showMessageList = () => {

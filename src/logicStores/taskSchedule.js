@@ -2,7 +2,7 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-06 22:15:31
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-20 16:14:15
+ * @Last Modified time: 2018-10-10 17:09:17
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx';
@@ -10,11 +10,11 @@ import autobind from 'autobind-decorator';
 import {
   find, create, update, del,
 } from '../service/taskSchedule';
+import { getMessage } from '../service/app';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
-
 @autobind
 class TaskScheduleStore {
   // 列表
@@ -33,7 +33,7 @@ class TaskScheduleStore {
       } = await del(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.taskScheduleList = [];
+        this.taskScheduleList.list = [];
         callback && callback();
       });
     } catch (e) {
@@ -110,6 +110,23 @@ class TaskScheduleStore {
       });
     } catch (e) {
       Toast.showError(e.message);
+    }
+  }
+
+  // 消息列表
+  @observable messageList = initFlatList;
+  @action async getMessageReq() {
+    try {
+      const {
+        result = [],
+        errors = [],
+      } = await getMessage();
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.messageList.list = result;
+      });
+    } catch (error) {
+      Toast.showError(error.message);
     }
   }
 }

@@ -177,7 +177,7 @@ class ListItem extends Component {
                 onPress,
               } = item;
               return (
-                <OperateItem onPress={onPress} key={key}>
+                <OperateItem onPress={text === '删除' ? onPress(id) : onPress} key={key}>
                   <OperateText>{text}</OperateText>
                 </OperateItem>
               );
@@ -194,6 +194,11 @@ ListItem.defaultProps = {
   name: '',
   operateList: [],
   startTime: null,
+  endTime: null,
+  moduleId: null,
+  moduleType: null,
+  rowVersion: null,
+  onPressItem: () => {},
 };
 
 ListItem.propTypes = {
@@ -203,16 +208,16 @@ ListItem.propTypes = {
   name: PropTypes.string,
   comment: PropTypes.string,
   startTime: PropTypes.string,
-  endTime: PropTypes.string.isRequired,
-  moduleId: PropTypes.string.isRequired,
-  moduleType: PropTypes.string.isRequired,
-  rowVersion: PropTypes.string.isRequired,
+  endTime: PropTypes.string,
+  moduleId: PropTypes.string,
+  moduleType: PropTypes.string,
+  rowVersion: PropTypes.string,
   operateList: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string,
     text: PropTypes.string,
     onPress: PropTypes.func,
   })),
-  onPressItem: PropTypes.func.isRequired,
+  onPressItem: PropTypes.func,
 };
 
 export default ListItem;

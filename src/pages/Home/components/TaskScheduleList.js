@@ -2,20 +2,16 @@
  * @Author: ShiQuan
  * @Date: 2018-09-09 21:19:28
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-09-09 22:47:12
+ * @Last Modified time: 2018-10-10 16:07:33
  */
 import React from 'react';
-import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import uuidv1 from 'uuid/v1';
 import { observer } from 'mobx-react/native';
 
-import Toast from '../../../utils/toast';
 import ListItem from './ListItem';
 import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
-import TaskScheduleStore from '../../../logicStores/taskSchedule';
 
 const List = styled.FlatList`
   background-color: ${theme.pageBackColor};
@@ -29,11 +25,7 @@ const ListItemSeparatorComponent = styled.View`
 
 @observer
 class taskScheduleList extends React.Component {
-  keyExtractor = (item) => {
-    // console.log('item.id:', item.id);
-    
-    return item.id;
-  };
+  keyExtractor = item => item.id;
 
   renderItem = ({ item }) => {
     const {

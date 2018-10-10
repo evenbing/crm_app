@@ -298,6 +298,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="邀请人数"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.budgetPeopleNumber,
               value: budgetPeopleNumber,
               onChangeText: budgetPeopleNumber => this.setState({ budgetPeopleNumber }),
@@ -306,37 +307,53 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="预期响应"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.effect,
               value: effect,
               onChangeText: effect => this.setState({ effect }),
             })}
+            right={
+              <RightText>人</RightText>
+            }
           />
           <TitleItem text="实际信息" />
           <NavInputItem
             leftText="实际人数"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.actualPeopleNumber,
               value: actualPeopleNumber,
               onChangeText: actualPeopleNumber => this.setState({ actualPeopleNumber }),
             })}
+            right={
+              <RightText>人</RightText>
+            }
           />
           <NavInputItem
             leftText="实际成本"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.actualCost,
               value: actualCost,
               onChangeText: actualCost => this.setState({ actualCost }),
             })}
+            right={
+              <RightText>元</RightText>
+            }
           />
           {
             isCreateBool ? null : (
               <NavInputItem
                 leftText="实际收入"
                 {...theme.getLeftStyle({
+                  keyboardType: 'numeric',
                   placeholder: MarkActivityEnum.actualRevenue,
                   value: actualRevenue,
                   onChangeText: actualRevenue => this.setState({ actualRevenue }),
                 })}
+                right={
+                  <RightText>元</RightText>
+                }
               />
             )
           }
