@@ -31,7 +31,7 @@ class SalesChanceStore {
 
   // 销售阶段列表
   @observable salesPhaseList = initFlatList;
-  
+
   // 销售阶段详情
   @observable salesPhaseDetail = initDetailMap;
 
@@ -54,7 +54,7 @@ class SalesChanceStore {
         this.salesChanceList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.salesChanceList.list = [...result];
+          this.salesChanceList.list = result;
         } else {
           this.salesChanceList.list = this.salesChanceList.list.concat(result);
         }

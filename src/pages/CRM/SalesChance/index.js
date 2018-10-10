@@ -116,12 +116,16 @@ class SalesChance extends React.Component {
     this.onCloseDrawer();
   };
   onRowOpen = (index) => {
-    console.log(index);
     this.safeCloseOpenRow(index);
     this.prevNodeIndex = index;
   };
   onEndReached = () => {
-    const { total, list, pageNumber, loadingMore } = SalesChanceStore.salesChanceList;
+    const {
+      total,
+      list,
+      pageNumber,
+      loadingMore,
+    } = SalesChanceStore.salesChanceList;
     if (list.length < total && loadingMore === false) {
       this.getData(pageNumber + 1);
     }
@@ -139,7 +143,7 @@ class SalesChance extends React.Component {
     }).filter(_ => !!_).forEach((v) => {
       obj[v] = true;
     });
-    // ContractModel.getContactListReq(obj);
+    // SalesChanceStore.getSalesChanceListReq(obj);
     SalesChanceStore.getSalesChanceListReq({ pageNumber });
   };
 
@@ -149,7 +153,7 @@ class SalesChance extends React.Component {
     }
   };
 
-  keyExtractor = item => item.key;
+  keyExtractor = item => item.id;
 
   renderItem = (itemProps) => {
     const { index, item } = itemProps;
@@ -175,7 +179,7 @@ class SalesChance extends React.Component {
             {...itemProps}
             right="hidden"
             left={
-              <LeftItem />
+              <LeftItem {...item} />
             }
             onPress={() => {
               // from select salesChance
@@ -204,16 +208,16 @@ class SalesChance extends React.Component {
     const {
       salesChanceList: { list, refreshing, loadingMore },
     } = SalesChanceStore;
-    const data = list.map((item) => {
-      const { id, name, pinyin } = item;
-      return ({
-        key: id,
-        title: name,
-        tipList: [`最近跟进时间：${pinyin}`],
-      });
-    });
+    // const data = list.map((item) => {
+    //   const { id, name, pinyin } = item;
+    //   return ({
+    //     key: id,
+    //     title: name,
+    //     tipList: [`最近跟进时间：${pinyin}`],
+    //   });
+    // });
     const flatProps = {
-      data,
+      data: list,
       renderItem: this.renderItem,
       keyExtractor: this.keyExtractor,
       onRefresh: this.getData,

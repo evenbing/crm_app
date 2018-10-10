@@ -44,23 +44,27 @@ const DetailsView = styled.View`
   align-items: center;
 `;
 
-class LeftItem extends React.PureComponent {
-  render() {
-    return (
-      <ContainerView>
-        <TitleView>
-          <TitleText>5.1门店开业</TitleText>
-          <TitleIcon>方案报价</TitleIcon>
-        </TitleView>
-        <TipText color={theme.listTipColor}>西风网络</TipText>
-        <DetailsView>
-          <TipText>销售金额：¥ 20,000,000.00</TipText>
-          <TipText>结单日期：2018-09-09</TipText>
-        </DetailsView>
-      </ContainerView>
-    );
-  }
-}
+const LeftItem = ({
+  name,
+  customerName,
+  expectedDate,
+  planAmount,
+  salesPhaseName,
+} = {}) => {
+  return (
+    <ContainerView>
+      <TitleView>
+        <TitleText>{name}</TitleText>
+        <TitleIcon>{salesPhaseName}</TitleIcon>
+      </TitleView>
+      <TipText color={theme.listTipColor}>{customerName}</TipText>
+      <DetailsView>
+        <TipText>{`销售金额:¥${planAmount}`}</TipText>
+        <TipText>{`结单日期:${expectedDate}`}</TipText>
+      </DetailsView>
+    </ContainerView>
+  );
+};
 
 LeftItem.defaultProps = {};
 
