@@ -155,6 +155,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="实际回款金额"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: '请输入金额',
               value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),

@@ -274,6 +274,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="活动成本"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.budgetCost,
               value: budgetCost,
               onChangeText: budgetCost => this.setState({ budgetCost }),
@@ -285,6 +286,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="预期收入"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: MarkActivityEnum.budgetRevenue,
               value: budgetRevenue,
               onChangeText: budgetRevenue => this.setState({ budgetRevenue }),

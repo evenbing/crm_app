@@ -282,6 +282,7 @@ class EditorMore extends React.Component {
           <NavInputItem
             leftText="总金额"
             {...themeVar.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: ContractEnum.totalMoney,
               value: totalMoney,
               onChangeText: totalMoney => this.setState({ totalMoney }),

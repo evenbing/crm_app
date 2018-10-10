@@ -350,18 +350,26 @@ class CreateCustomerMore extends Component {
         <NavInputItem
           leftText="总人数"
           {...theme.getLeftStyle({
+            keyboardType: 'numeric',
             placeholder: CustomerEnum.peopleNumber,
             value: peopleNumber,
             onChangeText: peopleNumber => this.setState({ peopleNumber }),
           })}
+          right={
+            <RightText>人</RightText>
+          }
         />
         <NavInputItem
           leftText="年销售额"
           {...theme.getLeftStyle({
+            keyboardType: 'numeric',
             placeholder: CustomerEnum.salesNumber,
             value: salesNumber,
             onChangeText: salesNumber => this.setState({ salesNumber }),
           })}
+          right={
+            <RightText>元</RightText>
+          }
         />
         <NavInputItem
           leftText="所属部门"

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import uuidv1 from 'uuid/v1';
 import { observer } from 'mobx-react/native';
 
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
@@ -19,10 +18,10 @@ import { CenterText, RightText } from '../../../components/Styles/Form';
 import SalesChanceStore from '../../../logicStores/salesChance';
 import DateTimePicker from '../../../components/DateTimePicker';
 import { formatDateByMoment } from '../../../utils/base';
-import Toast from '../../../utils/toast';
 import { getNewId } from '../../../service/app';
+import Toast from '../../../utils/toast';
+import BusinessStore from '../../../logicStores/business';
 
-const formatDateType = 'YYYY-MM-DD HH:mm:ss';
 const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 
 // const products = [
@@ -95,6 +94,7 @@ class CreateSalesChance extends Component {
         departmentId,
         departmentName,
         activityId,
+        products,
       },
       props: { navigation: {
         goBack,
@@ -110,6 +110,13 @@ class CreateSalesChance extends Component {
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
 
       const businessId = await getNewId();
+      if (products.length > 0) {
+        const businessDetails = products.map(item => ({
+          opportunityId: businessId,
+          priceId: item.id,
+        }));
+        BusinessStore.createBusinessReq({ businessDetails });
+      }
 
       SalesChanceStore.createSalesChanceReq({
         id: businessId,
@@ -125,7 +132,7 @@ class CreateSalesChance extends Component {
         goBack();
       });
     } catch (error) {
-      Toast.error(error.message);
+      Toast.showError(error.message);
     }
   }
   // creationTime, // "1534843302000"
@@ -161,11 +168,13 @@ class CreateSalesChance extends Component {
         planAmount,
         salesPhaseId,
         salesPhaseName,
+        expectedDate,
         expectedDateShow,
         departmentId,
         departmentName,
         activityId,
         activityName,
+        products,
       },
       props: { navigation: { navigate } },
     } = this;
@@ -214,6 +223,7 @@ class CreateSalesChance extends Component {
           <NavInputItem
             leftText="销售金额"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesChanceEnum.planAmount,
               value: planAmount,
               onChangeText: planAmount => this.setState({ planAmount }),
@@ -247,7 +257,7 @@ class CreateSalesChance extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  expectedDate: formatDateByMoment(date, formatDateType),
+                  expectedDate: formatDateByMoment(date),
                   expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
                 })
             }
@@ -310,7 +320,21 @@ class CreateSalesChance extends Component {
             height={20}
           />
           <CreateMoreButton
-            onPress={() => navigate(routers.salesChanceEditorMore)}
+            onPress={() => navigate(routers.salesChanceEditorMore, {
+              name,
+              customerId,
+              customerName,
+              planAmount,
+              salesPhaseId,
+              salesPhaseName,
+              expectedDate,
+              expectedDateShow,
+              departmentId,
+              departmentName,
+              activityId,
+              activityName,
+              products,
+            })}
           />
           <HorizontalDivider
             height={40}
@@ -329,7 +353,7 @@ class CreateSalesChance extends Component {
           remark: '备注：被猪猪这猪',
           totalPrice: '总价：460000', */}
           {
-            this.state.products.map(item => (
+            products.map(item => (
               <ProductItem
                 key={item.id}
                 image={productImage}
@@ -342,12 +366,12 @@ class CreateSalesChance extends Component {
               />
             ))
           }
-          <AddProduct
-            count="20"
-            totalPrice="900000"
-            onPress={this.onAddProduct}
-          />
         </ContainerScrollView>
+        <AddProduct
+          count="20"
+          totalPrice="900000"
+          onPress={this.onAddProduct}
+        />
       </ContainerView>
     );
   }
