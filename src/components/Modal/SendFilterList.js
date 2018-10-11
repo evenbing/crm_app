@@ -104,7 +104,6 @@ class SendFilterList extends React.PureComponent {
     } = this.props;
     return (
       <ModalView
-        animationType="fade"
         isVisible={isVisible}
         onBackdropPress={onPressClose}
         backdropOpacity={0}
@@ -112,6 +111,10 @@ class SendFilterList extends React.PureComponent {
         myMarginBottom={marginBottom}
         myFlexDirection={flexDirection}
         style={style}
+        useNativeDriver
+        hideModalContentWhileAnimating
+        animationInTiming={10}
+        animationOutTiming={10}
       >
         <ContainerView>
           {this.renderItem()}

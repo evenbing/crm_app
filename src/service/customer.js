@@ -110,7 +110,7 @@ export function createCustomer({
   pictureId,
   ownerUserId,
   ownerUserName,
-  isActive,
+  isActive = true,
   departmentId,
   level,
   superiorCustomerId,
@@ -169,7 +169,7 @@ export function getCustomerDetail({
  *   level 等级 A：重点客户，B：普通用户，C：非优先用户 must
  *   superiorCustomerId 上级客户ID
  *   industry 行业  [枚举类型（IndustryTypeEnum）] must
- *   location 省市区，地址 must
+ *   locationId 地址id must
  *   phone 公司总机
  *   postCode  邮编
  *   website 网址
@@ -187,7 +187,7 @@ export function updateCustomer({
   level,
   superiorCustomerId,
   industry,
-  location,
+  locationId,
   phone,
   postCode,
   website,
@@ -204,7 +204,7 @@ export function updateCustomer({
     level,
     superiorCustomerId,
     industry,
-    location,
+    locationId,
     phone,
     postCode,
     website,

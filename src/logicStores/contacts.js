@@ -149,7 +149,7 @@ class ContactStore {
       }
       const {
         errors = [],
-      } = await createContact({ locationId, ...restProps });
+      } = await createContact({ ...restProps, locationId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getContactListReq(this.queryProps);

@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
 import { getNewId } from '../../../service/app';
+import { formatDateByMoment, getUserId, nativeCallPhone } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
 // components
@@ -61,20 +62,17 @@ class Details extends React.Component {
     tabIndex: 0,
     cacheImageMap: {},
   };
-
   componentDidMount() {
     this.getDynamicList();
     this.getCustomerDetail();
+    this.getCustomerTotal();
   }
-
   componentWillUnmount() {
     DynamicModel.clearModuleType();
   }
-
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-
   onEndReached = () => {
     const { 
       total = 0, 
@@ -86,7 +84,6 @@ class Details extends React.Component {
       this.getDynamicList(pageNumber + 1);
     }
   };
-
   onPressImage = async ({ file }) => {
     try {
       const businessId = await getNewId();
@@ -107,7 +104,6 @@ class Details extends React.Component {
       Toast.showError(err.message);
     }
   };
-
   onPressSend = ({ content, contentType }, callback) => {
     const {
       state: {
@@ -129,37 +125,66 @@ class Details extends React.Component {
       callback && callback();
     });
   };
-
-  onPressTeamMember = () => {
+  onPressFollow = () => {
+    const { customerDetail: { map } } = CustomerModel;
+    CustomerModel.updateFollowStatusReq({
+      objectType: ModuleType.customer,
+      objectId: map.id,
+      objectName: map.name,
+      followTime: formatDateByMoment(new Date()),
+      userId: getUserId(),
+      //
+      follow: map.follow,
+      followId: map.followId,
+    });
+  };
+  onPressChoiceTeam = () => {
     const {
-      navigation: {
-        navigate,
+      props: {
+        navigation: { navigate, state },
       },
-    } = this.props;
-    navigate(routers.teamMembers);
-  }
-
+    } = this;
+    const { item } = state.params || {};
+    const { customerDetail: { map } } = CustomerModel;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        CustomerModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.userId,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
       moduleType: ModuleType.customer,
-      moduleId: item.key,
+      moduleId: item.id,
     });
   };
-
   getCustomerDetail = () => {
-    const { item: { key } } = this.props.navigation.state.params || {};
-    CustomerModel.getCustomerDetailReq({ id: key });
+    const { item } = this.props.navigation.state.params || {};
+    CustomerModel.getCustomerDetailReq(item);
   };
-
+  getCustomerTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    CustomerModel.getCustomerTotalReq(item);
+  };
   renderTotalItem = () => {
+    const {
+      customerTotal: {
+        scheduleTotal, taskTotal, contactTotal, saleChanceTotal, pactTotal,
+      },
+    } = CustomerModel;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '10' },
-      { title: '联系人', text: '2' },
-      { title: '销售机会', text: '8' },
-      { title: '合同', text: '15' },
+      { title: '日程', text: scheduleTotal },
+      { title: '任务', text: taskTotal },
+      { title: '联系人', text: contactTotal },
+      { title: '销售机会', text: saleChanceTotal },
+      { title: '合同', text: pactTotal },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -172,19 +197,30 @@ class Details extends React.Component {
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
-      list: ['动态', '活动详情'],
+      list: ['动态', '客户详情'],
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const { customerDetail: { map } } = CustomerModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressFollow: this.onPressFollow,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressPhone: () => {
+        nativeCallPhone(map.mobilePhone || map.phone);
+      },
+      onPressAddress: () => {
+        // TODO
+      },
+    };
     return (
       <View>
-        <DetailsHead onPressTeamMember={this.onPressTeamMember} />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>
         <HorizontalDivider
-          height={15}
-          backgroundColor={theme.whiteColor}
+          height={1}
           boarderBottomWidth={1}
           boarderBottomColor={theme.borderColor}
         />
@@ -221,11 +257,9 @@ class Details extends React.Component {
   };
 
   renderDetailsView = () => {
-    const { customerDetail: {
-      refreshing,
-      map = null,
-    } } = CustomerModel;
-    const list = map ? [map] : [];
+    const {
+      customerDetail: { refreshing, list },
+    } = CustomerModel;
     const flatProps = {
       keyExtractor: (item, index) => index,
       data: list,
@@ -253,9 +287,7 @@ class Details extends React.Component {
       },
     } = this;
     const bool = tabIndex === 0;
-    const { customerDetail: {
-      map = null,
-    } } = CustomerModel;
+    const { customerDetail: { map } } = CustomerModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}

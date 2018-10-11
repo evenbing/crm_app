@@ -229,27 +229,3 @@ export function changeOwnerUser({
     ownerUserName,
   });
 }
-
-/** 关注市场活动
- * @add by zhao
- * @params options
- * {
- *  followList 关注列表
- *   [{
- *      objectType 模块类型
- *      objectId    活动ID
- *      objectName: 活动名称
- *      followTime: 当前时间
- *      userId:     用户id
- *   }]
- * }
- * @return Promise<Object>
- */
-export function batchCreateFollow({
-  followList,
-} = {}) {
-  return post({
-    method: 'api.customerrelations.follow.batch.create',
-    followList,
-  });
-}

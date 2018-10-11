@@ -128,15 +128,13 @@ class Details extends React.Component {
   onPressFollow = () => {
     const { markActivityDetail: { map } } = MarkActivityModel;
     MarkActivityModel.updateFollowStatusReq({
-      followList: [{
-        objectType: ModuleType.activity,
-        objectId: map.id,
-        objectName: map.name,
-        followTime: formatDateByMoment(new Date()),
-        userId: getUserId(),
-      }],
+      objectType: ModuleType.activity,
+      objectId: map.id,
+      objectName: map.name,
+      followTime: formatDateByMoment(new Date()),
+      userId: getUserId(),
+      //
       follow: map.follow,
-      id: map.id,
       followId: map.followId,
     });
   };

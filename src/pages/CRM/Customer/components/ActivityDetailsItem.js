@@ -5,46 +5,16 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
 
 // components
-import NavItemComponent from '../../../../components/NavItem';
 import TitleItemComponent from '../../../../components/Details/TitleItem';
 import { CustomerLevelTypes, IndustryTypes } from '../../../../constants/enum';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import { formatLocationMap } from '../../../../utils/base';
 
 const ContainerView = styled.View``;
-
-const RightSuffix = styled.Text`
-  margin-left: ${theme.moderateScale(13)};
-  color: #373737;
-  font-size: ${theme.moderateScale(16)};
-`;
-
-const RemarkView = styled.View`
-  padding: 0 ${theme.moderateScale(15)}px;
-`;
-
-const RemarkText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-`;
-
-const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
-  <NavItemComponent
-    height={44}
-    leftText={leftText}
-    rightText={rightText}
-    showNavIcon={false}
-    isLast={isLast}
-    rightTextStyle={{
-      color: theme.textGrayColor,
-      ...rightStyle,
-    }}
-    rightSuffix={rightSuffix}
-  />
-);
 
 const ActivityDetailsItem = ({
   item: {
@@ -52,17 +22,17 @@ const ActivityDetailsItem = ({
     level,
     superiorCustomerId,
     industry,
-    locationId,
     phone,
     fax,
     weibo,
+    location,
     website,
     peopleNumber,
     salesNumber,
     departmentId,
     description,
   },
-} = {}) => (
+}) => (
   <ContainerView>
     <TitleItemComponent
       text="基本信息"
@@ -74,8 +44,7 @@ const ActivityDetailsItem = ({
     <TitleItemComponent
       text="联系信息"
     />
-    {renderBasicItem('省份地市', locationId)}
-    {renderBasicItem('详细地址', locationId)}
+    {renderBasicItem('地址', formatLocationMap(location))}
     {renderBasicItem('电话', phone)}
     {renderBasicItem('邮箱', fax)}
     {renderBasicItem('微博', weibo)}
@@ -99,8 +68,12 @@ const ActivityDetailsItem = ({
 );
 
 
-ActivityDetailsItem.defaultProps = {};
+ActivityDetailsItem.defaultProps = {
+  item: {},
+};
 
-ActivityDetailsItem.propTypes = {};
+ActivityDetailsItem.propTypes = {
+  item: PropTypes.objectOf(PropTypes.any),
+};
 
 export default ActivityDetailsItem;

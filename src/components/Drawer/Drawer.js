@@ -36,7 +36,9 @@ class Drawer extends React.PureComponent {
       onPressClose,
       content,
       animationIn,
+      animationInTiming,
       animationOut,
+      animationOutTiming,
       openDrawerOffset,
       backdropColor,
       backdropOpacity,
@@ -48,9 +50,13 @@ class Drawer extends React.PureComponent {
           isVisible={isVisible}
           onBackdropPress={onPressClose}
           animationIn={animationIn}
+          animationInTiming={animationInTiming}
           animationOut={animationOut}
+          animationOutTiming={animationOutTiming}
           backdropColor={backdropColor}
           backdropOpacity={backdropOpacity}
+          useNativeDriver
+          hideModalContentWhileAnimating
         >
           <ModalWrapperView
             openDrawerOffset={openDrawerOffset}
@@ -69,7 +75,9 @@ Drawer.defaultProps = {
   onPressClose: () => null,
   content: null,
   animationIn: 'slideInRight',
+  animationInTiming: 300,
   animationOut: 'slideOutRight',
+  animationOutTiming: 300,
   openDrawerOffset: 0.179,
   backdropColor: 'black',
   backdropOpacity: 0.5,
@@ -81,7 +89,9 @@ Drawer.propTypes = {
   onPressClose: PropTypes.func,
   content: PropTypes.node,
   animationIn: PropTypes.string,
+  animationInTiming: PropTypes.number,
   animationOut: PropTypes.string,
+  animationOutTiming: PropTypes.number,
   openDrawerOffset: PropTypes.number,
   backdropColor: PropTypes.string,
   backdropOpacity: PropTypes.number,
