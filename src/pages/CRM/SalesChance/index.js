@@ -10,9 +10,14 @@ import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { routers, theme } from '../../../constants';
-import { SalesChanceType } from '../../../constants/enum';
+import { CustomerType, SalesChanceType } from '../../../constants/enum';
+
+// utils
 import * as drawerUtils from '../../../utils/drawer';
+import { filterObject } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -40,7 +45,6 @@ import {
   IsBoardTypeMap,
   FilterList,
 } from './_fieldCfg';
-import { filterObject } from '../../../utils/base';
 
 useStrict(true);
 
@@ -97,6 +101,16 @@ class SalesChance extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
+  onFilter = async () => {
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    await this.setState({
+      selectedList: list,
+    });
+    this.onCloseDrawer();
+    this.getData();
+  };
   onToggleItem = ({ type, currIndex, pareIndex, value }) => {
     const list = drawerUtils.handleToggleItem({
       list: this.state.filterList,
@@ -117,15 +131,47 @@ class SalesChance extends React.Component {
       filterList: list,
     });
   };
-  onFilter = async () => {
-    const list = drawerUtils.handleFilterItem({
+  onPressAddItem = async ({ type, currIndex, pareIndex }) => {
+    await this.onCloseDrawer();
+    const {
+      state: {
+        filterList,
+      },
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
+    navigate(routers.customer, {
+      type: CustomerType,
+      callback: async (item) => {
+        if (!Object.keys(item).length) return;
+        const list = drawerUtils.handleAddItem({
+          list: filterList,
+          type,
+          currIndex,
+          pareIndex,
+          hashMap: {
+            key: item.key,
+            name: item.title,
+          },
+        });
+        await this.setState({
+          filterList: list,
+        });
+        this.onOpenDrawer();
+      },
+    });
+  };
+  onPressRemoveItem = ({ type, currIndex, pareIndex }) => {
+    const list = drawerUtils.handleRemoveItem({
       list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
     });
-    await this.setState({
-      selectedList: list,
+    this.setState({
+      filterList: list,
     });
-    this.onCloseDrawer();
-    this.getData();
   };
   onRowOpen = (index) => {
     this.safeCloseOpenRow(index);
@@ -158,13 +204,18 @@ class SalesChance extends React.Component {
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;
       return v.list[v.selectedIndex].key;
-    }).filter(_ => !!_).forEach((v) => {
-      obj[v] = true;
+    }).filter(_ => !!_).forEach((v, i) => {
+      if (i === 0) {
+        obj.sortColumn = v;
+      } else if (i === 1) {
+        obj[v] = true;
+      }
     });
     // query sideBar
     selectedList.forEach((v) => {
       obj[v.key] = v.value;
     });
+    console.log(obj);
     SalesChanceStore.getSalesChanceListReq(filterObject(obj));
   };
 
@@ -264,7 +315,9 @@ class SalesChance extends React.Component {
           onFilter={this.onFilter}
           onToggle={this.onToggleItem}
           onReset={this.onResetItem}
-          onPressAdd={() => this.setState({ sideBarType: 1 })}
+          onPressAddItem={this.onPressAddItem}
+          onPressRemoveItem={this.onPressRemoveItem}
+          // onPressAdd={() => this.setState({ sideBarType: 1 })}
         />
       );
     }
@@ -280,7 +333,7 @@ class SalesChance extends React.Component {
           '计划回款日期',
           '合同',
         ]}
-        onFilter={() => this.setState({ sideBarType: 0 })}
+        // onFilter={() => this.setState({ sideBarType: 0 })}
       />
     );
   };

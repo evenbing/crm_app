@@ -20,6 +20,10 @@ class BoardList extends React.Component {
     activeIndex: 0,
   };
   onPressHeader = (index) => {
+    if (this.state.activeIndex === index) {
+      this.setState({ activeIndex: -1 });
+      return;
+    }
     this.setState({ activeIndex: index });
   };
   render() {
@@ -37,7 +41,7 @@ class BoardList extends React.Component {
       for (let i = 0; i < salesPhases.length; i++) {
         const { id, name } = salesPhases[i];
         const spList = data.filter(item => item.salesPhaseId === id);
-        
+
         if (spList.length <= 0) continue;
         const rate = ((spList.length / data.length) * 100).toFixed(1);
         const left = `${name}(${rate}%)`;
@@ -82,11 +86,11 @@ class BoardList extends React.Component {
     return (
       <ContainerView>
         {
-          dataList.map(({ 
+          dataList.map(({
             id,
             left,
             right,
-            ListItemPropsList, 
+            ListItemPropsList,
           }, index) => {
             return (
               <Accordion
