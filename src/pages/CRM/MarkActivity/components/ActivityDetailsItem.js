@@ -28,6 +28,7 @@ const ActivityDetailsItem = ({
     createdByName, // "测试员工1"
     creationTime, // "1538210392000"
     departmentId, // "982932499611389952"
+    departmentName,
     description, // "hdhdhdhdw"
     effect, // "54646464"
     endDate, // "1539792000000"
@@ -75,7 +76,7 @@ const ActivityDetailsItem = ({
         text="其他信息"
       />
       {renderBasicItem('负责人', ownerUserName)}
-      {renderBasicItem('所属部门', departmentId)}
+      {renderBasicItem('所属部门', departmentName)}
       {renderBasicItem('创建人', createdByName)}
       {renderBasicItem('创建时间', formatDateByMoment(creationTime))}
       {renderBasicItem('最近修改时间', formatDateByMoment(creationTime))}

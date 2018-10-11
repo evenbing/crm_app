@@ -2,7 +2,7 @@
  * @Author: ShiQuan
  * @Date: 2018-09-11 01:10:41
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-10-09 14:27:18
+ * @Last Modified time: 2018-10-11 16:25:44
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -87,7 +87,7 @@ class SalesChanceStore {
   }
 
   // 新增
-  @action async createSalesChanceReq(options) {
+  @action async createSalesChanceReq(options, callback) {
     try {
       const {
         result = {},
@@ -98,6 +98,7 @@ class SalesChanceStore {
       runInAction(() => {
         // TODO next
         this.salesChanceDetail = { ...result };
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

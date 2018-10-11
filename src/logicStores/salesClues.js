@@ -3,7 +3,7 @@
  * @Date: 2018-09-11 10:20:55
  * @Last Modified by: Edmond.Shi
  * @Add JUSTIN XU 2018-10-9
- * @Last Modified time: 2018-09-20 16:14:55
+ * @Last Modified time: 2018-10-11 16:58:58
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
@@ -20,7 +20,7 @@ import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
 import { createLocationId } from '../service/app';
-import {updateContact} from "../service/contacts";
+import { updateContact } from '../service/contacts';
 
 useStrict(true);
 

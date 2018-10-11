@@ -321,19 +321,7 @@ class CreateSalesChance extends Component {
           />
           <CreateMoreButton
             onPress={() => navigate(routers.salesChanceEditorMore, {
-              name,
-              customerId,
-              customerName,
-              planAmount,
-              salesPhaseId,
-              salesPhaseName,
-              expectedDate,
-              expectedDateShow,
-              departmentId,
-              departmentName,
-              activityId,
-              activityName,
-              products,
+              item: this.state,
             })}
           />
           <HorizontalDivider

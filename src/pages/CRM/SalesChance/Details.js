@@ -140,9 +140,13 @@ class Details extends React.Component {
   };
 
   getSalesChanceDetail = () => {
-    const { item: { key } } = this.props.navigation.state.params || {};
-    SalesChanceModel.getSalesChanceReq({ id: key });
+    const { item: { id } } = this.props.navigation.state.params || {};
+    SalesChanceModel.getSalesChanceReq({ id });
   };
+
+  getDetailItem = (item) => {
+    this.detailItem = item;
+  }
 
   renderTotalItem = () => {
     const list = [
@@ -210,8 +214,8 @@ class Details extends React.Component {
     );
   };
 
-  renderDetailsItem = props => (
-    <ActivityDetailsItem {...props} />
+  renderDetailsItem = ({ item }) => (
+    <ActivityDetailsItem {...item} getDetailItem={this.getDetailItem} />
   );
 
   renderDetailsView = () => {
@@ -277,7 +281,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
-                onPress={() => navigate(routers.salesChanceEditorMore, { item: map })}
+                onPress={() => navigate(routers.salesChanceEditorMore, { item: this.detailItem })}
               />
             )
         }

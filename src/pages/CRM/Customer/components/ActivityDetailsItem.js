@@ -21,15 +21,18 @@ const ActivityDetailsItem = ({
     name, // '更新机会123',
     level,
     superiorCustomerId,
+    superiorCustomerName,
     industry,
     phone,
     fax,
     weibo,
+    locationId,
     location,
     website,
     peopleNumber,
     salesNumber,
     departmentId,
+    departmentName,
     description,
   },
 }) => (
@@ -39,7 +42,7 @@ const ActivityDetailsItem = ({
     />
     {renderBasicItem('客户姓名', name)}
     {renderBasicItem('客户级别', CustomerLevelTypes[level])}
-    {renderBasicItem('上级客户', superiorCustomerId)}
+    {renderBasicItem('上级客户', superiorCustomerName)}
     {renderBasicItem('行业', IndustryTypes[industry])}
     <TitleItemComponent
       text="联系信息"
@@ -54,7 +57,7 @@ const ActivityDetailsItem = ({
     />
     {renderBasicItem('总人数', peopleNumber, <RightSuffix>个</RightSuffix>)}
     {renderBasicItem('年销售额', salesNumber, <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('所属部门', departmentId)}
+    {renderBasicItem('所属部门', departmentName)}
     <TitleItemComponent
       text="备注"
       color="#373737"

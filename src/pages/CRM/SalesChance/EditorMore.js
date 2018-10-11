@@ -32,43 +32,52 @@ const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 class EditorMore extends React.Component {
   constructor(props) {
     const {
-      name,
-      customerId,
-      customerName,
-      planAmount,
-      salesPhaseId,
-      salesPhaseName,
-      expectedDate,
-      expectedDateShow,
-      departmentId,
-      departmentName,
-      activityId,
-      activityName,
-      products,
-    } = props.navigation.state.params;
+      name = null,
+      customerId = null,
+      customerName = null,
+      priceId = null,
+      priceName = null,
+      budgetCost = null,
+      actualCost = null,
+      planAmount = null,
+      salesPhaseId = null,
+      salesPhaseName = null,
+      expectedDate = null,
+      expectedDateShow = null,
+      description = null,
+      departmentId = null,
+      departmentName = null,
+      activityId = null,
+      activityName = null,
+      opportunityType = null,
+      opportunityTypeName = null,
+      sourceType = null,
+      sourceTypeName = null,
+      products = [],
+    } = props.navigation.state.params.item;
     super(props);
     this.state = {
       name,
       customerId,
       customerName,
-      priceId: null,
-      priceName: null,
-      budgetCost: null,
-      actualCost: null,
+      priceId,
+      priceName,
+      budgetCost,
+      actualCost,
       planAmount,
       salesPhaseId,
       salesPhaseName,
       expectedDate,
       expectedDateShow,
-      description: null,
+      description,
       departmentId,
       departmentName,
       activityId,
       activityName,
-      opportunityType: null,
-      opportunityTypeName: null,
-      sourceType: null,
-      sourceTypeName: null,
+      opportunityType,
+      opportunityTypeName,
+      sourceType,
+      sourceTypeName,
       products,
     };
   }
@@ -291,7 +300,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.planAmount,
-              value: planAmount,
+              value: `${planAmount}`,
               onChangeText: planAmount => this.setState({ planAmount }),
             })}
             right={
@@ -386,7 +395,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.budgetCost,
-              value: budgetCost,
+              value: `${budgetCost}`,
               onChangeText: budgetCost => this.setState({ budgetCost }),
             })}
             right={
@@ -398,7 +407,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.actualCost,
-              value: actualCost,
+              value: `${actualCost}`,
               onChangeText: actualCost => this.setState({ actualCost }),
             })}
             right={

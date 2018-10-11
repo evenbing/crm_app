@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import {formatLocationMap, getUserId, nativeCallPhone} from '../../../utils/base';
+import { formatLocationMap, getUserId, nativeCallPhone } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 
@@ -176,8 +176,8 @@ class Details extends React.Component {
     });
   };
   getSalesCuleDetail = () => {
-    const { item } = this.props.navigation.state.params || {};
-    SalesCluesModel.getSalesClueDetailReq(item);
+    const { item: { id } } = this.props.navigation.state.params || {};
+    SalesCluesModel.getSalesClueDetailReq({ id });
   };
   getSalesCuleTotal = () => {
     const { item } = this.props.navigation.state.params || {};
