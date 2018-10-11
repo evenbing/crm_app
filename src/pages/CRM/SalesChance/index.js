@@ -64,6 +64,7 @@ class SalesChance extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    SalesChanceStore.findSalesPhaseReq({});
     this.getData();
   }
   onToggleType = () => {
@@ -228,14 +229,8 @@ class SalesChance extends React.Component {
     const {
       salesChanceList: { list, refreshing, loadingMore },
     } = SalesChanceStore;
-    // const data = list.map((item) => {
-    //   const { id, name, pinyin } = item;
-    //   return ({
-    //     key: id,
-    //     title: name,
-    //     tipList: [`最近跟进时间：${pinyin}`],
-    //   });
-    // });
+    const l = list.map(item => ({ ...item }));
+    const salesPhases = SalesChanceStore.salesPhaseList.list.map(item => ({ ...item }));
     const flatProps = {
       data: list,
       renderItem: this.renderItem,
@@ -252,7 +247,7 @@ class SalesChance extends React.Component {
       );
     }
     return (
-      <BoardList />
+      <BoardList data={l} salesPhases={salesPhases} />
     );
   };
   renderSideBar = () => {
