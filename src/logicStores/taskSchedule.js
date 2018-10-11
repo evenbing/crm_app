@@ -2,7 +2,7 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-06 22:15:31
  * @Last Modified by: Edmond.Shi
- * @Last Modified time: 2018-10-10 17:09:17
+ * @Last Modified time: 2018-10-11 17:54:17
  */
 
 import { action, observable, runInAction, useStrict } from 'mobx';
@@ -76,6 +76,78 @@ class TaskScheduleStore {
     }
   }
 
+  @observable taskList = initFlatList;
+  /**
+   * 查询任务或日程
+   */
+  @action async getTaskRelatedToMeReq(pageNumber = 1, restProps) {
+    try {
+      if (pageNumber === 1) {
+        this.taskList.refreshing = true;
+      } else {
+        this.taskList.loadingMore = true;
+      }
+      const {
+        result = [],
+        totalCount = 0,
+        errors = [],
+      } = await find({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.taskList.total = totalCount;
+        this.taskList.pageNumber = pageNumber;
+        if (pageNumber === 1) {
+          this.taskList.list = [...result];
+        } else {
+          this.taskList.list = this.taskList.list.concat(result);
+        }
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.taskList.refreshing = false;
+        this.taskList.loadingMore = false;
+      });
+    }
+  }
+
+  @observable scheduleList = initFlatList;
+  /**
+   * 查询任务或日程
+   */
+  @action async getScheduleRelatedToMeReq(pageNumber = 1, restProps) {
+    try {
+      if (pageNumber === 1) {
+        this.scheduleList.refreshing = true;
+      } else {
+        this.scheduleList.loadingMore = true;
+      }
+      const {
+        result = [],
+        totalCount = 0,
+        errors = [],
+      } = await find({ pageNumber, ...restProps });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.scheduleList.total = totalCount;
+        this.scheduleList.pageNumber = pageNumber;
+        if (pageNumber === 1) {
+          this.scheduleList.list = [...result];
+        } else {
+          this.scheduleList.list = this.scheduleList.list.concat(result);
+        }
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.scheduleList.refreshing = false;
+        this.scheduleList.loadingMore = false;
+      });
+    }
+  }
+
   /**
    *  创建 任务或日程
    */
@@ -115,18 +187,35 @@ class TaskScheduleStore {
 
   // 消息列表
   @observable messageList = initFlatList;
-  @action async getMessageReq() {
+  @action async getMessageReq(pageNumber, restProps) {
     try {
+      if (pageNumber === 1) {
+        this.messageList.refreshing = true;
+      } else {
+        this.messageList.loadingMore = true;
+      }
       const {
         result = [],
+        totalCount = 0,
         errors = [],
-      } = await getMessage();
+      } = await getMessage({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.messageList.list = result;
+        this.messageList.total = totalCount;
+        this.messageList.pageNumber = pageNumber;
+        if (pageNumber === 1) {
+          this.messageList.list = [...result];
+        } else {
+          this.messageList.list = this.messageList.list.concat(result);
+        }
       });
-    } catch (error) {
-      Toast.showError(error.message);
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.messageList.refreshing = false;
+        this.messageList.loadingMore = false;
+      });
     }
   }
 }

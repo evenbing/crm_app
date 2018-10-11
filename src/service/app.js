@@ -175,8 +175,9 @@ export function deleteFollow({
 /**
  * 获取用户的通知列表
  */
-export function getMessage() {
+export function getMessage(options) {
   return post({
-    method: 'api.base.message.find',
+    method: 'api.foundation.message.find',
+    ...options,
   });
 }

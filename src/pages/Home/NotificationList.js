@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
+import { useStrict } from 'mobx';
+import { observer } from 'mobx-react/native';
 
 import { LeftBackIcon, CommStatusBar } from '../../components/Layout';
 import { moderateScale } from '../../utils/scale';
 import TaskScheduleStore from '../../logicStores/taskSchedule';
+import { formatDateByMoment } from '../../utils/base';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -39,60 +41,62 @@ const Content = styled.Text`
   line-height: 20;
 `;
 
-const data = [
-  {
-    key: uuidv1(),
-    time: '2019-09-09 09:09',
-    content: 'React Navigation 源于 React Native 社区对一个可扩展且易于使用的导航解决方案的需求，它完全使用 JavaScript 编写（因此你可以阅读并理解所有源码）。',
-  },
-  {
-    key: uuidv1(),
-    time: '2019-09-09 09:09',
-    content: 'React Navigation 源于 React Native 社区对一个可扩展且易于使用的导航解决方案的需求，它完全使用 JavaScript 编写（因此你可以阅读并理解所有源码）。',
-  },
-  {
-    key: uuidv1(),
-    time: '2019-09-09 09:09',
-    content: 'React Navigation 源于 React Native 社区对一个可扩展且易于使用的导航解决方案的需求，它完全使用 JavaScript 编写（因此你可以阅读并理解所有源码）。',
-  },
-];
+useStrict(true);
 
+@observer
 class NotificationList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
   componentDidMount() {
-    TaskScheduleStore.getMessageReq();
+    this.getData(1);
   }
 
-  keyExtractor = item => item.key;
+  onEndReached = () => {
+    const {
+      total,
+      list,
+      pageNumber,
+      loadingMore,
+    } = TaskScheduleStore.messageList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    TaskScheduleStore.getMessageReq(pageNumber, {
+      category: 'UNREAD',
+    });
+  }
+
+  keyExtractor = item => item.id;
 
   renderItem = ({ item }) => {
     const {
-      time,
-      content,
+      messageTime,
+      messageContent,
     } = item;
     return (
       <ListItem>
-        <Time>{time}</Time>
+        <Time>{formatDateByMoment(messageTime)}</Time>
         <Divder />
-        <Content>{content}</Content>
+        <Content>{messageContent}</Content>
       </ListItem>
-
     );
   }
 
   render() {
+    const { list, refreshing, loadingMore } = TaskScheduleStore.messageList;
     return (
       <ContainerView>
         <CommStatusBar />
         <List
-          data={data}
+          data={list}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
+          onRefresh={this.getData}
+          onEndReached={this.onEndReached}
+          refreshing={refreshing}
+          noDataBool={!refreshing && list.length === 0}
+          loadingMore={loadingMore}
         />
       </ContainerView>
     );

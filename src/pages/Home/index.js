@@ -129,9 +129,6 @@ class Home extends React.Component {
   }
 
   updateTaskAndSchedule = ({ time }) => {
-    console.log('this.selectedStartTime:', this.selectedStartTime);
-    console.log('Math.round(new Date()):', Math.round(new Date()));
-    
     if (this.selectedStartTime && Number(this.selectedStartTime) < Number(Math.round(new Date()))) {
       Toast.showWarning('该任务已经开始');
       return;
