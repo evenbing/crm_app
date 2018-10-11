@@ -11,9 +11,9 @@ import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
-import { CustomerType } from '../../../constants/enum';
+import { CustomerType, ModuleType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, nativeCallPhone, formatDateByMoment } from '../../../utils/base';
+import { filterObject, nativeCallPhone, formatDateByMoment, getUserId } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -211,6 +211,19 @@ class Customer extends React.Component {
               require('../../../img/crm/buttonList/phone.png'),
             ]}
             onPressItem={({ index }) => {
+              if (index === 0) {
+                CustomerStore.updateFollowStatusReq({
+                  objectType: ModuleType.customer,
+                  objectId: item.id,
+                  objectName: item.name,
+                  followTime: formatDateByMoment(new Date()),
+                  userId: getUserId(),
+                  //
+                  follow: item.follow,
+                  followId: item.followId,
+                });
+                return false;
+              }
               if (index === 2) {
                 nativeCallPhone(item.mobilePhone || item.phone);
                 return false;

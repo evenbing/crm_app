@@ -5,37 +5,37 @@
  * @author JUSTIN XU
  */
 import {
+  TYPE_CUSTOMER_LIST,
   TYPE_LIST,
 } from '../../../constants/drawer';
 import {
   initFilterListMap,
 } from '../../../constants/screenTab';
-// import { MarketActivityStatus, MarketActivityTypes, TimeTypes } from '../../../constants/enum';
-// import { mapToArray } from '../../../utils/base';
-
+import { ReceivableCompletedType, ReceivableOverType } from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [
   {
-    label: '合同状态',
+    key: 'isCompleted',
+    label: '回款状态',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(ReceivableCompletedType),
   },
   {
-    label: '行业',
+    key: 'isOver',
+    label: '逾期状态',
     type: TYPE_LIST,
     selectedIndex: -1,
+    list: mapToArray(ReceivableOverType),
+  },
+  {
+    key: 'customerId',
+    label: '客户',
+    type: TYPE_CUSTOMER_LIST,
+    selectedIndex: -1,
     list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
+      { name: '选择' },
     ],
   },
 ];

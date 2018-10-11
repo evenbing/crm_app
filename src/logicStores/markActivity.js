@@ -207,12 +207,14 @@ class MarkActivityStore {
            errors = [],
          } = await deleteFollow({ id: followId });
          if (errors.length) throw new Error(errors[0].message);
+         Toast.showSuccess('取消关注成功');
        } else {
          // 执行关注
          const {
            errors = [],
          } = await createFollow(restProps);
          if (errors.length) throw new Error(errors[0].message);
+         Toast.showSuccess('关注成功');
        }
        runInAction(() => {
          this.getMarkActivityDetailReq({ id: restProps.objectId });

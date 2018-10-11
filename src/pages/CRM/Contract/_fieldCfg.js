@@ -6,7 +6,7 @@
  */
 import {
   TYPE_LIST,
-  // TYPE_INPUT,
+  TYPE_CUSTOMER_LIST,
 } from '../../../constants/drawer';
 import {
   initFilterListMap,
@@ -15,12 +15,6 @@ import { PackStatus, PackType } from '../../../constants/enum';
 import { mapToArray } from '../../../utils/base';
 
 export const FilterList = [
-  // {
-  //   label: '输入关键字',
-  //   placeholder: '请输入关键字',
-  //   type: TYPE_INPUT,
-  //   value: null,
-  // },
   {
     key: 'status',
     label: '合同状态',
@@ -36,11 +30,12 @@ export const FilterList = [
     list: mapToArray(PackType),
   },
   {
+    key: 'customerId',
     label: '客户',
-    type: TYPE_LIST,
+    type: TYPE_CUSTOMER_LIST,
     selectedIndex: -1,
     list: [
-      { name: '西风网络' },
+      { name: '选择' },
     ],
   },
 ];
@@ -51,16 +46,16 @@ export const ContractTimeTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'startDate',
+      key: 'START_DATE',
       name: '开始日期',
     },
     {
-      key: 'endDate',
+      key: 'END_DATE',
       name: '结束日期',
     },
     {
-      key: 'pactDate',
-      name: '签约日期',
+      key: 'PACT_DATE',
+      name: '合同日期',
     },
   ],
 };

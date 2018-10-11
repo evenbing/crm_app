@@ -141,7 +141,7 @@ class CustomerStore {
       } = await getContractList({ customerId: id, pageSize });
       if (pactErrors.length) throw new Error(pactErrors[0].message);
       runInAction(() => {
-        this.contactTotal = {
+        this.customerTotal = {
           scheduleTotal,
           taskTotal,
           contactTotal,
@@ -152,7 +152,7 @@ class CustomerStore {
     } catch (e) {
       Toast.showError(e.message);
       runInAction(() => {
-        this.contactTotal = initTotal;
+        this.customerTotal = initTotal;
       });
     }
   }
@@ -226,12 +226,14 @@ class CustomerStore {
           errors = [],
         } = await deleteFollow({ id: followId });
         if (errors.length) throw new Error(errors[0].message);
+        Toast.showSuccess('取消关注成功');
       } else {
         // 执行关注
         const {
           errors = [],
         } = await createFollow(restProps);
         if (errors.length) throw new Error(errors[0].message);
+        Toast.showSuccess('关注成功');
       }
       runInAction(() => {
         this.getCustomerDetailReq({ id: restProps.objectId });

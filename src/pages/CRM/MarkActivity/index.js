@@ -12,8 +12,8 @@ import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, formatDateByMoment, formatDateType } from '../../../utils/base';
-import { MarkActivityType, MarketActivityStatus } from '../../../constants/enum';
+import { filterObject, formatDateByMoment, formatDateType, getUserId } from '../../../utils/base';
+import { MarkActivityType, MarketActivityStatus, ModuleType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -214,7 +214,22 @@ class MarkActivity extends React.Component {
             list={[
               require('../../../img/crm/buttonList/follow.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 0) {
+                MarkActivityStore.updateFollowStatusReq({
+                  objectType: ModuleType.activity,
+                  objectId: item.id,
+                  objectName: item.name,
+                  followTime: formatDateByMoment(new Date()),
+                  userId: getUserId(),
+                  //
+                  follow: item.follow,
+                  followId: item.followId,
+                });
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />

@@ -12,7 +12,11 @@ import { post } from '../utils/rpc';
  *   pactIds 合同ID集合
  *   pactId 合同ID
  *   issueId 回款期次ID
+ *   sortColumn 排序类型 RECEIVABLE_DATE-实际回款时间,CREATION_TIME-创建时间,LAST_UPDATE_TIME-最近更新时间
  *   participateType 参与类型 [ CHARGE-我负责的，ALL-全部 ]
+ *   payType 付款方式 CASH-现金,CHECK-支票,BANK_TRANSFER-银行转账,OTHER-其他
+ *   dateFrom 日期开始
+ *   dateTo 日期结束
  *   ids 回款计划ID集合
  * }
  * @return Promise<ArrayList>
@@ -21,7 +25,11 @@ export function getReceivableRecordList({
   pactIds,
   pactId,
   issueId,
+  sortColumn,
   participateType,
+  payType,
+  dateFrom,
+  dateTo,
   ids,
 } = {}) {
   return post({
@@ -29,7 +37,11 @@ export function getReceivableRecordList({
     pactIds,
     pactId,
     issueId,
+    sortColumn,
     participateType,
+    payType,
+    dateFrom,
+    dateTo,
     ids,
   });
 }

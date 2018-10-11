@@ -17,6 +17,9 @@ import { post } from '../utils/rpc';
  *   customerId 客户ID
  *   planPrice 计划回款金额
  *   planDate 计划回款时间
+ *   isCompleted 回款状态 true-已完成，false-未完成
+ *   isOver 逾期状态 true-有逾期，false-未逾期
+ *   code 编号 FACT_RECEIVE_DATE-实际回款时间，PLAN_RECEIVE_DATE-计划回款时间
  *   sortColumn 排序类型
  *   ids 回款计划ID集合
  * }
@@ -31,6 +34,9 @@ export function getReceivablePlanList({
   customerId,
   planPrice,
   planDate,
+  isCompleted,
+  isOver,
+  code,
   sortColumn,
   ids,
 } = {}) {
@@ -44,6 +50,9 @@ export function getReceivablePlanList({
     customerId,
     planPrice,
     planDate,
+    isCompleted,
+    isOver,
+    code,
     sortColumn,
     ids,
   });

@@ -5,59 +5,46 @@
  * @author JUSTIN XU
  */
 import {
+  TYPE_CUSTOMER_LIST,
   TYPE_LIST,
-  TYPE_INPUT,
 } from '../../../constants/drawer';
 import {
   initFilterListMap,
 } from '../../../constants/screenTab';
-// import { MarketActivityStatus, MarketActivityTypes, TimeTypes } from '../../../constants/enum';
-// import { mapToArray } from '../../../utils/base';
+import { PayType } from '../../../constants/enum';
+import { mapToArray } from '../../../utils/base';
 
 
 export const FilterList = [
   {
-    label: '合同状态',
+    key: 'payType',
+    label: '付款方式',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-    ],
+    list: mapToArray(PayType),
   },
+  // {
+  //   key: 'dateFrom',
+  //   label: '日期开始',
+  //   type: TYPE_LIST,
+  //   selectedIndex: -1,
+  //   list: mapToArray(TimeTypes),
+  // },
+  // {
+  //   key: 'dateTo',
+  //   label: '日期结束',
+  //   type: TYPE_LIST,
+  //   selectedIndex: -1,
+  //   list: mapToArray(TimeTypes),
+  // },
   {
-    label: '行业',
-    type: TYPE_LIST,
+    key: 'customerId',
+    label: '客户',
+    type: TYPE_CUSTOMER_LIST,
     selectedIndex: -1,
     list: [
-      { name: '产品销售' },
-      { name: '服务' },
-      { name: '业务合作' },
-      { name: '代理分销' },
-      { name: '其他' },
+      { name: '选择' },
     ],
-  },
-  {
-    label: '客户名称',
-    type: TYPE_LIST,
-    selectedIndex: -1,
-    list: [
-      { name: '不限' },
-      { name: '已计划' },
-      { name: '进行中' },
-      { name: '已完成' },
-      { name: '本月' },
-      { name: '本季' },
-      { name: '本年' },
-    ],
-  },
-  {
-    label: '输入关键字',
-    placeholder: '请输入关键字',
-    type: TYPE_INPUT,
-    value: null,
   },
 ];
 
@@ -68,12 +55,16 @@ export const ReceivableRecordTimeTypeFilterMap = {
   ...initFilterListMap,
   list: [
     {
-      key: 'FACT_RECEIVE_DATE',
+      key: 'RECEIVABLE_DATE',
       name: '实际回款时间',
     },
     {
-      key: 'PLAN_RECEIVE_DATE',
-      name: '计划回款时间',
+      key: 'CREATION_TIME',
+      name: '创建时间',
+    },
+    {
+      key: 'LAST_UPDATE_TIME',
+      name: '最近更新时间',
     },
   ],
 };

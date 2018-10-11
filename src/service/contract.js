@@ -69,6 +69,10 @@ export function del({
  *   number 合同编号
  *   ourContractId 我方签约人ID
  *   startDate 开始日期
+ *   keyword 关键字
+ *   activityId 活动ID
+ *   activityName 活动名称
+ *   sortColumn 表头排序 START_DATE-开始日期,END_DATE-结束日期,PACT_DATE-合同日期
  *   endDate 结束日期
  *   pactDate 签约日期
  * }
@@ -88,6 +92,10 @@ export function getContractList({
   startDate,
   endDate,
   pactDate,
+  keyword,
+  activityId,
+  activityName,
+  sortColumn,
 } = {}) {
   return post({
     method: 'api.customerrelations.pact.find',
@@ -104,6 +112,10 @@ export function getContractList({
     startDate,
     endDate,
     pactDate,
+    keyword,
+    activityId,
+    activityName,
+    sortColumn,
   });
 }
 

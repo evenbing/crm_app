@@ -10,7 +10,12 @@ import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx/';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { routers, theme } from '../../../constants';
+import { CustomerType } from '../../../constants/enum';
+
+// utils
 import * as drawerUtils from '../../../utils/drawer';
 import { filterObject, nativeCallPhone } from '../../../utils/base';
 
@@ -72,6 +77,16 @@ class ReceivableRecord extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
+  onFilter = async () => {
+    const list = drawerUtils.handleFilterItem({
+      list: this.state.filterList,
+    });
+    await this.setState({
+      selectedList: list,
+    });
+    this.onCloseDrawer();
+    this.getData();
+  };
   onToggleItem = ({ type, currIndex, pareIndex, value }) => {
     const list = drawerUtils.handleToggleItem({
       list: this.state.filterList,
@@ -92,15 +107,47 @@ class ReceivableRecord extends React.Component {
       filterList: list,
     });
   };
-  onFilter = async () => {
-    const list = drawerUtils.handleFilterItem({
+  onPressAddItem = async ({ type, currIndex, pareIndex }) => {
+    await this.onCloseDrawer();
+    const {
+      state: {
+        filterList,
+      },
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
+    navigate(routers.customer, {
+      type: CustomerType,
+      callback: async (item) => {
+        if (!Object.keys(item).length) return;
+        const list = drawerUtils.handleAddItem({
+          list: filterList,
+          type,
+          currIndex,
+          pareIndex,
+          hashMap: {
+            key: item.key,
+            name: item.title,
+          },
+        });
+        await this.setState({
+          filterList: list,
+        });
+        this.onOpenDrawer();
+      },
+    });
+  };
+  onPressRemoveItem = ({ type, currIndex, pareIndex }) => {
+    const list = drawerUtils.handleRemoveItem({
       list: this.state.filterList,
+      type,
+      currIndex,
+      pareIndex,
     });
-    await this.setState({
-      selectedList: list,
+    this.setState({
+      filterList: list,
     });
-    this.onCloseDrawer();
-    this.getData();
   };
   onToggleAmountVisible = () => {
     this.setState({
@@ -213,7 +260,9 @@ class ReceivableRecord extends React.Component {
           onFilter={this.onFilter}
           onToggle={this.onToggleItem}
           onReset={this.onResetItem}
-          onPressAdd={() => this.setState({ sideBarType: 1 })}
+          onPressAddItem={this.onPressAddItem}
+          onPressRemoveItem={this.onPressRemoveItem}
+          // onPressAdd={() => this.setState({ sideBarType: 1 })}
         />
       );
     }
@@ -229,7 +278,7 @@ class ReceivableRecord extends React.Component {
           '计划回款日期',
           '合同',
         ]}
-        onFilter={() => this.setState({ sideBarType: 0 })}
+        // onFilter={() => this.setState({ sideBarType: 0 })}
       />
     );
   };

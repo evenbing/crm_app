@@ -242,3 +242,14 @@ export const DataTitleTypes = {
   18: '十九',
   19: '二十',
 };
+
+// 回款
+export const ReceivableCompletedType = {
+  true: '已完成',
+  false: '未完成',
+};
+
+export const ReceivableOverType = {
+  true: '已完成',
+  false: '未完成',
+};

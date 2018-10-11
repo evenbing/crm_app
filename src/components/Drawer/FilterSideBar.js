@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import {
   TYPE_LIST,
   TYPE_INPUT,
+  TYPE_CUSTOMER_LIST,
 } from '../../constants/drawer';
 import theme from '../../constants/theme';
 
@@ -52,6 +53,8 @@ class FilterSideBar extends React.PureComponent {
   renderLabelItem = ({ type, selectedIndex, list, placeholder, value }, pareIndex) => {
     const {
       onToggle,
+      onPressAddItem,
+      onPressRemoveItem,
     } = this.props;
     if (type === TYPE_LIST) {
       if (!list.length) return null;
@@ -81,6 +84,22 @@ class FilterSideBar extends React.PureComponent {
           onChangeText={value => onToggle({ type, value, pareIndex })}
         />
       );
+    }
+    if (type === TYPE_CUSTOMER_LIST) {
+      if (!list.length) return null;
+      const len = list.length - 1;
+      return list.map((value, currIndex) => (
+        <LabelItem
+          item={value}
+          showRemove
+          isLast={currIndex === len}
+          active={currIndex === selectedIndex}
+          key={`${value.name}.${currIndex}`}
+          onPress={() => onToggle({ type, currIndex, pareIndex })}
+          onPressAddItem={() => onPressAddItem({ type, currIndex, pareIndex })}
+          onPressRemoveItem={() => onPressRemoveItem({ type, currIndex, pareIndex })}
+        />
+      ));
     }
   };
   render() {
@@ -117,6 +136,8 @@ FilterSideBar.defaultProps = {
   onReset: () => null,
   onFilter: () => null,
   onPressAdd: () => null,
+  onPressAddItem: () => null,
+  onPressRemoveItem: () => null,
 };
 
 FilterSideBar.propTypes = {
@@ -125,6 +146,8 @@ FilterSideBar.propTypes = {
   onReset: PropTypes.func,
   onFilter: PropTypes.func,
   onPressAdd: PropTypes.func,
+  onPressAddItem: PropTypes.func,
+  onPressRemoveItem: PropTypes.func,
 };
 
 export default FilterSideBar;
