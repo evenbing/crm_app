@@ -1,6 +1,6 @@
 /**
  * @component DetailsHead.js
- * @description 详情头部组件
+ * @description 市场活动详情头部组件
  * @time 2018/8/14
  * @author JUSTIN XU
  */
@@ -22,7 +22,7 @@ import { FormActionSheet } from '../../../../components/Modal';
 
 const ContainerView = styled.View``;
 
-const PhoneView = styled(TouchableView)`
+const FollowView = styled(TouchableView)`
   min-width: ${theme.moderateScale(54)};
   padding: 0 ${theme.moderateScale(3)}px;
   height: ${theme.moderateScale(22)};
@@ -37,7 +37,7 @@ const PhoneView = styled(TouchableView)`
   margin-right: ${theme.moderateScale(15)};
 `;
 
-const PhoneText = styled.Text`
+const FollowText = styled.Text`
   margin-left: ${theme.moderateScale(4)};
   color: ${theme.whiteColor};
 `;
@@ -98,19 +98,19 @@ class DetailsHead extends React.PureComponent {
     return (
       <HeaderBack>
         <ContainerView>
-          <PhoneView
+          <FollowView
             onPress={onPressFollow}
           >
             <Thumbnail
               source={require('../../../../img/crm/details/follow.png')}
               size={14}
             />
-            <PhoneText>
+            <FollowText>
               {
                 item.follow ? '取消关注' : '关注'
               }
-            </PhoneText>
-          </PhoneView>
+            </FollowText>
+          </FollowView>
           <ItemView
             marginTop={10}
           >

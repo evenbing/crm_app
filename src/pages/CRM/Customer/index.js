@@ -13,7 +13,7 @@ import { observer } from 'mobx-react/native';
 import { routers, theme } from '../../../constants';
 import { CustomerType } from '../../../constants/enum';
 import * as drawerUtils from '../../../utils/drawer';
-import { filterObject } from '../../../utils/base';
+import { filterObject, nativeCallPhone, formatDateByMoment } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -60,9 +60,7 @@ class Customer extends React.Component {
     this.getData();
   }
   onPressRight = () => {
-    this.props.navigation.navigate(routers.createCustomer, {
-      reFetchDataList: this.getData,
-    });
+    this.props.navigation.navigate(routers.createCustomer);
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
@@ -168,7 +166,7 @@ class Customer extends React.Component {
       key: prevItem.id,
       title: prevItem.name,
       tipList: [
-        `最近跟进时间：${prevItem.pinyin}`,
+        `最近跟进时间：${formatDateByMoment(prevItem.creationTime)}`,
       ],
     };
     itemProps.item = item;
@@ -212,7 +210,13 @@ class Customer extends React.Component {
               require('../../../img/crm/buttonList/address.png'),
               require('../../../img/crm/buttonList/phone.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 2) {
+                nativeCallPhone(item.mobilePhone || item.phone);
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />

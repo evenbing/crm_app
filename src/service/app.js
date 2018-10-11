@@ -101,6 +101,62 @@ export function updateLocationId({
   });
 }
 
+/** 关注(批量)
+ * @add by zhao
+ * @params options
+ * {
+ *  followList 关注列表
+ *   [{
+ *      objectType 模块类型
+ *      objectId    活动ID
+ *      objectName: 活动名称
+ *      followTime: 当前时间
+ *      userId:     用户id
+ *   }]
+ * }
+ * @return Promise<Object>
+ */
+export function batchCreateFollow({
+  followList,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.follow.batch.create',
+    followList,
+  });
+}
+
+/** 关注
+ * @add by Justin Xu
+ * @params options
+ * {
+ *  followList 关注列表
+ *   [{
+ *      objectType 模块类型
+ *      objectId    活动ID
+ *      objectName: 活动名称
+ *      followTime: 当前时间
+ *      userId:     用户id
+ *   }]
+ * }
+ * @return Promise<Object>
+ */
+export function createFollow({
+  objectType,
+  objectId,
+  objectName,
+  followTime,
+  userId,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.follow.create',
+    objectType,
+    objectId,
+    objectName,
+    followTime,
+    userId,
+  });
+}
+
 /** 取消关注
  * @params options
  * {

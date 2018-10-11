@@ -181,6 +181,8 @@ class FormActionSheet extends React.PureComponent {
           animationType="fade"
           isVisible={isVisible}
           onBackdropPress={this.onHideModal}
+          useNativeDriver
+          hideModalContentWhileAnimating
         >
           <ContainerView>
             <ItemListView>

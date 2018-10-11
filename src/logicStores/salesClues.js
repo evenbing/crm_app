@@ -20,6 +20,7 @@ import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
 import { createLocationId } from '../service/app';
+import {updateContact} from "../service/contacts";
 
 useStrict(true);
 
@@ -140,7 +141,7 @@ class SalesClueStore {
       }
       const {
         errors = [],
-      } = await createSalesClue({ locationId, ...restProps });
+      } = await createSalesClue({ ...restProps, locationId });
       if (errors.length) throw new Error(errors[0].message);
       debugger;
       runInAction(() => {

@@ -1,189 +1,134 @@
+/**
+ * @component EditorMore.js
+ * @description 客户编辑更多资料页面
+ * @time 2018/8/13
+ * @author
+ */
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
 import { theme, routers } from '../../../constants';
+import { CustomerEnum } from '../../../constants/form';
+import { CustomerLevelTypes, IndustryTypes, CustomerType } from '../../../constants/enum';
+import { formatLocationMap, formatNumberToString } from '../../../utils/base';
+import Toast from '../../../utils/toast';
+
+// components
+import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import TouchableView from '../../../components/TouchableView';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import { CustomerEnum } from '../../../constants/form';
-import { CustomerLevelTypes, IndustryTypes, CustomerType } from '../../../constants/enum';
 import { CenterText, RightText } from '../../../components/Styles/Form';
-import { createLocationId } from '../../../service/app';
+
 import CustomerModel from '../../../logicStores/customer';
-import Toast from '../../../utils/toast';
 
 class CreateCustomerMore extends Component {
-  constructor(props) {
-    super(props);
-    const {
-      name,
-      phone,
-      locationDivision,
-      locationInfo,
-      provinceId,
-      cityId,
-      districtId,
-      isActive,
-      departmentId,
-      departmentName,
-    } = props.navigation.state.params;
-    this.state = {
-      // contactId: null,
-      // code: null,
-      name,
-      // quickCode: null,
-      // shortName: null,
-      phone,
-      fax: null,
-      website: null,
-      // locationId: null,
-      locationDivision,
-      locationInfo,
-      provinceId,
-      cityId,
-      districtId,
-      description: null,
-      // pictureId: null,
-      // ownerUserId: null,
-      // ownerUserName: null,
-      isActive,
-      departmentId,
-      departmentName,
-      level: null,
-      levelName: null,
-      superiorCustomerId: null,
-      superiorCustomerName: null,
-      weibo: null,
-      peopleNumber: null,
-      salesNumber: null,
-      industry: null,
-      industryName: null,
-    };
-  }
+  state = {
+    name: null,
+    phone: null,
+    fax: null,
+    website: null,
+    locationInfo: {},
+    description: null,
+    departmentId: null,
+    departmentName: null,
+    level: null,
+    superiorCustomerId: null,
+    superiorCustomerName: null,
+    weibo: null,
+    peopleNumber: null,
+    salesNumber: null,
+    industry: null,
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
   onPressRight = async () => {
     const {
       state: {
-        // contactId,
-        // code,
         name,
-        // quickCode,
-        // shortName,
         phone,
-        fax,
-        website,
-        // locationId,
-        locationDivision,
         locationInfo,
-        provinceId,
-        cityId,
-        districtId,
-        description,
-        // pictureId,
-        // ownerUserId,
-        // ownerUserName,
-        isActive,
         departmentId,
         departmentName,
         level,
-        levelName,
-        superiorCustomerId,
-        weibo,
-        peopleNumber,
-        salesNumber,
         industry,
-        industryName,
       },
       props: {
-        navigation: {
-          pop,
-          state: { params: { reFetchDataList } },
-        },
+        navigation: { pop, state },
       },
     } = this;
     try {
       if (!name) throw new Error(CustomerEnum.name);
-      if (!levelName) throw new Error(CustomerEnum.levelName);
-      if (!industryName) throw new Error(CustomerEnum.industryName);
-      if (!locationDivision) throw new Error(CustomerEnum.locationDivision);
-      if (!locationInfo) throw new Error(CustomerEnum.locationInfo);
       if (!phone) throw new Error(CustomerEnum.phone);
-      if (!departmentName) throw new Error(CustomerEnum.departmentName);
+      if (!(locationInfo && Object.keys(locationInfo).length)) throw new Error(CustomerEnum.location);
+      if (!locationInfo.address) throw new Error(CustomerEnum.address);
+      if (!level) throw new Error(CustomerEnum.level);
+      if (!industry) throw new Error(CustomerEnum.industry);
+      if (!(departmentId && departmentName)) throw new Error(CustomerEnum.departmentName);
 
-      // 获取位置信息
-      let locationId = null;
-      if (locationInfo) {
-        const { location: { id } } = await createLocationId({
-          provinceId,
-          cityId,
-          districtId,
+      const { item: { id } = {} } = state.params || {};
+      // 新增
+      if (!id) {
+        CustomerModel.createCustomerReq(this.state, () => {
+          pop(2);
         });
-        locationId = id;
+        return;
       }
-
-      CustomerModel.createCustomerReq({
-        name,
-        phone,
-        fax,
-        website,
-        locationId,
-        description,
-        isActive,
-        departmentId,
-        level,
-        weibo,
-        peopleNumber,
-        salesNumber,
-        industry,
-        superiorCustomerId,
-      }, () => {
-        reFetchDataList();
-        pop(2);
+      if (!id) throw new Error('id 不为空');
+      CustomerModel.updateCustomerReq(this.state, () => {
+        pop(1);
       });
     } catch (error) {
-      Toast.showError(error.message);
+      Toast.showWarning(error.message);
     }
-  }
-
+  };
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item).length) return;
+    const {
+      location,
+    } = item;
+    let locationInfo = {};
+    if (location) {
+      locationInfo = location;
+      locationInfo.formatLocation = formatLocationMap(location, false);
+      locationInfo.address = location.address || '';
+    }
+    this.setState({
+      locationInfo,
+      ...formatNumberToString(item),
+    });
+  };
   render() {
     const {
       state: {
-        // contactId,
-        // code,
         name,
-        // quickCode,
-        // shortName,
         phone,
         fax,
         website,
-        // locationId,
-        locationDivision,
         locationInfo,
         description,
-        // pictureId,
-        // ownerUserId,
-        // ownerUserName,
-        // isActive,
         departmentId,
         departmentName,
         level,
-        levelName,
         superiorCustomerId,
         superiorCustomerName,
         weibo,
         peopleNumber,
         salesNumber,
         industry,
-        industryName,
       },
       props: { navigation: { navigate } },
     } = this;
@@ -205,27 +150,21 @@ class CreateCustomerMore extends Component {
             value: name,
             onChangeText: name => this.setState({ name }),
           })}
-          right={
-            <TouchableView onPress={() => navigate(routers.queryBusiness)}>
-              <RightText>工商信息查询</RightText>
-            </TouchableView>
-          }
         />
         <NavInputItem
           leftText="客户级别"
           onPress={() => navigate(routers.typePicker, {
             selectedKey: level,
             typeEnum: CustomerLevelTypes,
-            callback: (key, value) => {
+            callback: (key) => {
               this.setState({
                 level: key,
-                levelName: value,
               });
             },
           })}
           center={
-            <CenterText active={level && levelName}>
-              {(level && levelName) ? levelName : CustomerEnum.level}
+            <CenterText active={level}>
+              {level ? CustomerLevelTypes[level] : CustomerEnum.level}
             </CenterText>
           }
           isLast
@@ -259,16 +198,15 @@ class CreateCustomerMore extends Component {
           onPress={() => navigate(routers.typePicker, {
             selectedKey: industry,
             typeEnum: IndustryTypes,
-            callback: (key, value) => {
+            callback: (key) => {
               this.setState({
                 industry: key,
-                industryName: value,
               });
             },
           })}
           center={
-            <CenterText active={industry && industryName}>
-              {(industry && industryName) ? industryName : CustomerEnum.industry}
+            <CenterText active={industry}>
+              {industry ? IndustryTypes[industry] : CustomerEnum.industry}
             </CenterText>
           }
           isLast
@@ -281,34 +219,36 @@ class CreateCustomerMore extends Component {
         />
         <NavInputItem
           leftText="省份地市"
-          onPress={() => {
-            navigate(routers.cityPicker, {
-              callback: ({ formatLocation, provinceId, cityId, districtId }) => {
-                this.setState({
-                  locationInfo: formatLocation,
-                  provinceId,
-                  cityId,
-                  districtId,
-                  });
+          onPress={() => navigate(routers.cityPicker, {
+            callback: (item) => {
+              if (!Object.keys(item).length) return;
+              this.setState({
+                locationInfo: {
+                  ...locationInfo,
+                  ...item,
                 },
               });
-            }}
+            },
+          })}
           center={
-            <CenterText active={locationDivision}>
-              {
-                  locationDivision || CustomerEnum.locationDivision
-                }
+            <CenterText active={locationInfo.formatLocation}>
+              { locationInfo.formatLocation || CustomerEnum.location }
             </CenterText>
-            }
+          }
           {...theme.navItemStyle}
         />
         <NavInputItem
           leftText="详细地址"
           {...theme.getLeftStyle({
-              placeholder: CustomerEnum.locationInfo,
-              value: locationInfo,
-              onChangeText: locationInfo => this.setState({ locationInfo }),
-            })}
+            placeholder: CustomerEnum.address,
+            value: locationInfo.address,
+            onChangeText: address => this.setState({
+              locationInfo: {
+                ...locationInfo,
+                address,
+              },
+            }),
+          })}
         />
         <NavInputItem
           leftText="电话"

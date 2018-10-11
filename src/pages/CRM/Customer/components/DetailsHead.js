@@ -1,6 +1,6 @@
 /**
  * @component DetailsHead.js
- * @description 详情头部组件
+ * @description 客户详情头部组件
  * @time 2018/8/14
  * @author JUSTIN XU
  */
@@ -12,12 +12,14 @@ import { theme } from '../../../../constants';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import { VerticalDivider } from '../../../../components/Styles/Divider';
+import TouchableView from '../../../../components/TouchableView';
 import Thumbnail from '../../../../components/Thumbnail';
 
 const ContainerView = styled.View``;
 
-const FollowView = styled.View`
-  width: ${theme.moderateScale(54)};
+const FollowView = styled(TouchableView)`
+  min-width: ${theme.moderateScale(54)};
+  padding: 0 ${theme.moderateScale(3)}px;
   height: ${theme.moderateScale(22)};
   margin-top: ${theme.moderateScale(15)};
   border: 1px solid ${theme.whiteColor};
@@ -72,11 +74,20 @@ const FooterView = styled.View`
   background-color: rgba(0, 0, 0, .15);
 `;
 
-const FooterItemView = styled.View`
+const FooterItemView = styled.TouchableOpacity`
   flex: 1;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
 `;
 
 const VerticalStyle = {
@@ -87,41 +98,67 @@ const VerticalStyle = {
 
 class DetailsHead extends React.PureComponent {
   render() {
+    const {
+      item,
+      onPressFollow,
+      onPressChoiceTeam,
+      onPressPhone,
+      onPressAddress,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
-          <FollowView>
+          <FollowView
+            onPress={onPressFollow}
+          >
             <Thumbnail
               source={require('../../../../img/crm/details/follow.png')}
               size={14}
             />
-            <FollowText>关注</FollowText>
+            <FollowText>
+              {
+                item.follow ? '取消关注' : '关注'
+              }
+            </FollowText>
           </FollowView>
           <ItemView
             marginTop={10}
           >
             <ItemView>
-              <NameText>网络技术研讨会</NameText>
+              <NameText>{item.name}</NameText>
               <DecorationView />
             </ItemView>
           </ItemView>
-          <ItemView
+          <OwnerUserNameView
             marginTop={23}
             marginBottom={42}
+            onPress={onPressChoiceTeam}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={require('../../../../img/crm/details/principalGo.png')}
               size={15}
             />
-          </ItemView>
+          </OwnerUserNameView>
           <FooterView>
-            <FooterItemView>
+            <FooterItemView
+              onPress={onPressPhone}
+            >
               <Thumbnail
                 source={require('../../../../img/crm/details/phone.png')}
                 size={22}
               />
             </FooterItemView>
+            <VerticalDivider {...VerticalStyle} />
+            <FooterItemView
+              onPress={onPressAddress}
+            >
+              <Thumbnail
+                source={require('../../../../img/crm/details/address.png')}
+                size={22}
+              />
+            </FooterItemView>
+            {/*
             <VerticalDivider {...VerticalStyle} />
             <FooterItemView>
               <Thumbnail
@@ -129,13 +166,7 @@ class DetailsHead extends React.PureComponent {
                 size={22}
               />
             </FooterItemView>
-            <VerticalDivider {...VerticalStyle} />
-            <FooterItemView>
-              <Thumbnail
-                source={require('../../../../img/crm/details/phone.png')}
-                size={22}
-              />
-            </FooterItemView>
+            */}
           </FooterView>
         </ContainerView>
       </HeaderBack>
@@ -145,10 +176,18 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressFollow: () => null,
+  onPressChoiceTeam: () => null,
+  onPressPhone: () => null,
+  onPressAddress: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressFollow: PropTypes.func,
+  onPressChoiceTeam: PropTypes.func,
+  onPressPhone: PropTypes.func,
+  onPressAddress: PropTypes.func,
 };
 
 export default DetailsHead;

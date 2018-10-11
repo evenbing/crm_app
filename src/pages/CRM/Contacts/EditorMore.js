@@ -1,6 +1,6 @@
 /**
  * @component EditorMore.js
- * @description 编辑更多资料页面
+ * @description 联系人编辑更多资料页面
  * @time 2018/8/13
  * @author JUSTIN XU
  */

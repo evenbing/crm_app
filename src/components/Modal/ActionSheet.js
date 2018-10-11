@@ -131,6 +131,8 @@ class ActionSheet extends React.PureComponent {
         animationType="fade"
         isVisible={isVisible}
         onBackdropPress={onPressClose}
+        useNativeDriver
+        hideModalContentWhileAnimating
       >
         <ContainerView>
           <ItemListView>

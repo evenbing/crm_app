@@ -7,8 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-
 import { theme, routers } from '../../../constants';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -16,160 +16,73 @@ import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import TitleItem from '../../../components/Details/TitleItem';
 import NavInputItem from '../../../components/NavInputItem';
-import ScanCard from '../../../components/Create/ScanCard';
+// import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import TouchableView from '../../../components/TouchableView';
 import { CustomerEnum } from '../../../constants/form';
-import { CenterText, RightText } from '../../../components/Styles/Form';
-import Toast from '../../../utils/toast';
+import { CenterText } from '../../../components/Styles/Form';
+
 import CustomerModel from '../../../logicStores/customer';
-import { createLocationId } from '../../../service/app';
 
 @observer
 class CreateCustomer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // contactId: null,
-      // code: null,
-      name: null,
-      // quickCode: null,
-      // shortName: null,
-      phone: null,
-      // fax: null,
-      // website: null,
-      // locationId: null,
-      locationDivision: null,
-      locationInfo: null,
-      provinceId: null,
-      cityId: null,
-      districtId: null,
-      // description: null,
-      // pictureId: null,
-      // ownerUserId: null,
-      // ownerUserName: null,
-      isActive: true,
-      departmentId: null,
-      departmentName: null,
-      // level: null,
-      // superiorCustomerId: null,
-      // weibo: null,
-      // peopleNumber: null,
-      // salesNumber: null,
-      // industry: null,
-    };
-  }
+  state = {
+    name: null,
+    phone: null,
+    locationInfo: {},
+    departmentId: null,
+    departmentName: null,
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = async () => {
+  onPressRight = () => {
     const {
       state: {
-        // contactId,
-        // code,
         name,
-        // quickCode,
-        // shortName,
         phone,
-        // fax,
-        // website,
-        locationDivision,
         locationInfo,
-        provinceId,
-        cityId,
-        districtId,
-        // description,
-        // pictureId,
-        // ownerUserId,
-        // ownerUserName,
-        isActive,
         departmentId,
         departmentName,
-        // level,
-        // superiorCustomerId,
-        // weibo,
-        // peopleNumber,
-        // salesNumber,
-        // industry,
       },
-      props: { navigation: { 
-        goBack,
-        state: { params: { reFetchDataList } },
-      } },
+      props: {
+        navigation: { goBack },
+      },
     } = this;
     try {
       if (!name) throw new Error(CustomerEnum.name);
-      if (!locationDivision) throw new Error(CustomerEnum.locationDivision);
-      if (!locationInfo) throw new Error(CustomerEnum.locationInfo);
       if (!phone) throw new Error(CustomerEnum.phone);
+      if (!(locationInfo && Object.keys(locationInfo).length)) throw new Error(CustomerEnum.location);
+      if (!locationInfo.address) throw new Error(CustomerEnum.address);
       if (!departmentName) throw new Error(CustomerEnum.departmentName);
-
-      // 获取位置信息
-      let locationId = null;
-      if (locationDivision) {
-        const { location: { id } } = await createLocationId({
-          provinceId,
-          cityId,
-          districtId,
-          address: locationInfo,
-        });
-        locationId = id;
-      }
 
       CustomerModel.createCustomerReq({
         name,
         phone,
-        locationId,
-        isActive,
+        locationInfo,
         departmentId,
       }, () => {
-        reFetchDataList();
         goBack();
       });
     } catch (error) {
-      Toast.error(error.message);
+      Toast.showWarning(error.message);
     }
-  }
+  };
 
   render() {
     const {
       state: {
-        // contactId,
-        // code,
         name,
-        // quickCode,
-        // shortName,
         phone,
-        // fax,
-        // website,
-        // locationId,
-        locationDivision,
         locationInfo,
-        provinceId,
-        cityId,
-        districtId,
-        // description,
-        // pictureId,
-        // ownerUserId,
-        // ownerUserName,
-        isActive,
         departmentId,
         departmentName,
-        // level,
-        // superiorCustomerId,
-        // weibo,
-        // peopleNumber,
-        // salesNumber,
-        // industry,
       },
-      props: { navigation: { 
-        navigate,
-        push,
-        state: { params: { reFetchDataList } },
-      } },
+      props: {
+        navigation: { navigate },
+      },
     } = this;
     return (
       <ContainerScrollView 
@@ -177,9 +90,9 @@ class CreateCustomer extends React.Component {
         backgroundColor={theme.whiteColor}
       >
         <CommStatusBar />
-        <ScanCard
+        {/* <ScanCard
           onPress={() => alert(1)}
-        />
+        /> */}
         <TitleItem
           text="必填信息"
           fontSize={16}
@@ -187,52 +100,51 @@ class CreateCustomer extends React.Component {
         <NavInputItem
           leftText="客户名称"
           {...theme.getLeftStyle({
-              placeholder: CustomerEnum.name,
-              value: name,
-              onChangeText: name => this.setState({ name }),
-            })}
-          right={
-            <TouchableView onPress={() => navigate(routers.queryBusiness)}>
-              <RightText>工商信息查询</RightText>
-            </TouchableView>
-            }
+            placeholder: CustomerEnum.name,
+            value: name,
+            onChangeText: name => this.setState({ name }),
+          })}
         />
         <NavInputItem
           leftText="省份地市"
-          onPress={() => {
-            navigate(routers.cityPicker, {
-              callback: ({ formatLocation, provinceId, cityId, districtId }) => {
-                this.setState({
-                  locationDivision: formatLocation,
-                  provinceId,
-                  cityId,
-                  districtId,
-                  });
+          onPress={() => navigate(routers.cityPicker, {
+            callback: (item) => {
+              if (!Object.keys(item).length) return;
+              this.setState({
+                locationInfo: {
+                  ...locationInfo,
+                  ...item,
                 },
               });
-            }}
+            },
+          })}
           center={
-            <CenterText active={locationDivision}>
-              { locationDivision || CustomerEnum.locationDivision }
+            <CenterText active={locationInfo.formatLocation}>
+              { locationInfo.formatLocation || CustomerEnum.location }
             </CenterText>
-            }
+          }
           {...theme.navItemStyle}
         />
         <NavInputItem
           leftText="详细地址"
           {...theme.getLeftStyle({
-              placeholder: CustomerEnum.locationInfo,
-              value: locationInfo,
-              onChangeText: locationInfo => this.setState({ locationInfo }),
-            })}
+            placeholder: CustomerEnum.address,
+            value: locationInfo.address,
+            onChangeText: address => this.setState({
+              locationInfo: {
+                ...locationInfo,
+                address,
+              },
+            }),
+          })}
         />
         <NavInputItem
           leftText="电话"
           {...theme.getLeftStyle({
-              placeholder: CustomerEnum.phone,
-              value: phone,
-              onChangeText: phone => this.setState({ phone }),
-            })}
+            placeholder: CustomerEnum.phone,
+            value: phone,
+            onChangeText: phone => this.setState({ phone }),
+          })}
         />
         <NavInputItem
           leftText="所属部门"
@@ -249,8 +161,8 @@ class CreateCustomer extends React.Component {
           center={
             <CenterText active={departmentId && departmentName}>
               {
-                  (departmentId && departmentName) ? departmentName : CustomerEnum.departmentName
-                }
+                (departmentId && departmentName) ? departmentName : CustomerEnum.departmentName
+              }
             </CenterText>
             }
           isLast
@@ -260,18 +172,8 @@ class CreateCustomer extends React.Component {
           height={41}
         />
         <CreateMoreButton
-          onPress={() => push(routers.createCustomerMore, {
-            reFetchDataList,
-            name,
-            phone,
-            locationDivision,
-            locationInfo,
-            provinceId,
-            cityId,
-            districtId,
-            isActive,
-            departmentId,
-            departmentName,
+          onPress={() => navigate(routers.createCustomerMore, {
+            item: this.state,
           })}
         />
       </ContainerScrollView>

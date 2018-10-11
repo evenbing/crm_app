@@ -13,9 +13,11 @@ import {
   getMarkActivityDetail,
   updateMarkActivity,
   changeOwnerUser,
-  batchCreateFollow,
 } from '../service/markActivity';
-import { deleteFollow } from '../service/app';
+import {
+  createFollow,
+  deleteFollow,
+} from '../service/app';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
@@ -209,11 +211,11 @@ class MarkActivityStore {
          // 执行关注
          const {
            errors = [],
-         } = await batchCreateFollow(restProps);
+         } = await createFollow(restProps);
          if (errors.length) throw new Error(errors[0].message);
        }
        runInAction(() => {
-         this.getMarkActivityDetailReq({ id: restProps.id });
+         this.getMarkActivityDetailReq({ id: restProps.objectId });
          this.getMarkActivityListReq(this.queryProps);
          callback && callback();
        });
