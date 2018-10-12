@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import {
+  TYPE_CUSTOMER_LIST,
   TYPE_LIST,
 } from '../../../constants/drawer';
 import {
@@ -30,6 +31,15 @@ export const FilterList = [
     type: TYPE_LIST,
     selectedIndex: -1,
     list: mapToArray(TimeTypes),
+  },
+  {
+    key: 'customerId',
+    label: '客户',
+    type: TYPE_CUSTOMER_LIST,
+    selectedIndex: -1,
+    list: [
+      { name: '选择' },
+    ],
   },
 ];
 

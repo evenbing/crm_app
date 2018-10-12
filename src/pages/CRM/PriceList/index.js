@@ -76,6 +76,7 @@ class PriceList extends React.Component {
               onValueChange={() => this.onToggleSwitch({ item, index })}
               onTintColor={theme.primaryColor}
               style={{
+                paddingLeft: moderateScale(12),
                 transform: [
                   { scale: 0.8 },
                   { translateX: moderateScale(10) },
