@@ -164,6 +164,27 @@ class Details extends React.Component {
     });
   };
 
+  onPressStatus = ({ key }) => {
+    const { salesChanceDetail: { map } } = SalesChanceModel;
+    if (map.status === key) return;
+    let {
+      beginDate,
+      endDate,
+    } = map;
+    if (beginDate) {
+      beginDate = formatDateByMoment(beginDate);
+    }
+    if (endDate) {
+      endDate = formatDateByMoment(endDate);
+    }
+    SalesChanceModel.updateSalesChanceReq({
+      ...map,
+      beginDate,
+      endDate,
+      status: key,
+    });
+  };
+
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -296,11 +317,11 @@ class Details extends React.Component {
       },
     } = this;
     const bool = tabIndex === 0;
-    const {
-      salesChanceDetail: {
-        map,
-      },
-    } = SalesChanceModel;
+    // const {
+    //   salesChanceDetail: {
+    //     map,
+    //   },
+    // } = SalesChanceModel;
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}

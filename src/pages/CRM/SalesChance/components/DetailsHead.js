@@ -37,11 +37,6 @@ const NameText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
-const CompanyText = NameText.extend`
-  margin-top: ${theme.moderateScale(4)};
-  font-size: ${theme.moderateScale(14)};
-`;
-
 const TimeText = NameText.extend`
   font-size: ${theme.moderateScale(14)};
   margin-left: ${props => props.marginLeft || 0};
@@ -164,10 +159,16 @@ class DetailsHead extends React.PureComponent {
 
 DetailsHead.defaultProps = {
   item: {},
+  onPressFollow: () => null,
+  onPressChoiceTeam: () => null,
+  onPressStatus: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  onPressFollow: PropTypes.func,
+  onPressChoiceTeam: PropTypes.func,
+  onPressStatus: PropTypes.func,
 };
 
 export default DetailsHead;

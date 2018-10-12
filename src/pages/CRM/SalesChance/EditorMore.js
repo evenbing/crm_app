@@ -137,24 +137,18 @@ class EditorMore extends React.Component {
       if (businessDetails.length > 0) {
         BusinessStore.createBusinessReq({ businessDetails });
       }
-
-      SalesChanceStore.createSalesChanceReq({
-        id: businessId,
-        name,
-        customerId,
-        budgetCost,
-        actualCost,
-        planAmount,
-        salesPhaseId,
-        expectedDate,
-        description,
-        departmentId,
-        activityId,
-        opportunityType,
-        sourceType,
-      }, () => {
-        reFetchDataList && reFetchDataList();
-        pop(2);
+      const { id } = this.props.navigation.state.params;
+      // 新增
+      if (!id) {
+        SalesChanceStore.createSalesChanceReq(this.state, () => {
+          reFetchDataList && reFetchDataList();
+          pop(2);
+        });
+        return;
+      }
+      if (!id) throw new Error('id 不为空');
+      SalesChanceStore.updateSalesChanceReq(this.state, () => {
+        pop(1);
       });
     } catch (error) {
       Toast.showError(error.message);
@@ -162,12 +156,18 @@ class EditorMore extends React.Component {
   }
   onAddProduct = () => {
     const { navigate } = this.props.navigation;
-    navigate(routers.productList, {
-      type: ProductType,
-      callback: (item) => {
-        const arr = this.state.products.map(item => ({ ...item }));
-        arr.push(item);
-        this.setState({ products: arr });
+    navigate(routers.productPicker, {
+      products: this.state.products,
+      callback: ({
+        products,
+        priceId,
+        priceName, 
+      }) => {
+        this.setState({
+          products,
+          priceId,
+          priceName,
+        });
       },
     });
   }

@@ -70,6 +70,8 @@ class CreateSalesChance extends Component {
       departmentName: null,
       activityId: null,
       activityName: null,
+      priceId: null,
+      priceName: null,
 
       products: [],
     };
@@ -94,6 +96,7 @@ class CreateSalesChance extends Component {
         departmentId,
         departmentName,
         activityId,
+        priceId,
         products,
       },
       props: { navigation: {
@@ -113,7 +116,7 @@ class CreateSalesChance extends Component {
       if (products.length > 0) {
         const businessDetails = products.map(item => ({
           opportunityId: businessId,
-          priceId: item.id,
+          productId: item.id,
         }));
         BusinessStore.createBusinessReq({ businessDetails });
       }
@@ -127,6 +130,7 @@ class CreateSalesChance extends Component {
         expectedDate,
         departmentId,
         activityId,
+        priceId,
       }, () => {
         reFetchDataList && reFetchDataList();
         goBack();
@@ -149,12 +153,16 @@ class CreateSalesChance extends Component {
   // tenantId, // "801689539428098048"
   onAddProduct = () => {
     const { navigate } = this.props.navigation;
-    navigate(routers.productList, {
-      type: ProductType,
-      callback: (item) => {
-        const arr = this.state.products.map(item => ({ ...item }));
-        arr.push(item);
-        this.setState({ products: arr });
+    navigate(routers.productPicker, {
+      products: this.state.products,
+      callback: ({ 
+        products,
+        priceId }) => {
+        this.setState({
+          products,
+          priceId,
+          // priceName,
+        });
       },
     });
   }
@@ -168,7 +176,6 @@ class CreateSalesChance extends Component {
         planAmount,
         salesPhaseId,
         salesPhaseName,
-        expectedDate,
         expectedDateShow,
         departmentId,
         departmentName,

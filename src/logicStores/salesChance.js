@@ -107,7 +107,7 @@ class SalesChanceStore {
   }
 
   // 编辑
-  @action async updateSalesChanceReq(options) {
+  @action async updateSalesChanceReq(options, callback) {
     try {
       const {
         result = {},
@@ -118,6 +118,7 @@ class SalesChanceStore {
       runInAction(() => {
         // TODO next
         this.salesChanceDetail = { ...result };
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

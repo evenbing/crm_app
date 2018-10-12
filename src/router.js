@@ -99,6 +99,7 @@ import ModuleTypePickerScreen from './pages/Modal/ModuleTypePicker';
 import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
 import CityPickerScreen from './pages/Modal/CityPicker';
 import SalesPhasePickerScreen from './pages/Modal/SalesPhasePicker';
+import ProductPickerScreen from './pages/Modal/ProductPicker';
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
@@ -235,6 +236,7 @@ const CrmRouteConfig = {
   [routers.salesPhasePicker]: { screen: SalesPhasePickerScreen },
   [routers.cityPicker]: { screen: CityPickerScreen },
   [routers.selectEmployee]: { screen: SelectEmployeeScreen },
+  [routers.productPicker]: { screen: ProductPickerScreen },
 };
 
 const CrmNavigatorConfig = {
