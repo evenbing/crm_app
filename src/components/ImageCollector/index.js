@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -10,7 +10,7 @@ import { theme } from '../../constants';
 import { KEY_ADD } from './Constants';
 import ImageItem from './components/ImageItem';
 import ImagePager from './components/ImagePager';
-import { formatPickerImage } from '../../utils/base';
+import Toast from '../../utils/toast';
 
 const configOptions = {
   // width: 400,
@@ -93,22 +93,16 @@ class ImageCollector extends React.PureComponent {
     // StatusBar.setBarStyle('dark-content');
     try {
       let image;
-      console.log('onPickImage');
-
       if (value === '相机') {
         image = await ImagePicker.openCamera(configOptions);
       }
       if (value === '相册') {
-        console.log('onPickImage');
         image = await ImagePicker.openPicker(configOptions);
       }
-      console.log({ image });
-
       if (!Object.keys(image).length) return;
-      // onPressImage(formatPickerImage(image));
       const source = {
-        uri: image.sourceURL,
-        path: image.path,
+        uri: Platform.OS === 'android' ? image.path : image.path.replace('file://', ''),
+        path: Platform.OS === 'android' ? image.path : image.path.replace('file://', ''),
       };
       const pagerData = [...this.state.pagerData];
       pagerData.push({
@@ -121,9 +115,9 @@ class ImageCollector extends React.PureComponent {
         pagerData,
         data,
       });
-      // this.props.onConfirm && this.props.onConfirm(pagerData);
+      this.props.onConfirm && this.props.onConfirm(pagerData);
     } catch (e) {
-      //
+      Toast.showError(e.message);
     } finally {
       // StatusBar.setBarStyle('light-content');
     }
@@ -158,7 +152,7 @@ class ImageCollector extends React.PureComponent {
       });
     } else {
       this.setState({
-        // pagerData,
+        pagerData,
         data,
       });
     }

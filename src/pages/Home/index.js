@@ -55,16 +55,18 @@ class Home extends React.Component {
     const { navigate } = this.props.navigation;
     switch (item.leftText) {
       case '新建日程':
-        navigate(routers.addSchedule, {
-          reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+        this.setState({ createActionSheetVisible: false }, () => {
+          navigate(routers.addSchedule, {
+            reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+          });
         });
-        this.setState({ createActionSheetVisible: false });
         break;
       case '新建任务':
-        navigate(routers.addTask, {
-          reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+        this.setState({ createActionSheetVisible: false }, () => {
+          navigate(routers.addTask, {
+            reFetchTaskScheduleList: this.reFetchTaskScheduleList,
+          });
         });
-        this.setState({ createActionSheetVisible: false });
         break;
       default:
         break;

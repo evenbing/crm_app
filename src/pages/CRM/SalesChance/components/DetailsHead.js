@@ -15,6 +15,10 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 // components
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
+import TouchableView from '../../../../components/TouchableView';
+import { MarketActivityStatus } from '../../../../constants/enum';
+import { formatDateByMoment } from '../../../../utils/base';
+import { FormActionSheet } from '../../../../components/Modal';
 
 // padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
@@ -48,6 +52,26 @@ const PersonText = NameText.extend`
   margin-right: ${theme.moderateScale(5)};
 `;
 
+const FollowView = styled(TouchableView)`
+  min-width: ${theme.moderateScale(54)};
+  padding: 0 ${theme.moderateScale(3)}px;
+  height: ${theme.moderateScale(22)};
+  margin-top: ${theme.moderateScale(15)};
+  border: 1px solid ${theme.whiteColor};
+  border-radius: ${theme.moderateScale(4)};
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  align-self: flex-end;
+  margin-right: ${theme.moderateScale(15)};
+`;
+
+const FollowText = styled.Text`
+  margin-left: ${theme.moderateScale(4)};
+  color: ${theme.whiteColor};
+`;
+
 const FooterView = styled.View`
   height: ${theme.moderateScale(36)};
   flex-direction: row;
@@ -56,6 +80,16 @@ const FooterView = styled.View`
   background-color: rgba(0, 0, 0, .15);
 `;
 
+const OwnerUserNameView = styled(TouchableView)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-top: ${props => theme.moderateScale(props.marginTop || 0)};
+  margin-bottom: ${props => theme.moderateScale(props.marginBottom || 0)};
+`;
+
+
 const PlanStatusText = styled.Text`
   color: #e2c244;
   margin-right: ${theme.moderateScale(2)};
@@ -63,41 +97,65 @@ const PlanStatusText = styled.Text`
 
 class DetailsHead extends React.PureComponent {
   render() {
+    const {
+      item,
+      onPressFollow,
+      onPressChoiceTeam,
+      onPressStatus,
+    } = this.props;
     return (
       <HeaderBack>
         <ContainerView>
-          <ItemView
-            marginTop={51}
+          <FollowView
+            onPress={onPressFollow}
           >
-            <NameText>5.1门店开业活动</NameText>
-          </ItemView>
-          <ItemView marginTop={2}>
-            <CompanyText>西风网络</CompanyText>
-          </ItemView>
+            <Thumbnail
+              source={require('../../../../img/crm/details/follow.png')}
+              size={14}
+            />
+            <FollowText>
+              {
+                item.follow ? '取消关注' : '关注'
+              }
+            </FollowText>
+          </FollowView>
           <ItemView
-            marginTop={9}
+            marginTop={10}
           >
-            <PersonText>负责人: 张三</PersonText>
+            <NameText>{item.name}</NameText>
+          </ItemView>
+          <OwnerUserNameView
+            marginTop={23}
+            onPress={onPressChoiceTeam}
+          >
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}
             />
-          </ItemView>
+          </OwnerUserNameView>
           <ItemView
             marginTop={11}
             marginBottom={20}
           >
-            <TimeText>销售金额：¥100,000,000.00</TimeText>
-            <TimeText marginLeft={13}>结单日期：2018-09-09</TimeText>
+            <TimeText>{`销售金额：¥${item.planAmount}`}</TimeText>
+            <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate)}`}</TimeText>
           </ItemView>
-          <FooterView>
-            <TimeText>活动状态：</TimeText>
-            <PlanStatusText>已计划</PlanStatusText>
-            <Thumbnail
-              source={PrincipalIcon}
-              size={15}
-            />
-          </FooterView>
+          <FormActionSheet
+            onConfirm={onPressStatus}
+            typeEnum={MarketActivityStatus}
+          >
+            <FooterView>
+              <TimeText>活动状态：</TimeText>
+              <PlanStatusText>
+                {MarketActivityStatus[item.status] || '--'}
+              </PlanStatusText>
+              <Thumbnail
+                source={PrincipalIcon}
+                size={15}
+              />
+            </FooterView>
+          </FormActionSheet>
         </ContainerView>
       </HeaderBack>
     );

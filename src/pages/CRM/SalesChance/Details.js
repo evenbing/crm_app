@@ -29,6 +29,7 @@ import EditorFooter from '../../../components/Details/EditorFooter';
 import SalesChanceModel from '../../../logicStores/salesChance';
 import DynamicModel from '../../../logicStores/dynamic';
 import AttachmentModel from '../../../logicStores/attachment';
+import { formatDateByMoment, getUserId } from '../../../utils/base';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -130,6 +131,39 @@ class Details extends React.Component {
     });
   };
 
+  onPressFollow = () => {
+    const { salesChanceDetail: { map } } = SalesChanceModel;
+    SalesChanceModel.updateFollowStatusReq({
+      objectType: ModuleType.activity,
+      objectId: map.id,
+      objectName: map.name,
+      followTime: formatDateByMoment(new Date()),
+      userId: getUserId(),
+      //
+      follow: map.follow,
+      followId: map.followId,
+    });
+  };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    const { salesChanceDetail: { map } } = SalesChanceModel;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        SalesChanceModel.updateOwnerUserReq({
+          id: item.id,
+          ownerUserId: obj.userId,
+          ownerUserName: obj.userName,
+        });
+      },
+    });
+  };
+
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -171,9 +205,16 @@ class Details extends React.Component {
       activeIndex: tabIndex,
       onChange: index => this.onTabChange(index),
     };
+    const { salesChanceDetail: { map } } = SalesChanceModel;
+    const detailHeaderProps = {
+      item: map,
+      onPressFollow: this.onPressFollow,
+      onPressChoiceTeam: this.onPressChoiceTeam,
+      onPressStatus: this.onPressStatus,
+    };
     return (
       <View>
-        <DetailsHead />
+        <DetailsHead {...detailHeaderProps} />
         <TotalView>
           {this.renderTotalItem()}
         </TotalView>

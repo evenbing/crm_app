@@ -107,15 +107,13 @@ class AddTask extends Component {
       },
     } = this;
     try {
-      // if (!name) throw new Error(TaskEnum.name);
-      // if (!endTime) throw new Error(TaskEnum.endTime);
-      // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      if (!name) throw new Error(TaskEnum.name);
+      if (!endTime) throw new Error(TaskEnum.endTime);
+      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
       const businessId = await getNewId();
       // 上传图片
       for (let index = 0; index < images.length; index++) {
         const { image: { path } } = images[index];
-        console.log({ path });
-
         AttachmentModel.uploadImageReq({
           file: {
             uri: path,
@@ -126,27 +124,27 @@ class AddTask extends Component {
         });
       }
 
-      // TaskScheduleModel.createTaskScheduleRelatedToMeReq({
-      //   id: businessId,
-      //   type,
-      //   name,
-      //   // startTime,
-      //   endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
-      //   moduleType,
-      //   moduleId,
-      //   comment,
-      //   needNotice,
-      //   noticeTime,
-      //   // longitudeAndLatitude,
-      //   // locationInfo,
-      //   isPrivate,
-      //   principal,
-      //   userIds,
-      // }, () => {
-      //   reFetchTaskScheduleList();
-      //   goBack();
-      //   Toast.showSuccess('任务创建成功');
-      // });
+      TaskScheduleModel.createTaskScheduleRelatedToMeReq({
+        id: businessId,
+        type,
+        name,
+        // startTime,
+        endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        moduleType,
+        moduleId,
+        comment,
+        needNotice,
+        noticeTime,
+        // longitudeAndLatitude,
+        // locationInfo,
+        isPrivate,
+        principal,
+        userIds,
+      }, () => {
+        reFetchTaskScheduleList();
+        goBack();
+        Toast.showSuccess('任务创建成功');
+      });
     } catch (e) {
       Toast.showError(e.message);
     }

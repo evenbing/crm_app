@@ -18,6 +18,7 @@ import {
 } from '../service/salesChance';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
+import { deleteFollow, createFollow } from '../service/app';
 
 useStrict(true);
 
@@ -165,6 +166,51 @@ class SalesChanceStore {
       runInAction(() => {
         // TODO next
         this.salesPhaseList.list = result;
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 关注
+  @action async updateFollowStatusReq({ follow, followId, ...restProps }, callback) {
+    try {
+      // 已经关注则删除
+      if (follow) {
+        const {
+          errors = [],
+        } = await deleteFollow({ id: followId });
+        if (errors.length) throw new Error(errors[0].message);
+        Toast.showSuccess('取消关注成功');
+      } else {
+        // 执行关注
+        const {
+          errors = [],
+        } = await createFollow(restProps);
+        if (errors.length) throw new Error(errors[0].message);
+        Toast.showSuccess('关注成功');
+      }
+      runInAction(() => {
+        this.getSalesChanceReq({ id: restProps.objectId });
+        this.getSalesChanceListReq(this.queryProps);
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  // 转移负责人
+  @action async updateOwnerUserReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await changeOwnerUser(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getSalesChanceReq({ id: options.id });
+        this.getSalesChanceListReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

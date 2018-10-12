@@ -1,14 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { ActionSheet } from 'native-base';
 import { theme } from '../../../constants';
 import { width } from '../../../utils/scale';
 import { KEY_ADD } from '../Constants';
 import { FormActionSheet } from '../../Modal';
 import { CameraOrPickerType } from '../../../constants/enum';
 
-
 const ImageView = styled.View`
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5;
+  margin-right: ${theme.moderateScale(10)}px;
+  margin-bottom: ${theme.moderateScale(10)}px;
+`;
+
+const ImageViewPress = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background-color: #F5F5F5;
@@ -35,18 +43,20 @@ const ImageItem = ({
         onConfirm={onPressAdd}
         typeEnum={CameraOrPickerType}
       >
-        <ImageView >
+        <ImageView
+          onPress={onPressAdd}
+        >
           <Image source={image} />
         </ImageView>
       </FormActionSheet>
     );
   }
   return (
-    <ImageView
+    <ImageViewPress
       onPress={key === KEY_ADD ? onPressAdd : onPressItem}
     >
       <Image source={image} />
-    </ImageView>
+    </ImageViewPress>
   );
 };
 
