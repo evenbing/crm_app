@@ -98,7 +98,7 @@ export function getContractList({
   sortColumn,
 } = {}) {
   return post({
-    method: 'api.customerrelations.pact.find',
+    method: 'api.customerrelations.pact.search',
     pageNumber,
     pageSize,
     pactParticipateType,
