@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import styled from 'styled-components';
 
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
@@ -10,9 +11,11 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { ProductType, PriceListType } from '../../../constants/enum';
 import ProductListItem from './ProductListItem';
 import { SalesChanceEnum } from '../../../constants/form';
+import { width } from '../../../utils/scale';
 
 const FlatList = styled.FlatList`
   flex: 1;
+  background-color: green;
 `;
 
 const ListItem = styled.TouchableOpacity`
@@ -49,10 +52,11 @@ const RightIcon = styled.Image`
 
 const Footer = styled.View`
   flex-direction: row;
+  height: ${theme.moderateScale(49)}px;
 `;
 
 const Button = styled.TouchableOpacity`
-  flex: 1;
+  width: ${width / 2}px;
   height: ${theme.moderateScale(49)}px;
   justify-content: center;
   align-items: center;
@@ -153,8 +157,8 @@ class ProductPicker extends Component {
   }
 
   cancel = () => {
-    const { goBack } = this.props.navigation;
-    goBack();
+    // const { goBack } = this.props.navigation;
+    // goBack();
   }
 
   confirm = () => {
@@ -230,12 +234,15 @@ class ProductPicker extends Component {
           ItemSeparatorComponent={this.renderItemSeparatorComponent}
         />
         <Footer>
-          <Button onPress={this.cancel}>
+          <Button
+            onPress={this.cancel} 
+            backgroundColor="red"
+          >
             <ButtonText>
               取消
             </ButtonText>
           </Button>
-          <Button 
+          <Button
             backgroundColor={theme.primaryColor}
             onPress={this.confirm}
           >

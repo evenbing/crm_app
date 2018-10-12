@@ -23,7 +23,7 @@ import Toast from '../../../utils/toast';
 import BusinessStore from '../../../logicStores/business';
 
 const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
-
+const productsExtra = [];
 // const products = [
 //   {
 //     key: uuidv1(),
@@ -75,6 +75,8 @@ class CreateSalesChance extends Component {
 
       products: [],
     };
+
+    this.productsExtra = [];
   }
 
   componentDidMount() {
@@ -117,6 +119,10 @@ class CreateSalesChance extends Component {
         const businessDetails = products.map(item => ({
           opportunityId: businessId,
           productId: item.id,
+          productName: item.name,
+          standardPrice: item.price,
+          tenantId: item.tenantId,
+          priceId,
         }));
         BusinessStore.createBusinessReq({ businessDetails });
       }
@@ -165,6 +171,10 @@ class CreateSalesChance extends Component {
         });
       },
     });
+  }
+
+  modifyProductsExtra = (productsExtra) => {
+    this.productsExtra = productsExtra;
   }
 
   render() {
@@ -358,6 +368,7 @@ class CreateSalesChance extends Component {
                 count={`数量:1 ${item.salesUnit}`}
                 remark={`备注:${item.remark}`}
                 totalPrice={`${item.price * 1}`}
+                productsExtra={this.modifyProductsExtra}
               />
             ))
           }

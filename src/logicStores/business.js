@@ -24,18 +24,18 @@ class BusinessStore {
   @observable businessDetail = initDetailMap;
 
   // 详情
-  @action async getBusinessDetailReq({ opportunityId }) {
+  @action async getBusinessDetailReq({ opportunityId }, callback) {
     try {
       if (!opportunityId) throw new Error('opportunityId 不为空');
       this.businessDetail.refreshing = true;
       const {
-        business = {},
+        result = [],
         errors = [],
       } = await find({ opportunityId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.businessDetail.list = [business];
-        this.businessDetail.map = business;
+        this.businessDetail.list = [...result];
+        callback && callback(this.businessDetail.list);
       });
     } catch (e) {
       Toast.showError(e.message);

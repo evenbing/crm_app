@@ -53,7 +53,7 @@ class EditorMore extends React.Component {
       opportunityTypeName = null,
       sourceType = null,
       sourceTypeName = null,
-      products = [],
+      budinessProducts = [],
     } = props.navigation.state.params.item;
     super(props);
     this.state = {
@@ -78,13 +78,25 @@ class EditorMore extends React.Component {
       opportunityTypeName,
       sourceType,
       sourceTypeName,
-      products,
+      budinessProducts,
     };
   }
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    
+    const { id } = this.props.navigation.state.params.item;
+    // 编辑
+    if (id) {
+      BusinessStore.getBusinessDetailReq({
+        opportunityId: id,
+      }, (budinessProducts) => {
+        this.setState({
+          budinessProducts,
+        });
+      });
+    } 
   }
   onPressRight = async () => {
     const {
@@ -126,18 +138,13 @@ class EditorMore extends React.Component {
         businessDetails = products.map(item => ({
           opportunityId: businessId,
           productId: item.id,
-        }));
-      }
-      if (priceId) {
-        businessDetails.push({
-          opportunityId: businessId,
           priceId,
-        });
+        }));
       }
       if (businessDetails.length > 0) {
         BusinessStore.createBusinessReq({ businessDetails });
       }
-      const { id } = this.props.navigation.state.params;
+      const { id } = this.props.navigation.state.params.item;
       // 新增
       if (!id) {
         SalesChanceStore.createSalesChanceReq(this.state, () => {
@@ -185,6 +192,11 @@ class EditorMore extends React.Component {
       height: 44,
     };
   };
+
+  modifyProductsExtra = (productsExtra) => {
+    this.setState({ productsExtra });
+  }
+
   render() {
     const {
       state: {
@@ -208,7 +220,7 @@ class EditorMore extends React.Component {
         opportunityTypeName,
         sourceType,
         sourceTypeName,
-        products,
+        budinessProducts,
       },
       props: { navigation: { navigate } },
     } = this;
@@ -460,16 +472,18 @@ class EditorMore extends React.Component {
             color="#969696"
           />
           {
-            products.map(item => (
+            budinessProducts.map(item => (
               <ProductItem
-                key={item.id}
-                image={productImage}
-                discount="折扣:80%"
-                name={item.name}
-                price={`标准价格:${item.price}`}
-                count={`数量:1 ${item.salesUnit}`}
-                remark={`备注:${item.remark}`}
-                totalPrice={`${item.price * 1}`}
+                {...item}
+                modifyProductsExtra={this.modifyProductsExtra}
+                // key={item.id}
+                // image={productImage}
+                // discount="折扣:80%"
+                // name={item.name}
+                // price={`标准价格:${item.price}`}
+                // count={`数量:1 ${item.salesUnit}`}
+                // remark={`备注:${item.remark}`}
+                // totalPrice={`${item.price * 1}`}
               />
             ))
           }
