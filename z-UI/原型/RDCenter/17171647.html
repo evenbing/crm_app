@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>技术研发中心 : 业绩统计</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">技术研发中心</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="15597717.html">CRM部分</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="15598653.html">CRM 系统 PRD</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="16351659.html">CRM  微应用</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            技术研发中心 : 业绩统计
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> yuxiang</span>, last modified on 五月 15, 2018
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h3 id="id-业绩统计-1.业务场景">1.业务场景</h3><p>统计员工业绩</p><h3 id="id-业绩统计-2.竞品分析">2.竞品分析</h3><p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/17171647/17171648.png" data-image-src="attachments/17171647/17171648.png" data-unresolved-comment-count="0" data-linked-resource-id="17171648" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2018-4-20_17-0-45.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="17171647" data-linked-resource-container-version="2"></span></p><h3 id="id-业绩统计-3.方案设计-数据模型">3.方案设计-数据模型</h3><h3 id="id-业绩统计-4.方案设计-交互页面">4.方案设计-交互页面</h3><p>按本月、本季、本年3个维度统计当前员工销售业绩，形成趋势图、漏斗图和业绩排行榜。</p><p>漏斗总值：在查询时间内将会结单的商机总值</p><p>预计完成：按照当前赢率加权计算得出将在查询时间内结单的商机总金额。</p><p><span style="color: rgb(0,0,0);"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/17171647/17171649.png" data-image-src="attachments/17171647/17171649.png" data-unresolved-comment-count="0" data-linked-resource-id="17171649" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="001-统计数据.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="17171647" data-linked-resource-container-version="2"></span></span></p><p><span style="color: rgb(0,0,0);">统计CRM活动跟进记录，以直方图展示</span></p><p><span style="color: rgb(0,0,0);"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="300" src="attachments/17171647/20873394.png" data-image-src="attachments/17171647/20873394.png" data-unresolved-comment-count="0" data-linked-resource-id="20873394" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="1-跟进统计.png" data-base-url="https://wiki.xiniunet.com" data-linked-resource-content-type="image/png" data-linked-resource-container-id="17171647" data-linked-resource-container-version="2"></span></span></p><p><span style="color: rgb(0,0,0);"><br/></span></p><h3 id="id-业绩统计-5.方案设计-页面功能">5.方案设计-页面功能</h3><h5 id="id-业绩统计-1.页面元素-数据映射:">1. <strong>页面元素-数据映射</strong><strong>:</strong></h5><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="confluenceTable"><colgroup><col/><col/><col/><col/><col/><col/></colgroup><tbody><tr><td class="confluenceTd"><p><strong>页面元素</strong></p></td><td class="confluenceTd"><p><strong>表名</strong></p></td><td class="confluenceTd"><p><strong>字段名称</strong></p></td><td colspan="1" class="confluenceTd"><strong>是否必须</strong></td><td colspan="1" class="confluenceTd"><strong>验证要求</strong></td><td class="confluenceTd"><p><strong>备注</strong></p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"> </td><td class="confluenceTd"><p> <em> </em></p></td></tr></tbody></table></div></div><p> </p><p><em>列表数据性报表建议使用下面的格式</em></p><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><td class="confluenceTd"><p><strong>中文</strong></p></td><td class="confluenceTd"><p><strong>英文</strong></p></td><td class="confluenceTd"><p><strong>字段名称</strong></p></td><td class="confluenceTd"><p><strong>备注</strong></p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> </p></td><td class="confluenceTd"><p> <em> </em></p></td></tr></tbody></table></div></div><h5 id="id-业绩统计-2.用户事件定义:">2. <strong>用户事件定义</strong><strong>:</strong></h5><p><strong>特别注意提示文案，提示文案用“”包括</strong></p><div class="aym_table_wrap"><p> </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><td class="confluenceTd"><p><strong>事件</strong></p></td><td class="confluenceTd"><p><strong>流程功能说明</strong></p></td></tr><tr><td class="confluenceTd"><p>页面加载</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>保存_Click</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>新增_Click</p></td><td class="confluenceTd"><p> </p></td></tr><tr><td class="confluenceTd"><p>……</p></td><td class="confluenceTd"><p> </p></td></tr></tbody></table></div></div><h3 id="id-业绩统计-6.影响范围与应对">6.影响范围与应对</h3><p>无</p><h3 id="id-业绩统计-7.技术细化方案">7.技术细化方案</h3><p>无</p><h3 id="id-业绩统计-8.问答">8. 问答</h3><p>无</p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/17171647/17171648.png">image2018-4-20_17-0-45.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/17171647/17171649.png">001-统计数据.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/17171647/20873394.png">1-跟进统计.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on 七月 02, 2018 10:09</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>
