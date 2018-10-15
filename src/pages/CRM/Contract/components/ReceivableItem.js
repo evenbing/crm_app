@@ -105,13 +105,9 @@ class ReceivableItem extends React.PureComponent {
         <TypeText>{value.typeName}</TypeText>
         <MiddleView>
           <TimeText>
-            {
-              value.receivableDate ?
-                moment(Number(value.receivableDate)).format('YYYY-MM-DD')
-                : null
-            }
+            {value.formatDateTime}
           </TimeText>
-          <AmountText> ¥{value.receivablePrice || 0} </AmountText>
+          <AmountText> ¥{value.formatPrice || 0} </AmountText>
         </MiddleView>
         <RightStatusView>
           <StatusText> {receivableStatus} </StatusText>
@@ -128,8 +124,10 @@ class ReceivableItem extends React.PureComponent {
         hasPlan,
         receivablePlan,
         id,
+        receivableStatus,
       },
     } = this.props;
+    const isFinish = receivableStatus === '已完成';
     return (
       <ContainerView>
         <ListHeaderView>
@@ -148,7 +146,7 @@ class ReceivableItem extends React.PureComponent {
               )
             }
             {
-              hasPlan ? (
+              (hasPlan && !isFinish) ? (
                 <ListHeaderRightItemView
                   onPress={() => onPressCreate(routers.receivableRecordCreate, {
                     index,
