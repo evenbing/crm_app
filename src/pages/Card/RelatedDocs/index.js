@@ -46,19 +46,24 @@ class RelatedDocs extends Component {
   renderItem = ({ item }) => {
     const {
       docIcon,
-      docName,
-      company,
-      time,
+      displayName,
+      // time,
     } = item;
+    const {
+      item: {
+        customerName,
+      },
+    } = this.props.navigation.state.params || {};
+    debugger;
     return (
       <ListItem thumbnail noBorder style={{ backgroundColor: 'white' }}>
         <Left>
           <Thumbnail square source={docIcon} />
         </Left>
         <Body>
-          <Text>{docName}</Text>
-          <Text note numberOfLines={1}> {company} </Text>
-          <Text note numberOfLines={1}> {time} </Text>
+          <Text>{displayName}</Text>
+          <Text note numberOfLines={1}> {customerName} </Text>
+          {/* <Text note numberOfLines={1}> {time} </Text> */}
         </Body>
         <Right>
           <Icon name="arrow-forward" />
