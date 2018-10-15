@@ -178,6 +178,7 @@ export function updateSalesChance({
   departmentId,
   description,
 } = {}) {
+  debugger;
   return post({
     method: 'api.customerrelations.opportunity.update',
     id,

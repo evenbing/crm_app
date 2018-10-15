@@ -215,8 +215,8 @@ class EditorMore extends React.Component {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
-                  salesOpportunitiesId: item.key,
-                  salesOpportunitiesName: item.title,
+                  salesOpportunitiesId: item.id,
+                  salesOpportunitiesName: item.name,
                 });
               },
             })}

@@ -111,7 +111,7 @@ class CustomerStore {
       } = await getTaskScheduleList({
         type: TASK_TYPE,
         moduleId: id,
-        moduleType: ModuleType.activity,
+        moduleType: ModuleType.customer,
         pageSize,
       });
       if (taskErrors.length) throw new Error(taskErrors[0].message);
@@ -121,7 +121,7 @@ class CustomerStore {
       } = await getTaskScheduleList({
         type: SCHEDULE_TYPE,
         moduleId: id,
-        moduleType: ModuleType.activity,
+        moduleType: ModuleType.customer,
         pageSize,
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);

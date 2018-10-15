@@ -1,3 +1,9 @@
+/**
+ * @component CreateSalesChance.js
+ * @description 销售线索更多页面
+ * @time 2018/9/4
+ * @author --
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';

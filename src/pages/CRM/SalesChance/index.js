@@ -7,17 +7,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StatusBar } from 'react-native';
-import { useStrict } from 'mobx';
+import { useStrict, toJS } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
 
 // constants
 import { routers, theme } from '../../../constants';
-import { CustomerType, SalesChanceType } from '../../../constants/enum';
+import { CustomerType, ModuleType, SalesChanceType } from '../../../constants/enum';
 
 // utils
 import * as drawerUtils from '../../../utils/drawer';
-import { filterObject } from '../../../utils/base';
+import { filterObject, formatDateByMoment, getUserId } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -224,9 +224,6 @@ class SalesChance extends React.Component {
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
-
-  keyExtractor = item => item.id;
-
   renderItem = (itemProps) => {
     const { index, item } = itemProps;
     const {
@@ -270,7 +267,22 @@ class SalesChance extends React.Component {
             list={[
               require('../../../img/crm/buttonList/follow.png'),
             ]}
-            onPressItem={({ index, item }) => alert(`item:${JSON.stringify(item)}, index: ${index}`)}
+            onPressItem={({ index }) => {
+              if (index === 0) {
+                SalesChanceStore.updateFollowStatusReq({
+                  objectType: ModuleType.opportunity,
+                  objectId: item.id,
+                  objectName: item.name,
+                  followTime: formatDateByMoment(new Date()),
+                  userId: getUserId(),
+                  //
+                  follow: item.follow,
+                  followId: item.followId,
+                });
+                return false;
+              }
+              return false;
+            }}
           />
         }
       />
@@ -280,12 +292,10 @@ class SalesChance extends React.Component {
     const {
       salesChanceList: { list, refreshing, loadingMore },
     } = SalesChanceStore;
-    const l = list.map(item => ({ ...item }));
     const salesPhases = SalesChanceStore.salesPhaseList.list.map(item => ({ ...item }));
     const flatProps = {
       data: list,
       renderItem: this.renderItem,
-      keyExtractor: this.keyExtractor,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       refreshing,
@@ -298,7 +308,7 @@ class SalesChance extends React.Component {
       );
     }
     return (
-      <BoardList data={l} salesPhases={salesPhases} />
+      <BoardList data={toJS(list)} salesPhases={salesPhases} />
     );
   };
   renderSideBar = () => {

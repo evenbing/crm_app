@@ -11,15 +11,21 @@ import { post } from '../utils/rpc';
  * @add by zhao
  * @params options
  * {
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
  *   opportunityId 商机ID
  * }
  * @return Promise<Object>
  */
 export function find({
+  pageNumber = 1,
+  pageSize = 15,
   opportunityId,
 } = {}) {
   return post({
     method: 'api.customerrelations.businessDetail.find',
+    pageNumber,
+    pageSize,
     opportunityId,
   });
 }

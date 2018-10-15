@@ -20,7 +20,6 @@ import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
 import { createLocationId } from '../service/app';
-import { updateContact } from '../service/contacts';
 
 useStrict(true);
 
@@ -35,7 +34,7 @@ class SalesClueStore {
   @observable salesClueList = initFlatList;
   // 详情
   @observable salesClueDetail = initDetailMap;
-  // 详情
+  // 统计
   @observable salesClueTotal = initTotal;
 
   // 保存list的搜索对象, 提供给新增调取接口使用
@@ -103,7 +102,7 @@ class SalesClueStore {
       } = await getTaskScheduleList({
         type: TASK_TYPE,
         moduleId: id,
-        moduleType: ModuleType.activity,
+        moduleType: ModuleType.clues,
         pageSize,
       });
       if (taskErrors.length) throw new Error(taskErrors[0].message);
@@ -113,7 +112,7 @@ class SalesClueStore {
       } = await getTaskScheduleList({
         type: SCHEDULE_TYPE,
         moduleId: id,
-        moduleType: ModuleType.activity,
+        moduleType: ModuleType.clues,
         pageSize,
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);

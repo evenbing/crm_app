@@ -28,6 +28,7 @@ import { post } from '../utils/rpc';
  *   address 地址
  *   sortColumn 表头排序
  *   customerId 客户id
+ *   opportunityId 合同id
  * }
  * @return Promise<ArrayList>
  */
@@ -51,6 +52,7 @@ export function getContactList({
   address,
   sortColumn,
   customerId,
+  opportunityId,
 } = {}) {
   return post({
     method: 'api.customerrelations.contact.find',
@@ -73,6 +75,7 @@ export function getContactList({
     address,
     sortColumn,
     customerId,
+    opportunityId,
   });
 }
 

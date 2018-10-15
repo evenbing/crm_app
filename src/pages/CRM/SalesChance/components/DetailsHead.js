@@ -18,7 +18,6 @@ import Thumbnail from '../../../../components/Thumbnail';
 import TouchableView from '../../../../components/TouchableView';
 import { MarketActivityStatus } from '../../../../constants/enum';
 import { formatDateByMoment } from '../../../../utils/base';
-import { FormActionSheet } from '../../../../components/Modal';
 
 // padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
@@ -96,7 +95,6 @@ class DetailsHead extends React.PureComponent {
       item,
       onPressFollow,
       onPressChoiceTeam,
-      onPressStatus,
     } = this.props;
     return (
       <HeaderBack>
@@ -136,21 +134,18 @@ class DetailsHead extends React.PureComponent {
             <TimeText>{`销售金额：¥${item.planAmount}`}</TimeText>
             <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate)}`}</TimeText>
           </ItemView>
-          <FormActionSheet
-            onConfirm={onPressStatus}
-            typeEnum={MarketActivityStatus}
-          >
-            <FooterView>
-              <TimeText>活动状态：</TimeText>
-              <PlanStatusText>
-                {MarketActivityStatus[item.status] || '--'}
-              </PlanStatusText>
-              <Thumbnail
-                source={PrincipalIcon}
-                size={15}
-              />
-            </FooterView>
-          </FormActionSheet>
+          <FooterView>
+            <TimeText>活动状态：</TimeText>
+            <PlanStatusText>
+              {MarketActivityStatus[item.activityStatus] || '--'}
+            </PlanStatusText>
+            {/*
+             <Thumbnail
+              source={PrincipalIcon}
+              size={15}
+            />
+             */}
+          </FooterView>
         </ContainerView>
       </HeaderBack>
     );
@@ -161,14 +156,12 @@ DetailsHead.defaultProps = {
   item: {},
   onPressFollow: () => null,
   onPressChoiceTeam: () => null,
-  onPressStatus: () => null,
 };
 
 DetailsHead.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   onPressFollow: PropTypes.func,
   onPressChoiceTeam: PropTypes.func,
-  onPressStatus: PropTypes.func,
 };
 
 export default DetailsHead;

@@ -9,27 +9,31 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import styled from 'styled-components';
+
+// constants
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getNewId } from '../../../service/app';
+
+// utils
 import Toast from '../../../utils/toast';
+import { formatDateByMoment, getUserId } from '../../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import DetailsHead from './components/DetailsHead';
 import FlatListTable from '../../../components/FlatListTable';
 import TabContainer from '../../../components/TabContainer';
 import DynamicList from '../../../components/Details/DynamicList';
-import ActivityDetailsItem from './components/ActivityDetailsItem';
 import SendFooter from '../../../components/Details/SendFooter';
 import EditorFooter from '../../../components/Details/EditorFooter';
+import ActivityDetailsItem from './components/ActivityDetailsItem';
+import DetailsHead from './components/DetailsHead';
 
 import SalesChanceModel from '../../../logicStores/salesChance';
 import DynamicModel from '../../../logicStores/dynamic';
 import AttachmentModel from '../../../logicStores/attachment';
-import { formatDateByMoment, getUserId } from '../../../utils/base';
+import { getNewId } from '../../../service/app';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -66,16 +70,14 @@ class Details extends React.Component {
   componentDidMount() {
     this.getDynamicList();
     this.getSalesChanceDetail();
+    this.getSalesChanceTotal();
   }
-
   componentWillUnmount() {
     DynamicModel.clearModuleType();
   }
-
   onTabChange = (index) => {
     this.setState({ tabIndex: index });
   };
-
   onEndReached = () => {
     const {
       total = 0,
@@ -87,7 +89,6 @@ class Details extends React.Component {
       this.getDynamicList(pageNumber + 1);
     }
   };
-
   onPressImage = async ({ file }) => {
     try {
       const businessId = await getNewId();
@@ -108,7 +109,6 @@ class Details extends React.Component {
       Toast.showError(err.message);
     }
   };
-
   onPressSend = ({ content, contentType }, callback) => {
     const {
       state: {
@@ -123,18 +123,17 @@ class Details extends React.Component {
       id: cacheImageMap.businessId,
       content,
       contentType,
-      moduleId: item.key,
+      moduleId: item.id,
       moduleType: ModuleType.opportunity,
     }, () => {
       this.setState({ cacheImageMap: {} });
       callback && callback();
     });
   };
-
   onPressFollow = () => {
     const { salesChanceDetail: { map } } = SalesChanceModel;
     SalesChanceModel.updateFollowStatusReq({
-      objectType: ModuleType.activity,
+      objectType: ModuleType.opportunity,
       objectId: map.id,
       objectName: map.name,
       followTime: formatDateByMoment(new Date()),
@@ -163,53 +162,37 @@ class Details extends React.Component {
       },
     });
   };
-
-  onPressStatus = ({ key }) => {
-    const { salesChanceDetail: { map } } = SalesChanceModel;
-    if (map.status === key) return;
-    let {
-      beginDate,
-      endDate,
-    } = map;
-    if (beginDate) {
-      beginDate = formatDateByMoment(beginDate);
-    }
-    if (endDate) {
-      endDate = formatDateByMoment(endDate);
-    }
-    SalesChanceModel.updateSalesChanceReq({
-      ...map,
-      beginDate,
-      endDate,
-      status: key,
-    });
-  };
-
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
       pageNumber,
       moduleType: ModuleType.opportunity,
-      moduleId: item.key,
+      moduleId: item.id,
     });
   };
-
   getSalesChanceDetail = () => {
-    const { item: { id } } = this.props.navigation.state.params || {};
-    SalesChanceModel.getSalesChanceReq({ id });
+    const { item } = this.props.navigation.state.params || {};
+    SalesChanceModel.getSalesChanceDetailReq(item);
   };
-
+  getSalesChanceTotal = () => {
+    const { item } = this.props.navigation.state.params || {};
+    SalesChanceModel.getSalesChanceTotalReq(item);
+  };
   getDetailItem = (item) => {
     this.detailItem = item;
-  }
-
+  };
   renderTotalItem = () => {
+    const {
+      salesClueTotal: {
+        scheduleTotal, taskTotal, contactTotal, productTotal, pactTotal,
+      },
+    } = SalesChanceModel;
     const list = [
-      { title: '日程', text: '12' },
-      { title: '任务', text: '2' },
-      { title: '联系人', text: '5' },
-      { title: '销售线索', text: '11' },
-      { title: '销售机会', text: '8' },
+      { title: '日程', text: scheduleTotal },
+      { title: '任务', text: taskTotal },
+      { title: '联系人', text: contactTotal },
+      { title: '产品', text: productTotal },
+      { title: '合同', text: pactTotal },
     ];
     return list.map(_ => (
       <ItemView key={_.title}>
@@ -218,7 +201,6 @@ class Details extends React.Component {
       </ItemView>
     ));
   };
-
   renderHeader = () => {
     const { tabIndex } = this.state;
     const tabProps = {
@@ -231,7 +213,6 @@ class Details extends React.Component {
       item: map,
       onPressFollow: this.onPressFollow,
       onPressChoiceTeam: this.onPressChoiceTeam,
-      onPressStatus: this.onPressStatus,
     };
     return (
       <View>
@@ -240,7 +221,7 @@ class Details extends React.Component {
           {this.renderTotalItem()}
         </TotalView>
         <HorizontalDivider
-          height={15}
+          height={1}
           boarderBottomWidth={1}
           boarderBottomColor={theme.borderColor}
         />
@@ -248,7 +229,6 @@ class Details extends React.Component {
       </View>
     );
   };
-
   renderDynamicView = () => {
     const {
       dynamicList: {
@@ -275,11 +255,9 @@ class Details extends React.Component {
       <FlatListTable {...flatProps} />
     );
   };
-
   renderDetailsItem = ({ item }) => (
     <ActivityDetailsItem {...item} getDetailItem={this.getDetailItem} />
   );
-
   renderDetailsView = () => {
     const {
       salesChanceDetail: {
@@ -293,7 +271,7 @@ class Details extends React.Component {
       ListHeaderComponent: this.renderHeader(),
       renderItem: this.renderDetailsItem,
       ItemSeparatorComponent: null,
-      onRefresh: this.onRefresh,
+      onRefresh: this.getSalesChanceDetail,
       onEndReached: this.onEndReached,
       flatListStyle: {
         marginBottom: theme.moderateScale(50),
