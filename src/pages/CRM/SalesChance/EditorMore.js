@@ -12,8 +12,15 @@ import { observer } from 'mobx-react/native';
 import theme from '../../../constants/theme';
 import { moderateScale } from '../../../utils/scale';
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView, ContainerView } from '../../../components/Styles/Layout';
+import {
+  CommStatusBar,
+  LeftBackIcon,
+  RightView,
+} from '../../../components/Layout';
+import {
+  ContainerScrollView,
+  ContainerView,
+} from '../../../components/Styles/Layout';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
@@ -21,7 +28,13 @@ import ProductItem from './components/ProductItem';
 import AddProduct from './components/AddProduct';
 import { SalesChanceEnum } from '../../../constants/form';
 import { routers } from '../../../constants';
-import { CustomerType, MarkActivityType, OpportunityTypes, OpportunitySource, PriceListType, ProductType } from '../../../constants/enum';
+import {
+  CustomerType,
+  MarkActivityType,
+  OpportunityTypes,
+  OpportunitySource,
+  PriceListType,
+} from '../../../constants/enum';
 import DateTimePicker from '../../../components/DateTimePicker';
 import { formatDateByMoment } from '../../../utils/base';
 import { CenterText, RightText } from '../../../components/Styles/Form';
@@ -193,8 +206,6 @@ class EditorMore extends React.Component {
         priceId,
         priceName,
       }) => {
-        console.log({ products });
-
         this.setState({
           budinessProducts: products,
           priceId,
