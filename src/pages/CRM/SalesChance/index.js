@@ -57,6 +57,7 @@ class SalesChance extends React.Component {
     filterList: FilterList,
     selectedList: [],
     sideBarType: 0,
+    searchValue: null,
     screenTabList: [
       SalesChanceAmountTypeFilterMap,
       SalesChanceResponsibilityTypeFilterMap,
@@ -355,6 +356,7 @@ class SalesChance extends React.Component {
         selectedList,
         screenTabList,
         isBoard,
+        searchValue,
       },
     } = this;
     screenTabList[2].icon = !isBoard ? listIcon : boardIcon;
@@ -369,7 +371,15 @@ class SalesChance extends React.Component {
           bottomPadding
         >
           <CommStatusBar />
-          <SearchInput placeholder="输入客户名称" />
+          <SearchInput
+            placeholder="输入机会名称"
+            value={searchValue}
+            onChangeText={async (searchValue) => {
+              await this.setState({ searchValue });
+              if (!searchValue) this.getData();
+            }}
+            onSearch={() => this.getData()}
+          />
           <ScreenTab
             list={screenTabList}
             activeIndex={activeIndex}

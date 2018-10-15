@@ -37,7 +37,7 @@ const TotalView = styled.View`
   border: 1px solid ${theme.borderColor};
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
@@ -156,7 +156,7 @@ class Details extends React.Component {
       },
     ];
     return list.map(_ => (
-      <ItemView key={_.title}>
+      <ItemView key={_.title} onPress={_.onPress}>
         <NumberText>{_.text}</NumberText>
         <TitleText>{_.title}</TitleText>
       </ItemView>

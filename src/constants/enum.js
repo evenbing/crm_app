@@ -253,3 +253,10 @@ export const ReceivableOverType = {
   true: '已完成',
   false: '未完成',
 };
+
+export const ReceivableDetailType = {
+  0: '计划',
+  1: '记录',
+  2: '开票',
+};
+

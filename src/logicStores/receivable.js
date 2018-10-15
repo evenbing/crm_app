@@ -14,6 +14,8 @@ import {
 } from '../service/receivable';
 import Toast from '../utils/toast';
 import { initFlatList } from './initState';
+import { formatDateByMoment, formatDateType } from '../utils/base';
+import { ReceivableDetailType } from '../constants/enum';
 
 useStrict(true);
 
@@ -33,29 +35,49 @@ class ReceivablePlanStore {
       const {
         receivableDetailList = [],
         receivablePlan = {},
+        invoiceDetail = {},
       } = value;
       const receivableList = [];
-      let receivablePrice = 0; // 计划总金额
-      let recordTotal = 0; // 记录还款总金额
+      let receivableTotalPrice = 0; // 计划总金额
+      let recordTotalPrice = 0; // 记录还款总金额
+      let invoiceTotalPrice = 0; // 开票还款总金额
       if (Object.keys(receivablePlan).length) {
-        receivableList.push({
-          typeName: '计划',
-          ...receivablePlan,
-        });
         value.hasPlan = true; // 包含计划
-        receivablePrice = (receivablePlan.receivablePrice || 0);
+        receivableList.push({
+          typeName: ReceivableDetailType[0],
+          ...receivablePlan,
+          formatDateTime: formatDateByMoment(receivablePlan.receivableDate, formatDateType),
+          formatPrice: receivablePlan.receivablePrice,
+        });
+        receivableTotalPrice = (receivablePlan.receivablePrice || 0);
       }
       if (receivableDetailList.length) {
+        value.hasRecord = true; // 包含记录
         receivableDetailList.forEach((item) => {
           receivableList.push({
-            typeName: '记录',
+            typeName: ReceivableDetailType[1],
             ...item,
+            formatDateTime: formatDateByMoment(item.receivableDate, formatDateType),
+            formatPrice: item.receivablePrice,
           });
-          recordTotal += (item.receivablePrice || 0);
+          recordTotalPrice += (item.receivablePrice || 0);
         });
       }
+      if (Object.keys(invoiceDetail).length) {
+        value.hasInvoice = true; // 包含开票
+        receivableList.push({
+          typeName: ReceivableDetailType[2],
+          ...invoiceDetail,
+          formatDateTime: formatDateByMoment(invoiceDetail.invoiceDate, formatDateType),
+          formatPrice: invoiceDetail.price,
+        });
+        invoiceTotalPrice = (invoiceDetail.price || 0);
+      }
       value.receivableList = receivableList;
-      value.receivableStatus = (receivablePrice !== 0 && receivablePrice <= recordTotal) ? '已完成' : '未完成';
+      value.receivableTotalPrice = receivableTotalPrice;
+      value.recordTotalPrice = recordTotalPrice;
+      value.invoiceTotalPrice = invoiceTotalPrice;
+      value.receivableStatus = (receivableTotalPrice !== 0 && receivableTotalPrice <= recordTotalPrice) ? '已完成' : '未完成';
       return value;
     });
   }
