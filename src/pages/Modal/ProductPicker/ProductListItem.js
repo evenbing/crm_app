@@ -37,8 +37,8 @@ const ProductListItem = ({
   onPressItem,
 }) => {
   const {
-    name,
-    price,
+    productName,
+    standardPrice,
     checked,
   } = item;
   return (
@@ -47,10 +47,10 @@ const ProductListItem = ({
       <ProductImage source={productImage} />
       <ContentView>
         <Name>
-          {name}
+          {productName}
         </Name>
         <Price>
-          {`价格：${price}`}
+          {`价格：${standardPrice}`}
         </Price>
       </ContentView>
     </Container>

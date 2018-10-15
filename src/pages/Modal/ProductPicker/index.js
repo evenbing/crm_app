@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
 import styled from 'styled-components';
 
 import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
@@ -93,7 +92,7 @@ class ProductPicker extends Component {
   }
 
   onPressRight = () => {
-    const { 
+    const {
       state: { params: { callback } },
       goBack,
     } = this.props.navigation;
@@ -146,8 +145,21 @@ class ProductPicker extends Component {
         const count = this.state.products.filter(p => p.id === item.id).length;
         if (count === 0) {
           const arr = this.state.products.map(item => ({ ...item }));
+          const {
+            id,
+            name,
+            price,
+            salesUnit,
+            describe,
+            tenantId,
+          } = item;
           arr.push({
-            ...item,
+            id,
+            productName: name,
+            standardPrice: price,
+            salesUnit,
+            comment: describe,
+            tenantId,
             checked: true,
           });
           this.setState({ products: arr });
@@ -157,20 +169,26 @@ class ProductPicker extends Component {
   }
 
   cancel = () => {
-    // const { goBack } = this.props.navigation;
-    // goBack();
+    const { goBack } = this.props.navigation;
+    goBack();
   }
 
   confirm = () => {
+    console.log('confirmconfirmconfirmconfirmconfirm');
+
     const {
-      state: { params: { callback } },
-      goBack,
-    } = this.props.navigation;
-    const {
-      products,
-      priceId,
-      priceName,
-    } = this.state;
+      state: {
+        products,
+        priceId,
+        priceName,
+      },
+      props: { navigation: {
+        state: { params: { callback } },
+        goBack,
+      } },
+    } = this;
+    console.log({ callback });
+
     callback && callback({
       products: products.filter(item => item.checked),
       priceId,
@@ -178,12 +196,12 @@ class ProductPicker extends Component {
     });
     goBack();
   }
-  
+
   keyExtractor = item => item.id;
 
   renderItem = ({ item }) => (
-    <ProductListItem 
-      item={item} 
+    <ProductListItem
+      item={item}
       onPressItem={this.onPressItem}
     />
   )
@@ -235,7 +253,7 @@ class ProductPicker extends Component {
         />
         <Footer>
           <Button
-            onPress={this.cancel} 
+            onPress={this.cancel}
             backgroundColor="red"
           >
             <ButtonText>

@@ -18,7 +18,6 @@ import { HorizontalDivider } from '../../../components/Styles/Divider';
 import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import ProductItem from './components/ProductItem';
-import productImage from '../../../img/crm/ico_product.png';
 import AddProduct from './components/AddProduct';
 import { SalesChanceEnum } from '../../../constants/form';
 import { routers } from '../../../constants';
@@ -43,9 +42,9 @@ class EditorMore extends React.Component {
       customerName = null,
       priceId = null,
       priceName = null,
-      budgetCost = null,
-      actualCost = null,
-      planAmount = null,
+      budgetCost = '',
+      actualCost = '',
+      planAmount = '',
       salesPhaseId = null,
       salesPhaseName = null,
       expectedDate = null,
@@ -91,18 +90,18 @@ class EditorMore extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-    
+
     const { id } = this.props.navigation.state.params.item;
     // 编辑
     if (id) {
-      BusinessStore.getBusinessDetailReq({
-        opportunityId: id,
-      }, (budinessProducts) => {
-        this.setState({
-          budinessProducts,
-        });
-      });
-    } 
+      // BusinessStore.getBusinessDetailReq({
+      //   opportunityId: id,
+      // }, (budinessProducts) => {
+      //   this.setState({
+      //     budinessProducts,
+      //   });
+      // });
+    }
   }
   onPressRight = async () => {
     const {
@@ -110,20 +109,14 @@ class EditorMore extends React.Component {
         name,
         customerId,
         customerName,
-        budgetCost,
-        actualCost,
         priceId,
         planAmount,
         salesPhaseId,
         salesPhaseName,
         expectedDate,
-        description,
         departmentId,
         departmentName,
-        activityId,
-        opportunityType,
-        sourceType,
-        products,
+        budinessProducts,
       },
       props: { navigation: {
         pop,
@@ -139,15 +132,30 @@ class EditorMore extends React.Component {
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
 
       const businessId = await getNewId();
-      let businessDetails = [];
-      if (products.length > 0) {
-        businessDetails = products.map(item => ({
+      if (budinessProducts.length > 0) {
+        const businessDetails = budinessProducts.map(({
+          productId,
+          productName,
+          standardPrice,
+          salesPrice,
+          salesNumber,
+          salesTotalPrice,
+          comment,
+          discount,
+          tenantId,
+        }) => ({
           opportunityId: businessId,
-          productId: item.id,
+          productId,
+          productName,
+          standardPrice,
+          salesPrice,
+          salesNumber,
+          salesTotalPrice,
+          comment,
+          discount,
+          tenantId,
           priceId,
         }));
-      }
-      if (businessDetails.length > 0) {
         BusinessStore.createBusinessReq({ businessDetails });
       }
       const { id } = this.props.navigation.state.params.item;
@@ -168,16 +176,27 @@ class EditorMore extends React.Component {
     }
   }
   onAddProduct = () => {
-    const { navigate } = this.props.navigation;
+    const {
+      state: {
+        budinessProducts,
+        priceId,
+        priceName,
+      },
+      props: { navigation: { navigate } },
+    } = this;
     navigate(routers.productPicker, {
-      products: this.state.products,
+      products: budinessProducts,
+      priceId,
+      priceName,
       callback: ({
         products,
         priceId,
-        priceName, 
+        priceName,
       }) => {
+        console.log({ products });
+
         this.setState({
-          products,
+          budinessProducts: products,
           priceId,
           priceName,
         });
@@ -199,8 +218,23 @@ class EditorMore extends React.Component {
     };
   };
 
-  modifyProductsExtra = (productsExtra) => {
-    this.setState({ productsExtra });
+  modifyProductPrice = item => () => {
+    const {
+      state: { budinessProducts },
+      props: { navigation: { navigate } },
+    } = this;
+    navigate(routers.salesChanceModifyProductPrice, {
+      ...item,
+      callback: (product) => {
+        const arr = budinessProducts.map((p) => {
+          if (p.id === product.id) {
+            return product;
+          }
+          return p;
+        });
+        this.setState({ budinessProducts: arr });
+      },
+    });
   }
 
   render() {
@@ -480,24 +514,29 @@ class EditorMore extends React.Component {
           {
             budinessProducts.map(item => (
               <ProductItem
+                key={item.id}
                 {...item}
-                modifyProductsExtra={this.modifyProductsExtra}
-                // key={item.id}
-                // image={productImage}
-                // discount="折扣:80%"
-                // name={item.name}
-                // price={`标准价格:${item.price}`}
-                // count={`数量:1 ${item.salesUnit}`}
-                // remark={`备注:${item.remark}`}
-                // totalPrice={`${item.price * 1}`}
+                onPress={this.modifyProductPrice(item)}
               />
             ))
           }
           <HorizontalDivider height={20} />
         </ContainerScrollView>
         <AddProduct
-          count="20"
-          totalPrice="900000"
+          count={
+            budinessProducts.map((item) => {
+              const { salesNumber = 0 } = item;
+              return salesNumber;
+            })
+              .reduce((accumulator, currentValue) => (accumulator + currentValue), 0)
+          }
+          totalPrice={
+            budinessProducts.map((item) => {
+              const { salesTotalPrice = 0 } = item;
+              return salesTotalPrice;
+            })
+              .reduce((accumulator, currentValue) => (accumulator + currentValue), 0)
+          }
           onPress={this.onAddProduct}
         />
       </ContainerView>
