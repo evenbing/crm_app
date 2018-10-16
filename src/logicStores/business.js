@@ -1,6 +1,6 @@
 /*
- * @Author: Edmond.Shi 
- * @Date: 2018-10-08 17:13:10 
+ * @Author: Edmond.Shi
+ * @Date: 2018-10-08 17:13:10
  * @Last Modified by: Edmond.Shi
  * @Last Modified time: 2018-10-08 17:21:41
  */
@@ -34,7 +34,10 @@ class BusinessStore {
       } = await find({ opportunityId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.businessDetail.list = [...result];
+        this.businessDetail.list = result.map(item => ({
+          ...item,
+          attachmentList: [...item.attachmentList],
+        }));
         callback && callback(this.businessDetail.list);
       });
     } catch (e) {
