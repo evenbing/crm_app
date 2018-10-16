@@ -86,6 +86,10 @@ const ProductItem = (props) => {
     salesTotalPrice,
     onPress,
   } = props;
+  console.log({ props });
+
+  console.log({ attachmentList });
+
   let url = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540205823&di=de0e73b2da3a8c2f8cd28b6edff8d6f6&imgtype=jpg&er=1&src=http%3A%2F%2Fs16.sinaimg.cn%2Fmw690%2F003gRgrCzy73OGZAV434f%26amp%3B690';
   if (attachmentList.length > 0) {
     const { filePath } = attachmentList[0];
@@ -171,7 +175,10 @@ ProductItem.propTypes = {
   comment: PropTypes.string,
   salesTotalPrice: PropTypes.string,
   onPress: PropTypes.func.isRequired,
-  attachmentList: PropTypes.arrayOf(PropTypes.object),
+  attachmentList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    uri: PropTypes.string,
+  })),
 };
 
 export default ProductItem;
