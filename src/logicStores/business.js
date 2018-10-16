@@ -34,10 +34,7 @@ class BusinessStore {
       } = await find({ opportunityId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.businessDetail.list = result.map(item => ({
-          ...item,
-          attachmentList: [...item.attachmentList],
-        }));
+        this.businessDetail.list = result;
         callback && callback(this.businessDetail.list);
       });
     } catch (e) {

@@ -67,7 +67,10 @@ class ActivityDetailsItem extends React.Component {
       opportunityId: this.state.id,
     }, (budinessProducts) => {
       this.setState({
-        budinessProducts,
+        budinessProducts: budinessProducts.map(item => ({
+          ...item,
+          attachmentList: [...item.attachmentList],
+        })),
       });
     });
   }
