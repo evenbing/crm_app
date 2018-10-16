@@ -77,6 +77,7 @@ class ActivityDetailsItem extends React.Component {
       activityName,
       actualCost, // 257
       budgetCost, // 258
+      priceName,
       customerName, // "ggbb"
       departmentName, // "测试pos机结算"
       expectedDate, // "1540915200000"
@@ -105,7 +106,7 @@ class ActivityDetailsItem extends React.Component {
         />
         {renderBasicItem('机会名称', name)}
         {renderBasicItem('客户', customerName)}
-        {renderBasicItem('价格表', '价格表')}
+        {renderBasicItem('价格表', priceName)}
         {renderBasicItem('机会类型', opportunityTypeName)}
         {renderBasicItem('销售金额', planAmount, <RightSuffix>元</RightSuffix>)}
         {renderBasicItem('来源', sourceTypeName)}
