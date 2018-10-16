@@ -23,7 +23,7 @@ export function formatStringWithHtml(originString) {
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>');
   return newString;
-};
+}
 
 
 // 是否 isIphoneX
@@ -38,9 +38,9 @@ export function isIphoneX() {
 }
 
 // 获取头部填充高度
-export function getHeaderPadding() {
+export function getHeaderPadding(androidBar = false) {
   if (Platform.OS === 'android') {
-    return StatusBar.currentHeight;
+    return androidBar ? StatusBar.currentHeight : 0;
   }
   if (Platform.OS === 'ios') {
     if (isIphoneX()) {
@@ -57,9 +57,9 @@ export function getHeaderHeight() {
   }
   if (Platform.OS === 'ios') {
     if (isIphoneX()) {
-      return 88 - getHeaderPadding();
+      return 88;
     }
-    return 64 - getHeaderPadding();
+    return 64;
   }
 }
 
@@ -79,14 +79,14 @@ export function getFooterBottom() {
 // 防止按钮多次触发
 export const NoDoublePress = {
   lastPressTime: 1,
-  onPress(callback) {
+  onPress(callback, time = 500) {
     const curTime = new Date().getTime();
-    if (curTime - this.lastPressTime > 1000) {
+    if (curTime - this.lastPressTime > time) {
       this.lastPressTime = curTime;
       callback();
     }
   },
-}
+};
 
 export function xnBorderWidth() {
   if (isIphoneX()) {

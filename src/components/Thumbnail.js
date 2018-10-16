@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme } from '../constants';
 import { isAndroid } from '../utils/utils';
-import defaultAvatar from '../img/default_avatar.png';
+import defaultImage from '../img/404.png';
 
 function getRound(size) {
   return (isAndroid ? size * 2 : `${size / 2}`);
@@ -25,14 +25,14 @@ const AvatarImg = styled.Image.attrs({
   border-radius: ${props => (props.round ? getRound(props.size) : getRadius(props.borderRadius))}px;
 `;
 
-const Thumbnail = (props) => {
-  const {
-    imgUri, size, round, borderRadius, source, resizeMode,
-  } = props;
+const Thumbnail = ({
+  imgUri, size, round, borderRadius, source, resizeMode, style,
+}) => {
   return (
     <AvatarImg
+      style={style}
       size={size}
-      source={imgUri ? { uri: imgUri } : (source || defaultAvatar)}
+      source={imgUri ? { uri: imgUri } : (source || defaultImage)}
       round={round}
       resizeMode={resizeMode}
       borderRadius={borderRadius}
@@ -47,6 +47,7 @@ Thumbnail.defaultProps = {
   round: false,
   borderRadius: 0,
   resizeMode: 'contain',
+  style: {},
 };
 
 Thumbnail.propTypes = {
@@ -56,6 +57,10 @@ Thumbnail.propTypes = {
   round: PropTypes.bool,
   borderRadius: PropTypes.number,
   resizeMode: PropTypes.string,
+  style: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]),
 };
 
 export default Thumbnail;

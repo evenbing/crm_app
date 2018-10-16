@@ -1,16 +1,17 @@
 /* eslint-disable */
 import { NativeModules } from 'react-native';
 import MD5 from 'md5';
+import getConfig from '../config';
 
 export let config = {
   apiUrl: null,
   app_key: null,
   secret: null,
   uploadUrl: null,
-}
+};
 
 export const init=function (data) {
-  config = data
+  config = data;
 };
 
 
@@ -28,7 +29,7 @@ export const isArray = (o) => {
 
 export function getPassportId(){
   return new Promise(function (resolve, reject) {
-    resolve('1023899338427994112');
+    __DEV__ && resolve('1034738035494883328');
     NativeModules.security.getPassportId().then((result) => {
         resolve(result);
       }
@@ -40,7 +41,7 @@ export function getPassportId(){
 
 function identityId(){
   return  new Promise(function (resolve, reject) {
-    resolve('801689539428098048');
+    __DEV__ && resolve('801689539428098048');
     NativeModules.security.getIdentityId().then((result) => {
         resolve(result);
       }
@@ -93,7 +94,7 @@ async function getPostParameter(request) {
     }
     strTemp = strTemp + config.secret;
     param_sign = MD5(strTemp).toString().toUpperCase();
-    post_data = 'sign=' + param_sign.toUpperCase();
+    var post_data = 'sign=' + param_sign.toUpperCase();
     for (var i = 0; i < arrayKeyTemp.length; i++) {
       if (isArray(param_array[arrayKeyTemp[i]])) {
         post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURI(JSON.stringify(param_array[arrayKeyTemp[i]]));
@@ -162,6 +163,27 @@ export async function upload(file) {
   };
   const passportId = await getPassportId();
   // console.log(body);
+  const resp = await fetch(config.uploadUrl + "?passportId=" + passportId, options);
+  const json = await resp.json();
+  console.log('RESP:', json);
+  // 如果请求失败
+  if (resp.status !== 200) {
+    throw new ResponseError(json.message, resp.status, json);
+  }
+  return json;
+}
+
+// 上传图片
+export async function uploadImage(formData) {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData,
+  };
+  const passportId = await getPassportId();
+  console.log('REQ:', config.uploadUrl + "?passportId=" + passportId, options);
   const resp = await fetch(config.uploadUrl + "?passportId=" + passportId, options);
   const json = await resp.json();
   console.log('RESP:', json);

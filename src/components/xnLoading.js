@@ -1,50 +1,13 @@
 /**
  * Created by DEV005 on 2017/10/27.
  */
-/* eslint-disable */
-import React, {Component} from 'react';
-import { StyleSheet, View, Text, NativeModules, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
-import { width } from "../utils/getSize";
-import { getHeaderHeight, getHeaderPadding, xnBorderWidth} from "../utils/utils";
-
-export default class xnLoading extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  componentDidMount() {
-
-  };
-
-  _close = () => {
-    NativeModules.system.navTo("BACK")
-  }
-
-  render() {
-    return (
-      <View style={styles.xnLoading}>
-        <View style={styles.xnLoadingHd}>
-          <TouchableOpacity style={styles.xnLoadingHdBack} onPress={() => {
-            this._close()
-          }}>
-            <Image style={styles.xnLoadingHdIcon} source={require('../img/loadBack.png')} resizeMode="contain"/>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.xnLoadingBd}>
-          <ActivityIndicator style={styles.xnLoadingActivity} size='small' color='#d9d9d9' animating={true}/>
-          <Text style={styles.xnLoadingBdText}>加载中...</Text>
-        </View>
-        <TouchableOpacity style={styles.xnLoadingFt} onPress={() => {
-          this._close()
-        }}><Text style={styles.xnLoadingFtText}>关闭</Text></TouchableOpacity>
-      </View>
-    );
-  };
-
-};
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
+import { width } from '../utils/getSize';
+import { getFooterBottom, getHeaderHeight, getHeaderPadding, xnBorderWidth } from '../utils/utils';
+import { nativeGoBack } from '../utils/base';
 
 const styles = StyleSheet.create({
-
   xnLoading: {
     flex: 1,
     flexDirection: 'column',
@@ -52,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   xnLoadingHd: {
-    width: width,
+    width,
     paddingTop: getHeaderPadding(),
     height: getHeaderHeight(),
     justifyContent: 'center',
@@ -67,7 +30,7 @@ const styles = StyleSheet.create({
   },
   xnLoadingHdIcon: {
     width: 16,
-    height: 16
+    height: 16,
   },
   xnLoadingBd: {
     flexDirection: 'row',
@@ -79,19 +42,58 @@ const styles = StyleSheet.create({
   },
   xnLoadingBdText: {
     fontSize: 14,
-    color: "#000"
+    color: '#000',
   },
   xnLoadingFt: {
-    height: 44,
-    width: width,
+    height: 44 + getFooterBottom(),
+    width,
     alignItems: 'center',
+    paddingBottom: getFooterBottom(),
     justifyContent: 'center',
-    backgroundColor: "#f9f9f9",
+    backgroundColor: '#f9f9f9',
     borderTopWidth: xnBorderWidth(),
-    borderTopColor: "#d9d9d9",
+    borderTopColor: '#d9d9d9',
   },
   xnLoadingFtText: {
     fontSize: 16,
-    color: "#000"
-  }
+    color: '#000',
+  },
 });
+
+export default class xnLoading extends Component {
+  componentDidMount() {
+
+  }
+
+  onClose = () => {
+    nativeGoBack();
+  };
+
+  render() {
+    return (
+      <View style={styles.xnLoading}>
+        <View style={styles.xnLoadingHd}>
+          <TouchableOpacity
+            style={styles.xnLoadingHdBack}
+            onPress={() => {
+            this.onClose();
+          }}
+          >
+            <Image style={styles.xnLoadingHdIcon} source={require('../img/loadBack.png')} resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.xnLoadingBd}>
+          <ActivityIndicator style={styles.xnLoadingActivity} size="small" color="#d9d9d9" animating />
+          <Text style={styles.xnLoadingBdText}>加载中...</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.xnLoadingFt}
+          onPress={() => {
+            this.onClose();
+          }}
+        ><Text style={styles.xnLoadingFtText}>关闭</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}

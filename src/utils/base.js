@@ -4,22 +4,47 @@
  * @time 2018/6/23
  * @author JUSTIN XU
  */
+import moment from 'moment';
+import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
 
-/** 根据数组对象排序 默认升序
- * @param prop 属性值
- * */
-export function compareProps(prop) {
-  return (obj1, obj2) => {
-    const val1 = obj1[prop];
-    const val2 = obj2[prop];
-    if (val1 < val2) {
-      return -1;
-    } else if (val1 > val2) {
-      return 1;
-    }
-    return 0;
-  };
+export const formatDateType = 'YYYY-MM-DD';
+// 格式化
+export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
+  if (!str) return null;
+  if (typeof str === 'string') {
+    if (Number.isNaN(Number(str))) return str;
+    str = Number(str);
+  }
+  return moment(str).format(formatType);
+}
+
+// nav go back
+export function nativeGoBack() {
+  try {
+    NativeModules.system.navTo('BACK');
+  } catch (e) {
+    console.log("system don't support navTo");
+  }
+}
+
+// call telPhone
+export function nativeCallPhone(telPhone) {
+  console.log(`@phone:${telPhone}`);
+  if (!telPhone) return;
+  try {
+    NativeModules.system.call(telPhone);
+  } catch (e) {
+    console.log("system don't support call");
+  }
+}
+
+// 递归生产二维数组
+export function getArrayByPid(list = [], pid) {
+  return list.filter(obj => obj.parentId === pid).map(obj => ({
+    ...obj,
+    children: getArrayByPid(list, obj.id),
+  }));
 }
 
 function padLeftZero(str) {
@@ -36,7 +61,7 @@ export function formatDate(date, fmt) {
     'h+': date.getHours(),
     'm+': date.getMinutes(),
     's+': date.getSeconds(),
-  }
+  };
   for (const k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
       const str = o[k].toString();
@@ -46,86 +71,92 @@ export function formatDate(date, fmt) {
   return fmt;
 }
 
-// 获取导购id
-export function getGuideUserId() {
-  return global.guideUserId;
+// 获取用户id
+export function getUserId() {
+  return global.userId;
 }
 
-// 获取承租人ID
-export function getTenantId() {
-  return global.tenantId;
-}
-
-/**
- * 判断年份是否为润年
- * @param {Number} year
- */
-export function isLeapYear(year) {
-  return (year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0);
-}
-
-/**
- * 获取某一年份的某一月份的天数
- * @param {Number} year
- * @param {Number} month
- */
-export function getMonthDays(year, month) {
-  return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] || (isLeapYear(year) ? 29 : 28);
-}
-
-// 计算周的范围结束
-export function getWeekNumber(y, m, d) {
-  const now = new Date(y, m - 1, d);
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  let days = now.getDate();
-  // 那一天是那一年中的第多少天
-  for (let i = 0; i < month; i++) {
-    days += getMonthDays(year, i);
-  }
-  // 那一年第一天是星期几
-  const yearFirstDay = new Date(year, 0, 1).getDay() || 7;
-  let week = null;
-  if (yearFirstDay === 1) {
-    week = Math.ceil(days / 7);
-  } else {
-    days -= ((7 - yearFirstDay) + 1);
-    week = Math.ceil(days / 7) + 1;
-  }
-  return week;
-}
-
-export function formatDateNow(value) {
-  const { birthDate, birthMonth, birthYear } = value;
-  if (!(birthDate && birthMonth)) return '';
-  const date = new Date().getDate();
-  const month = new Date().getMonth() + 1;
-  const year = new Date().getFullYear();
-  if (month === birthMonth && date === birthDate) return '今天';
-  const week = getWeekNumber(year, month, date);
-  const birthWeek = getWeekNumber(year, birthMonth, birthDate);
-  // console.log("year:", year, " month:", month, " date:", date, " birthMonth:", birthMonth, " birthDate:", birthDate, " week:", week, " birthWeek:", birthWeek)
-  if (week === birthWeek) return '本周';
-  if (month === birthMonth) return '本月';
-  if (!birthYear) return `${birthMonth}-${birthDate}`;
-  return `${birthYear}-${birthMonth}-${birthDate}`;
-}
-
-// 格式化会员list
+// 格式化团队list
 export function formatMemberList(list) {
   if (!Array.isArray(list)) {
     throw new Error('params must be array');
   }
   if (!list.length) return list;
-  return list.map((value) => {
-    const nameChar = pinyin.getFullChars(value.name);
+  return list.filter(value => !!value.userId).map((value) => {
+    if (!value.userName && (value.firstName || value.lastName)) {
+      value.userName = `${value.lastName}${value.firstName}`;
+    }
+    const nameChar = pinyin.getFullChars(value.userName);
     const sortLetters = pinyin.getCamelChars(nameChar).substring(0, 1).toUpperCase();
     if (/^[A-Z]$/.test(sortLetters)) {
       value.sortLetters = sortLetters;
     } else {
       value.sortLetters = '#';
     }
-    value.dateNow = formatDateNow(value);
+    value.actived = false;
     return value;
   });
+}
+
+/**
+ * 对象转换成 key value数组
+ * @param {*} obj
+ */
+export const mapToArray = (obj, name = 'name') => Object.keys(obj).map(key => ({ key, [name]: obj[key] }));
+
+
+// 格式化地址
+export function formatLocationMap(location = {}, needAddress = true) {
+  if (!Object.keys(location).length || !location) return null;
+  const {
+    // countryName,
+    address,
+    provinceName,
+    cityName,
+    districtName,
+  } = location;
+  const list = [];
+  // if (countryName) list.push(countryName);
+  if (provinceName) list.push(provinceName);
+  if (cityName) list.push(cityName);
+  if (districtName) list.push(districtName);
+  if (address && needAddress) list.push(address);
+  if (!list.length) return null;
+  return list.join('-');
+}
+
+// 兼容TextInput value 不识别number
+export function formatNumberToString(obj) {
+  const hashMap = {};
+  Object.keys(obj).forEach((key) => {
+    if (typeof obj[key] === 'number') {
+      hashMap[key] = String(obj[key]);
+    } else {
+      hashMap[key] = obj[key];
+    }
+  });
+  return hashMap;
+}
+
+// 处理image格式
+export function formatPickerImage(image) {
+  const { path = '' } = image;
+  return {
+    file: {
+      uri: Platform.OS === 'android' ? path : path.replace('file://', ''),
+      type: 'multipart/form-data',
+      name: path.substr(path.lastIndexOf('/') + 1),
+    },
+    path,
+  };
+}
+
+// 去除object中的'', null
+export function filterObject(obj) {
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key] && obj[key] !== 0) {
+      delete obj[key];
+    }
+  });
+  return obj;
 }

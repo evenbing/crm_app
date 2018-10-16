@@ -73,6 +73,7 @@ TextInput.defaultProps = {
   textPadding: '5px',
   style: null,
   editable: true,
+  refName: () => null,
 };
 
 TextInput.propTypes = {
@@ -101,6 +102,7 @@ TextInput.propTypes = {
   textPadding: PropTypes.string,
   style: PropTypes.objectOf(PropTypes.any),
   editable: PropTypes.bool,
+  refName: PropTypes.func,
 };
 
 export default TextInput;

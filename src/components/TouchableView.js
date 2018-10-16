@@ -10,7 +10,7 @@ import { TouchableOpacity } from 'react-native';
 import { NoDoublePress } from '../utils/utils';
 
 class TouchableView extends React.PureComponent {
-  onClick = (value) => {
+  onPress = (value) => {
     NoDoublePress.onPress(() => {
       this.props.onPress(value);
     });
@@ -22,7 +22,7 @@ class TouchableView extends React.PureComponent {
       <TouchableOpacity
         activeOpacity={activeOpacity}
         style={style}
-        onPress={this.onClick}
+        onPress={this.onPress}
       >
         {children}
       </TouchableOpacity>
@@ -34,6 +34,7 @@ TouchableView.defaultProps = {
   onPress: () => null,
   style: {},
   activeOpacity: 0.85,
+  children: null,
 };
 
 TouchableView.propTypes = {
@@ -43,6 +44,7 @@ TouchableView.propTypes = {
     PropTypes.array,
   ]),
   activeOpacity: PropTypes.number,
+  children: PropTypes.node,
 };
 
 export default TouchableView;

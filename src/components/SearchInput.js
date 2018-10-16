@@ -8,36 +8,48 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import TextInput from './TextInput';
-import { TouchableView } from './common'
+import TouchableView from './TouchableView';
+import { moderateScale } from '../utils/scale';
 
-const SearcherView = styled.View`
-  width: ${props => props.width || '100%'};
+const SearchView = styled.View`
+  width: ${props => props.width ? moderateScale(props.width) : '100%'};
   flex-direction: row;
   justify-content: space-between;
-  padding-left: 8px;
-  padding-right: 11px;
+  padding: ${moderateScale(8)}px ${moderateScale(15)}px;
   align-items: center;
-  background-color: #ffff;
-  border: 1px #E0E9FF;
-  border-radius: 4px;
+  border-radius: ${moderateScale(4)};
+  position: relative;
 `;
 
 const SuffixImage = styled.Image`
-  width: 13px;
-  height: 13px;
+  width: ${moderateScale(13)};
+  height: ${moderateScale(13)};
+`;
+
+const SearchButtonView = styled(TouchableView)`
+  position: absolute;
+  bottom: ${moderateScale(7)};
+  right: ${moderateScale(13)};
+  height: 98%;
+  width: ${moderateScale(18)};
+  justify-content: center;
 `;
 
 class SearchInput extends React.Component {
   render() {
     const {
       searchWidth,
+      searchStyle,
       onChangeText,
       onSearch,
       value,
       ...resetProps
     } = this.props;
     return (
-      <SearcherView width={searchWidth}>
+      <SearchView
+        width={searchWidth}
+        style={searchStyle}
+      >
         <TextInput
           placeholderTextColor="#c1c1c1"
           returnKeyType="done"
@@ -46,27 +58,29 @@ class SearchInput extends React.Component {
           underlineColorAndroid="transparent"
           autoCorrect={false}
           autoCapitalize="none"
-          onChangeText={val => onChangeText(val)}
+          onChangeText={onChangeText}
           {...resetProps}
-          textPadding="0"
-          width="90%"
+          textPadding={`${moderateScale(10)}px`}
           value={value}
         />
-        <TouchableView onPress={onSearch}>
+        <SearchButtonView
+          onPress={onSearch}
+        >
           <SuffixImage
-            source={require('../img/member/search.png')}
+            source={require('../img/search.png')}
           />
-        </TouchableView>
-      </SearcherView>
+        </SearchButtonView>
+      </SearchView>
     );
   }
 }
 
 SearchInput.defaultProps = {
-  searchWidth: '100%',
+  searchWidth: 0,
   onChangeText: () => null,
   value: '',
   onSearch: () => null,
+  searchStyle: {},
 };
 
 SearchInput.propTypes = {
@@ -76,7 +90,8 @@ SearchInput.propTypes = {
   ]),
   value: PropTypes.string,
   onChangeText: PropTypes.func,
-  onSearch: PropTypes.func
+  onSearch: PropTypes.func,
+  searchStyle: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SearchInput;

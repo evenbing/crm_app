@@ -7,18 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import uuidv1 from 'uuid/v1';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import { theme } from '../constants';
 
 const TableBody = styled.View`
-  background-color: #ffffff;
   flex: 1;
 `;
 
-const ItemSeparator = styled.View`
-  width: 100%;
-  height: 1px;
-  background-color: #F6F6F6;
+const FlatList = styled.FlatList`
+  flex: 1;
 `;
 
 const ListEmptyView = styled.View`
@@ -29,7 +26,7 @@ const ListEmptyView = styled.View`
 `;
 
 const EmptyText = styled.Text`
-  font-size: 16px;
+  font-size: ${theme.moderateScale(16)}px;
   color: #999;
 `;
 
@@ -39,17 +36,19 @@ const FooterView = styled.View`
   justify-content: center;
   align-items: center;
   padding: 0;
-  height: 44px;
+  height: ${theme.moderateScale(44)}px;
 `;
 
 class FlatListTable extends React.PureComponent {
   state = {
     listHeight: 0,
+    scrollY: 0,
   };
   render() {
     const {
       state: {
         listHeight,
+        scrollY,
       },
       props: {
         renderHeader,
@@ -64,12 +63,14 @@ class FlatListTable extends React.PureComponent {
         onEndReached,
         onEndReachedThreshold,
         ListHeaderComponent,
+        keyExtractor,
         ListFooterComponent,
         noDataBool,
         noDataText,
         loadingMore,
         renderItem,
         renderItemElem,
+        flatRef,
         ...restProps
       },
     } = this;
@@ -79,12 +80,15 @@ class FlatListTable extends React.PureComponent {
       >
         { renderHeader }
         <FlatList
-          ref="flatList"
+          ref={flatRef}
           data={data}
           onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            if (listHeight < height) {
-              this.setState({ listHeight: height });
+            const { height, y } = e.nativeEvent.layout;
+            if (listHeight <= height) {
+              this.setState({
+                listHeight: height,
+                scrollY: y,
+              });
             }
           }}
           onRefresh={onRefresh}
@@ -93,10 +97,8 @@ class FlatListTable extends React.PureComponent {
           onEndReached={onEndReached}
           onEndReachedThreshold={onEndReachedThreshold}
           ListHeaderComponent={ListHeaderComponent}
-          keyExtractor={() => uuidv1()}
-          style={{
-            ...flatListStyle,
-          }}
+          keyExtractor={keyExtractor}
+          style={flatListStyle}
           renderItem={
             renderItemElem ?
               (
@@ -111,7 +113,7 @@ class FlatListTable extends React.PureComponent {
           ListEmptyComponent={
             noDataBool ? (
               ListEmptyComponent || (
-                <ListEmptyView height={listHeight}>
+                <ListEmptyView height={listHeight - scrollY}>
                   <EmptyText>{ noDataText }</EmptyText>
                 </ListEmptyView>
               ))
@@ -134,9 +136,10 @@ class FlatListTable extends React.PureComponent {
 
 FlatListTable.defaultProps = {
   renderHeader: null,
+  keyExtractor: item => JSON.stringify(item),
   flatListStyle: null,
   tableBodyStyle: null,
-  ItemSeparatorComponent: () => <ItemSeparator />,
+  ItemSeparatorComponent: null,
   onRefresh: null,
   refreshing: false,
   onEndReached: null,
@@ -149,7 +152,8 @@ FlatListTable.defaultProps = {
   ListFooterComponent: null,
   renderItem: () => null,
   renderItemElem: null,
-  numColumns: 1
+  numColumns: 1,
+  flatRef: () => null,
 };
 
 FlatListTable.propTypes = {
@@ -159,6 +163,7 @@ FlatListTable.propTypes = {
   ]).isRequired,
   renderHeader: PropTypes.element,
   renderItem: PropTypes.func,
+  keyExtractor: PropTypes.func,
   renderItemElem: PropTypes.element,
   ItemSeparatorComponent: PropTypes.func,
   flatListStyle: PropTypes.objectOf(PropTypes.any),
@@ -174,6 +179,7 @@ FlatListTable.propTypes = {
   loadingMore: PropTypes.bool,
   ListFooterComponent: PropTypes.element,
   numColumns: PropTypes.number,
+  flatRef: PropTypes.func,
 };
 
 export default FlatListTable;
