@@ -4874,6 +4874,10 @@ react-native-root-siblings@2.2.0:
   dependencies:
     static-container "^1.0.0"
 
+react-native-splash-screen@2.1.0:
+  version "2.1.0"
+  resolved "http://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-2.1.0.tgz#4e0a5e4e8c32974fe7a3cdb4d9a226d06d9daf4f"
+
 react-native-svg@5.4.1:
   version "5.4.1"
   resolved "http://registry.npm.taobao.org/react-native-svg/download/react-native-svg-5.4.1.tgz#c46191c786adbe9d5007342b4279efd153db8839"

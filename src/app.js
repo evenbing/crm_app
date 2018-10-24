@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import getConfig from './config';
 import { getPassportInfo } from './service/app';
 
@@ -44,6 +45,7 @@ class App extends React.Component {
     try {
       const config = await getConfig();
       init(config);
+      SplashScreen.hide();
       const id = await getPassportId();
       const {
         errors: pwdErrors = [],
