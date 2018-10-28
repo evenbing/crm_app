@@ -7,9 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+
+// constants
 import { theme, routers } from '../../../constants';
-import { formatDateByMoment } from '../../../utils/base';
 import { MarkActivityEnum } from '../../../constants/form';
+
+// utils
+import { formatDateByMoment } from '../../../utils/base';
+import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
 // components
@@ -25,14 +30,12 @@ import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import MarkActivityStore from '../../../logicStores/markActivity';
 
-const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
+// const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 class Create extends React.Component {
   state = {
     name: null,
     beginDate: null,
-    beginDateShow: null,
     endDate: null,
-    endDateShow: null,
     departmentId: null,
     departmentName: null,
     description: null,
@@ -43,7 +46,7 @@ class Create extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         name,
@@ -64,6 +67,7 @@ class Create extends React.Component {
       if (!endDate) throw new Error(MarkActivityEnum.endDate);
       if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
       if (!description) throw new Error(MarkActivityEnum.description);
+      await verifyDateTime(beginDate, endDate);
       MarkActivityStore.createMarkActivityReq(this.state, () => {
         goBack();
       });
@@ -75,8 +79,8 @@ class Create extends React.Component {
     const {
       state: {
         name,
-        beginDateShow,
-        endDateShow,
+        beginDate,
+        endDate,
         departmentId,
         departmentName,
         description,
@@ -111,7 +115,6 @@ class Create extends React.Component {
               date =>
                 this.setState({
                   beginDate: `${formatDateByMoment(date)}`,
-                  beginDateShow: `${formatDateByMoment(date, formatDateTypeShow)}`,
                 })
             }
           >
@@ -119,8 +122,8 @@ class Create extends React.Component {
               leftText="开始日期"
               needPress={false}
               center={
-                <CenterText active={beginDateShow}>
-                  {beginDateShow || MarkActivityEnum.beginDate}
+                <CenterText active={beginDate}>
+                  {beginDate || MarkActivityEnum.beginDate}
                 </CenterText>
               }
               {...theme.navItemStyle}
@@ -131,7 +134,6 @@ class Create extends React.Component {
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date)}`,
-                  endDateShow: `${formatDateByMoment(date, formatDateTypeShow)}`,
                 })
             }
           >
@@ -139,8 +141,8 @@ class Create extends React.Component {
               leftText="结束日期"
               needPress={false}
               center={
-                <CenterText active={endDateShow}>
-                  {endDateShow || MarkActivityEnum.endDate}
+                <CenterText active={endDate}>
+                  {endDate || MarkActivityEnum.endDate}
                 </CenterText>
               }
               {...theme.navItemStyle}
