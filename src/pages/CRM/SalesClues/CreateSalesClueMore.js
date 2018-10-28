@@ -7,10 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+
+// constants
 import { theme, routers } from '../../../constants';
 import { SalesClueEnum } from '../../../constants/form';
-import { formatLocationMap, formatNumberToString } from '../../../utils/base';
 import { LeadsSource, MarkActivityType, SexTypes } from '../../../constants/enum';
+
+// utils
+import { formatLocationMap, formatNumberToString } from '../../../utils/base';
+import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
 // components
@@ -57,6 +62,10 @@ class CreateSalesClueMore extends React.Component {
         companyName,
         activityId,
         departmentId,
+        phone,
+        mobilePhone,
+        email,
+        postCode,
       },
       props: {
         navigation: { pop, state },
@@ -68,6 +77,10 @@ class CreateSalesClueMore extends React.Component {
       if (!companyName) throw new Error(SalesClueEnum.companyName);
       if (!activityId) throw new Error(SalesClueEnum.activityId);
       if (!departmentId) throw new Error(SalesClueEnum.departmentId);
+      if (phone) await verifyPhone(phone);
+      if (mobilePhone) await verifyMobile(mobilePhone);
+      if (email) await verifyEMail(email);
+      if (postCode) await verifyPostalCode(postCode);
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {

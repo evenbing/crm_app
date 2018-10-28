@@ -8,12 +8,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
+
+// constants
 import theme from '../../../constants/theme';
 import { ContactsEnum } from '../../../constants/form';
 import { CustomerType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
-import Toast from '../../../utils/toast';
+
+// utils
 import { formatDateByMoment, formatLocationMap, formatNumberToString } from '../../../utils/base';
+import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from '../../../utils/formVerify';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -59,6 +64,10 @@ class EditorMore extends React.Component {
         name,
         companyName,
         departmentId,
+        phoneNumber,
+        mobilePhone,
+        email,
+        postCode,
       },
       props: {
         navigation: { pop, state },
@@ -68,6 +77,10 @@ class EditorMore extends React.Component {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
       if (!departmentId) throw new Error(ContactsEnum.departmentId);
+      if (phoneNumber) await verifyPhone(phoneNumber);
+      if (mobilePhone) await verifyMobile(mobilePhone);
+      if (email) await verifyEMail(email);
+      if (postCode) await verifyPostalCode(postCode);
 
       const { item: { id } = {} } = state.params || {};
       // 新增

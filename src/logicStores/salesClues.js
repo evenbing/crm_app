@@ -142,7 +142,6 @@ class SalesClueStore {
         errors = [],
       } = await createSalesClue({ ...restProps, locationId });
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getSalesClueListReq(this.queryProps);
         callback && callback();

@@ -7,11 +7,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { routers, theme as themeVar } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
 import { CustomerType, PackType } from '../../../constants/enum';
-import Toast from '../../../utils/toast';
+
+// utils
 import { formatDateByMoment } from '../../../utils/base';
+import { verifyDateTime } from '../../../utils/formVerify';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -44,7 +49,7 @@ class Create extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         theme,
@@ -70,6 +75,8 @@ class Create extends React.Component {
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
       if (!ownerId) throw new Error(ContractEnum.ownerId);
+      await verifyDateTime(startDate, endDate);
+
       ContractModel.createContractReq({
         theme,
         type,

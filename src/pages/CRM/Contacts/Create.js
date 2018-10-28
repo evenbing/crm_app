@@ -7,10 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { routers, theme } from '../../../constants';
 import { ContactsEnum } from '../../../constants/form';
-import Toast from '../../../utils/toast';
 import { CustomerType } from '../../../constants/enum';
+
+// utils
+import { verifyPhone, verifyMobile } from '../../../utils/formVerify';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -41,7 +46,7 @@ class Create extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         name,
@@ -60,6 +65,8 @@ class Create extends React.Component {
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
+      if (phoneNumber) await verifyPhone(phoneNumber);
+      if (mobilePhone) await verifyMobile(mobilePhone);
       ContactsModel.createContactReq({
         name,
         companyName,

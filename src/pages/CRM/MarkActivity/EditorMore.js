@@ -7,10 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+
+// constants
 import { routers, theme } from '../../../constants';
 import { MarkActivityEnum } from '../../../constants/form';
 import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/enum';
+
+// utils
 import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
 // components
@@ -50,7 +55,7 @@ class EditorMore extends React.Component {
     });
     this.initState();
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         name,
@@ -69,6 +74,7 @@ class EditorMore extends React.Component {
       if (!endDate) throw new Error(MarkActivityEnum.endDate);
       if (!departmentId) throw new Error(MarkActivityEnum.departmentName);
       if (!description) throw new Error(MarkActivityEnum.description);
+      await verifyDateTime(beginDate, endDate);
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {

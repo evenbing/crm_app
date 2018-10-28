@@ -8,10 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+
+// constants
 import { theme as themeVar, routers } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
 import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayType } from '../../../constants/enum';
+
+// utils
 import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
 // components
@@ -58,7 +63,7 @@ class EditorMore extends React.Component {
     });
     this.initState();
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         theme,
@@ -84,6 +89,8 @@ class EditorMore extends React.Component {
       if (!endDate) throw new Error(ContractEnum.endDate);
       if (!departmentId) throw new Error(ContractEnum.departmentName);
       if (!ownerId) throw new Error(ContractEnum.ownerId);
+      await verifyDateTime(startDate, endDate);
+
       const { item: { id } = {} } = state.params || {};
       // 新增
       if (!id) {

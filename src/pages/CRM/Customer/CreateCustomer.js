@@ -7,8 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { theme, routers } from '../../../constants';
+
+// utils
 import Toast from '../../../utils/toast';
+import { verifyPhone } from '../../../utils/formVerify';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -38,7 +43,7 @@ class CreateCustomer extends React.Component {
       onPressRight: this.onPressRight,
     });
   }
-  onPressRight = () => {
+  onPressRight = async () => {
     const {
       state: {
         name,
@@ -54,6 +59,7 @@ class CreateCustomer extends React.Component {
     try {
       if (!name) throw new Error(CustomerEnum.name);
       if (!phone) throw new Error(CustomerEnum.phone);
+      await verifyPhone(phone);
       if (!(locationInfo && Object.keys(locationInfo).length)) throw new Error(CustomerEnum.location);
       if (!locationInfo.address) throw new Error(CustomerEnum.address);
       if (!departmentName) throw new Error(CustomerEnum.departmentName);
@@ -85,8 +91,8 @@ class CreateCustomer extends React.Component {
       },
     } = this;
     return (
-      <ContainerScrollView 
-        bottomPadding 
+      <ContainerScrollView
+        bottomPadding
         backgroundColor={theme.whiteColor}
       >
         <CommStatusBar />
