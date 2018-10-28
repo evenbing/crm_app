@@ -23,6 +23,11 @@ const ListItemSeparatorComponent = styled.View`
   height: ${moderateScale(10)}px;
 `;
 
+const ListFooterComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(80)}px;
+`;
+
 @observer
 class taskScheduleList extends React.Component {
   keyExtractor = item => item.id;
@@ -61,7 +66,7 @@ class taskScheduleList extends React.Component {
   }
 
   renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
-
+  renderListFooterComponent = () => <ListFooterComponent />
   render() {
     const { data } = this.props;
     return (
@@ -70,6 +75,7 @@ class taskScheduleList extends React.Component {
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
         ItemSeparatorComponent={this.renderItemSeparatorComponent}
+        ListFooterComponent={this.renderListFooterComponent}
       />
     );
   }

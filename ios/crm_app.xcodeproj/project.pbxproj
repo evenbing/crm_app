@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -48,10 +49,6 @@
 		B5F243A26A284F1EA3D270A5 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9FAE9E2F598748FD8EDA5DF2 /* EvilIcons.ttf */; };
 		BD6B140E5F5543CEA2A3CF2F /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F732B0A7C0D74BE3982942FA /* Entypo.ttf */; };
 		C29B9918691845CD8184AE45 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7DFE0CCE8341E4BA5B24C5 /* libBVLinearGradient.a */; };
-		D09571EE212D6D3600DE7A55 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EA212D6CEE00DE7A55 /* QBImagePicker.framework */; };
-		D09571EF212D6D3600DE7A55 /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EA212D6CEE00DE7A55 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D09571F0212D6D3600DE7A55 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */; };
-		D09571F1212D6D3600DE7A55 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0A94DC5213397870068DB5F /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D09571FA212D6D7700DE7A55 /* libimageCropPicker.a */; };
 		D643CD7F98874143AC37FC71 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2D37E0A8B294B6BA514AB16 /* Zocial.ttf */; };
 		E4CA11FDF07F4DF8A351D8DD /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B536005EAC7D46C1826ACC1D /* Ionicons.ttf */; };
@@ -327,8 +324,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D09571EF212D6D3600DE7A55 /* QBImagePicker.framework in Embed Frameworks */,
-				D09571F1212D6D3600DE7A55 /* RSKImageCropper.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,8 +371,6 @@
 		AAAD867C583C4448A94D4B08 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B536005EAC7D46C1826ACC1D /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		CBDDA5B5D96F441188731874 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		D09571EA212D6CEE00DE7A55 /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = "<group>"; };
-		D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = "<group>"; };
 		D09571F3212D6D7600DE7A55 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		D2D37E0A8B294B6BA514AB16 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F732B0A7C0D74BE3982942FA /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -400,10 +393,8 @@
 				D0A94DC5213397870068DB5F /* libimageCropPicker.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
-				D09571F0212D6D3600DE7A55 /* RSKImageCropper.framework in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
-				D09571EE212D6D3600DE7A55 /* QBImagePicker.framework in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
@@ -603,7 +594,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				D09571E9212D6CEE00DE7A55 /* ImageCropPickerSDK */,
 				13B07FAE1A68108700A75B9A /* crm_app */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* crm_appTests */,
@@ -667,16 +657,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D09571E9212D6CEE00DE7A55 /* ImageCropPickerSDK */ = {
-			isa = PBXGroup;
-			children = (
-				D09571EA212D6CEE00DE7A55 /* QBImagePicker.framework */,
-				D09571EB212D6CEE00DE7A55 /* RSKImageCropper.framework */,
-			);
-			name = ImageCropPickerSDK;
-			path = "../node_modules/react-native-image-crop-picker/ios/ImageCropPickerSDK";
 			sourceTree = "<group>";
 		};
 		D09571F4212D6D7600DE7A55 /* Products */ = {

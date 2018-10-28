@@ -209,7 +209,7 @@ class AddSchedule extends Component {
         <ScrollView>
           <Divder height={9} />
           <NavInputItem
-            leftText="任务主题"
+            leftText="日程主题"
             {...theme.getLeftStyle({
               placeholder: TaskEnum.name,
               value: name,
@@ -245,7 +245,7 @@ class AddSchedule extends Component {
             }
           >
             <NavInputItem
-              leftText="截止时间"
+              leftText="结束时间"
               needPress={false}
               center={
                 <CenterText active={endTime}>
@@ -362,10 +362,10 @@ class AddSchedule extends Component {
           <NavInputItem
             leftText="参与人"
             onPress={() => {
-              if (!(moduleId && moduleType)) {
-                Toast.showError('请先选择关联业务');
-                return;
-              }
+              // if (!(moduleId && moduleType)) {
+              //   Toast.showError('请先选择关联业务');
+              //   return;
+              // }
               navigate(routers.teamMembers, {
                 moduleId,
                 moduleType,
