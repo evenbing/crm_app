@@ -108,6 +108,7 @@ class AddTask extends Component {
     } = this;
     try {
       if (!name) throw new Error(TaskEnum.name);
+      if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!endTime) throw new Error(TaskEnum.endTime);
       if (!(moduleId)) throw new Error(TaskEnum.moduleId);
       const businessId = await getNewId();

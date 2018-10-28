@@ -247,6 +247,7 @@ class Calendar extends Component {
   }
 
   scrollToIndex = (index, viewPosition = 0.5) => {
+    if (index < 0) return;
     this.flatListRef.scrollToIndex({
       animated: true,
       index,
