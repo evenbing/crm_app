@@ -6,12 +6,16 @@
  */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { init, getPassportId } from './utils/rpc';
+import SplashScreen from 'react-native-splash-screen';
 import getConfig from './config';
 import { getPassportInfo } from './service/app';
 
-import XnLoading from './components/xnLoading';
+// utils
 import Toast from './utils/toast';
+import { init, getPassportId } from './utils/rpc';
+
+// components
+import XnLoading from './components/xnLoading';
 import Navigator from './router';
 
 const styles = StyleSheet.create({
@@ -31,19 +35,17 @@ const styles = StyleSheet.create({
 });
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
-  componentWillMount() {
+  state = {
+    loading: true,
+  };
+  componentDidMount() {
     this.initApp();
   }
   initApp = async () => {
     try {
       const config = await getConfig();
       init(config);
+      SplashScreen.hide();
       const id = await getPassportId();
       const {
         errors: pwdErrors = [],

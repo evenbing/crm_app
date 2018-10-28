@@ -9,13 +9,15 @@ import PropTypes from 'prop-types';
 import RootModal from 'js-root-toast';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Root } from 'native-base';
-import { Image } from 'react-native';
+import { BackHandler, Image } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { routers, theme } from './constants';
 import { DefaultHeaderView } from './components/Styles/Layout';
 import { getHeaderPadding, getHeaderHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
-import { registerTopNavigator } from './utils/navigationService';
+import { nativeGoBack } from './utils/base';
+import { registerTopNavigator, goBack } from './utils/navigationService';
+
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
 import TeamMembersScreen from './pages/Card/TeamMembers';
@@ -303,11 +305,35 @@ const RootNavigator = TabNavigator(RootRouteConfig, RootNavigatorConfig);
 
 @observer
 class Routers extends React.Component {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onPressAndroidBack);
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onPressAndroidBack);
+  }
+  onPressAndroidBack = () => {
+    const {
+      state: {
+        nav: { index = 0, routes = [] },
+      } = {},
+    } = this.navigatorRef;
+    const currRoutes = routes[index].routes;
+    const isRootPage = Array.isArray(currRoutes) && currRoutes.length === 1;
+    if (isRootPage) {
+      nativeGoBack();
+      return true;
+    }
+    goBack();
+    return true;
+  };
   render() {
     return (
       <Root>
         <RootNavigator
-          ref={navigatorRef => registerTopNavigator(navigatorRef)}
+          ref={(navigatorRef) => {
+            this.navigatorRef = navigatorRef;
+            registerTopNavigator(navigatorRef);
+          }}
           // onNavigationStateChange={(prevNav, nav, action) => {
           onNavigationStateChange={() => {
             // const { routeName } = action;
