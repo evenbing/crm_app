@@ -9,8 +9,10 @@
 export const TaskEnum = {
   type: '日程任务的类型',
   name: '请输入名称',
+  nameError: '名称长度不能超过100',
   startTime: '请选择开始时间',
   endTime: '请选择截止时间',
+  timeError: '开始时间不能在结束时间之后',
   moduleType: '请选择业务类型',
   moduleId: '请选择业务类型',
   comment: '请输入备注',

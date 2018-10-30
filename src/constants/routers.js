@@ -5,8 +5,10 @@
  * @author JUSTIN XU
  */
 export default {
-  // root tabView
-  rootTabView: 'app.tabView.root',
+  // initial loading Stack
+  authLoading: 'app.authLoading',
+  // tabView
+  tabView: 'app.root.tabView',
   // home module
   home: 'app.tabView.root.home',
   messageList: 'app.tabView.root.home.messageList',

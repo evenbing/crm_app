@@ -7,9 +7,14 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+
+// constants
 import { theme, routers } from '../../../constants';
 import { CustomerEnum } from '../../../constants/form';
 import { CustomerLevelTypes, IndustryTypes, CustomerType } from '../../../constants/enum';
+
+// utils
+import { verifyPhone, verifyLink } from '../../../utils/formVerify';
 import { formatLocationMap, formatNumberToString } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
@@ -59,6 +64,7 @@ class CreateCustomerMore extends Component {
         departmentName,
         level,
         industry,
+        website,
       },
       props: {
         navigation: { pop, state },
@@ -67,11 +73,14 @@ class CreateCustomerMore extends Component {
     try {
       if (!name) throw new Error(CustomerEnum.name);
       if (!phone) throw new Error(CustomerEnum.phone);
+      const errMsg = await verifyPhone(phone);
+      if (errMsg) throw new Error(errMsg);
       if (!(locationInfo && Object.keys(locationInfo).length)) throw new Error(CustomerEnum.location);
       if (!locationInfo.address) throw new Error(CustomerEnum.address);
       if (!level) throw new Error(CustomerEnum.level);
       if (!industry) throw new Error(CustomerEnum.industry);
       if (!(departmentId && departmentName)) throw new Error(CustomerEnum.departmentName);
+      if (website) await verifyLink(website);
 
       const { item: { id } = {} } = state.params || {};
       // 新增

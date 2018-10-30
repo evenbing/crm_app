@@ -7,7 +7,7 @@ export const registerTopNavigator = (navigatorRef) => {
 };
 
 export const reset = (routeName, params) => {
-  _navigator.dispatch({
+  _navigator.dispatch(NavigationActions.reset({
     index: 0,
     actions: [
       NavigationActions.navigate({
@@ -15,7 +15,7 @@ export const reset = (routeName, params) => {
         params,
       }),
     ],
-  });
+  }));
 };
 
 export const push = (routeName, params) => {

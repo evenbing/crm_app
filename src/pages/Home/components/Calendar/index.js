@@ -145,7 +145,7 @@ class Calendar extends Component {
     });
     const { onSelectedDayChange } = this.props;
     const { year, month } = this.state;
-    onSelectedDayChange && onSelectedDayChange(`${year}${get2Date(month)}${get2Date(weekDay)} 00:00:00`);
+    onSelectedDayChange && onSelectedDayChange(`${year}-${get2Date(month)}-${get2Date(weekDay)} 00:00:00`);
   }
 
   onSelectYear = (year) => {
@@ -247,6 +247,7 @@ class Calendar extends Component {
   }
 
   scrollToIndex = (index, viewPosition = 0.5) => {
+    if (index < 0) return;
     this.flatListRef.scrollToIndex({
       animated: true,
       index,

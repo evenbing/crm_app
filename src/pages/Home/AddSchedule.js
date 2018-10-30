@@ -115,9 +115,11 @@ class AddSchedule extends Component {
     } = this;
     try {
       if (!name) throw new Error(TaskEnum.name);
+      if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!startTime) throw new Error(TaskEnum.startTime);
       if (!endTime) throw new Error(TaskEnum.endTime);
-      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      if (startTime >= endTime) throw new Error(TaskEnum.timeError);
+      // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
 
       // 获取位置信息
       let locationid = null;
@@ -163,6 +165,7 @@ class AddSchedule extends Component {
       }, () => {
         reFetchTaskScheduleList();
         goBack();
+        Toast.showSuccess('日程创建成功');
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -209,7 +212,7 @@ class AddSchedule extends Component {
         <ScrollView>
           <Divder height={9} />
           <NavInputItem
-            leftText="任务主题"
+            leftText="日程主题"
             {...theme.getLeftStyle({
               placeholder: TaskEnum.name,
               value: name,
@@ -245,7 +248,7 @@ class AddSchedule extends Component {
             }
           >
             <NavInputItem
-              leftText="截止时间"
+              leftText="结束时间"
               needPress={false}
               center={
                 <CenterText active={endTime}>
@@ -304,6 +307,36 @@ class AddSchedule extends Component {
           />
           <Divder height={1} />
           <NavInputItem
+            leftText="参与人"
+            onPress={() => {
+              // if (!(moduleId && moduleType)) {
+              //   Toast.showError('请先选择关联业务');
+              //   return;
+              // }
+              navigate(routers.teamMembers, {
+                moduleId,
+                moduleType,
+                radio: true,
+                callback: (list) => {
+                  this.setState({
+                    userIds: list.map(user => user.userId),
+                    userIdNames: list.map(user => user.userName),
+                  });
+                },
+              });
+            }}
+            center={
+              <CenterText active={userIds.length && userIdNames.length}>
+                {
+                  userIds.length && userIdNames.length
+                    ? userIdNames.reduce((a, c) => `${a},${c}`) : TaskEnum.userIds
+                }
+              </CenterText>
+            }
+            {...theme.navItemStyle}
+          />
+          <Divder height={10} />
+          <NavInputItem
             leftText="关联业务"
             onPress={() => {
               navigate(routers.moduleTypePicker, {
@@ -324,65 +357,6 @@ class AddSchedule extends Component {
                 {
                   moduleId && moduleName && moduleType && moduleTypeName
                     ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
-                }
-              </CenterText>
-            }
-            {...theme.navItemStyle}
-          />
-          <Divder height={1} />
-          {/* <NavInputItem
-            leftText="负责人"
-            onPress={() => {
-              if (!(moduleId && moduleType)) {
-                Toast.showError('请先选择关联业务');
-                return;
-              }
-              navigate(routers.teamMembers, {
-                moduleId,
-                moduleType,
-                callback: ({ userId, userName }) => {
-                  this.setState({
-                    principal: userId,
-                    principalName: userName,
-                  });
-                },
-              });
-            }}
-            center={
-              <CenterText active={principal && principalName}>
-                {
-                  principal && principalName
-                    ? principalName : TaskEnum.principal
-                }
-              </CenterText>
-            }
-            {...theme.navItemStyle}
-          /> */}
-          <Divder height={1} marginHorizontal={15} />
-          <NavInputItem
-            leftText="参与人"
-            onPress={() => {
-              if (!(moduleId && moduleType)) {
-                Toast.showError('请先选择关联业务');
-                return;
-              }
-              navigate(routers.teamMembers, {
-                moduleId,
-                moduleType,
-                radio: true,
-                callback: (list) => {
-                  this.setState({
-                    userIds: list.map(user => user.userId),
-                    userIdNames: list.map(user => user.userName),
-                  });
-                },
-              });
-            }}
-            center={
-              <CenterText active={userIds.length && userIdNames.length}>
-                {
-                  userIds.length && userIdNames.length
-                    ? userIdNames.reduce((a, c) => `${a},${c}`) : TaskEnum.userIds
                 }
               </CenterText>
             }

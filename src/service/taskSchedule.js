@@ -101,7 +101,7 @@ export function update({
  *  noticeTime  提醒时间  否  该值表示分钟数，表示开始前多少分钟开启提醒
  *  longitudeAndLatitude  位置信息的经纬度  否
  *  locationInfo  位置信息  否  位置信息的文字描述
- *  isPrivate 是否私密  是  true或者false，默认传1，UI上暂时不做
+ *  isPrivate 是否私密  是  true或者false，(甲方回复：默认传1，UI上暂时不做)
  *  principal 责任人的ID  否
  *  userIds 参与用户的ID的集合（数组格式）  否
  * }

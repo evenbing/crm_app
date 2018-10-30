@@ -6,17 +6,15 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import RootModal from 'js-root-toast';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
-import { Root } from 'native-base';
-import { BackHandler, Image } from 'react-native';
-import { observer } from 'mobx-react/native';
+import { Image } from 'react-native';
 import { routers, theme } from './constants';
 import { DefaultHeaderView } from './components/Styles/Layout';
 import { getHeaderPadding, getHeaderHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
-import { nativeGoBack } from './utils/base';
-import { registerTopNavigator, goBack } from './utils/navigationService';
+
+// root page -> loading
+import AuthLoadingScreen from './pages/AuthLoading';
 
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
@@ -271,13 +269,13 @@ CrmStack.navigationOptions = ({ navigation }) => ({
   tabBarIcon: crmTabBarIcon,
 });
 
-const RootRouteConfig = {
+const TabBarRouteConfig = {
   [routers.home]: { screen: HomeStack },
   [routers.crm]: { screen: CrmStack },
 };
 
-const RootNavigatorConfig = {
-  initialRouteName: routers.crm,
+const TabBarNavigatorConfig = {
+  initialRouteName: routers.home,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',
@@ -301,53 +299,18 @@ const RootNavigatorConfig = {
   lazy: true,
 };
 
-const RootNavigator = TabNavigator(RootRouteConfig, RootNavigatorConfig);
+const TabBarStack = TabNavigator(TabBarRouteConfig, TabBarNavigatorConfig);
 
-@observer
-class Routers extends React.Component {
-  componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.onPressAndroidBack);
-  }
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onPressAndroidBack);
-  }
-  onPressAndroidBack = () => {
-    const {
-      state: {
-        nav: { index = 0, routes = [] },
-      } = {},
-    } = this.navigatorRef;
-    const currRoutes = routes[index].routes;
-    const isRootPage = Array.isArray(currRoutes) && currRoutes.length === 1;
-    if (isRootPage) {
-      nativeGoBack();
-      return true;
-    }
-    goBack();
-    return true;
-  };
-  render() {
-    return (
-      <Root>
-        <RootNavigator
-          ref={(navigatorRef) => {
-            this.navigatorRef = navigatorRef;
-            registerTopNavigator(navigatorRef);
-          }}
-          // onNavigationStateChange={(prevNav, nav, action) => {
-          onNavigationStateChange={() => {
-            // const { routeName } = action;
-            // if (routers.home === routeName) {
-            //   // HomeModel.getHomeDataReq();
-            //   return false;
-            // }
-            // 插件toast
-            global.$RootToast && RootModal.hide(global.$RootToast);
-          }}
-        />
-      </Root>
-    );
-  }
-}
+const RootRouteConfig = {
+  [routers.authLoading]: { screen: AuthLoadingScreen },
+  [routers.tabView]: { screen: TabBarStack },
+  // common
+};
 
-export default Routers;
+const RootNavigatorConfig = {
+  initialRouteName: routers.authLoading,
+  cardStyle: { shadowColor: 'transparent' },
+  headerMode: 'none',
+};
+
+export default StackNavigator(RootRouteConfig, RootNavigatorConfig);

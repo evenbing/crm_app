@@ -5,17 +5,23 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
+import { Root } from 'native-base';
+import RootModal from 'js-root-toast';
 import getConfig from './config';
 import { getPassportInfo } from './service/app';
+import Navigator from './router';
+
+import { routers } from './constants';
 
 // utils
 import Toast from './utils/toast';
 import { init, getPassportId } from './utils/rpc';
+import { nativeGoBack } from './utils/base';
+import { goBack, registerTopNavigator, reset } from './utils/navigationService';
 
 // components
 import XnLoading from './components/xnLoading';
-import Navigator from './router';
 
 const styles = StyleSheet.create({
   root: {
@@ -38,8 +44,27 @@ class App extends React.Component {
     loading: true,
   };
   componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onPressAndroidBack);
     this.initApp();
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onPressAndroidBack);
+  }
+  onPressAndroidBack = () => {
+    const {
+      state: {
+        nav: { index = 0, routes = [] },
+      } = {},
+    } = this.navigatorRef;
+    const currRoutes = routes[index].routes;
+    const isRootPage = Array.isArray(currRoutes) && currRoutes.length === 1;
+    if (isRootPage) {
+      nativeGoBack();
+      return true;
+    }
+    goBack();
+    return true;
+  };
   initApp = async () => {
     try {
       const config = await getConfig();
@@ -52,7 +77,8 @@ class App extends React.Component {
       if (pwdErrors.length) throw new Error(pwdErrors[0].message);
       global.tenantId = tenantId;
       global.userId = userId;
-      this.setState({ loading: false });
+      await this.setState({ loading: false });
+      reset(routers.tabView);
     } catch (e) {
       Toast.showError(e.message);
     }
@@ -66,10 +92,20 @@ class App extends React.Component {
             <View style={styles.xnLoading}>
               <XnLoading />
             </View>
-          ) : (
-            <Navigator {...this.props} />
-          )
+          ) : null
         }
+        <Root>
+          <Navigator
+            ref={(navigatorRef) => {
+              this.navigatorRef = navigatorRef;
+              registerTopNavigator(navigatorRef);
+            }}
+            onNavigationStateChange={() => {
+              global.$RootToast && RootModal.hide(global.$RootToast);
+            }}
+            {...this.props}
+          />
+        </Root>
       </View>
     );
   }
