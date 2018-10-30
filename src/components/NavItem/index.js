@@ -54,12 +54,16 @@ const TitleText = styled.Text`
 
 const RightView = styled.View`
   height: 100%;
-  alignItems: center;
-  justifyContent: center;
-  flexDirection: row;
+  flex: 2;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
 `;
 
-const RightText = styled.Text`
+const RightText = styled.Text.attrs({
+  numberOfLines: 1,
+  ellipsizeMode: 'tail',
+})`
   font-family: ${theme.fontRegular};
   font-size: ${moderateScale(16)};
   color: #373737;
@@ -84,7 +88,11 @@ class NavItem extends React.PureComponent {
     if (React.isValidElement(right)) return right;
     return (
       <RightView>
-        <RightText style={rightTextStyle}>{rightText}</RightText>
+        <RightText
+          style={rightTextStyle}
+        >
+          {rightText}
+        </RightText>
         { showNavIcon ? <NavIcon source={require('../../img/nav.png')} resizeMode="contain" /> : null }
         { rightSuffix }
       </RightView>

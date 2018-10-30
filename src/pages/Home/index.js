@@ -167,7 +167,7 @@ class Home extends React.Component {
       id,
       startTime,
       endTime,
-      moduleId,
+      moduleId = '',
       moduleType,
       type,
       name,

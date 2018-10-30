@@ -25,10 +25,13 @@ const ContainerView = styled(TouchableView)`
 `;
 
 const LeftView = styled.View`
- justify-content: center;
+  flex: 1;
+  justify-content: center;
 `;
 
-const TitleView = styled.Text`
+const TitleView = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   font-size: ${theme.moderateScale(16)};
   font-family: ${theme.fontMedium};
   color: ${theme.listTitleColor};
