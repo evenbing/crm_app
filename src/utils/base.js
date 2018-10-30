@@ -47,6 +47,14 @@ export function getArrayByPid(list = [], pid) {
   }));
 }
 
+// 递归查询当前routers
+export function getCurrRoutes(object = {}) {
+  const { index = 0, routes = [] } = object;
+  const currRoutes = routes[index];
+  if (typeof currRoutes.index !== 'undefined' && Array.isArray(currRoutes.routes)) return getCurrRoutes(currRoutes);
+  return routes;
+}
+
 function padLeftZero(str) {
   return (`00${str}`).substr(str.length);
 }

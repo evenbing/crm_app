@@ -17,7 +17,7 @@ import { routers } from './constants';
 // utils
 import Toast from './utils/toast';
 import { init, getPassportId } from './utils/rpc';
-import { nativeGoBack } from './utils/base';
+import { nativeGoBack, getCurrRoutes } from './utils/base';
 import { goBack, registerTopNavigator, reset } from './utils/navigationService';
 
 // components
@@ -53,10 +53,10 @@ class App extends React.Component {
   onPressAndroidBack = () => {
     const {
       state: {
-        nav: { index = 0, routes = [] },
+        nav,
       } = {},
     } = this.navigatorRef;
-    const currRoutes = routes[index].routes;
+    const currRoutes = getCurrRoutes(nav);
     const isRootPage = Array.isArray(currRoutes) && currRoutes.length === 1;
     if (isRootPage) {
       nativeGoBack();
