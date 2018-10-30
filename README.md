@@ -95,34 +95,3 @@ java (v1.8.0_172)
 |--PROGRESS.md      进度md
 |--README.md
 ```
-
-### Question
-
-1. react-native-splash-screen build failed on android
-```
-@
-Goto node_modules -> react-native-splash-screen -> build.gradle
-Change
-
-compileSdkVersion 26
-buildToolsVersion "26.1.0"
-to
-compileSdkVersion 23 
-buildToolsVersion "23.0.1"
-
-and
-
-compile "com.android.support:appcompat-v7:26.1.0"
-to
-compile "com.android.support:appcompat-v7:23.0.1"
-
-And then make sure your build.gradle on android -> app -> build.gradle has the same version
-
-compileSdkVersion 23
-buildToolsVersion "23.0.1"
-
-and
-
-compile "com.android.support:appcompat-v7:23.0.1"
-
-``` 
