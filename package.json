@@ -5,6 +5,8 @@
  "author": "Me Team",
  "scripts": {
   "setup": "yarn install && react-native link",
+  "android:gradlew": "chmod 755 android/gradlew",
+  "ios:config": "cd node_modules/react-native/third-party/glog-0.3.4 && ../../scripts/ios-configure-glog.sh",
   "start": "node node_modules/react-native/local-cli/cli.js start",
   "android": "react-native run-android",
   "devMenu": "adb shell input keyevent 82",
