@@ -105,7 +105,7 @@ class DetailsHead extends React.PureComponent {
             marginBottom={20}
           >
             <MoneyText>总金额：¥{item.totalMoney}</MoneyText>
-            <MoneyText marginLeft={13}>未回款：¥${item.unreceivableTotalPrice}</MoneyText>
+            <MoneyText marginLeft={13}>未回款：¥{item.unreceivableTotalPrice}</MoneyText>
           </ItemView>
         </ContainerView>
         <FormActionSheet

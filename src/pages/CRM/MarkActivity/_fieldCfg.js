@@ -78,8 +78,8 @@ export const MarkActivityResponsibilityTypeFilterMap = {
       name: '我关注的',
     },
     {
-      key: 'sevenDaysUninvolved',
-      name: '7天未跟进的',
+      key: 'myParticipate',
+      name: '我参与的',
     },
     {
       key: 'all',

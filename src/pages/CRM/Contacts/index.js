@@ -162,6 +162,7 @@ class Contacts extends React.Component {
   };
   safeCloseOpenRow = (index) => {
     if (this.prevNodeIndex !== index && typeof this.prevNodeIndex !== 'undefined') {
+      if (!this[`rows.${this.prevNodeIndex}`]) return;
       this[`rows.${this.prevNodeIndex}`]._root.closeRow();
     }
   };
