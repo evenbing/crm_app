@@ -192,7 +192,8 @@ export function find({
   category,
 } = {}) {
   return post({
-    method: 'api.customerrelations.taskSchedule.find',
+    // method: 'api.customerrelations.taskSchedule.find',
+    method: 'api.customerrelations.taskScheduleRelatedToMe.find',
     pageNumber,
     pageSize,
     principal,

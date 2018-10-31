@@ -123,11 +123,10 @@ class Home extends React.Component {
   }
 
   getTaskScheduleList = (date) => {
-    const endDate = date.replace('00:00:00', '23:59:59');
     TaskScheduleStore.getTaskScheduleRelatedToMeReq(1, {
       pageSize: 100,
       startDateId: date,
-      endDateId: endDate,
+      endDateId: date,
     });
   }
 
@@ -168,7 +167,7 @@ class Home extends React.Component {
       startTime,
       endTime,
       moduleId = '',
-      moduleType,
+      moduleType = '',
       type,
       name,
       comment,

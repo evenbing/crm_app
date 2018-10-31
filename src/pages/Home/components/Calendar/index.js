@@ -115,6 +115,8 @@ const DownView = styled.FlatList.attrs({
   background-color: transparent;
 `;
 
+const curDayCount = getMonthDays(new Date().getFullYear(), new Date().getMonth() + 1);
+
 class Calendar extends Component {
   constructor(props) {
     super(props);
@@ -145,13 +147,13 @@ class Calendar extends Component {
     });
     const { onSelectedDayChange } = this.props;
     const { year, month } = this.state;
-    onSelectedDayChange && onSelectedDayChange(`${year}-${get2Date(month)}-${get2Date(weekDay)} 00:00:00`);
+    onSelectedDayChange && onSelectedDayChange(`${year}${get2Date(month)}${get2Date(weekDay)}`);
   }
 
   onSelectYear = (year) => {
     if (year !== this.state.year) {
       const { onSelectedDayChange } = this.props;
-      onSelectedDayChange && onSelectedDayChange(`${year}-01-01 00:00:00`);
+      onSelectedDayChange && onSelectedDayChange(`${year}0101`);
 
       this.setState({
         year,
@@ -176,10 +178,14 @@ class Calendar extends Component {
   )
 
   getInitialScrollIndex = (day) => {
-    if (day > 4) {
+    console.log({ curDayCount });
+
+    if (day > 4 && (curDayCount - day) > 4) {
       return day - 4;
+    } else if (day <= 4) {
+      return 0;
     }
-    return 0;
+    return curDayCount - 7;
   }
 
   goToday = () => {
@@ -190,7 +196,7 @@ class Calendar extends Component {
       this.scrollToIndex(curDay - 1);
     } else {
       const { onSelectedDayChange } = this.props;
-      onSelectedDayChange && onSelectedDayChange(`${curYear}-${curMonth}-${curDay} 00:00:00`);
+      onSelectedDayChange && onSelectedDayChange(`${curYear}${curMonth}${curDay}`);
 
       this.setState({
         year: curYear,
@@ -222,7 +228,7 @@ class Calendar extends Component {
     if (this.state.month > 1) {
       const { onSelectedDayChange } = this.props;
       const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month - 1}-01 00:00:00`);
+      onSelectedDayChange && onSelectedDayChange(`${year}${this.state.month - 1}01`);
 
       this.setState({
         month: this.state.month - 1,
@@ -236,7 +242,7 @@ class Calendar extends Component {
     if (this.state.month < 12) {
       const { onSelectedDayChange } = this.props;
       const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}-${this.state.month + 1}-01 00:00:00`);
+      onSelectedDayChange && onSelectedDayChange(`${year}${this.state.month + 1}01`);
 
       this.setState({
         month: this.state.month + 1,
