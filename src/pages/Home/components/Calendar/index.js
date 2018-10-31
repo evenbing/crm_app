@@ -115,8 +115,6 @@ const DownView = styled.FlatList.attrs({
   background-color: transparent;
 `;
 
-const curDayCount = getMonthDays(new Date().getFullYear(), new Date().getMonth() + 1);
-
 class Calendar extends Component {
   constructor(props) {
     super(props);
@@ -164,6 +162,53 @@ class Calendar extends Component {
     }
   }
 
+  onScrollEndDrag = (event) => {
+    const contentWidth = event.nativeEvent.contentSize.width;
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    if (contentOffsetX <= 0) {
+      let newYear = this.state.year;
+      let newMonth = this.state.month;
+      if (this.state.month === 1) {
+        newMonth = 12;
+        newYear = this.state.year - 1;
+      } else {
+        newMonth -= 1;
+      }
+      this.setState({
+        year: newYear,
+        month: newMonth,
+        day: getMonthDays(newYear, newMonth),
+        data: this.generateDays(newYear, newMonth, getMonthDays(newYear, newMonth)),
+      }, () => {
+        this.scrollToIndex(getMonthDays(newYear, newMonth) - 7, 0);
+      });
+    } else if (contentWidth - contentOffsetX > 7 * ListItemWidth) {
+      this.scrollToIndex(this.getIndex(contentOffsetX), 0);
+    } else {
+      let newYear = this.state.year;
+      let newMonth = this.state.month;
+      let newDay = this.state.day;
+      if (this.state.month < 12) {
+        newMonth += 1;
+        newDay = 1;
+      } else {
+        newMonth = 1;
+        newYear += 1;
+        newDay = 1;
+      }
+      const { onSelectedDayChange } = this.props;
+      onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+      this.setState({
+        year: newYear,
+        month: newMonth,
+        day: newDay,
+        data: this.generateDays(newYear, newMonth),
+      }, () => {
+        this.scrollToIndex(0, 0);
+      });
+    }
+  }
+
   getIndex = (endX) => {
     const yushu = endX % ListItemWidth;
     const count = parseInt(endX / ListItemWidth, 10);
@@ -177,10 +222,9 @@ class Calendar extends Component {
     { length: ListItemWidth, offset: ListItemWidth * index, index }
   )
 
-  getInitialScrollIndex = (day) => {
-    console.log({ curDayCount });
-
-    if (day > 4 && (curDayCount - day) > 4) {
+  getInitialScrollIndex = (day = this.state.day, month = this.state.month, year = this.state.year) => {
+    const curDayCount = getMonthDays(year, month);
+    if (day > 4 && day < curDayCount - 3) {
       return day - 4;
     } else if (day <= 4) {
       return 0;
@@ -193,17 +237,18 @@ class Calendar extends Component {
     const curMonth = new Date().getMonth() + 1;
     const curDay = new Date().getDate();
     if (curYear === this.state.year && curMonth === this.state.month && curDay === this.state.day) {
-      this.scrollToIndex(curDay - 1);
+      this.scrollToIndex(this.getInitialScrollIndex(curDay));
     } else {
       const { onSelectedDayChange } = this.props;
       onSelectedDayChange && onSelectedDayChange(`${curYear}${curMonth}${curDay}`);
-
       this.setState({
         year: curYear,
         month: curMonth,
         day: curDay,
         data: this.generateDays(curYear, curMonth, curDay),
-      }, () => { this.scrollToIndex(curDay - 1); });
+      }, () => {
+        this.scrollToIndex(this.getInitialScrollIndex(curDay), 0);
+      });
     }
   }
 
@@ -225,31 +270,49 @@ class Calendar extends Component {
   generateKeyExtractor = item => item.key;
 
   monthSubtracte = () => {
+    let newYear = this.state.year;
+    let newMonth = this.state.month;
+    let newDay = this.state.day;
     if (this.state.month > 1) {
-      const { onSelectedDayChange } = this.props;
-      const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}${this.state.month - 1}01`);
-
-      this.setState({
-        month: this.state.month - 1,
-        day: 1,
-        data: this.generateDays(this.state.year, this.state.month - 1),
-      }, () => { this.scrollToIndex(0); });
+      newMonth -= 1;
+      newDay = 1;
+    } else {
+      newMonth = 12;
+      newYear -= 1;
+      newDay = 1;
     }
+    const { onSelectedDayChange } = this.props;
+    onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+
+    this.setState({
+      year: newYear,
+      month: newMonth,
+      day: newDay,
+      data: this.generateDays(newYear, newMonth),
+    }, () => { this.scrollToIndex(0, 0); });
   }
 
   monthAdd = () => {
+    let newYear = this.state.year;
+    let newMonth = this.state.month;
+    let newDay = this.state.day;
     if (this.state.month < 12) {
-      const { onSelectedDayChange } = this.props;
-      const { year } = this.state;
-      onSelectedDayChange && onSelectedDayChange(`${year}${this.state.month + 1}01`);
-
-      this.setState({
-        month: this.state.month + 1,
-        day: 1,
-        data: this.generateDays(this.state.year, this.state.month + 1),
-      }, () => { this.scrollToIndex(0); });
+      newMonth += 1;
+      newDay = 1;
+    } else {
+      newMonth = 1;
+      newYear += 1;
+      newDay = 1;
     }
+    const { onSelectedDayChange } = this.props;
+    onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+
+    this.setState({
+      year: newYear,
+      month: newMonth,
+      day: newDay,
+      data: this.generateDays(newYear, newMonth),
+    }, () => { this.scrollToIndex(0, 0); });
   }
 
   scrollToIndex = (index, viewPosition = 0.5) => {
@@ -293,14 +356,12 @@ class Calendar extends Component {
           <UpMiddleView>
             <MonthArrow
               onPress={this.monthSubtracte}
-              disabled={month === 1}
             >
               <MonthArrowIcon source={LeftArrow} />
             </MonthArrow>
             <MonthText>{month}</MonthText>
             <MonthArrow
               onPress={this.monthAdd}
-              disabled={month === 12}
             >
               <MonthArrowIcon source={RightArrow} />
             </MonthArrow>
@@ -322,9 +383,7 @@ class Calendar extends Component {
           keyExtractor={this.generateKeyExtractor}
           getItemLayout={this.getItemLayout}
           initialScrollIndex={this.getInitialScrollIndex(this.state.day)}
-          onScrollEndDrag={(event) => {
-            this.scrollToIndex(this.getIndex(event.nativeEvent.contentOffset.x), 0);
-          }}
+          onScrollEndDrag={this.onScrollEndDrag}
         />
       </Container>
     );
