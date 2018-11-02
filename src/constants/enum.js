@@ -219,6 +219,14 @@ export const NoticeTypes = {
   1440: '提前1天',
 };
 
+// 提醒类型
+// label：显示的给用户
+// value：用于上传（单位为分钟）
+export const RepeatTypes = {
+  0: ' 重复',
+  1: '不重复',
+};
+
 // 期次数
 export const DataTitleTypes = {
   0: '一',

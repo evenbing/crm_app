@@ -19,7 +19,7 @@ import { theme, routers } from '../../constants';
 import NavInputItem from '../../components/NavInputItem';
 import { formatDate } from '../../utils/base';
 import { FormActionSheet } from '../../components/Modal';
-import { NoticeTypes } from '../../constants/enum';
+import { NoticeTypes, RepeatTypes } from '../../constants/enum';
 import { TaskEnum } from '../../constants/form';
 import { CenterText } from '../../components/Styles/Form';
 import ImageCollector from '../../components/ImageCollector';
@@ -68,6 +68,8 @@ class AddSchedule extends Component {
       isPrivate: 1, // 先默认写1
       principal: null,
       // principalName: null,
+      repeatTypeId: null,
+      repeatTypeName: '',
       userIds: [],
       userIdNames: [],
       images: [],
@@ -200,6 +202,8 @@ class AddSchedule extends Component {
         // principalName,
         userIds,
         userIdNames,
+        repeatTypeId,
+        repeatTypeName,
       },
       props: {
         navigation: { navigate },
@@ -362,8 +366,31 @@ class AddSchedule extends Component {
             }
             {...theme.navItemStyle}
           />
+          <FormActionSheet
+            typeEnum={RepeatTypes}
+            onConfirm={(item) => {
+              const {
+                key,
+                value,
+              } = item;
+              this.setState({
+                repeatTypeId: key,
+                repeatTypeName: value,
+              });
+            }}
+          >
+            <NavInputItem
+              leftText="重复规则"
+              needPress={false}
+              center={
+                <CenterText active={repeatTypeId && repeatTypeName}>
+                  {(repeatTypeId && repeatTypeName) ? repeatTypeName : TaskEnum.repeatType}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <Divder height={1} marginHorizontal={15} />
-
           <NavInputItem
             leftText="描述"
             height={44}

@@ -23,6 +23,7 @@ export const TaskEnum = {
   isPrivate: '请选择是否私密',
   principal: '无',
   userIds: '无',
+  repeatType: '无',
 };
 
 // 新增日程表单

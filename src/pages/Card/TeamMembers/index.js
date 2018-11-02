@@ -60,13 +60,13 @@ class TeamMembers extends React.Component {
   };
 
   getData = () => {
-    const {
-      moduleId,
-      moduleType,
-    } = this.props.navigation.state.params || {};
+    // const {
+    //   moduleId,
+    //   moduleType,
+    // } = this.props.navigation.state.params || {};
     TeamStore.getTeamListReq({
-      moduleID: moduleId,
-      moduleType,
+      // moduleID: moduleId,
+      // moduleType,
     });
   };
 
