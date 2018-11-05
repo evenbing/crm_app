@@ -14,7 +14,7 @@ import { width } from '../../../utils/scale';
 
 const FlatList = styled.FlatList`
   flex: 1;
-  background-color: green;
+  background-color: white;
 `;
 
 const ListItem = styled.TouchableOpacity`
