@@ -110,7 +110,7 @@ class AddTask extends Component {
       if (!name) throw new Error(TaskEnum.name);
       if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!endTime) throw new Error(TaskEnum.endTime);
-      if (!(moduleId)) throw new Error(TaskEnum.moduleId);
+      // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
       const businessId = await getNewId();
       // 上传图片
       for (let index = 0; index < images.length; index++) {
