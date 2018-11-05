@@ -104,11 +104,12 @@ const OperateItem = styled.TouchableOpacity`
   height: ${moderateScale(36)};
   justify-content: center;
   align-items: center;
+  background-color: ${props => props.showOperateView ? 'white' : 'transparent'};
 `;
 
 const OperateText = styled.Text`
   font-size: ${moderateScale(16)};
-  color: #26B34E;
+  color:  ${props => props.showOperateView ? ' #26B34E' : 'transparent'};
 `;
 
 class ListItem extends Component {
@@ -177,8 +178,12 @@ class ListItem extends Component {
                 onPress,
               } = item;
               return (
-                <OperateItem onPress={text === '删除' ? onPress(id) : onPress} key={key}>
-                  <OperateText>{text}</OperateText>
+                <OperateItem
+                  showOperateView={showOperateView}
+                  onPress={text === '删除' ? onPress(id) : onPress}
+                  key={key}
+                >
+                  <OperateText showOperateView={showOperateView}>{text}</OperateText>
                 </OperateItem>
               );
             })}
