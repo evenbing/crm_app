@@ -22,7 +22,8 @@ export function getTeamList({
   moduleType,
 } = {}) {
   return post({
-    method: 'api.customerrelations.managementTeamMember.find',
+    // method: 'api.customerrelations.managementTeamMember.find',
+    method: 'api.master.humanresource.employee.find',
     pageSize,
     moduleID,
     moduleType,
