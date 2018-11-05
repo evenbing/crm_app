@@ -4,6 +4,8 @@
  * @time 2017/5/11
  * @author JUSTIN XU
  */
+import moment from 'moment';
+
 /* eslint-disable no-useless-escape */
 // 验证电话
 export const PHONE = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
@@ -119,8 +121,6 @@ export const verifyDateTime = (beginDate, endDate, {
 } = {}) => {
   if (!beginDate) throw new Error('开始时间不为空');
   if (!endDate) throw new Error('结束时间不为空');
-  const beginTime = new Date(beginDate).getTime();
-  const endTime = new Date(endDate).getTime();
-  if (beginTime <= endTime) return null;
+  if (moment(beginDate).isBefore(endDate)) return null;
   throw new Error(errMsg);
 };
