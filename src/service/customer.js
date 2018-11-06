@@ -171,6 +171,7 @@ export function getCustomerDetail({
  *   industry 行业  [枚举类型（IndustryTypeEnum）] must
  *   locationId 地址id must
  *   phone 公司总机
+ *   fax 公司传真  否
  *   postCode  邮编
  *   website 网址
  *   weibo 微博
@@ -189,6 +190,7 @@ export function updateCustomer({
   industry,
   locationId,
   phone,
+  fax,
   postCode,
   website,
   weibo,
@@ -206,6 +208,7 @@ export function updateCustomer({
     industry,
     locationId,
     phone,
+    fax,
     postCode,
     website,
     weibo,

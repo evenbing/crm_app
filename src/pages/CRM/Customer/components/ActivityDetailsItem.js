@@ -20,18 +20,18 @@ const ActivityDetailsItem = ({
   item: {
     name, // '更新机会123',
     level,
-    superiorCustomerId,
+    // superiorCustomerId,
     superiorCustomerName,
     industry,
     phone,
     fax,
     weibo,
-    locationId,
+    // locationId,
     location,
     website,
     peopleNumber,
     salesNumber,
-    departmentId,
+    // departmentId,
     departmentName,
     description,
   },
@@ -49,7 +49,7 @@ const ActivityDetailsItem = ({
     />
     {renderBasicItem('地址', formatLocationMap(location))}
     {renderBasicItem('电话', phone)}
-    {renderBasicItem('邮箱', fax)}
+    {renderBasicItem('传真', fax)}
     {renderBasicItem('微博', weibo)}
     {renderBasicItem('网址', website)}
     <TitleItemComponent

@@ -296,7 +296,7 @@ class MarkActivity extends React.Component {
       <Drawer
         isVisible={drawerVisible}
         content={this.renderSideBar()}
-        onPressClose={this.onCloseDrawer}
+        onPressClose={this.onFilter}
       >
         <ContainerView
           bottomPadding
