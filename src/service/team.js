@@ -14,12 +14,14 @@ import { post } from '../utils/rpc';
  *  pageSize 每页数量 0 通用为全部
  *  moduleId 模块id  是
  *  moduleType 模块类型  是 ModuleTypeEnum：其中PRODUCT-产品，PACT-合同，CUSTOMER-客户，CONTACT-联系人，ACTIVITY-市场活动，LEADS-销售线索，OPPORTUNITY-销售机会，PRICE-价格，RECEIVABLE_PLAN-回款计划，RECEIVABLE_DETAIL-回款记录
+ *  isOpenUser
  * }
  */
 export function getTeamList({
   pageSize = 0,
   moduleID,
   moduleType,
+  isOpenUser = true,
 } = {}) {
   return post({
     // method: 'api.customerrelations.managementTeamMember.find',
@@ -27,6 +29,7 @@ export function getTeamList({
     pageSize,
     moduleID,
     moduleType,
+    isOpenUser,
   });
 }
 

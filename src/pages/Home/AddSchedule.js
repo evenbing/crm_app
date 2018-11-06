@@ -124,14 +124,14 @@ class AddSchedule extends Component {
       // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
 
       // 获取位置信息
-      let locationid = null;
+      let locationId = null;
       if (locationInfo) {
         const { location: { id } } = await createLocationId({
           provinceId,
           cityId,
           districtId,
         });
-        locationid = id;
+        locationId = id;
       }
 
       const businessId = await getNewId();
@@ -160,7 +160,7 @@ class AddSchedule extends Component {
         noticeTime,
         longitudeAndLatitude,
         locationInfo,
-        locationid,
+        locationId,
         isPrivate,
         principal,
         userIds,
