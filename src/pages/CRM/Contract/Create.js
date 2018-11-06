@@ -39,7 +39,9 @@ class Create extends React.Component {
     customerName: null,
     totalMoney: null,
     startDate: null,
+    startDateShow: '',
     endDate: null,
+    endDateShow: '',
     departmentId: null,
     departmentName: null,
     type: null,
@@ -103,7 +105,9 @@ class Create extends React.Component {
         totalMoney,
         departmentId,
         departmentName,
+        startDateShow,
         startDate,
+        endDateShow,
         endDate,
         type,
         ownerId,
@@ -190,6 +194,7 @@ class Create extends React.Component {
               date =>
                 this.setState({
                   startDate: `${formatDateByMoment(date)}`,
+                  startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -197,8 +202,8 @@ class Create extends React.Component {
               leftText="开始日期"
               needPress={false}
               center={
-                <CenterText active={startDate}>
-                  { startDate || ContractEnum.startDate }
+                <CenterText active={startDate && startDateShow}>
+                  { startDateShow || ContractEnum.startDate }
                 </CenterText>
             }
               {...themeVar.navItemStyle}
@@ -209,6 +214,7 @@ class Create extends React.Component {
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date)}`,
+                  endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -216,8 +222,8 @@ class Create extends React.Component {
               leftText="结束日期"
               needPress={false}
               center={
-                <CenterText active={endDate}>
-                  { endDate || ContractEnum.endDate }
+                <CenterText active={endDate && endDateShow}>
+                  { endDateShow || ContractEnum.endDate }
                 </CenterText>
               }
               {...themeVar.navItemStyle}

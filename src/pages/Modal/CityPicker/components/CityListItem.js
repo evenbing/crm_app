@@ -7,7 +7,7 @@ const NameView = styled.TouchableOpacity`
   padding: ${theme.moderateScale(10)}px;
   justify-content: center;
   align-items: center;
-  background-color: ${props => [props.selected ? theme.chartLineColor : theme.whiteColor]};
+  background-color: ${props => [props.selected ? theme.primaryColor : theme.whiteColor]};
 `;
 
 const NameText = styled.Text`

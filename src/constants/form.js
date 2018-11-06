@@ -155,8 +155,8 @@ export const ContractEnum = {
   theme: '请输入合同名称',
   customerName: '请选择客户',
   totalMoney: '请输入总金额',
-  startDate: '请选择活动开始日期',
-  endDate: '请选择活动结束日期',
+  startDate: '请选择开始日期',
+  endDate: '请选择结束日期',
   departmentName: '请选择所属部门',
   ownerId: '请选择负责人',
   // more
