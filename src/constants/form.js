@@ -11,7 +11,7 @@ export const TaskEnum = {
   name: '请输入名称',
   nameError: '主题长度不能超过100',
   startTime: '请选择开始时间',
-  endTime: '请选择截止时间',
+  endTime: '请选择结束时间',
   timeError: '开始时间不能在结束时间之后',
   moduleType: '请选择业务类型',
   moduleId: '请选择业务类型',
