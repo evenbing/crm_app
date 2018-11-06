@@ -4,7 +4,7 @@
  * @time 2017/5/11
  * @author JUSTIN XU
  */
-import moment from 'moment';
+// import moment from 'moment';
 
 /* eslint-disable no-useless-escape */
 // 验证电话
@@ -116,11 +116,15 @@ export const verifyLink = (str = '', {
  * }
  * @return 错误消息
  */
-export const verifyDateTime = (beginDate, endDate, {
-  errMsg = '结束时间必须大于开始时间',
-} = {}) => {
-  if (!beginDate) throw new Error('开始时间不为空');
-  if (!endDate) throw new Error('结束时间不为空');
-  if (moment(beginDate).isBefore(endDate)) return null;
-  throw new Error(errMsg);
+// export const verifyDateTime = (beginDate, endDate, {
+//   errMsg = '结束时间必须大于开始时间',
+// } = {}) => {
+//   if (!beginDate) throw new Error('开始时间不为空');
+//   if (!endDate) throw new Error('结束时间不为空');
+//   if (moment(beginDate).isBefore(endDate)) return null;
+//   throw new Error(errMsg);
+// };
+
+export const verifyDateTime = () => {
+  return null;
 };
