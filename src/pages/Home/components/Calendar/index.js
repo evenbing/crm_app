@@ -197,7 +197,7 @@ class Calendar extends Component {
         newDay = 1;
       }
       const { onSelectedDayChange } = this.props;
-      onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+      onSelectedDayChange && onSelectedDayChange(`${newYear}${get2Date(newMonth)}01`);
       this.setState({
         year: newYear,
         month: newMonth,
@@ -240,7 +240,7 @@ class Calendar extends Component {
       this.scrollToIndex(this.getInitialScrollIndex(curDay));
     } else {
       const { onSelectedDayChange } = this.props;
-      onSelectedDayChange && onSelectedDayChange(`${curYear}${curMonth}${curDay}`);
+      onSelectedDayChange && onSelectedDayChange(`${curYear}${get2Date(curMonth)}${get2Date(curDay)}`);
       this.setState({
         year: curYear,
         month: curMonth,
@@ -282,7 +282,7 @@ class Calendar extends Component {
       newDay = 1;
     }
     const { onSelectedDayChange } = this.props;
-    onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+    onSelectedDayChange && onSelectedDayChange(`${newYear}${get2Date(newMonth)}01`);
 
     this.setState({
       year: newYear,
@@ -305,7 +305,7 @@ class Calendar extends Component {
       newDay = 1;
     }
     const { onSelectedDayChange } = this.props;
-    onSelectedDayChange && onSelectedDayChange(`${newYear}${newMonth}01`);
+    onSelectedDayChange && onSelectedDayChange(`${newYear}${get2Date(newMonth)}01`);
 
     this.setState({
       year: newYear,

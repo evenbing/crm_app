@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { moderateScale } from '../../../utils/scale';
-import OperateIconImage from '../../../img/home/ico_operate_icon.png';
+// import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { theme } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 
@@ -77,17 +77,17 @@ const Time = styled.Text.attrs({
     line-height: ${moderateScale(17)}px;
   `;
 
-const Operate = styled.View`
-  align-items: center;
-  padding: 0px ${moderateScale(12)}px;
-`;
+// const Operate = styled.View`
+//   align-items: center;
+//   padding: 0px ${moderateScale(12)}px;
+// `;
 
-const OperateIcon = styled.Image.attrs({
-  source: OperateIconImage,
-})`
-  width: ${moderateScale(22)};
-  height: ${moderateScale(22)};
-`;
+// const OperateIcon = styled.Image.attrs({
+//   source: OperateIconImage,
+// })`
+//   width: ${moderateScale(22)};
+//   height: ${moderateScale(22)};
+// `;
 
 const OperateView = styled.View`
   height: ${props => props.showOperateView ? moderateScale(37) : '0px'};
@@ -163,10 +163,10 @@ class ListItem extends Component {
             <Title>{name}</Title>
             <Time>{comment}</Time>
           </Theme>
-          <Divder />
+          {/* <Divder />
           <Operate>
             <OperateIcon />
-          </Operate>
+          </Operate> */}
         </Up>
         <OperateView showOperateView={showOperateView}>
           <HorizontalDivider height={moderateScale(1)} />

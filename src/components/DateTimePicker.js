@@ -17,13 +17,17 @@ const ContainerView = styled.View``;
 class DateTimePicker extends React.PureComponent {
   state = {
     isVisible: false,
+    date: new Date(),
   };
   onConfirm = (date) => {
     this.props.onConfirm(date);
     this.onHideModal();
   };
   onShowModal = () => {
-    this.setState({ isVisible: true });
+    this.setState({
+      isVisible: true,
+      date: new Date(),
+    });
   };
   onHideModal = () => {
     this.setState({ isVisible: false });
@@ -32,6 +36,7 @@ class DateTimePicker extends React.PureComponent {
     const {
       state: {
         isVisible,
+        date,
       },
       props: {
         mode,
@@ -50,6 +55,7 @@ class DateTimePicker extends React.PureComponent {
         </TouchableView>
         <Picker
           isVisible={isVisible}
+          date={date}
           mode={mode}
           confirmTextIOS={confirmTextIOS}
           cancelTextIOS={cancelTextIOS}
