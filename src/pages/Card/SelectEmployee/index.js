@@ -78,6 +78,7 @@ class SelectEmployee extends React.Component {
     } = this;
     const {
       filterEmployeeList,
+      refreshing,
       updateSearch,
     } = EmployeeStore;
     return (
@@ -97,6 +98,8 @@ class SelectEmployee extends React.Component {
         <MemberList
           dataList={filterEmployeeList}
           onPressItem={this.onPressItem}
+          refreshing={refreshing}
+          onRefresh={this.getData}
         />
       </ContainerView>
     );

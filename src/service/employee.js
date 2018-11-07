@@ -12,15 +12,18 @@ import { post } from '../utils/rpc';
  *  pageNumber 页码
  *  pageSize 每页数量 0 通用为全部
  *  name 模糊查询  是
+ *  isOpenUser
  * }
  */
 export function getEmployeeList({
   pageSize = 0,
   name,
+  isOpenUser = true,
 } = {}) {
   return post({
     method: 'api.master.humanresource.employee.find',
     pageSize,
     name,
+    isOpenUser,
   });
 }

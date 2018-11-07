@@ -51,6 +51,7 @@ class FlatListTable extends React.PureComponent {
         scrollY,
       },
       props: {
+        headerHeight,
         renderHeader,
         flatListStyle,
         tableBodyStyle,
@@ -103,7 +104,7 @@ class FlatListTable extends React.PureComponent {
             renderItemElem ?
               (
                 props => (
-                  React.cloneElement(renderItemElem, { ...props, ...restProps, isLast: data.length - 1 === props.index })
+                  React.cloneElement(renderItemElem, { ...props, isLast: data.length - 1 === props.index })
                 )
               )
               :
@@ -113,7 +114,7 @@ class FlatListTable extends React.PureComponent {
           ListEmptyComponent={
             noDataBool ? (
               ListEmptyComponent || (
-                <ListEmptyView height={listHeight - scrollY}>
+                <ListEmptyView height={listHeight - scrollY + headerHeight}>
                   <EmptyText>{ noDataText }</EmptyText>
                 </ListEmptyView>
               ))
@@ -121,13 +122,14 @@ class FlatListTable extends React.PureComponent {
           }
           ListFooterComponent={
             loadingMore ? (
-              ListFooterComponent || (
-                <FooterView>
-                  <ActivityIndicator size="small" color="#888888" />
-                </FooterView>
-              )
-            ) : null
+              <FooterView>
+                <ActivityIndicator size="small" color="#888888" />
+              </FooterView>
+            ) : (
+              ListFooterComponent
+            )
           }
+          {...restProps}
         />
       </TableBody>
     );
@@ -135,6 +137,7 @@ class FlatListTable extends React.PureComponent {
 }
 
 FlatListTable.defaultProps = {
+  headerHeight: 0,
   renderHeader: null,
   keyExtractor: item => JSON.stringify(item),
   flatListStyle: null,
@@ -147,7 +150,7 @@ FlatListTable.defaultProps = {
   ListHeaderComponent: null,
   ListEmptyComponent: null,
   noDataBool: false,
-  noDataText: '没有数据',
+  noDataText: '暂无数据',
   loadingMore: false,
   ListFooterComponent: null,
   renderItem: () => null,
@@ -157,6 +160,7 @@ FlatListTable.defaultProps = {
 };
 
 FlatListTable.propTypes = {
+  headerHeight: PropTypes.number,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,

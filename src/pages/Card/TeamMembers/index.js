@@ -88,6 +88,7 @@ class TeamMembers extends React.Component {
     const {
       filterTeamList,
       updateSearch,
+      refreshing,
     } = TeamStore;
     return (
       <ContainerView
@@ -107,7 +108,9 @@ class TeamMembers extends React.Component {
           // renderHeader={this.renderHeader}
           // headerHeight={theme.moderateScale(44)}
           dataList={filterTeamList}
+          refreshing={refreshing}
           onPressItem={this.onPressItem}
+          onRefresh={this.getData}
         />
       </ContainerView>
     );

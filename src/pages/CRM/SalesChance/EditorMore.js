@@ -436,7 +436,7 @@ class EditorMore extends React.Component {
             onConfirm={
               (date) => {
                 this.setState({
-                  expectedDate: formatDateByMoment(date),
+                  expectedDate: formatDateByMoment(date, formatDateTypeShow),
                   expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
                 });
               }

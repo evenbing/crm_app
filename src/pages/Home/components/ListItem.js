@@ -1,4 +1,10 @@
-import React, { Component } from 'react';
+/**
+ * @component ListItem.js
+ * @description 任务日程列表
+ * @time 2018/8/5
+ * @author
+ */
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { moderateScale } from '../../../utils/scale';
@@ -112,16 +118,15 @@ const OperateText = styled.Text`
   color:  ${props => props.showOperateView ? ' #26B34E' : 'transparent'};
 `;
 
-class ListItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showOperateView: false,
-    };
-  }
+class ListItem extends React.PureComponent {
+  state = {
+    showOperateView: false,
+  };
 
   onToggleOperateView = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => () => {
-    const { operateList, onPressItem } = this.props;
+    const {
+      item: { operateList, onPressItem },
+    } = this.props;
     if (operateList && operateList.length > 0) {
       if (type === '任务') {
         onPressItem({ id, type: 'TASK', startTime, endTime, moduleId, moduleType, rowVersion });
@@ -134,17 +139,19 @@ class ListItem extends Component {
 
   render() {
     const {
-      id,
-      duration,
-      type,
-      name,
-      comment,
-      startTime,
-      endTime,
-      moduleId,
-      moduleType,
-      rowVersion,
-      operateList,
+      item: {
+        id,
+        duration,
+        type,
+        name,
+        comment,
+        startTime,
+        endTime,
+        moduleId,
+        moduleType,
+        rowVersion,
+        operateList,
+      },
     } = this.props;
     const { showOperateView } = this.state;
     return (
@@ -195,34 +202,11 @@ class ListItem extends Component {
 }
 
 ListItem.defaultProps = {
-  comment: '',
-  name: '',
-  operateList: [],
-  startTime: null,
-  endTime: null,
-  moduleId: null,
-  moduleType: null,
-  rowVersion: null,
-  onPressItem: () => {},
+  item: {},
 };
 
 ListItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  duration: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string,
-  comment: PropTypes.string,
-  startTime: PropTypes.string,
-  endTime: PropTypes.string,
-  moduleId: PropTypes.string,
-  moduleType: PropTypes.string,
-  rowVersion: PropTypes.string,
-  operateList: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    text: PropTypes.string,
-    onPress: PropTypes.func,
-  })),
-  onPressItem: PropTypes.func,
+  item: PropTypes.objectOf(PropTypes.any),
 };
 
 export default ListItem;

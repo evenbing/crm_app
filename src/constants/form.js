@@ -135,7 +135,7 @@ export const SalesClueEnum = {
 
 // 销售机会表单
 export const SalesChanceEnum = {
-  name: '请输入机会名称',
+  name: '请输入姓名',
   customer: '请选择客户',
   price: '请选择价格表',
   budgetCost: '请输入项目预算',

@@ -18,6 +18,7 @@ useStrict(true);
 class EmployeeStore {
   // 列表
   @observable employeeList = [];
+  @observable refreshing = false;
 
   @observable search = null;
 
@@ -44,7 +45,7 @@ class EmployeeStore {
   // 查询全部成员列表
   @action async getEmployeeListReq(options) {
     try {
-      this.employeeList = [];
+      this.refreshing = true;
       const {
         result = [],
         errors = [],
@@ -55,6 +56,10 @@ class EmployeeStore {
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.refreshing = false;
+      });
     }
   }
 }

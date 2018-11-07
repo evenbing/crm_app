@@ -13,6 +13,7 @@ useStrict(true);
 class TeamStore {
   // 列表
   @observable teamList = [];
+  @observable refreshing = false;
   // 详情
   @observable teamDetail = {};
 
@@ -45,7 +46,7 @@ class TeamStore {
   // 查询团队成员
   @action async getTeamListReq(options) {
     try {
-      this.teamList = [];
+      this.refreshing = true;
       const {
         result = [],
         errors = [],
@@ -56,6 +57,10 @@ class TeamStore {
       });
     } catch (e) {
       Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.refreshing = false;
+      });
     }
   }
 

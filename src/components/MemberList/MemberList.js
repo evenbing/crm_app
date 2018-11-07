@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
   ListView,
+  RefreshControl,
   Dimensions,
 } from 'react-native';
 import SilderItem from './SilderItem';
@@ -186,6 +187,9 @@ class MemberList extends React.PureComponent {
       props: {
         renderHeader,
         dataList = [],
+        refreshing,
+        onRefresh,
+        ...restProps
       },
     } = this;
     if (dataList.length === 0 || dataSource.length === 0) {
@@ -195,6 +199,12 @@ class MemberList extends React.PureComponent {
       <ContainerView>
         <ListView
           ref={(ref) => { this.refListView = ref; }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
           onScroll={this.onScroll}
           dataSource={dataSource}
           renderHeader={renderHeader}
@@ -203,6 +213,7 @@ class MemberList extends React.PureComponent {
           enableEmptySections
           legacyImplementation
           initialListSize={500}
+          {...restProps}
         />
         <SilderView height={height}>
           {this.renderSilder()}
@@ -219,6 +230,8 @@ MemberList.defaultProps = {
   rowHeight: theme.moderateScale(74),
   sectionHeaderHeight: theme.moderateScale(20),
   onPressItem: () => null,
+  refreshing: false,
+  onRefresh: () => null,
 };
 
 MemberList.propTypes = {
@@ -231,6 +244,8 @@ MemberList.propTypes = {
   rowHeight: PropTypes.number,
   sectionHeaderHeight: PropTypes.number,
   onPressItem: PropTypes.func,
+  refreshing: PropTypes.bool,
+  onRefresh: PropTypes.func,
 };
 
 export default MemberList;

@@ -1,6 +1,6 @@
 /**
  * @component CreateSalesChance.js
- * @description 创建销售线索
+ * @description 创建销售机会
  * @time 2018/9/4
  * @author --
  */

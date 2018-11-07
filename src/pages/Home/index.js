@@ -5,21 +5,36 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-import { Alert } from 'react-native';
-import { observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Alert, View } from 'react-native';
+import { observer } from 'mobx-react/native';
 
-import TaskScheduleStore from '../../logicStores/taskSchedule';
+import { routers } from '../../constants';
+import { moderateScale } from '../../utils/scale';
+import { get2Date } from '../../utils/date';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { ActionSheet } from '../../components/Modal';
-import { routers } from '../../constants';
+import { ContainerView } from '../../components/Styles/Layout';
+import FlatListTable from '../../components/FlatListTable';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
-import { get2Date } from '../../utils/date';
-import TaskScheduleList from './components/TaskScheduleList';
-import { ContainerView } from '../../components/Styles/Layout';
+// import TaskScheduleList from './components/TaskScheduleList';
+import TaskScheduleListItem from './components/ListItem';
+
+import TaskScheduleStore from '../../logicStores/taskSchedule';
+
+const ListItemSeparatorComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(10)}px;
+`;
+
+const ListFooterComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(60)}px;
+`;
 
 const createTypes = [
   { leftText: '新建日程', path: routers.addSchedule },
@@ -41,11 +56,7 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    const curYear = new Date().getFullYear();
-    const curMonth = get2Date(new Date().getMonth() + 1);
-    const curDay = get2Date(new Date().getDate());
-    this.curSelectedDate = `${curYear}${curMonth}${curDay}`;
-    this.getTaskScheduleList(`${curYear}${curMonth}${curDay}`);
+    this.getData();
   }
 
   onSelectCreateType = ({ item }) => {
@@ -64,7 +75,7 @@ class Home extends React.Component {
 
   onSelectedDayChange = (date) => {
     this.curSelectedDate = date;
-    this.getTaskScheduleList(date);
+    this.getData();
   }
 
   onPressItem = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => {
@@ -75,18 +86,33 @@ class Home extends React.Component {
     this.selectedMoudleId = moduleId;
     this.selectedMoudleType = moduleType;
     this.selectedRowVersion = rowVersion;
-  }
+  };
 
-  getTaskScheduleList = (date) => {
+  onEndReached = () => {
+    const { total, list, pageNumber, loadingMore } = TaskScheduleStore.taskScheduleList;
+    if (list.length < total && loadingMore === false) {
+      this.getData(pageNumber + 1);
+    }
+  };
+
+  getData = (pageNumber = 1) => {
+    let currDate = this.curSelectedDate;
+    if (!currDate) {
+      const curYear = new Date().getFullYear();
+      const curMonth = get2Date(new Date().getMonth() + 1);
+      const curDay = get2Date(new Date().getDate());
+      currDate = `${curYear}${curMonth}${curDay}`;
+      this.curSelectedDate = currDate;
+    }
     TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      pageNumber: 1,
-      startDateId: date,
-      endDateId: date,
+      pageNumber,
+      startDateId: currDate,
+      endDateId: currDate,
     });
-  }
+  };
 
   reFetchTaskScheduleList = () => {
-    this.getTaskScheduleList(this.curSelectedDate);
+    this.getData();
   }
 
   showMessageList = () => {
@@ -180,16 +206,35 @@ class Home extends React.Component {
     );
   }
 
+  renderHeader = () => {
+    const {
+      props: {
+        navigation: {
+          navigate,
+        },
+      },
+    } = this;
+    return (
+      <View>
+        <TodayView
+          key="todayView"
+          showMessageList={this.showMessageList}
+        />
+        <Calendar
+          key="calendar"
+          navigate={navigate}
+          selectCreateType={this.selectCreateType}
+          onSelectedDayChange={this.onSelectedDayChange}
+        />
+      </View>
+    );
+  };
+
   render() {
     const {
       state: {
         createActionSheetVisible,
         delayActionSheetVisible,
-      },
-      props: {
-        navigation: {
-          navigate,
-        },
       },
     } = this;
     const createActionSheetProps = {
@@ -204,19 +249,34 @@ class Home extends React.Component {
       onPressItem: this.onSelectDelayType,
       list: delayTypes,
     };
+    const {
+      taskScheduleList: { refreshing, list, total, loadingMore },
+    } = TaskScheduleStore;
     const data = TaskScheduleStore.taskScheduleList.list.map(item => this.formatTaskScheduleListData(item));
+    const flatProps = {
+      flatListStyle: {
+        paddingTop: moderateScale(10),
+        paddingRight: moderateScale(15),
+        paddingLeft: moderateScale(15),
+      },
+      data,
+      headerHeight: 217,
+      renderHeader: this.renderHeader(),
+      renderItemElem: <TaskScheduleListItem />,
+      onRefresh: this.getData,
+      onEndReached: this.onEndReached,
+      ItemSeparatorComponent: () => <ListItemSeparatorComponent />,
+      ListFooterComponent: (total === list.length && total) ? <ListFooterComponent /> : null,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+      loadingMore,
+    };
     return (
       <ContainerView>
         <CommStatusBar />
         <ActionSheet {...createActionSheetProps} />
         <ActionSheet {...delayActionSheetProps} />
-        <TodayView showMessageList={this.showMessageList} />
-        <Calendar
-          navigate={navigate}
-          selectCreateType={this.selectCreateType}
-          onSelectedDayChange={this.onSelectedDayChange}
-        />
-        <TaskScheduleList data={data} />
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
