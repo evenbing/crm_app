@@ -44,7 +44,8 @@ class UpcomingScheduleList extends Component {
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq(pageNumber, {
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
+      pageNumber,
       type: 'SCHEDULE',
       category: 'UNREAD',
     });

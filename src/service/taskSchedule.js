@@ -85,6 +85,27 @@ export function update({
   });
 }
 
+/** 任务延时接口
+ * @add by zhao
+ * @params options
+ * {
+ *   id 任务或者日程的ID must
+ *   delayHours 延时时长（单位：小时）
+ * }
+ * @return Promise<Object>
+ */
+export function updateTaskHours({
+  id,
+  delayHours,
+}) {
+  debugger;
+  return post({
+    method: 'api.customerrelations.task.delay',
+    id,
+    delayHours,
+  });
+}
+
 
 /** 创建日程或者任务
  * @add by zhao
@@ -183,7 +204,7 @@ export function detail({
  */
 export function find({
   pageNumber = 1,
-  pageSize = 15,
+  pageSize = 200,
   principal,
   userId,
   isTodayWork,

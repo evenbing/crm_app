@@ -8,7 +8,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, create, update, del,
+  find, create, update, del, updateTaskHours,
 } from '../service/taskSchedule';
 import { getMessage } from '../service/app';
 import Toast from '../utils/toast';
@@ -23,6 +23,9 @@ class TaskScheduleStore {
   // 详情
   @observable taskSchedule = initDetailMap;
 
+  // 保存list的搜索对象, 提供给新增调取接口使用
+  static queryProps = {};
+
   /**
    * 删除任务或详情
    */
@@ -33,7 +36,7 @@ class TaskScheduleStore {
       } = await del(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.taskScheduleList.list = [];
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
         callback && callback();
       });
     } catch (e) {
@@ -44,8 +47,9 @@ class TaskScheduleStore {
   /**
    * 查询任务或日程
    */
-  @action async getTaskScheduleRelatedToMeReq(pageNumber = 1, restProps) {
+  @action async getTaskScheduleRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
+      this.queryProps = restProps;
       if (pageNumber === 1) {
         this.taskScheduleList.refreshing = true;
       } else {
@@ -80,7 +84,7 @@ class TaskScheduleStore {
   /**
    * 查询任务或日程
    */
-  @action async getTaskRelatedToMeReq(pageNumber = 1, restProps) {
+  @action async getTaskRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
       if (pageNumber === 1) {
         this.taskList.refreshing = true;
@@ -116,7 +120,7 @@ class TaskScheduleStore {
   /**
    * 查询任务或日程
    */
-  @action async getScheduleRelatedToMeReq(pageNumber = 1, restProps) {
+  @action async getScheduleRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
       if (pageNumber === 1) {
         this.scheduleList.refreshing = true;
@@ -154,13 +158,32 @@ class TaskScheduleStore {
   @action async createTaskScheduleRelatedToMeReq(options, callback) {
     try {
       const {
-        result = [],
         errors = [],
       } = await create(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.taskSchedule.map = [...result];
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
         callback && callback();
+        Toast.showSuccess(options.successMsg || '创建成功');
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  /**
+   *  修改 任务或日程
+   */
+  @action async updateTaskHoursReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateTaskHours(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        callback && callback();
+        Toast.showSuccess('更新延时成功');
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -173,12 +196,11 @@ class TaskScheduleStore {
   @action async updateTaskScheduleRelatedToMeReq(options) {
     try {
       const {
-        result = null,
         errors = [],
       } = await update(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.taskSchedule.map = result;
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -187,7 +209,7 @@ class TaskScheduleStore {
 
   // 消息列表
   @observable messageList = initFlatList;
-  @action async getMessageReq(pageNumber, restProps) {
+  @action async getMessageReq({ pageNumber = 1, ...restProps }) {
     try {
       if (pageNumber === 1) {
         this.messageList.refreshing = true;

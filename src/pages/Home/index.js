@@ -20,20 +20,17 @@ import TodayView from './components/TodayView';
 import { get2Date } from '../../utils/date';
 import TaskScheduleList from './components/TaskScheduleList';
 import { ContainerView } from '../../components/Styles/Layout';
-import { formatDateByMoment } from '../../utils/base';
-import Toast from '../../utils/toast';
 
 const createTypes = [
-  { leftText: '新建日程' },
-  { leftText: '新建任务' },
+  { leftText: '新建日程', path: routers.addSchedule },
+  { leftText: '新建任务', path: routers.addTask },
 ];
 
 const delayTypes = [
-  { leftText: '1小时以后' },
-  { leftText: '3小时以后' },
-  { leftText: '明天' },
-  { leftText: '后天' },
-  // { leftText: '自定义' },
+  { leftText: '1小时以后', delayHours: 1 },
+  { leftText: '3小时以后', delayHours: 3 },
+  { leftText: '明天', delayHours: 24 },
+  { leftText: '后天', delayHours: 48 },
 ];
 
 @observer
@@ -53,58 +50,16 @@ class Home extends React.Component {
 
   onSelectCreateType = ({ item }) => {
     const { navigate } = this.props.navigation;
-    switch (item.leftText) {
-      case '新建日程':
-        this.setState({ createActionSheetVisible: false }, () => {
-          navigate(routers.addSchedule, {
-            reFetchTaskScheduleList: this.reFetchTaskScheduleList,
-          });
-        });
-        break;
-      case '新建任务':
-        this.setState({ createActionSheetVisible: false }, () => {
-          navigate(routers.addTask, {
-            reFetchTaskScheduleList: this.reFetchTaskScheduleList,
-          });
-        });
-        break;
-      default:
-        break;
-    }
+    if (!Object.keys(item).length) return;
+    navigate(item.path);
   }
 
   onSelectDelayType = ({ item }) => {
-    switch (item.leftText) {
-      case '1小时以后':
-        this.updateTaskAndSchedule({
-          time: 60 * 1000,
-        });
-        this.setState({ delayActionSheetVisible: false });
-        break;
-      case '3小时以后':
-        this.updateTaskAndSchedule({
-          time: 3 * 60 * 1000,
-        });
-        this.setState({ delayActionSheetVisible: false });
-        break;
-      case '明天':
-        this.updateTaskAndSchedule({
-          time: 24 * 60 * 1000,
-        });
-        this.setState({ delayActionSheetVisible: false });
-        break;
-      case '后天':
-        this.updateTaskAndSchedule({
-          time: 2 * 24 * 60 * 1000,
-        });
-        this.setState({ delayActionSheetVisible: false });
-        break;
-      case '自定义':
-        this.setState({ delayActionSheetVisible: false });
-        break;
-      default:
-        break;
-    }
+    if (!Object.keys(item).length) return;
+    TaskScheduleStore.updateTaskHoursReq({
+      id: this.selectedItemId,
+      delayHours: item.delayHours,
+    });
   }
 
   onSelectedDayChange = (date) => {
@@ -123,35 +78,15 @@ class Home extends React.Component {
   }
 
   getTaskScheduleList = (date) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq(1, {
-      pageSize: 100,
+    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
+      pageNumber: 1,
       startDateId: date,
       endDateId: date,
     });
   }
 
-  updateTaskAndSchedule = ({ time }) => {
-    if (this.selectedStartTime && Number(this.selectedStartTime) < Number(Math.round(new Date()))) {
-      Toast.showWarning('该任务已经开始');
-      return;
-    }
-    TaskScheduleStore.updateTaskScheduleRelatedToMeReq({
-      id: this.selectedItemId,
-      type: this.selectedItemType,
-      startTime: this.selectedStartTime ? formatDateByMoment(this.selectedStartTime, 'YYYY-MM-DD HH:mm:ss') : null,
-      endTime: formatDateByMoment(Number(this.selectedEndTime) + time, 'YYYY-MM-DD HH:mm:ss'),
-      moduleId: this.selectedMoudleId,
-      moduleType: this.selectedMoudleType,
-      rowVersion: this.selectedRowVersion,
-    });
-  }
-
   reFetchTaskScheduleList = () => {
     this.getTaskScheduleList(this.curSelectedDate);
-    // TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-    //   startDateId: this.curSelectedDate,
-    //   endDateId: this.curSelectedDate,
-    // });
   }
 
   showMessageList = () => {

@@ -62,7 +62,8 @@ class NotificationList extends Component {
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getMessageReq(pageNumber, {
+    TaskScheduleStore.getMessageReq({
+      pageNumber,
       category: 'UNREAD',
     });
   }

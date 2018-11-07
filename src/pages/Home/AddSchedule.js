@@ -107,11 +107,6 @@ class AddSchedule extends Component {
       props: {
         navigation: {
           goBack,
-          state: {
-            params: {
-              reFetchTaskScheduleList,
-            },
-          },
         },
       },
     } = this;
@@ -120,7 +115,7 @@ class AddSchedule extends Component {
       if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!startTime) throw new Error(TaskEnum.startTime);
       if (!endTime) throw new Error(TaskEnum.endTime);
-      if (startTime >= endTime) throw new Error(TaskEnum.timeError);
+      // if (startTime >= endTime) throw new Error(TaskEnum.timeError);
       // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
 
       // 获取位置信息
@@ -164,10 +159,9 @@ class AddSchedule extends Component {
         isPrivate,
         principal,
         userIds,
+        successMsg: '日程创建成功',
       }, () => {
-        reFetchTaskScheduleList();
         goBack();
-        Toast.showSuccess('日程创建成功');
       });
     } catch (e) {
       Toast.showError(e.message);

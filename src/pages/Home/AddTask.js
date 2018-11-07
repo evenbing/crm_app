@@ -98,11 +98,6 @@ class AddTask extends Component {
       props: {
         navigation: {
           goBack,
-          state: {
-            params: {
-              reFetchTaskScheduleList,
-            },
-          },
         },
       },
     } = this;
@@ -141,10 +136,9 @@ class AddTask extends Component {
         isPrivate,
         principal,
         userIds,
+        successMsg: '任务创建成功',
       }, () => {
-        reFetchTaskScheduleList();
         goBack();
-        Toast.showSuccess('任务创建成功');
       });
     } catch (e) {
       Toast.showError(e.message);

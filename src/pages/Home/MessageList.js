@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import uuidv1 from 'uuid/v1';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
@@ -22,15 +21,21 @@ useStrict(true);
 @observer
 class MessageList extends Component {
   componentDidMount() {
-    TaskScheduleStore.getScheduleRelatedToMeReq(1, {
+    TaskScheduleStore.getScheduleRelatedToMeReq({
+      pageNumber: 1,
+      pageSize: 1,
       type: 'SCHEDULE',
       category: 'UNREAD',
     });
-    TaskScheduleStore.getTaskRelatedToMeReq(1, {
+    TaskScheduleStore.getTaskRelatedToMeReq({
+      pageNumber: 1,
+      pageSize: 1,
       type: 'TASK',
       category: 'UNREAD',
     });
-    TaskScheduleStore.getMessageReq(1, {
+    TaskScheduleStore.getMessageReq({
+      pageNumber: 1,
+      pageSize: 1,
       category: 'UNREAD',
     });
   }
