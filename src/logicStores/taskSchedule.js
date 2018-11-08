@@ -8,7 +8,7 @@
 import { action, observable, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, create, update, del, updateTaskHours,
+  find, create, update, del, updateTaskHours, updateTaskComplete,
 } from '../service/taskSchedule';
 import { getMessage } from '../service/app';
 import Toast from '../utils/toast';
@@ -172,7 +172,7 @@ class TaskScheduleStore {
   }
 
   /**
-   *  修改 任务或日程
+   *  修改 任务或日程 延迟时间
    */
   @action async updateTaskHoursReq(options, callback) {
     try {
@@ -184,6 +184,25 @@ class TaskScheduleStore {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         callback && callback();
         Toast.showSuccess('更新延时成功');
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  /**
+   *  修改 任务或日程 完成状态
+   */
+  @action async updateTaskCompleteReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await updateTaskComplete(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        callback && callback();
+        Toast.showSuccess('设置完成成功');
       });
     } catch (e) {
       Toast.showError(e.message);

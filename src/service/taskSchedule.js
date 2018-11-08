@@ -86,7 +86,7 @@ export function update({
 }
 
 /** 任务延时接口
- * @add by zhao
+ * @add by justin
  * @params options
  * {
  *   id 任务或者日程的ID must
@@ -98,11 +98,27 @@ export function updateTaskHours({
   id,
   delayHours,
 }) {
-  debugger;
   return post({
     method: 'api.customerrelations.task.delay',
     id,
     delayHours,
+  });
+}
+
+/** 任务完成接口
+ * @add by justin
+ * @params options
+ * {
+ *   id 任务或者日程的ID must
+ * }
+ * @return Promise<Object>
+ */
+export function updateTaskComplete({
+  id,
+}) {
+  return post({
+    method: 'api.customerrelations.task.complete',
+    id,
   });
 }
 

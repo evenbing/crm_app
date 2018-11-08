@@ -40,6 +40,10 @@ import {
   FilterList,
 } from './_fieldCfg';
 
+// static source
+import AddressIcon from '../../../img/crm/buttonList/address.png';
+import PhoneIcon from '../../../img/crm/buttonList/phone.png';
+
 useStrict(true);
 
 @observer
@@ -237,9 +241,8 @@ class Contract extends React.Component {
         right={
           <ButtonList
             list={[
-              // require('../../../img/crm/buttonList/follow.png'),
-              require('../../../img/crm/buttonList/address.png'),
-              require('../../../img/crm/buttonList/phone.png'),
+              AddressIcon,
+              PhoneIcon,
             ]}
             onPressItem={({ index }) => {
               if (index === 1) {

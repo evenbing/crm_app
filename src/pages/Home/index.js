@@ -82,6 +82,12 @@ class Home extends React.Component {
     }
   };
 
+  onPressFinish = (id) => {
+    TaskScheduleStore.updateTaskCompleteReq({
+      id,
+    });
+  };
+
   getData = (pageNumber = 1) => {
     let currDate = this.curSelectedDate;
     if (!currDate) {
@@ -150,7 +156,7 @@ class Home extends React.Component {
       rowVersion,
       reFetchTaskScheduleList: this.reFetchTaskScheduleList,
       operateList: [
-        { key: `${id}1`, text: '下一步', onPress: this.selectCreateType },
+        { key: `${id}1`, text: '完成', onPress: this.onPressFinish },
         { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
         { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
       ],
@@ -171,6 +177,7 @@ class Home extends React.Component {
   }
 
   deleteTaskSchedule = id => () => {
+    console.log(id);
     Alert.alert(
       '提示',
       '确定删除吗？',

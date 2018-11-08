@@ -130,6 +130,7 @@ class Create extends React.Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            isEnd
             onConfirm={
               date =>
                 this.setState({

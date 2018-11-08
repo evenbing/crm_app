@@ -8,6 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Picker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
+import { formatDateByMoment } from '../utils/base';
 
 // components
 import TouchableView from './TouchableView';
@@ -24,9 +26,14 @@ class DateTimePicker extends React.PureComponent {
     this.onHideModal();
   };
   onShowModal = () => {
+    const {
+      props: {
+        isEnd,
+      },
+    } = this;
     this.setState({
       isVisible: true,
-      date: new Date(),
+      date: isEnd ? new Date(formatDateByMoment(moment().hour(0))) : new Date(),
     });
   };
   onHideModal = () => {
@@ -78,6 +85,7 @@ DateTimePicker.defaultProps = {
   titleIOS: '请选择时间',
   minimumDate: new Date(1970, 1, 1),
   maximumDate: new Date(2099, 1, 1),
+  isEnd: false,
 };
 
 DateTimePicker.propTypes = {
@@ -90,6 +98,7 @@ DateTimePicker.propTypes = {
   minimumDate: PropTypes.instanceOf(Date),
   maximumDate: PropTypes.instanceOf(Date),
   children: PropTypes.node.isRequired,
+  isEnd: PropTypes.bool,
 };
 
 export default DateTimePicker;

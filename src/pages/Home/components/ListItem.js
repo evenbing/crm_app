@@ -170,9 +170,8 @@ class ListItem extends React.PureComponent {
         isFirst={index === 0}
         isLast={isLast}
       >
-        <SectionItemView
-          // onPress={() => null}
-        >
+        {/* onPress={() => null} */}
+        <SectionItemView>
           <Lace />
           <TimeView>
             <Duration>{duration}</Duration>
@@ -210,7 +209,7 @@ class ListItem extends React.PureComponent {
               return (
                 <OperateItem
                   showOperateView={showOperateView}
-                  onPress={text === '删除' ? onPress(id) : onPress}
+                  onPress={text === '删除' ? onPress(id) : () => onPress(id)}
                   key={key}
                 >
                   <OperateText showOperateView={showOperateView}>{text}</OperateText>

@@ -10,10 +10,14 @@ import { useStrict } from 'mobx';
 import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { routers, theme } from '../../../constants';
+import { MarkActivityType, MarketActivityStatus, ModuleType } from '../../../constants/enum';
+
+// utils
 import * as drawerUtils from '../../../utils/drawer';
 import { filterObject, formatDateByMoment, formatDateType, getUserId } from '../../../utils/base';
-import { MarkActivityType, MarketActivityStatus, ModuleType } from '../../../constants/enum';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
@@ -34,6 +38,10 @@ import {
   MarkActivityResponsibilityTypeFilterMap,
   FilterList,
 } from './_fieldCfg';
+
+// static source
+import FollowIcon from '../../../img/crm/buttonList/follow.png';
+import UnFollowIcon from '../../../img/crm/buttonList/unFollow.png';
 
 useStrict(true);
 
@@ -185,6 +193,7 @@ class MarkActivity extends React.Component {
     const {
       navigation: { navigate, state, goBack },
     } = this.props;
+    const FollowImage = item.follow ? FollowIcon : UnFollowIcon;
     return (
       <SwipeRow
         disableRightSwipe
@@ -217,7 +226,7 @@ class MarkActivity extends React.Component {
         right={
           <ButtonList
             list={[
-              require('../../../img/crm/buttonList/follow.png'),
+              FollowImage,
             ]}
             onPressItem={({ index }) => {
               if (index === 0) {

@@ -18,11 +18,13 @@ import { ModuleType } from '../constants/enum';
  */
 export function getProductClazzList({
   keyword,
+  pageSize = 0,
   objectType = ModuleType.product,
 } = {}) {
   return post({
     method: 'api.customerrelations.productClazz.find',
     keyword,
+    pageSize,
     objectType,
   });
 }

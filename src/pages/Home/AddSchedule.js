@@ -238,6 +238,7 @@ class AddSchedule extends Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            isEnd
             onConfirm={
               date =>
                 this.setState({

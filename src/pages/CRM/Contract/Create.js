@@ -11,7 +11,8 @@ import { observer } from 'mobx-react/native';
 // constants
 import { routers, theme as themeVar } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
-import { CustomerType, PackType } from '../../../constants/enum';
+// import { CustomerType, PackType } from '../../../constants/enum';
+import { CustomerType } from '../../../constants/enum';
 
 // utils
 import { formatDateByMoment } from '../../../utils/base';
@@ -27,7 +28,7 @@ import CreateMoreButton from '../../../components/Create/CreateMoreButton';
 import { ContainerScrollView } from '../../../components/Styles/Layout';
 import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
 import DateTimePicker from '../../../components/DateTimePicker';
-import { FormActionSheet } from '../../../components/Modal';
+// import { FormActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
 
@@ -44,7 +45,7 @@ class Create extends React.Component {
     endDateShow: '',
     departmentId: null,
     departmentName: null,
-    type: null,
+    // type: null,
   };
   componentDidMount() {
     this.props.navigation.setParams({
@@ -57,7 +58,7 @@ class Create extends React.Component {
         theme,
         customerId,
         customerName,
-        type,
+        // type,
         totalMoney,
         startDate,
         endDate,
@@ -70,7 +71,7 @@ class Create extends React.Component {
     } = this;
     try {
       if (!theme) throw new Error(ContractEnum.theme);
-      if (!type) throw new Error(ContractEnum.type);
+      // if (!type) throw new Error(ContractEnum.type);
       if (!(customerId && customerName)) throw new Error(ContractEnum.customerName);
       if (!totalMoney) throw new Error(ContractEnum.totalMoney);
       if (!startDate) throw new Error(ContractEnum.startDate);
@@ -81,7 +82,7 @@ class Create extends React.Component {
 
       ContractModel.createContractReq({
         theme,
-        type,
+        // type,
         customerId,
         customerName,
         totalMoney,
@@ -109,7 +110,7 @@ class Create extends React.Component {
         startDate,
         endDateShow,
         endDate,
-        type,
+        // type,
         ownerId,
         ownerName,
       },
@@ -135,7 +136,7 @@ class Create extends React.Component {
               onChangeText: theme => this.setState({ theme }),
             })}
           />
-          <FormActionSheet
+          {/* <FormActionSheet
             onConfirm={({ key }) => {
               this.setState({
                 type: key,
@@ -153,7 +154,7 @@ class Create extends React.Component {
               }
               {...themeVar.navItemStyle}
             />
-          </FormActionSheet>
+          </FormActionSheet> */}
           <NavInputItem
             leftText="客户"
             onPress={() => navigate(routers.customer, {
@@ -210,6 +211,7 @@ class Create extends React.Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            isEnd
             onConfirm={
               date =>
                 this.setState({

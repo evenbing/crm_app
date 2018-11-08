@@ -22,7 +22,6 @@ const ModalView = styled(Modal)`
 `;
 
 const ContainerView = styled.View`
-  padding-bottom: ${getFooterBottom() || 0};
 `;
 
 const ItemBasicView = css`
@@ -54,11 +53,12 @@ const ItemText = styled.Text`
 `;
 
 const FooterView = styled(TouchableView)`
-  height: ${moderateScale(49)};
+  height: ${moderateScale(49 + getFooterBottom())};
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: ${theme.whiteColor};
+  padding-bottom: ${getFooterBottom() || 0};
 `;
 
 const FooterText = styled.Text`

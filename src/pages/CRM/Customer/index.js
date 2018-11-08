@@ -35,6 +35,12 @@ import {
   CustomerResponsibilityTypeFilterMap,
 } from './_fieldCfg';
 
+// static source
+import FollowIcon from '../../../img/crm/buttonList/follow.png';
+import UnFollowIcon from '../../../img/crm/buttonList/unFollow.png';
+import AddressIcon from '../../../img/crm/buttonList/address.png';
+import PhoneIcon from '../../../img/crm/buttonList/phone.png';
+
 useStrict(true);
 
 @observer
@@ -174,6 +180,7 @@ class Customer extends React.Component {
     const {
       navigation: { navigate, state, goBack },
     } = this.props;
+    const FollowImage = item.follow ? FollowIcon : UnFollowIcon;
     return (
       <SwipeRow
         disableRightSwipe
@@ -207,9 +214,9 @@ class Customer extends React.Component {
         right={
           <ButtonList
             list={[
-              require('../../../img/crm/buttonList/follow.png'),
-              require('../../../img/crm/buttonList/address.png'),
-              require('../../../img/crm/buttonList/phone.png'),
+              FollowImage,
+              AddressIcon,
+              PhoneIcon,
             ]}
             onPressItem={({ index }) => {
               if (index === 0) {
