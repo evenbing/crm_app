@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
-import styled from 'styled-components';
 
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import ListItem from './components/ListItem';
@@ -9,24 +8,12 @@ import { get2Date } from '../../utils/date';
 import TaskScheduleStore from '../../logicStores/taskSchedule';
 import FlatListTable from '../../components/FlatListTable';
 import { ContainerView } from '../../components/Styles/Layout';
-import { theme } from '../../constants';
-import { moderateScale } from '../../utils/scale';
 
-const ListItemSeparatorComponent = styled.View`
-  background-color: transparent;
-  height: ${moderateScale(10)}px;
-`;
 
 useStrict(true);
 
 @observer
 class UpcomingTaskList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
   componentDidMount() {
     this.getData();
   }
@@ -52,27 +39,6 @@ class UpcomingTaskList extends Component {
   };
 
   keyExtractor = item => item.id;
-
-  renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
-
-  renderItem = ({ item }) => {
-    const {
-      id,
-      duration,
-      type,
-      name,
-      comment,
-      // operateList,
-    } = item;
-    return (<ListItem
-      id={id}
-      duration={duration}
-      type={type}
-      name={name}
-      comment={comment}
-      operateList={[]}
-    />);
-  }
 
   render() {
     const {
@@ -115,16 +81,14 @@ class UpcomingTaskList extends Component {
       <ContainerView bottomPadding>
         <CommStatusBar />
         <FlatListTable
-          tableBodyStyle={{ paddingTop: theme.moderateScale(10), paddingLeft: theme.moderateScale(15), paddingRight: theme.moderateScale(15) }}
           data={data}
           keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
+          renderItemElem={<ListItem showOperate={false} />}
           onRefresh={this.getData}
           onEndReached={this.onEndReached}
           refreshing={refreshing}
           noDataBool={!refreshing && list.length === 0}
           loadingMore={loadingMore}
-          ItemSeparatorComponent={this.renderItemSeparatorComponent}
         />
       </ContainerView>
     );

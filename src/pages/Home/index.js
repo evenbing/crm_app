@@ -21,15 +21,9 @@ import { ContainerView } from '../../components/Styles/Layout';
 import FlatListTable from '../../components/FlatListTable';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
-// import TaskScheduleList from './components/TaskScheduleList';
 import TaskScheduleListItem from './components/ListItem';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';
-
-const ListItemSeparatorComponent = styled.View`
-  background-color: transparent;
-  height: ${moderateScale(10)}px;
-`;
 
 const ListFooterComponent = styled.View`
   background-color: transparent;
@@ -254,18 +248,12 @@ class Home extends React.Component {
     } = TaskScheduleStore;
     const data = TaskScheduleStore.taskScheduleList.list.map(item => this.formatTaskScheduleListData(item));
     const flatProps = {
-      flatListStyle: {
-        paddingTop: moderateScale(10),
-        paddingRight: moderateScale(15),
-        paddingLeft: moderateScale(15),
-      },
       data,
       headerHeight: 217,
       renderHeader: this.renderHeader(),
       renderItemElem: <TaskScheduleListItem />,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
-      ItemSeparatorComponent: () => <ListItemSeparatorComponent />,
       ListFooterComponent: (Number(total) === list.length && !!total) ? <ListFooterComponent /> : null,
       refreshing,
       noDataBool: !refreshing && list.length === 0,

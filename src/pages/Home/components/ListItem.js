@@ -7,8 +7,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
+// static source
+import OperateIconImage from '../../../img/home/ico_operate_icon.png';
+
 import { moderateScale } from '../../../utils/scale';
-// import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { theme } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 
@@ -18,9 +21,14 @@ const Divder = styled.View`
   background-color: ${theme.pageBackColor};
 `;
 
-const Container = styled.View``;
+const ContainerView = styled.View`
+  padding-top: ${theme.moderateScale(10)};
+  padding-left: ${theme.moderateScale(15)};
+  padding-right: ${theme.moderateScale(15)};
+`;
 
-const Up = styled.TouchableOpacity`
+// const SectionItemView = styled.TouchableOpacity`
+const SectionItemView = styled.View`
   background-color: ${theme.whiteColor};
   padding: ${moderateScale(15)}px 0px;
   flex-direction: row;
@@ -53,47 +61,47 @@ const Type = styled.Text.attrs({
   numberOfLines: 1,
   ellipsizeMode: 'tail',
 })`
-    height: ${moderateScale(17)}px;
-    color: grey;
-    font-size: ${moderateScale(12)}px;
-    line-height: ${moderateScale(17)}px;
-  `;
+  height: ${moderateScale(17)}px;
+  color: grey;
+  font-size: ${moderateScale(12)}px;
+  line-height: ${moderateScale(17)}px;
+`;
 
 const Theme = styled.View`
-    flex: 1;
-    padding-top: ${moderateScale(10)}px;
-    margin-left: ${moderateScale(8)}px;
-  `;
+  flex: 1;
+  padding-top: ${moderateScale(10)}px;
+  margin-left: ${moderateScale(8)}px;
+`;
 
 const Title = styled.Text.attrs({
   numberOfLines: 1,
   ellipsizeMode: 'tail',
 })`
-    color: black;
-    font-size: ${moderateScale(18)};
-  `;
+  color: black;
+  font-size: ${moderateScale(18)};
+`;
 
 const Time = styled.Text.attrs({
   numberOfLines: 1,
   ellipsizeMode: 'tail',
 })`
-    height: ${moderateScale(17)}px;
-    color: grey;
-    font-size: ${moderateScale(12)}px;
-    line-height: ${moderateScale(17)}px;
-  `;
+  height: ${moderateScale(17)}px;
+  color: grey;
+  font-size: ${moderateScale(12)}px;
+  line-height: ${moderateScale(17)}px;
+`;
 
-// const Operate = styled.View`
-//   align-items: center;
-//   padding: 0px ${moderateScale(12)}px;
-// `;
+const Operate = styled.TouchableOpacity`
+  align-items: center;
+  padding: 0px ${moderateScale(12)}px;
+`;
 
-// const OperateIcon = styled.Image.attrs({
-//   source: OperateIconImage,
-// })`
-//   width: ${moderateScale(22)};
-//   height: ${moderateScale(22)};
-// `;
+const OperateIcon = styled.Image.attrs({
+  source: OperateIconImage,
+})`
+  width: ${moderateScale(22)};
+  height: ${moderateScale(22)};
+`;
 
 const OperateView = styled.View`
   height: ${props => props.showOperateView ? moderateScale(37) : '0px'};
@@ -123,7 +131,7 @@ class ListItem extends React.PureComponent {
     showOperateView: false,
   };
 
-  onToggleOperateView = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => () => {
+  onToggleOperateView = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion } = {}) => () => {
     const {
       item: { operateList, onPressItem },
     } = this.props;
@@ -152,13 +160,18 @@ class ListItem extends React.PureComponent {
         rowVersion,
         operateList,
       },
+      index,
+      isLast,
+      showOperate,
     } = this.props;
     const { showOperateView } = this.state;
     return (
-      <Container>
-        <Up onPress={this.onToggleOperateView({
-          id, type, startTime, endTime, moduleId, moduleType, rowVersion,
-          })}
+      <ContainerView
+        isFirst={index === 0}
+        isLast={isLast}
+      >
+        <SectionItemView
+          // onPress={() => null}
         >
           <Lace />
           <TimeView>
@@ -170,11 +183,21 @@ class ListItem extends React.PureComponent {
             <Title>{name}</Title>
             <Time>{comment}</Time>
           </Theme>
-          {/* <Divder />
-          <Operate>
-            <OperateIcon />
-          </Operate> */}
-        </Up>
+          <Divder />
+          {
+            showOperate ? (
+              <Operate
+                onPress={
+                  this.onToggleOperateView({
+                    id, type, startTime, endTime, moduleId, moduleType, rowVersion,
+                  })
+                }
+              >
+                <OperateIcon />
+              </Operate>
+            ) : null
+          }
+        </SectionItemView>
         <OperateView showOperateView={showOperateView}>
           <HorizontalDivider height={moderateScale(1)} />
           <OperateItemView>
@@ -196,17 +219,23 @@ class ListItem extends React.PureComponent {
             })}
           </OperateItemView>
         </OperateView>
-      </Container>
+      </ContainerView>
     );
   }
 }
 
 ListItem.defaultProps = {
   item: {},
+  index: 0,
+  isLast: false,
+  showOperate: true,
 };
 
 ListItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
+  index: PropTypes.number,
+  isLast: PropTypes.bool,
+  showOperate: PropTypes.bool,
 };
 
 export default ListItem;

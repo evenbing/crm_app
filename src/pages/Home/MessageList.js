@@ -49,18 +49,27 @@ class MessageList extends Component {
           icon={IcoSchedule}
           leftText="待办日程"
           rightText={TaskScheduleStore.scheduleList.total}
+          rightTextStyle={{
+            color: '#E03C3C',
+          }}
           onPress={() => navigate(routers.upcomingScheduleList)}
         />
         <NavItem
           icon={IcoUpcomingTasks}
           leftText="待办任务"
           rightText={TaskScheduleStore.taskList.total}
+          rightTextStyle={{
+            color: '#E03C3C',
+          }}
           onPress={() => navigate(routers.upcomingTaskList)}
         />
         <NavItem
           icon={IcoNotice}
           leftText="通知"
           rightText={TaskScheduleStore.messageList.total}
+          rightTextStyle={{
+            color: '#E03C3C',
+          }}
           onPress={() => navigate(routers.notificationList)}
         />
       </Container>
