@@ -114,7 +114,7 @@ class FlatListTable extends React.PureComponent {
           ListEmptyComponent={
             noDataBool ? (
               ListEmptyComponent || (
-                <ListEmptyView height={listHeight - scrollY + headerHeight}>
+                <ListEmptyView height={(listHeight - scrollY) + headerHeight}>
                   <EmptyText>{ noDataText }</EmptyText>
                 </ListEmptyView>
               ))

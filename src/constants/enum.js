@@ -48,6 +48,22 @@ export const ModuleType = {
   record: 'RECEIVABLE_DETAIL',
 };
 
+//
+export const FollowUpModuleType = {
+  // 市场活动模块
+  ACTIVITY: '活动',
+  // 销售线索模块
+  LEADS: '线索',
+  // 联系人模块
+  CONTACT: '联系人',
+  // 客户模块
+  CUSTOMER: '客户',
+  // 销售机会
+  OPPORTUNITY: '销售机会',
+  // 合同模块
+  PACT: '合同',
+};
+
 // 动态记录类型枚举
 export const DynamicRecordType = {
   // 快速记录

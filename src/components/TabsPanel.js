@@ -36,7 +36,7 @@ const HeaderContainer = styled(TouchableView)`
 const HeaderText = styled.Text`
   margin-top:  ${theme.moderateScale(3)};
   font-family:${theme.fontMedium};
-  font-size:  ${theme.moderateScale(18)};
+  font-size:  ${props => theme.moderateScale(props.fontSize)};
   color: ${theme.listTitleColor};
 `;
 
@@ -71,6 +71,7 @@ class TabsPanel extends React.PureComponent {
       onChange,
       isShadow,
       children,
+      headerTextSize,
     } = this.props;
     return (
       <ContainerView flex={children ? 1 : null}>
@@ -78,13 +79,18 @@ class TabsPanel extends React.PureComponent {
           {
             list.map((_, index) => (
               <HeaderContainer
-                key={_}
+                key={_.name}
                 onPress={() => {
                   if (index === activeIndex) return;
                   onChange(index);
                 }}
               >
-                <HeaderText active={activeIndex === index}>{_}</HeaderText>
+                <HeaderText
+                  active={activeIndex === index}
+                  fontSize={headerTextSize}
+                >
+                  {_.name}
+                </HeaderText>
                 {activeIndex === index && <ActiveBoard />}
               </HeaderContainer>
             ))
@@ -111,6 +117,7 @@ TabsPanel.defaultProps = {
   isShadow: true,
   activeIndex: 0,
   children: null,
+  headerTextSize: 18,
 };
 
 TabsPanel.propTypes = {
@@ -125,6 +132,7 @@ TabsPanel.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  headerTextSize: PropTypes.number,
 };
 
 export default TabsPanel;

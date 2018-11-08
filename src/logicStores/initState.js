@@ -13,6 +13,12 @@ export const initFlatList = {
   total: 0,
 };
 
+export const initFollowUpList = {
+  refreshing: false,
+  list: [],
+  maxValue: 1,
+};
+
 export const receivableFlatList = {
   ...initFlatList,
   totalFactPrice: 0,

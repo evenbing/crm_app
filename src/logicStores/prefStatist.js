@@ -5,16 +5,19 @@
  * @author JUSTIN XU
  */
 import moment from 'moment';
-import { action, observable, runInAction, useStrict } from 'mobx/';
+import { action, observable, runInAction, useStrict, computed } from 'mobx/';
 import autobind from 'autobind-decorator';
 import {
   getSalesSum,
   getSalesTrend,
   getSalesEchart,
   getSalesRankingList,
+  getFollowUpStatisticList,
 } from '../service/prefStatist';
 import Toast from '../utils/toast';
-import { initFlatList } from './initState';
+import { initFlatList, initFollowUpList } from './initState';
+import { mapToArray } from '../utils/base';
+import { FollowUpModuleType } from '../constants/enum';
 
 useStrict(true);
 
@@ -42,7 +45,11 @@ class PrefStatistStore {
 
   @observable tabMap = {
     selectedIndex: 0,
-    list: ['本月', '本季', '本年'],
+    list: [
+      { name: '本月' },
+      { name: '本季' },
+      { name: '本年' },
+    ],
   };
   // 销售总额数据统计
   @observable salesSumMap = initSalesSumMap;
@@ -174,6 +181,64 @@ class PrefStatistStore {
       });
     } catch (e) {
       Toast.showError(e.message);
+    }
+  }
+
+  // 跟进统计
+  @observable followUpTabMap = {
+    selectedIndex: 0,
+    list: mapToArray(FollowUpModuleType),
+  };
+  @observable followUpList = initFollowUpList;
+
+  @action onToggleFollowUpTabSelectIndex(index) {
+    const {
+      selectedIndex,
+    } = this.followUpTabMap;
+    if (selectedIndex === index) return;
+    this.followUpTabMap.selectedIndex = index;
+    this.getFollowUpStatisticListReq();
+  }
+
+  @computed get getFollowUpList() {
+    const { followUpList } = this;
+    if (!followUpList.list.length) return followUpList;
+    let max = 0;
+    followUpList.list.forEach((v) => {
+      if (Number(v.followUpCount) > max) {
+        max = Number(v.followUpCount);
+      }
+    });
+    followUpList.maxValue = max || 1;
+    return followUpList;
+  }
+
+  @action async getFollowUpStatisticListReq(obj) {
+    const {
+      selectedIndex,
+      list,
+    } = this.followUpTabMap;
+    try {
+      const hashMap = list[selectedIndex];
+      this.followUpList = initFollowUpList;
+      this.followUpList.refreshing = true;
+      const {
+        dynamicFollowUpStatisticList = [],
+        errors,
+      } = await getFollowUpStatisticList({
+        ...obj,
+        moduleType: hashMap.key,
+      });
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.followUpList.list = [...dynamicFollowUpStatisticList];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.followUpList.refreshing = false;
+      });
     }
   }
 }

@@ -5,15 +5,15 @@
  * @author JUSTIN XU
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { RefreshControl } from 'react-native';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import {theme, routers, theme as themeVar} from '../../../constants';
 
 // components
 import TabsPanel from '../../../components/TabsPanel';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
+import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import TotalList from './components/TotalList';
 import TitleHeader from './components/TitleHeader';
@@ -118,7 +118,7 @@ class PerfStatist extends React.Component {
         </DescriptionView>
         <LineChart
           data={salesRankingList}
-          name={list[selectedIndex]}
+          name={list[selectedIndex].name}
         />
         <TitleHeader
           containerStyle={{
@@ -153,6 +153,7 @@ class PerfStatist extends React.Component {
   render() {
     const {
       tabMap: { list, selectedIndex },
+      onToggleTabSelectIndex,
     } = PrefStatistModel;
     return (
       <ContainerView
@@ -163,7 +164,7 @@ class PerfStatist extends React.Component {
         <TabsPanel
           list={list}
           activeIndex={selectedIndex}
-          onChange={PrefStatistModel.onToggleTabSelectIndex}
+          onChange={onToggleTabSelectIndex}
         />
         {this.renderSection()}
       </ContainerView>
@@ -178,10 +179,31 @@ PerfStatist.navigationOptions = ({ navigation }) => ({
       onPress={() => navigation.goBack()}
     />
   ),
+  headerRight: (
+    <RightView
+      right="跟进统计"
+      onPress={() => navigation.navigate(routers.followUpStat)}
+      rightStyle={{
+        color: themeVar.primaryColor,
+      }}
+    />
+  ),
 });
 
 PerfStatist.defaultProps = {};
 
-PerfStatist.propTypes = {};
+PerfStatist.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default PerfStatist;
