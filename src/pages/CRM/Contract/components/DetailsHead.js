@@ -94,7 +94,7 @@ class DetailsHead extends React.PureComponent {
             marginTop={9}
             onPress={onPressChoiceTeam}
           >
-            <PersonText>负责人: {item.ownerName}</PersonText>
+            <PersonText>负责人: {item.ownerUserName}</PersonText>
             <Thumbnail
               source={PrincipalIcon}
               size={15}

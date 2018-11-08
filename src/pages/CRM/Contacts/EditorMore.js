@@ -76,7 +76,7 @@ class EditorMore extends React.Component {
     try {
       if (!name) throw new Error(ContactsEnum.name);
       if (!companyName) throw new Error(ContactsEnum.companyName);
-      if (!departmentId) throw new Error(ContactsEnum.departmentId);
+      if (!departmentId) throw new Error(ContactsEnum.departmentName);
       if (phoneNumber) await verifyPhone(phoneNumber);
       if (mobilePhone) await verifyMobile(mobilePhone);
       if (email) await verifyEMail(email);
