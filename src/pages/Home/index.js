@@ -6,29 +6,22 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Alert, View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
 import { routers } from '../../constants';
-import { moderateScale } from '../../utils/scale';
 import { get2Date } from '../../utils/date';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { ActionSheet } from '../../components/Modal';
-import { ContainerView } from '../../components/Styles/Layout';
+import { ContainerView, ListFooterComponent } from '../../components/Styles/Layout';
 import FlatListTable from '../../components/FlatListTable';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';
-
-const ListFooterComponent = styled.View`
-  background-color: transparent;
-  height: ${moderateScale(60)}px;
-`;
 
 const createTypes = [
   { leftText: '新建日程', path: routers.addSchedule },

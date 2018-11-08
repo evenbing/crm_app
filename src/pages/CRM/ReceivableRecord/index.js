@@ -22,7 +22,7 @@ import { filterObject, nativeCallPhone } from '../../../utils/base';
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { ContainerView, ListFooterComponent } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
 import { ActionSheet } from '../../../components/Modal';
@@ -297,6 +297,7 @@ class ReceivableRecord extends React.Component {
     const {
       receivableRecordList: {
         list,
+        total,
         refreshing,
         loadingMore,
         totalFactPrice,
@@ -323,6 +324,7 @@ class ReceivableRecord extends React.Component {
       renderItem: this.renderItem,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
+      ListFooterComponent: (Number(total) === list.length && !!total) ? <ListFooterComponent /> : null,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,

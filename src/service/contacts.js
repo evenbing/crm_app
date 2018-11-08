@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /** 查询联系人列表
  * @params options
@@ -12,6 +13,7 @@ import { post } from '../utils/rpc';
  *   pageNumber 页码
  *   pageSize 每页数量 0 通用为全部
  *   my 我负责的 boolean
+ *   objectType  关注对象类型  否必填
  *   myParticipate 我参与的 boolean
  *   sevenDaysUninvolved 7天未跟进的 boolean
  *   all 全部 boolean
@@ -36,6 +38,7 @@ export function getContactList({
   pageNumber = 1,
   pageSize = 15,
   my,
+  objectType = ModuleType.contact,
   myParticipate,
   sevenDaysUninvolved,
   all,
@@ -59,6 +62,7 @@ export function getContactList({
     pageNumber,
     pageSize,
     my,
+    objectType,
     myParticipate,
     sevenDaysUninvolved,
     all,

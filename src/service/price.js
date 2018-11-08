@@ -5,6 +5,7 @@
  * @author zhao
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /** 分页查询价格列表
  * @add by zhao
@@ -12,6 +13,7 @@ import { post } from '../utils/rpc';
  * {
  *   pageNumber 页码
  *   pageSize 每页数量 0 通用为全部
+ *   objectType  关注对象类型  否必填
  *   isMyDuty 是否是我负责的
  *   isMyFollow 是否是我关注的
  *   isActive 是否有效 must
@@ -22,6 +24,7 @@ import { post } from '../utils/rpc';
 export function getPriceList({
   pageNumber = 1,
   pageSize = 15,
+  objectType = ModuleType.price,
   isMyDuty,
   isMyFollow,
   isActive,
@@ -31,6 +34,7 @@ export function getPriceList({
     method: 'api.customerrelations.price.find',
     pageNumber,
     pageSize,
+    objectType,
     isMyDuty,
     isMyFollow,
     isActive,

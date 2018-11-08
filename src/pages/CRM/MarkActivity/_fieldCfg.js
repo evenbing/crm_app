@@ -62,6 +62,10 @@ export const MarkActivityTimeTypeFilterMap = {
       key: 'CREATION_TIME',
       name: '创建时间',
     },
+    {
+      key: 'ifLastFollowTime',
+      name: '最新更新时间',
+    },
   ],
 };
 

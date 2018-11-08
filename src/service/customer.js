@@ -5,7 +5,7 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
-
+import { ModuleType } from '../constants/enum';
 
 /** 查询客户
  * @params options
@@ -33,7 +33,7 @@ export function find({
   pageSize = 15,
   my,
   myFollow,
-  objectType,
+  objectType = ModuleType.customer,
   myParticipate,
   sevenDaysUninvolved,
   all,

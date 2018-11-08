@@ -5,21 +5,25 @@
  * @author zhao
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /** 查看产品目录列表
  * @add by zhao
  * @params options
  * {
  *   keyword 关键字
+ *   objectType  关注对象类型  否必填
  * }
  * @return Promise<Object>
  */
 export function getProductClazzList({
   keyword,
+  objectType = ModuleType.product,
 } = {}) {
   return post({
     method: 'api.customerrelations.productClazz.find',
     keyword,
+    objectType,
   });
 }
 

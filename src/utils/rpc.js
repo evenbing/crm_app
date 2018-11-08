@@ -98,9 +98,9 @@ async function getPostParameter(request) {
     var post_data = 'sign=' + param_sign.toUpperCase();
     for (var i = 0; i < arrayKeyTemp.length; i++) {
       if (isArray(param_array[arrayKeyTemp[i]])) {
-        post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURI(JSON.stringify(param_array[arrayKeyTemp[i]]));
+        post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURIComponent(JSON.stringify(param_array[arrayKeyTemp[i]]));
       } else {
-        post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURI(param_array[arrayKeyTemp[i]]);
+        post_data = post_data + '&' + arrayKeyTemp[i] + '=' + encodeURIComponent(param_array[arrayKeyTemp[i]]);
       }
     }
   }

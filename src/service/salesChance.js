@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /**
  *
@@ -12,6 +13,7 @@ import { post } from '../utils/rpc';
  * {
  *  my  我负责的  否
  *  myFollow  我关注的  否
+ *  objectType  关注对象类型  否必填
  *  myParticipate 我参与的  否
  *  sevenDaysUninvolved 7天未跟进的 否
  *  all 全部  否
@@ -30,6 +32,7 @@ export function getSalesChanceList({
   pageSize = 15,
   my,
   myFollow,
+  objectType = ModuleType.opportunity,
   myParticipate,
   sevenDaysUninvolved,
   all,
@@ -48,6 +51,7 @@ export function getSalesChanceList({
     pageSize,
     my,
     myFollow,
+    objectType,
     myParticipate,
     sevenDaysUninvolved,
     all,
@@ -258,11 +262,11 @@ export function changeOwnerUser({
 }
 
 /** 高级查询销售阶段
- * 
- * @param 
+ *
+ * @param
  * {
  * isActive 是否启用 否
- * } param0 
+ * } param0
  */
 export function findSalesPhase({
   isActive,

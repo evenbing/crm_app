@@ -143,7 +143,11 @@ class MarkActivity extends React.Component {
       return v.list[v.selectedIndex].key;
     }).filter(_ => !!_).forEach((v, i) => {
       if (i === 0) {
-        obj.sortColumn = v;
+        if (v === 'ifLastFollowTime') {
+          obj.ifLastFollowTime = true;
+        } else {
+          obj.sortColumn = v;
+        }
       } else {
         obj[v] = true;
       }

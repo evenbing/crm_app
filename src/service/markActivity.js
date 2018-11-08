@@ -5,6 +5,7 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /** 查询市场活动列表
  *
@@ -13,6 +14,7 @@ import { post } from '../utils/rpc';
  *  name 市场活动名称 否
  *  my  我负责的  否
  *  myFollowed  我关注的  否  关注对象类型必须传参
+ *  ifLastFollowTime 最新更新时间
  *  objectType  关注对象类型  否  当选择为我关注的和全部时必填
  *  myParticipate 我参与的  否
  *  all 全部  否  关注对象类型必须传参
@@ -35,7 +37,8 @@ export function getMarkActivityList({
   name,
   my,
   myFollowed,
-  objectType,
+  ifLastFollowTime,
+  objectType = ModuleType.activity,
   myParticipate,
   all,
   status,
@@ -57,6 +60,7 @@ export function getMarkActivityList({
     name,
     my,
     myFollowed,
+    ifLastFollowTime,
     objectType,
     myParticipate,
     all,

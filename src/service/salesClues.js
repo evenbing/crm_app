@@ -5,9 +5,10 @@
  * @author JUSTIN XU
  */
 import { post } from '../utils/rpc';
+import { ModuleType } from '../constants/enum';
 
 /** 查询销售线索列表
- * 
+ *
  * @param options
  * {
  *  isMyManger  我负责的否
@@ -28,7 +29,7 @@ import { post } from '../utils/rpc';
  *  objectType  关注对象类型 否  当选择为我关注的和全部时必填
  *  myFollow  我关注的 否  关注对象类型必须传参
  *  sortColumn  表头排序 否
- * } 
+ * }
  */
 export function getSalesClueList({
   pageNumber = 1,
@@ -48,7 +49,7 @@ export function getSalesClueList({
   postCode,
   activityId,
   email,
-  objectType,
+  objectType = ModuleType.clues,
   myFollow,
   sortColumn,
 } = {}) {

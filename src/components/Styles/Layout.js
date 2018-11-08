@@ -7,6 +7,7 @@
 import styled from 'styled-components';
 import theme from '../../constants/theme';
 import { getFooterBottom } from '../../utils/utils';
+import { moderateScale } from '../../utils/scale';
 
 // container styles
 export const ContainerView = styled.View`
@@ -24,4 +25,9 @@ export const ContainerScrollView = styled.ScrollView`
 export const DefaultHeaderView = styled.View`
   flex: 1;
   flex-direction: row;
+`;
+
+export const ListFooterComponent = styled.View`
+  background-color: transparent;
+  height: ${moderateScale(60)}px;
 `;
