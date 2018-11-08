@@ -39,16 +39,15 @@ class FollowUpStat extends React.Component {
   render() {
     const {
       followUpTabMap: { list: tabList, selectedIndex },
-      followUpList: { refreshing },
       onToggleFollowUpTabSelectIndex,
-      getFollowUpList: followList,
+      getFollowUpList: { list, maxValue, refreshing },
     } = PrefStatistModel;
     const flatProps = {
-      data: followList,
-      renderItemElem: <FollowUpItem maxValue={followList.maxValue} />,
+      data: list,
+      renderItemElem: <FollowUpItem maxValue={maxValue} />,
       onRefresh: this.getData,
       refreshing,
-      noDataBool: !refreshing && followList.length === 0,
+      noDataBool: !refreshing && list.length === 0,
     };
     return (
       <ContainerView
@@ -65,7 +64,7 @@ class FollowUpStat extends React.Component {
         <HorizontalDivider height={6} />
         <FlatListTable {...flatProps} />
         {
-          followList.length ? <VerticalDivider /> : null
+          list.length ? <VerticalDivider /> : null
         }
       </ContainerView>
     );

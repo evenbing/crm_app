@@ -31,16 +31,18 @@ const RightView = styled.View`
 `;
 
 const LinearView = styled(LinearGradient)`
-  width: ${props => props.width || '50%'};
+  width: ${props => props.width || '100%'};
   height: ${theme.moderateScale(20)};
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 `;
+
 const TextView = styled.Text`
   height: ${theme.moderateScale(19)};
   background-color: transparent;
   color: ${theme.whiteColor};
+  padding-left: ${theme.moderateScale(3)};
   font-size: ${theme.moderateScale(14)};
 `;
 
@@ -63,7 +65,7 @@ class FollowUpItem extends React.PureComponent {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             colors={['#7ADFD6', '#5374C7']}
-            width={(Number(item.followUpCount) / maxValue) * 100}
+            width={`${(Number(item.followUpCount) / maxValue) * 100}%`}
           >
             <TextView>
               {item.followUpCount}

@@ -209,8 +209,10 @@ class PrefStatistStore {
         max = Number(v.followUpCount);
       }
     });
-    followUpList.maxValue = max || 1;
-    return followUpList;
+    return {
+      ...followUpList,
+      maxValue: max || 1,
+    };
   }
 
   @action async getFollowUpStatisticListReq(obj) {
