@@ -72,9 +72,11 @@ class EditorMore extends React.Component {
       sourceType = null,
       sourceTypeName = null,
       budinessProducts = [],
+      ...restProps
     } = props.navigation.state.params.item;
     super(props);
     this.state = {
+      ...restProps,
       name,
       customerId,
       customerName,

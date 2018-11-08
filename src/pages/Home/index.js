@@ -266,7 +266,7 @@ class Home extends React.Component {
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       ItemSeparatorComponent: () => <ListItemSeparatorComponent />,
-      ListFooterComponent: (total === list.length && total) ? <ListFooterComponent /> : null,
+      ListFooterComponent: (Number(total) === list.length && !!total) ? <ListFooterComponent /> : null,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,
