@@ -85,7 +85,6 @@ class ProductListStore {
     try {
       await updateProduct(options);
       runInAction(() => {
-        debugger;
         this.getProductClazzListReq();
         callback && callback();
       });

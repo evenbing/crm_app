@@ -54,7 +54,6 @@ class RelatedDocs extends Component {
         customerName,
       },
     } = this.props.navigation.state.params || {};
-    debugger;
     return (
       <ListItem thumbnail noBorder style={{ backgroundColor: 'white' }}>
         <Left>

@@ -165,7 +165,6 @@ class SalesChanceStore {
       const {
         errors = [],
       } = await createSalesChance(options);
-      debugger;
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getSalesChanceListReq(this.queryProps);
@@ -183,7 +182,6 @@ class SalesChanceStore {
         errors = [],
       } = await updateSalesChance(options);
       if (errors.length) throw new Error(errors[0].message);
-      debugger;
       runInAction(() => {
         this.getSalesChanceDetailReq({ id: options.id });
         this.getSalesChanceListReq(this.queryProps);

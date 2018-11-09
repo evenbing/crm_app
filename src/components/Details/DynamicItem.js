@@ -24,13 +24,13 @@ const ContainerView = styled(TouchableView)`
   margin-bottom: ${moderateScale(10)};
 `;
 
-const LeftView = styled.View`
+const LeftView = styled(Thumbnail)`
   width: ${moderateScale(32)};
   height: ${moderateScale(32)};
-  background-color: #D8D8D8;
   border-radius: 4px;
   margin-right: ${moderateScale(17)};
 `;
+
 const RightView = styled.View`
   flex: 1;
 `;
@@ -82,6 +82,7 @@ class DynamicItem extends React.PureComponent {
     const {
       onPress,
       item: {
+        headImg,
         createdByName,
         content,
         attachmentList = [],
@@ -91,7 +92,9 @@ class DynamicItem extends React.PureComponent {
     } = this.props;
     return (
       <ContainerView onPress={onPress}>
-        <LeftView />
+        <LeftView
+          imgUri={headImg ? headImg.trim() : null}
+        />
         <RightView>
           <NameText>{createdByName}</NameText>
           <ContentText>{content}</ContentText>

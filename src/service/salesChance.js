@@ -194,7 +194,6 @@ export function updateSalesChance({
   isLocked,
   requirement,
 } = {}) {
-  debugger;
   return post({
     method: 'api.customerrelations.opportunity.update',
     id,
