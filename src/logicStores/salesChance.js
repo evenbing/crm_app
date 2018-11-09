@@ -106,6 +106,7 @@ class SalesChanceStore {
   // 总计
   @action async getSalesChanceTotalReq({ id, pageSize = 1 }) {
     try {
+      this.salesClueTotal = initTotal;
       const {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],

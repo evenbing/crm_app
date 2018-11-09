@@ -23,15 +23,11 @@ const initTotal = {
 
 @autobind
 class ReceivableRecordStore {
-  // 列表
-  @observable receivableRecordList = receivableFlatList;
-  @observable receivableRecordDetails = initDetailMap;
-  @observable receivableRecordTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable receivableRecordList = receivableFlatList;
   @action async getReceivableRecordListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -80,6 +76,7 @@ class ReceivableRecordStore {
   }
 
   // 详情
+  @observable receivableRecordDetails = initDetailMap;
   @action async getReceivableRecordDetailsReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -103,8 +100,10 @@ class ReceivableRecordStore {
   }
 
   // 总计
+  @observable receivableRecordTotal = initTotal;
   @action async getReceivableRecordTotalReq({ id, moduleType, pageSize = 1 }) {
     try {
+      this.receivableRecordTotal = initTotal;
       const {
         totalCount: attaTotal = 0,
         errors: attaErrors = [],

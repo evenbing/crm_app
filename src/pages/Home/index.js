@@ -11,6 +11,7 @@ import { observer } from 'mobx-react/native';
 
 import { routers } from '../../constants';
 import { get2Date } from '../../utils/date';
+import { nativeGoBack } from '../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
@@ -273,7 +274,7 @@ class Home extends React.Component {
 Home.navigationOptions = () => ({
   title: '首页',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon onPress={nativeGoBack} />
   ),
 });
 

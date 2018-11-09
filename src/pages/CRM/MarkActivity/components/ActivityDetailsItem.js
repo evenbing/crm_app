@@ -81,7 +81,7 @@ const ActivityDetailsItem = ({
       {renderBasicItem('创建时间', formatDateByMoment(creationTime))}
       {renderBasicItem('最近修改时间', formatDateByMoment(creationTime))}
       {renderBasicItem('最近跟进人', lastFollowUpName)}
-      {renderBasicItem('最近跟进时间', lastFollowUpTime, null, null, true)}
+      {renderBasicItem('最近跟进时间', formatDateByMoment(lastFollowUpTime), null, null, true)}
       <TitleItemComponent
         text="备注"
         color="#373737"

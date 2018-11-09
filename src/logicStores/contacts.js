@@ -30,15 +30,11 @@ const initTotal = {
 
 @autobind
 class ContactStore {
-  // 列表
-  @observable contactList = initFlatList;
-  @observable contactDetails = initDetailMap;
-  @observable contactTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable contactList = initFlatList;
   @action async getContactListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -74,6 +70,7 @@ class ContactStore {
   }
 
   // 详情
+  @observable contactDetails = initDetailMap;
   @action async getContactDetailsReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -97,8 +94,10 @@ class ContactStore {
   }
 
   // 总计
+  @observable contactTotal = initTotal;
   @action async getContactTotalReq({ id, pageSize = 1 }) {
     try {
+      this.contactTotal = initTotal;
       const {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],

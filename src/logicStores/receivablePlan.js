@@ -23,15 +23,11 @@ const initTotal = {
 
 @autobind
 class ReceivablePlanStore {
-  // 列表
-  @observable receivablePlanList = receivableFlatList;
-  @observable receivablePlanDetails = initDetailMap;
-  @observable receivablePlanTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable receivablePlanList = receivableFlatList;
   @action async getReceivablePlanListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -80,6 +76,7 @@ class ReceivablePlanStore {
   }
 
   // 详情
+  @observable receivablePlanDetails = initDetailMap;
   @action async getReceivablePlanDetailsReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -103,8 +100,10 @@ class ReceivablePlanStore {
   }
 
   // 总计
+  @observable receivablePlanTotal = initTotal;
   @action async getReceivablePlanTotalReq({ id, moduleType, pageSize = 1 }) {
     try {
+      this.receivablePlanTotal = initTotal;
       const {
         totalCount: attaTotal = 0,
         errors: attaErrors = [],

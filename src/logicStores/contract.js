@@ -27,15 +27,11 @@ const initTotal = {
 
 @autobind
 class ContractStore {
-  // 列表
-  @observable contractList = initFlatList;
-  @observable contractDetails = initDetailMap;
-  @observable contractTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable contractList = initFlatList;
   @action async getContractListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -71,6 +67,7 @@ class ContractStore {
   }
 
   // 详情
+  @observable contractDetails = initDetailMap;
   @action async getContractDetailsReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -94,8 +91,10 @@ class ContractStore {
   }
 
   // 总计
+  @observable contractTotal = initTotal;
   @action async getContactTotalReq({ id, moduleType, pageSize = 1 }) {
     try {
+      this.contractTotal = initTotal;
       const {
         totalCount: issueTotal = 0,
         errors: issueErrors = [],

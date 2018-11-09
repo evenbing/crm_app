@@ -7,6 +7,7 @@
 import moment from 'moment';
 import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
+import Toast from './toast';
 
 export const formatDateType = 'YYYY-MM-DD';
 // 格式化
@@ -30,8 +31,10 @@ export function nativeGoBack() {
 
 // call telPhone
 export function nativeCallPhone(telPhone) {
-  console.log(`@phone:${telPhone}`);
-  if (!telPhone) return;
+  if (!telPhone) {
+    Toast.showError('暂无电话号码耶');
+    return;
+  }
   try {
     NativeModules.system.call(telPhone);
   } catch (e) {

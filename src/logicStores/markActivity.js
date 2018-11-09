@@ -36,17 +36,11 @@ const initTotal = {
 
 @autobind
 class MarkActivityStore {
-  // 列表
-  @observable markActivityList = initFlatList;
-  // 详情
-  @observable markActivityDetail = initDetailMap;
-  // 总计
-  @observable markActivityTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable markActivityList = initFlatList;
   @action async getMarkActivityListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -82,6 +76,7 @@ class MarkActivityStore {
   }
 
   // 详情
+  @observable markActivityDetail = initDetailMap;
   @action async getMarkActivityDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -100,8 +95,10 @@ class MarkActivityStore {
   }
 
   // 总计
+  @observable markActivityTotal = initTotal;
   @action async getMarkActivityTotalReq({ id, pageSize = 1 }) {
     try {
+      this.markActivityTotal = initTotal;
       const {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],
@@ -133,9 +130,9 @@ class MarkActivityStore {
       } = await getSalesChanceList({ customerId: id, pageSize });
       if (saleChanceErrors.length) throw new Error(saleChanceErrors[0].message);
       runInAction(() => {
-        this.contactTotal = {
-          scheduleTotal,
+        this.markActivityTotal = {
           taskTotal,
+          scheduleTotal,
           saleClueTotal,
           saleChanceTotal,
         };
@@ -143,7 +140,7 @@ class MarkActivityStore {
     } catch (e) {
       Toast.showError(e.message);
       runInAction(() => {
-        this.contactTotal = initTotal;
+        this.markActivityTotal = initTotal;
       });
     }
   }

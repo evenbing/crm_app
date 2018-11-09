@@ -142,7 +142,7 @@ CRM.navigationOptions = () => ({
   title: 'CRM',
   headerLeft: (
     <LeftBackIcon
-      onPress={() => nativeGoBack()}
+      onPress={nativeGoBack}
     />
   ),
 });

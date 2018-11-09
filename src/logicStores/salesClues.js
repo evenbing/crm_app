@@ -30,17 +30,11 @@ const initTotal = {
 
 @autobind
 class SalesClueStore {
-  // 列表
-  @observable salesClueList = initFlatList;
-  // 详情
-  @observable salesClueDetail = initDetailMap;
-  // 统计
-  @observable salesClueTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable salesClueList = initFlatList;
   @action async getSalesClueListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -76,6 +70,7 @@ class SalesClueStore {
   }
 
   // 详情
+  @observable salesClueDetail = initDetailMap;
   @action async getSalesClueDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -94,8 +89,10 @@ class SalesClueStore {
   }
 
   // 总计
+  @observable salesClueTotal = initTotal;
   @action async getSalesClueTotalReq({ id, pageSize = 1 }) {
     try {
+      this.salesClueTotal = initTotal;
       const {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],
@@ -117,7 +114,7 @@ class SalesClueStore {
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
       runInAction(() => {
-        this.contactTotal = {
+        this.salesClueTotal = {
           scheduleTotal,
           taskTotal,
         };
@@ -125,7 +122,7 @@ class SalesClueStore {
     } catch (e) {
       Toast.showError(e.message);
       runInAction(() => {
-        this.contactTotal = initTotal;
+        this.salesClueTotal = initTotal;
       });
     }
   }

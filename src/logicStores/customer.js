@@ -39,17 +39,11 @@ const initTotal = {
 
 @autobind
 class CustomerStore {
-  // 列表
-  @observable customerList = initFlatList;
-  // 客户详情
-  @observable customerDetail = initDetailMap;
-  // 总计
-  @observable customerTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable customerList = initFlatList;
   @action async getCustomerListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -85,6 +79,7 @@ class CustomerStore {
   }
 
   // 详情
+  @observable customerDetail = initDetailMap;
   @action async getCustomerDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -103,8 +98,10 @@ class CustomerStore {
   }
 
   // 总计
+  @observable customerTotal = initTotal;
   @action async getCustomerTotalReq({ id, pageSize = 1 }) {
     try {
+      this.customerTotal = initTotal;
       const {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],
