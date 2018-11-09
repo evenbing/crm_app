@@ -147,6 +147,7 @@ class CreateCustomer extends React.Component {
         <NavInputItem
           leftText="电话"
           {...theme.getLeftStyle({
+            keyboardType: 'numeric',
             placeholder: CustomerEnum.phone,
             value: phone,
             onChangeText: phone => this.setState({ phone }),

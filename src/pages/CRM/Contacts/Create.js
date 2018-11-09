@@ -149,6 +149,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="电话"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: ContactsEnum.phoneNumber,
               value: phoneNumber,
               onChangeText: phoneNumber => this.setState({ phoneNumber }),
@@ -157,6 +158,7 @@ class Create extends React.Component {
           <NavInputItem
             leftText="手机"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: ContactsEnum.mobilePhone,
               value: mobilePhone,
               onChangeText: mobilePhone => this.setState({ mobilePhone }),

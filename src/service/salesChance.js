@@ -164,6 +164,12 @@ export function getSalesChanceDetail({
  *   transmissionDescription 输单描述
  *   departmentId 所属部门 must
  *   description 备注
+ *   salesPhaseId 销售阶段id
+ *   isPending 是否搁置
+ *   activityId 市场活动
+ *   isSubmited 是否提交
+ *   isLocked 是否锁定
+ *   requirement 需求说明
  * }
  * @return Promise<Object>
  */
@@ -181,6 +187,12 @@ export function updateSalesChance({
   transmissionDescription,
   departmentId,
   description,
+  salesPhaseId,
+  isPending,
+  activityId,
+  isSubmited,
+  isLocked,
+  requirement,
 } = {}) {
   debugger;
   return post({
@@ -198,6 +210,12 @@ export function updateSalesChance({
     transmissionDescription,
     departmentId,
     description,
+    salesPhaseId,
+    isPending,
+    activityId,
+    isSubmited,
+    isLocked,
+    requirement,
   });
 }
 

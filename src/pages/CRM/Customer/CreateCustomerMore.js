@@ -262,10 +262,11 @@ class CreateCustomerMore extends Component {
         <NavInputItem
           leftText="电话"
           {...theme.getLeftStyle({
-              placeholder: CustomerEnum.phone,
-              value: phone,
-              onChangeText: phone => this.setState({ phone }),
-            })}
+            keyboardType: 'numeric',
+            placeholder: CustomerEnum.phone,
+            value: phone,
+            onChangeText: phone => this.setState({ phone }),
+          })}
         />
         <NavInputItem
           leftText="传真"

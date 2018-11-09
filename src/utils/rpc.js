@@ -121,19 +121,21 @@ async function request(data, _options) {
   console.log(JSON.stringify(options.body));
   const resp = await fetch(config.apiUrl.toString(), options);
   const json = await resp.json();
-  console.log('RESP:', json);
 
   // 如果请求失败
   if (resp.status !== 200) {
     if (resp.status === 401) {
       console.log(resp.status);
     }
+    console.log('ErrorResp:', JSON.stringify(json));
     throw new ResponseError(json.message, resp.status, json);
   }
   // 服务不可用
   if (json.message) {
+    console.log('ErrorResp:', JSON.stringify(json));
     throw new ResponseError(json.message, resp.status, json);
   }
+  console.log('RESP:', json);
   return json;
 }
 

@@ -237,6 +237,7 @@ class CreateSalesClueMore extends React.Component {
           <NavInputItem
             leftText="电话"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesClueEnum.phone,
               value: phone,
               onChangeText: phone => this.setState({ phone }),
@@ -245,6 +246,7 @@ class CreateSalesClueMore extends React.Component {
           <NavInputItem
             leftText="手机"
             {...theme.getLeftStyle({
+              keyboardType: 'numeric',
               placeholder: SalesClueEnum.mobilePhone,
               value: mobilePhone,
               onChangeText: mobilePhone => this.setState({ mobilePhone }),

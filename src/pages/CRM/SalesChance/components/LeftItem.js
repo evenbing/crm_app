@@ -56,7 +56,13 @@ const LeftItem = ({
     <ContainerView>
       <TitleView>
         <TitleText>{name}</TitleText>
-        <TitleIcon>{salesPhaseName}</TitleIcon>
+        {
+          salesPhaseName ? (
+            <TitleIcon>{salesPhaseName}</TitleIcon>
+          ) : (
+            <TitleText />
+          )
+        }
       </TitleView>
       <TipText color={theme.listTipColor}>{customerName}</TipText>
       <DetailsView>

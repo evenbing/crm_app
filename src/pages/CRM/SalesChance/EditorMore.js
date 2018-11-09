@@ -9,8 +9,22 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
+// utils
+import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import Toast from '../../../utils/toast';
+
+// constants
+import { SalesChanceEnum } from '../../../constants/form';
+import { routers } from '../../../constants';
 import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
+import {
+  CustomerType,
+  MarkActivityType,
+  OpportunityTypes,
+  OpportunitySource,
+  PriceListType,
+} from '../../../constants/enum';
+
 // components
 import {
   CommStatusBar,
@@ -26,85 +40,47 @@ import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
 import TitleItem from '../../../components/Details/TitleItem';
 import ProductItem from './components/ProductItem';
 import AddProduct from './components/AddProduct';
-import { SalesChanceEnum } from '../../../constants/form';
-import { routers } from '../../../constants';
-import {
-  CustomerType,
-  MarkActivityType,
-  OpportunityTypes,
-  OpportunitySource,
-  PriceListType,
-} from '../../../constants/enum';
 import DateTimePicker from '../../../components/DateTimePicker';
-import { formatDateByMoment } from '../../../utils/base';
 import { CenterText, RightText } from '../../../components/Styles/Form';
+import NavInputItem from '../../../components/NavInputItem';
+
 import SalesChanceStore from '../../../logicStores/salesChance';
 import BusinessStore from '../../../logicStores/business';
 import { getNewId } from '../../../service/app';
-import Toast from '../../../utils/toast';
-import NavInputItem from '../../../components/NavInputItem';
 
 const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 
 @observer
 class EditorMore extends React.Component {
-  constructor(props) {
-    const {
-      name = null,
-      customerId = null,
-      customerName = null,
-      priceId = null,
-      priceName = null,
-      budgetCost = '',
-      actualCost = '',
-      planAmount = '',
-      salesPhaseId = null,
-      salesPhaseName = null,
-      expectedDate = null,
-      expectedDateShow = null,
-      description = null,
-      departmentId = null,
-      departmentName = null,
-      activityId = null,
-      activityName = null,
-      opportunityType = null,
-      opportunityTypeName = null,
-      sourceType = null,
-      sourceTypeName = null,
-      budinessProducts = [],
-      ...restProps
-    } = props.navigation.state.params.item;
-    super(props);
-    this.state = {
-      ...restProps,
-      name,
-      customerId,
-      customerName,
-      priceId,
-      priceName,
-      budgetCost,
-      actualCost,
-      planAmount,
-      salesPhaseId,
-      salesPhaseName,
-      expectedDate,
-      expectedDateShow,
-      description,
-      departmentId,
-      departmentName,
-      activityId,
-      activityName,
-      opportunityType,
-      opportunityTypeName,
-      sourceType,
-      sourceTypeName,
-      budinessProducts,
-    };
-  }
+  state = {
+    name: null,
+    customerId: null,
+    customerName: null,
+    priceId: null,
+    priceName: null,
+    budgetCost: null,
+    actualCost: null,
+    planAmount: null,
+    salesPhaseId: null,
+    salesPhaseName: null,
+    expectedDate: null,
+    expectedDateShow: null,
+    description: null,
+    departmentId: null,
+    departmentName: null,
+    activityId: null,
+    activityName: null,
+    opportunityType: null,
+    opportunityTypeName: null,
+    sourceType: null,
+    sourceTypeName: null,
+    budinessProducts: [],
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
 
     const { id } = this.props.navigation.state.params.item;
     // 编辑
@@ -216,19 +192,25 @@ class EditorMore extends React.Component {
       },
     });
   }
-
-  getLeftStyle = (placeholder, width = 110) => {
-    return {
-      inputProps: {
-        placeholder,
-        fontSize: moderateScale(16),
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
       },
-      leftTextStyle: {
-        color: '#373737',
-        width: moderateScale(width),
-      },
-      height: 44,
-    };
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item).length) return;
+    let {
+      expectedDate,
+    } = item;
+    if (expectedDate) {
+      expectedDate = formatDateByMoment(expectedDate);
+    }
+    this.setState({
+      ...formatNumberToString(item),
+      budinessProducts: item.budinessProducts || [],
+      expectedDate,
+    });
   };
 
   modifyProductPrice = item => () => {
@@ -365,7 +347,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.planAmount,
-              value: `${planAmount}`,
+              value: planAmount,
               onChangeText: planAmount => this.setState({ planAmount }),
             })}
             right={
@@ -438,7 +420,7 @@ class EditorMore extends React.Component {
             onConfirm={
               (date) => {
                 this.setState({
-                  expectedDate: formatDateByMoment(date, formatDateTypeShow),
+                  expectedDate: formatDateByMoment(date),
                   expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
                 });
               }
@@ -460,7 +442,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.budgetCost,
-              value: `${budgetCost}`,
+              value: budgetCost,
               onChangeText: budgetCost => this.setState({ budgetCost }),
             })}
             right={
@@ -472,7 +454,7 @@ class EditorMore extends React.Component {
             {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: SalesChanceEnum.actualCost,
-              value: `${actualCost}`,
+              value: actualCost,
               onChangeText: actualCost => this.setState({ actualCost }),
             })}
             right={
