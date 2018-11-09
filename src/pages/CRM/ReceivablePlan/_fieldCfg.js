@@ -53,6 +53,10 @@ export const ReceivablePlanTimeTypeFilterMap = {
       key: 'PLAN_RECEIVE_DATE',
       name: '计划回款时间',
     },
+    {
+      key: 'ifLastFollowTime',
+      name: '最新跟进时间',
+    },
   ],
 };
 

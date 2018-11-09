@@ -186,7 +186,11 @@ class ReceivablePlan extends React.Component {
       return v.list[v.selectedIndex].key;
     }).filter(_ => !!_).forEach((v, i) => {
       if (i === 0) {
-        obj.sortColumn = v;
+        if (v === 'ifLastFollowTime') {
+          obj.ifLastFollowTime = true;
+        } else {
+          obj.sortColumn = v;
+        }
       } else if (i === 1) {
         obj.participateType = v;
       }

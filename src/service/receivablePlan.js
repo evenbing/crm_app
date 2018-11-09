@@ -22,6 +22,7 @@ import { post } from '../utils/rpc';
  *   code 编号 FACT_RECEIVE_DATE-实际回款时间，PLAN_RECEIVE_DATE-计划回款时间
  *   sortColumn 排序类型
  *   ids 回款计划ID集合
+ *   ifLastFollowTime true 最近更近时间排序
  * }
  * @return Promise<ArrayList>
  */
@@ -39,6 +40,7 @@ export function getReceivablePlanList({
   code,
   sortColumn,
   ids,
+  ifLastFollowTime,
 } = {}) {
   return post({
     method: 'api.customerrelations.receivablePlan.find',
@@ -55,6 +57,7 @@ export function getReceivablePlanList({
     code,
     sortColumn,
     ids,
+    ifLastFollowTime,
   });
 }
 
