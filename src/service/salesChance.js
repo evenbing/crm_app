@@ -20,6 +20,7 @@ import { ModuleType } from '../constants/enum';
  *  expectedDateTime  结单时间范围  否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *  salesPhaseId  销售阶段  否
  *  customerId  客户  否
+ *  customerIds  客户集合  否
  *  name  机会名称  否
  *  planAmount  销售金额  否
  *  sourceType  机会来源  否
@@ -39,6 +40,7 @@ export function getSalesChanceList({
   expectedDateTime,
   salesPhaseId,
   customerId,
+  customerIds,
   name,
   planAmount,
   sourceType,
@@ -58,6 +60,7 @@ export function getSalesChanceList({
     expectedDateTime,
     salesPhaseId,
     customerId,
+    customerIds,
     name,
     planAmount,
     sourceType,

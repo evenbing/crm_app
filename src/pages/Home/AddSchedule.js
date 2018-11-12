@@ -221,6 +221,7 @@ class AddSchedule extends Component {
           />
           <Divder height={10} />
           <DateTimePicker
+            minuteInterval={30}
             onConfirm={
               date =>
                 this.setState({
@@ -240,6 +241,7 @@ class AddSchedule extends Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            minuteInterval={30}
             onConfirm={
               date =>
                 this.setState({

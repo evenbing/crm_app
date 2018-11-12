@@ -53,6 +53,7 @@ class DateTimePicker extends React.PureComponent {
         minimumDate,
         maximumDate,
         children,
+        minuteInterval,
       },
     } = this;
     return (
@@ -71,6 +72,7 @@ class DateTimePicker extends React.PureComponent {
           onCancel={this.onHideModal}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
+          minuteInterval={minuteInterval}
         />
       </ContainerView>
     );
@@ -86,6 +88,7 @@ DateTimePicker.defaultProps = {
   minimumDate: new Date(1970, 1, 1),
   maximumDate: new Date(2099, 1, 1),
   isEnd: false,
+  minuteInterval: 1,
 };
 
 DateTimePicker.propTypes = {
@@ -99,6 +102,7 @@ DateTimePicker.propTypes = {
   maximumDate: PropTypes.instanceOf(Date),
   children: PropTypes.node.isRequired,
   isEnd: PropTypes.bool,
+  minuteInterval: PropTypes.number,
 };
 
 export default DateTimePicker;
