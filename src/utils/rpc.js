@@ -131,7 +131,7 @@ async function request(data, _options) {
     throw new ResponseError(json.message, resp.status, json);
   }
   // 服务不可用
-  if (json.message) {
+  if (json.firstErrorMessage || json.message) {
     console.log('ErrorResp:', JSON.stringify(json));
     throw new ResponseError(json.message, resp.status, json);
   }
