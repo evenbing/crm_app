@@ -53,8 +53,8 @@ const ActivityDetailsItem = ({ item }) => (
     {renderBasicItem('合同状态', PackStatus[item.status])}
     {renderBasicItem('付款方式', PayType[item.payType])}
     {renderBasicItem('总金额', item.totalMoney, <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('开始日期', formatDateByMoment(item.startDate))}
-    {renderBasicItem('结束日期', formatDateByMoment(item.endDate), null, null, true)}
+    {renderBasicItem('开始日期', formatDateByMoment(item.startDate, 'YYYY-MM-DD'))}
+    {renderBasicItem('结束日期', formatDateByMoment(item.endDate, 'YYYY-MM-DD'), null, null, true)}
     <TitleItemComponent
       text="回款信息"
     />
@@ -68,7 +68,7 @@ const ActivityDetailsItem = ({ item }) => (
       text="其他信息"
     />
     {renderBasicItem('合同编号', item.number)}
-    {renderBasicItem('签约日期', formatDateByMoment(item.pactDate))}
+    {renderBasicItem('签约日期', formatDateByMoment(item.pactDate, 'YYYY-MM-DD'))}
     {renderBasicItem('我方签约人', item.ourContractName)}
     {renderBasicItem('客户方签约人', item.customerContractName)}
     {renderBasicItem('合同正文', null, null, null, true)}

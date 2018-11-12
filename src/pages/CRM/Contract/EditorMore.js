@@ -45,9 +45,7 @@ class EditorMore extends React.Component {
     payType: null,
     totalMoney: null,
     startDate: null,
-    startDateShow: null,
     endDate: null,
-    endDateShow: null,
     number: null,
     pactDate: null,
     ourContractId: null,
@@ -159,9 +157,7 @@ class EditorMore extends React.Component {
         payType,
         totalMoney,
         startDate,
-        startDateShow,
         endDate,
-        endDateShow,
         number,
         pactDate,
         ourContractId,
@@ -316,7 +312,7 @@ class EditorMore extends React.Component {
               date =>
                 this.setState({
                   startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  // startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -324,8 +320,8 @@ class EditorMore extends React.Component {
               leftText="开始日期"
               needPress={false}
               center={
-                <CenterText active={startDate && startDateShow}>
-                  {startDateShow || ContractEnum.startDate }
+                <CenterText active={startDate}>
+                  {startDate || ContractEnum.startDate }
                 </CenterText>
               }
               {...themeVar.navItemStyle}
@@ -337,7 +333,7 @@ class EditorMore extends React.Component {
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  // endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -345,8 +341,8 @@ class EditorMore extends React.Component {
               leftText="结束日期"
               needPress={false}
               center={
-                <CenterText active={endDate && endDateShow}>
-                  {endDateShow || ContractEnum.endDate }
+                <CenterText active={endDate}>
+                  {endDate || ContractEnum.endDate }
                 </CenterText>
               }
               isLast
