@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
-import { ListItem, Left, Right, Icon, Text } from 'native-base';
+import { ListItem, Left, Right, Text } from 'native-base';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import { theme } from '../../constants';
+import Thumbnail from '../../components/Thumbnail';
+import RightIcon from '../../img/ico_right_arrow.png';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -73,7 +76,7 @@ class SelectYear extends Component {
           <Text> {value} </Text>
         </Left>
         <Right>
-          <Icon name="arrow-forward" />
+          <Thumbnail source={RightIcon} size={12} />
         </Right>
       </ListItem>
     );
@@ -115,5 +118,21 @@ SelectYear.navigationOptions = () => ({
     <LeftBackIcon />
   ),
 });
+
+SelectYear.defaultProps = {};
+
+SelectYear.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
 
 export default SelectYear;

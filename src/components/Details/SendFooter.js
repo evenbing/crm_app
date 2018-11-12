@@ -135,7 +135,7 @@ class SendFooter extends React.PureComponent {
       },
     } = this;
     try {
-      if (!content) throw new Error('请输入内容');
+      // if (!content) throw new Error('请输入内容');
       const contentType = recordTypeList[selectedIndex].key;
       onPressSend({ content, contentType }, () => {
         this.setState({ content: null });

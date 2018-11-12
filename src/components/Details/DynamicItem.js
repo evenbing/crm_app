@@ -90,6 +90,8 @@ class DynamicItem extends React.PureComponent {
         creationTime,
       },
     } = this.props;
+    const attList = attachmentList.slice();
+
     return (
       <ContainerView onPress={onPress}>
         <LeftView
@@ -99,9 +101,9 @@ class DynamicItem extends React.PureComponent {
           <NameText>{createdByName}</NameText>
           <ContentText>{content}</ContentText>
           {
-            attachmentList.length ? (
+            attList.length ? (
               <PicImage
-                imgUri={attachmentList[0].filePath || null}
+                imgUri={attList[0].filePath || null}
               />
             ) : null
           }
