@@ -147,6 +147,7 @@ export function updateTaskComplete({
  */
 export function create({
   id,
+  oldTaskScheduleId,
   type,
   name,
   startTime,
@@ -166,6 +167,7 @@ export function create({
   return post({
     method: 'api.customerrelations.taskSchedule.create',
     id,
+    oldTaskScheduleId,
     type,
     name,
     startTime,

@@ -38,19 +38,28 @@ const delayTypes = [
 
 @observer
 class Home extends React.Component {
-  state = {
-    createActionSheetVisible: false,
-    delayActionSheetVisible: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      createActionSheetVisible: false,
+      delayActionSheetVisible: false,
+    };
+
+    this.oldTaskScheduleId = null;
+  }
 
   componentDidMount() {
     this.getData();
   }
 
   onSelectCreateType = ({ item }) => {
+    const param = {};
+    if (this.oldTaskScheduleId) {
+      param.oldTaskScheduleId = this.oldTaskScheduleId;
+    }
     const { navigate } = this.props.navigation;
     if (!Object.keys(item).length) return;
-    navigate(item.path);
+    navigate(item.path, param);
   }
 
   onSelectDelayType = ({ item }) => {
@@ -130,15 +139,21 @@ class Home extends React.Component {
     } = item;
     let typeText = '';
     let duration = '';
+    let firstButtonText = '';
+    let firstButtonPress = null;
     const startDate = new Date(parseInt(startTime, 10));
     const endDate = new Date(parseInt(endTime, 10));
     switch (type) {
       case 'TASK':
         typeText = '任务';
+        firstButtonText = '完成';
+        firstButtonPress = this.onPressFinish;
         duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
         break;
       case 'SCHEDULE':
         typeText = ' 日程';
+        firstButtonText = '下一步';
+        firstButtonPress = this.nextSelectCreateType(id);
         duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
         break;
       default:
@@ -157,7 +172,7 @@ class Home extends React.Component {
       rowVersion,
       reFetchTaskScheduleList: this.reFetchTaskScheduleList,
       operateList: [
-        { key: `${id}1`, text: '完成', onPress: this.onPressFinish },
+        { key: `${id}1`, text: firstButtonText, onPress: firstButtonPress },
         { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
         { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
       ],
@@ -166,6 +181,14 @@ class Home extends React.Component {
   }
 
   selectCreateType = () => {
+    this.oldTaskScheduleId = null;
+    this.setState({
+      createActionSheetVisible: true,
+    });
+  }
+
+  nextSelectCreateType = id => () => {
+    this.oldTaskScheduleId = id;
     this.setState({
       createActionSheetVisible: true,
     });

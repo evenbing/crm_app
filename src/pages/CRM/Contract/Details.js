@@ -11,7 +11,7 @@ import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import {formatDateByMoment, getUserId} from '../../../utils/base';
+import { formatDateByMoment, getUserId } from '../../../utils/base';
 import { getNewId } from '../../../service/app';
 import Toast from '../../../utils/toast';
 

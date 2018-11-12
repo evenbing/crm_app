@@ -107,6 +107,7 @@ class AddSchedule extends Component {
       props: {
         navigation: {
           goBack,
+          state: { params: { oldTaskScheduleId } },
         },
       },
     } = this;
@@ -144,6 +145,7 @@ class AddSchedule extends Component {
       }
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
         id: businessId,
+        oldTaskScheduleId,
         type,
         name,
         startTime: moment(startTime).format('YYYY-MM-DD HH:mm:ss'),

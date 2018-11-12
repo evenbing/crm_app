@@ -98,6 +98,7 @@ class AddTask extends Component {
       props: {
         navigation: {
           goBack,
+          state: { params: { oldTaskScheduleId } },
         },
       },
     } = this;
@@ -122,6 +123,7 @@ class AddTask extends Component {
 
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
         id: businessId,
+        oldTaskScheduleId,
         type,
         name,
         // startTime,

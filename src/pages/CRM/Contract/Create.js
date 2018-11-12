@@ -194,7 +194,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  startDate: `${formatDateByMoment(date)}`,
+                  startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                   startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
@@ -215,7 +215,7 @@ class Create extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDateByMoment(date)}`,
+                  endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                   endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }

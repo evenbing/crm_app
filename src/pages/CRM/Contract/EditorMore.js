@@ -45,7 +45,9 @@ class EditorMore extends React.Component {
     payType: null,
     totalMoney: null,
     startDate: null,
+    startDateShow: null,
     endDate: null,
+    endDateShow: null,
     number: null,
     pactDate: null,
     ourContractId: null,
@@ -157,7 +159,9 @@ class EditorMore extends React.Component {
         payType,
         totalMoney,
         startDate,
+        startDateShow,
         endDate,
+        endDateShow,
         number,
         pactDate,
         ourContractId,
@@ -311,7 +315,8 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  startDate: `${formatDateByMoment(date)}`,
+                  startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -319,8 +324,8 @@ class EditorMore extends React.Component {
               leftText="开始日期"
               needPress={false}
               center={
-                <CenterText active={startDate}>
-                  { startDate || ContractEnum.startDate }
+                <CenterText active={startDate && startDateShow}>
+                  {startDateShow || ContractEnum.startDate }
                 </CenterText>
               }
               {...themeVar.navItemStyle}
@@ -331,7 +336,8 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDateByMoment(date)}`,
+                  endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
@@ -339,8 +345,8 @@ class EditorMore extends React.Component {
               leftText="结束日期"
               needPress={false}
               center={
-                <CenterText active={endDate}>
-                  { endDate || ContractEnum.endDate }
+                <CenterText active={endDate && endDateShow}>
+                  {endDateShow || ContractEnum.endDate }
                 </CenterText>
               }
               isLast
@@ -363,7 +369,7 @@ class EditorMore extends React.Component {
             onConfirm={
               date =>
                 this.setState({
-                  pactDate: `${formatDateByMoment(date)}`,
+                  pactDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
           >
