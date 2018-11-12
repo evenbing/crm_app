@@ -5532,6 +5532,11 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-countdown-hint@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/react-native-countdown-hint/-/react-native-countdown-hint-0.0.3.tgz#64e2c33fd4edeff4a8641482fb29403b0c123369"
+  integrity sha512-gYR8dQp/oJpiZp5bKhJ2LRZVuula4hRH8udPLp2pSHaYgZsw1N4+jQtfl8HzEZRToHDnwQLvW3X4EK3aKj71bQ==
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

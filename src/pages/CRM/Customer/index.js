@@ -139,7 +139,8 @@ class Customer extends React.Component {
     } = this;
     const obj = {
       pageNumber,
-      name: searchValue,
+      // name: searchValue,
+      keyword: searchValue,
     };
     // query header tab
     screenTabList.map((v, i) => {
