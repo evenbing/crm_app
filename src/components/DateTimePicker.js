@@ -7,9 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Picker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import { formatDateByMoment } from '../utils/base';
+import { DatePicker } from 'antd-mobile-rn';
 
 // components
 import TouchableView from './TouchableView';
@@ -29,15 +27,36 @@ class DateTimePicker extends React.PureComponent {
     const {
       props: {
         isEnd,
+        minuteInterval,
       },
     } = this;
+    const currDate = new Date();
+    const year = currDate.getFullYear();
+    const month = currDate.getMonth();
+    const date = currDate.getDate();
+    let hour = currDate.getHours();
+    let minutes = currDate.getMinutes();
+    if (minuteInterval === 30) {
+      if (minutes <= 30) {
+        minutes = 30;
+      } else {
+        minutes = 0;
+      }
+    }
+    if (isEnd) {
+      hour = hour === 23 ? 0 : hour + 1;
+    }
     this.setState({
       isVisible: true,
-      date: isEnd ? new Date(formatDateByMoment(moment().hour(0))) : new Date(),
+      date: new Date(year, month, date, hour, minutes),
     });
   };
   onHideModal = () => {
     this.setState({ isVisible: false });
+  };
+  onChange = (date) => {
+    this.setState({ date });
+    this.props.onConfirm(date);
   };
   render() {
     const {
@@ -61,18 +80,19 @@ class DateTimePicker extends React.PureComponent {
         <TouchableView onPress={this.onShowModal}>
           {children}
         </TouchableView>
-        <Picker
-          isVisible={isVisible}
-          date={date}
+        <DatePicker
+          visible={isVisible}
+          value={date}
           mode={mode}
           confirmTextIOS={confirmTextIOS}
           cancelTextIOS={cancelTextIOS}
-          titleIOS={titleIOS}
-          onConfirm={this.onConfirm}
-          onCancel={this.onHideModal}
-          minimumDate={minimumDate}
-          maximumDate={maximumDate}
-          minuteInterval={minuteInterval}
+          title={titleIOS}
+          onChange={this.onChange}
+          onOk={this.onHideModal}
+          onDismiss={this.onHideModal}
+          minDate={minimumDate}
+          maxDate={maximumDate}
+          minuteStep={minuteInterval}
         />
       </ContainerView>
     );

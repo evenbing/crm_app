@@ -193,6 +193,7 @@ class AddTask extends Component {
           />
           <Divder height={10} />
           <DateTimePicker
+            minuteInterval={30}
             onConfirm={
               date =>
                 this.setState({

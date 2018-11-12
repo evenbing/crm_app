@@ -241,6 +241,7 @@ class AddSchedule extends Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            isEnd
             minuteInterval={30}
             onConfirm={
               date =>
