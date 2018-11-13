@@ -142,28 +142,30 @@ class ProductPicker extends Component {
     navigate(routers.productList, {
       type: ProductType,
       callback: (item) => {
-        const count = this.state.products.filter(p => p.id === item.id).length;
-        if (count === 0) {
-          const arr = this.state.products.map(item => ({ ...item }));
-          const {
-            id,
-            name,
-            price,
-            salesUnit,
-            describe,
-            tenantId,
-          } = item;
-          arr.push({
-            id,
-            productName: name,
-            standardPrice: price,
-            salesUnit,
-            comment: describe,
-            tenantId,
-            checked: true,
-          });
-          this.setState({ products: arr });
-        }
+        const { products } = this.state;
+        const index = products.findIndex(p => p.id === item.id);
+        if (index > -1) return;
+        const {
+          id,
+          name,
+          price,
+          salesUnit,
+          describe,
+          tenantId,
+          attachmentList,
+        } = item;
+        const obj = {
+          id,
+          productName: name,
+          standardPrice: price,
+          salesUnit,
+          comment: describe,
+          tenantId,
+          attachmentList,
+          productImage: attachmentList.length ? attachmentList[0].filePath : null,
+          checked: true,
+        };
+        this.setState({ products: [...products, obj] });
       },
     });
   }

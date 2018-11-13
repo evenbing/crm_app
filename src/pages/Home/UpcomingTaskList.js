@@ -83,7 +83,7 @@ class UpcomingTaskList extends Component {
         <FlatListTable
           data={data}
           keyExtractor={this.keyExtractor}
-          renderItemElem={<ListItem showOperate={false} />}
+          renderItemElem={<ListItem />}
           onRefresh={this.getData}
           onEndReached={this.onEndReached}
           refreshing={refreshing}

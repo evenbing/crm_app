@@ -171,10 +171,10 @@ ProductItem.propTypes = {
   comment: PropTypes.string,
   salesTotalPrice: PropTypes.string,
   onPress: PropTypes.func.isRequired,
-  attachmentList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    uri: PropTypes.string,
-  })),
+  attachmentList: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 };
 
 export default ProductItem;

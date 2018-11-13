@@ -219,6 +219,7 @@ class CustomerStore {
     try {
       // 已经关注则删除
       if (follow) {
+        if (!followId) throw new Error('缺失关注id');
         const {
           errors = [],
         } = await deleteFollow({ id: followId });
@@ -233,7 +234,7 @@ class CustomerStore {
         Toast.showSuccess('关注成功');
       }
       runInAction(() => {
-        this.getCustomerDetailReq({ id: restProps.objectId });
+        this.getCustomerDetailReq({ id: restProps.objectId || restProps.id });
         this.getCustomerListReq(this.queryProps);
         callback && callback();
       });

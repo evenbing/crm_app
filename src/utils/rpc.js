@@ -133,7 +133,7 @@ async function request(data, _options) {
   // 服务不可用
   if (json.firstErrorMessage || json.message) {
     console.log('ErrorResp:', JSON.stringify(json));
-    throw new ResponseError(json.message, resp.status, json);
+    throw new ResponseError(json.firstErrorMessage || json.message, resp.status, json);
   }
   console.log('RESP:', json);
   return json;
@@ -173,6 +173,11 @@ export async function upload(file) {
   if (resp.status !== 200) {
     throw new ResponseError(json.message, resp.status, json);
   }
+  // 服务不可用
+  if (json.firstErrorMessage || json.message) {
+    console.log('ErrorResp:', JSON.stringify(json));
+    throw new ResponseError(json.firstErrorMessage || json.message, resp.status, json);
+  }
   return json;
 }
 
@@ -193,6 +198,10 @@ export async function uploadImage(formData) {
   // 如果请求失败
   if (resp.status !== 200) {
     throw new ResponseError(json.message, resp.status, json);
+  }
+  if (json.firstErrorMessage || json.message) {
+    console.log('ErrorResp:', JSON.stringify(json));
+    throw new ResponseError(json.firstErrorMessage || json.message, resp.status, json);
   }
   return json;
 }

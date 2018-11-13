@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { CheckBox } from 'native-base';
 
 import { theme } from '../../../constants';
-import productImage from '../../../img/test/mine_head.png';
+
+// component
+import Thumbnail from '../../../components/Thumbnail';
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -12,7 +14,7 @@ const Container = styled.TouchableOpacity`
   background-color: ${theme.whiteColor};
 `;
 
-const ProductImage = styled.Image`
+const ProductImage = styled(Thumbnail)`
   width: ${theme.moderateScale(80)}px;
   height: ${theme.moderateScale(80)}px;
   margin-left: ${theme.moderateScale(15)}px;
@@ -40,11 +42,14 @@ const ProductListItem = ({
     productName,
     standardPrice,
     checked,
+    productImage,
   } = item;
   return (
     <Container onPress={() => onPressItem(item)}>
       <CheckBox checked={checked} color="green" />
-      <ProductImage source={productImage} />
+      <ProductImage
+        imgUri={productImage}
+      />
       <ContentView>
         <Name>
           {productName}

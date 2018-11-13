@@ -45,8 +45,6 @@ class UpcomingScheduleList extends Component {
 
   keyExtractor = item => item.id;
 
-  renderItemSeparatorComponent = () => <ListItemSeparatorComponent />
-
   render() {
     const {
       taskScheduleList: { list, refreshing, loadingMore },
@@ -90,7 +88,7 @@ class UpcomingScheduleList extends Component {
         <FlatListTable
           data={data}
           keyExtractor={this.keyExtractor}
-          renderItemElem={<ListItem showOperate={false} />}
+          renderItemElem={<ListItem />}
           onRefresh={this.getData}
           onEndReached={this.onEndReached}
           refreshing={refreshing}

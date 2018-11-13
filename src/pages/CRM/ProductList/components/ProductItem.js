@@ -64,11 +64,14 @@ class ProductItem extends React.PureComponent {
       item,
     } = this.props;
 
+    const attList = item.attachmentList || [];
+
     return (
       <ContainerView onPress={onPressItem}>
         <BorderView isLast={isLast}>
           <LeftView>
             <Thumbnail
+              imgUri={attList.length ? attList[0].filePath : null}
               size={80}
             />
           </LeftView>
