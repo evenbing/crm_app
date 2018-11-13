@@ -14,7 +14,7 @@ import {
   updateOwnerUser,
 } from '../service/contract';
 import Toast from '../utils/toast';
-import { initFlatList, initDetailMap } from './initState';
+import { contractFlatList, initDetailMap } from './initState';
 import { getReceivableIssueList } from '../service/receivable';
 import { getAttachmentList } from '../service/attachment';
 
@@ -31,7 +31,7 @@ class ContractStore {
   static queryProps = {};
 
   // 列表
-  @observable contractList = initFlatList;
+  @observable contractList = contractFlatList;
   @action async getContractListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -43,6 +43,9 @@ class ContractStore {
       const {
         result = [],
         totalCount = 0,
+        totalPactMoney = 0,
+        totalOverMoney = 0,
+        totalFactMoney = 0,
         errors = [],
       } = await getContractList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
@@ -51,7 +54,13 @@ class ContractStore {
         this.contractList.pageNumber = pageNumber;
 
         if (pageNumber === 1) {
-          this.contractList.list = [...result];
+          this.contractList = {
+            ...this.contractList,
+            list: result,
+            totalPactMoney,
+            totalOverMoney,
+            totalFactMoney,
+          };
         } else {
           this.contractList.list = this.contractList.list.concat(result);
         }

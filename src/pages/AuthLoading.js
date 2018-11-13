@@ -11,8 +11,13 @@ import styled from 'styled-components';
 
 // constants
 import CommStatusBar from '../components/Layout/CommStatusBar';
+import XnLoading from '../components/xnLoading';
 
-const ContainerView = styled.View``;
+const ContainerView = styled.View`
+  flex: 1;
+  background-color: #fff;
+`;
+
 
 class AuthLoading extends React.Component {
   render() {
@@ -21,6 +26,7 @@ class AuthLoading extends React.Component {
         <CommStatusBar
           barStyle="dark-content"
         />
+        <XnLoading />
       </ContainerView>
     );
   }

@@ -219,7 +219,6 @@ class SalesChance extends React.Component {
     });
     // query sideBar
     selectedList.forEach((v) => {
-      console.log(v);
       if (v.type === TYPE_CUSTOMER_LIST) {
         obj[v.key] = [v.value];
       } else {

@@ -14,6 +14,7 @@ import { observer } from 'mobx-react/native';
 // constants
 import { routers, theme } from '../../../constants';
 import { CustomerType } from '../../../constants/enum';
+import { TYPE_CUSTOMER_LIST } from '../../../constants/drawer';
 
 // utils
 import * as drawerUtils from '../../../utils/drawer';
@@ -25,7 +26,7 @@ import SearchInput from '../../../components/SearchInput';
 import { ContainerView, ListFooterComponent } from '../../../components/Styles/Layout';
 import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
-import { ActionSheet } from '../../../components/Modal';
+import ActionSheet from '../../../components/Modal/ActionSheet';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 
@@ -193,7 +194,11 @@ class ReceivableRecord extends React.Component {
     });
     // query sideBar
     selectedList.forEach((v) => {
-      obj[v.key] = v.value;
+      if (v.type === TYPE_CUSTOMER_LIST) {
+        obj[v.key] = [v.value];
+      } else {
+        obj[v.key] = v.value;
+      }
     });
     console.log(obj);
     ReceivableRecordModel.getReceivableRecordListReq(filterObject(obj));

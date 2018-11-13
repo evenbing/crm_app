@@ -13,12 +13,22 @@ export const initFlatList = {
   total: 0,
 };
 
+// 跟进统计
 export const initFollowUpList = {
   refreshing: false,
   list: [],
   maxValue: 1,
 };
 
+// 合同
+export const contractFlatList = {
+  ...initFlatList,
+  totalPactMoney: 0,
+  totalOverMoney: 0,
+  totalFactMoney: 0,
+};
+
+// 回款
 export const receivableFlatList = {
   ...initFlatList,
   totalFactPrice: 0,

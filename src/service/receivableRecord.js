@@ -18,6 +18,8 @@ import { post } from '../utils/rpc';
  *   dateFrom 日期开始
  *   dateTo 日期结束
  *   ids 回款计划ID集合
+ *   customerId 客户ID
+ *   customerIds 客户list
  * }
  * @return Promise<ArrayList>
  */
@@ -31,6 +33,8 @@ export function getReceivableRecordList({
   dateFrom,
   dateTo,
   ids,
+  customerId,
+  customerIds,
 } = {}) {
   return post({
     method: 'api.customerrelations.receivableDetail.find',
@@ -43,6 +47,8 @@ export function getReceivableRecordList({
     dateFrom,
     dateTo,
     ids,
+    customerId,
+    customerIds,
   });
 }
 

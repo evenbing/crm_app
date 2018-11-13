@@ -81,11 +81,11 @@ class ReceivablePlan extends React.Component {
     StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
-  onFilter = () => {
+  onFilter = async () => {
     const list = drawerUtils.handleFilterItem({
       list: this.state.filterList,
     });
-    this.setState({
+    await this.setState({
       selectedList: list,
     });
     this.onCloseDrawer();

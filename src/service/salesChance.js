@@ -47,7 +47,6 @@ export function getSalesChanceList({
   followTimeType,
   sortColumn,
 } = {}) {
-  debugger;
   return post({
     method: 'api.customerrelations.opportunity.find',
     pageNumber,

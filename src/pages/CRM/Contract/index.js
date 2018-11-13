@@ -22,9 +22,10 @@ import { filterObject, nativeCallPhone } from '../../../utils/base';
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
 import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
+import { ContainerView, ListFooterComponent } from '../../../components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
 import FlatListTable from '../../../components/FlatListTable';
+import ActionSheet from '../../../components/Modal/ActionSheet';
 import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 import LeftItem from './components/LeftItem';
 
@@ -70,6 +71,11 @@ class Contract extends React.Component {
   }
   onPressRight = () => {
     this.props.navigation.navigate(routers.contractCreate);
+  };
+  onToggleAmountVisible = () => {
+    this.setState({
+      amountVisible: !this.state.amountVisible,
+    });
   };
   onChange = ({ index, isLast }) => {
     this.setState({ activeIndex: index });
@@ -296,6 +302,7 @@ class Contract extends React.Component {
     const {
       state: {
         activeIndex,
+        amountVisible,
         drawerVisible,
         selectedList,
         searchValue,
@@ -303,13 +310,32 @@ class Contract extends React.Component {
       },
     } = this;
     const {
-      contractList: { list, refreshing, loadingMore },
+      contractList: {
+        list,
+        total,
+        refreshing,
+        loadingMore,
+        totalPactMoney,
+        totalOverMoney,
+        totalFactMoney,
+      },
     } = ContractModel;
+    const amountActionSheetProps = {
+      isVisible: amountVisible,
+      onPressClose: this.onToggleAmountVisible,
+      itemNeedPress: false,
+      list: [
+        { leftText: '总金额', rightText: `¥${totalPactMoney}`, rightStyle: { color: theme.dangerColor } },
+        { leftText: '未回款金额', rightText: `¥${totalOverMoney}` },
+        { leftText: '回款金额', rightText: `¥${totalFactMoney}` },
+      ],
+    };
     const flatProps = {
       data: list,
       renderItem: this.renderItem,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
+      ListFooterComponent: (Number(total) === list.length && !!total) ? <ListFooterComponent /> : null,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
       loadingMore,
@@ -341,6 +367,8 @@ class Contract extends React.Component {
             selectedList={selectedList}
           />
           <FlatListTable {...flatProps} />
+          <ActionSheet {...amountActionSheetProps} />
+          <FooterTotal onPress={this.onToggleAmountVisible} />
         </ContainerView>
       </Drawer>
     );
