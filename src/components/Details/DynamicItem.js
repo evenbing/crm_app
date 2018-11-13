@@ -1,5 +1,5 @@
 /**
- * @component DynamicItem.jsm.js
+ * @component DynamicItem.js
  * @description ProductItem
  * @time 2018/8/07
  * @author zhao
@@ -76,8 +76,25 @@ const TypeText = styled.Text`
   color: #18B548;
 `;
 
-
 class DynamicItem extends React.PureComponent {
+  renderPicImage = () => {
+    const {
+      item: {
+        attachmentList = [],
+      },
+    } = this.props;
+    const attList = [...attachmentList];
+    if (!(attList.length && typeof attList[0].filePath === 'string' && attList[0].filePath)) return null;
+    // remove xlsx zip ...
+    if (attList[0].filePath.endsWith('.jpg')) {
+      return (
+        <PicImage
+          imgUri={attList[0].filePath || null}
+        />
+      );
+    }
+    return null;
+  };
   render() {
     const {
       onPress,
@@ -85,12 +102,10 @@ class DynamicItem extends React.PureComponent {
         headImg,
         createdByName,
         content,
-        attachmentList = [],
         contentType,
         creationTime,
       },
     } = this.props;
-    const attList = attachmentList.slice();
 
     return (
       <ContainerView onPress={onPress}>
@@ -100,13 +115,7 @@ class DynamicItem extends React.PureComponent {
         <RightView>
           <NameText>{createdByName}</NameText>
           <ContentText>{content}</ContentText>
-          {
-            attList.length ? (
-              <PicImage
-                imgUri={attList[0].filePath || null}
-              />
-            ) : null
-          }
+          {this.renderPicImage()}
           <BottomView>
             <TypeText>{DynamicRecordType[contentType]}</TypeText>
             <TimeText>{moment(Number(creationTime)).format('HH:mm')}</TimeText>

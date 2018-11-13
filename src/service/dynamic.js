@@ -64,6 +64,7 @@ export function createDynamic({
     moduleId,
     contentType,
     content,
+    attachmentStatus: !!id, // 要是有附件，文件传true，无传false
   });
 }
 
