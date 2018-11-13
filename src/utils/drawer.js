@@ -77,6 +77,7 @@ export function handleFilterItem({
     const obj = {};
     obj.label = _.label;
     obj.key = _.key;
+    obj.type = _.type;
     if (_.type === TYPE_LIST || _.type === TYPE_CUSTOMER_LIST) {
       if (_.selectedIndex === -1) return;
       const res = _.list[_.selectedIndex];

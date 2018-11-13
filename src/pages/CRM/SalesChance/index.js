@@ -14,6 +14,7 @@ import { observer } from 'mobx-react/native';
 // constants
 import { routers, theme } from '../../../constants';
 import { CustomerType, ModuleType, SalesChanceType } from '../../../constants/enum';
+import { TYPE_CUSTOMER_LIST } from '../../../constants/drawer';
 
 // utils
 import * as drawerUtils from '../../../utils/drawer';
@@ -218,7 +219,12 @@ class SalesChance extends React.Component {
     });
     // query sideBar
     selectedList.forEach((v) => {
-      obj[v.key] = v.value;
+      console.log(v);
+      if (v.type === TYPE_CUSTOMER_LIST) {
+        obj[v.key] = [v.value];
+      } else {
+        obj[v.key] = v.value;
+      }
     });
     console.log(obj);
     SalesChanceStore.getSalesChanceListReq(filterObject(obj));

@@ -33,7 +33,7 @@ export const FilterList = [
     list: mapToArray(TimeTypes),
   },
   {
-    key: 'customerId',
+    key: 'customerIds',
     label: '客户',
     type: TYPE_CUSTOMER_LIST,
     selectedIndex: -1,
