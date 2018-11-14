@@ -90,7 +90,9 @@ class ModifyProductPrice extends React.PureComponent {
       attachmentList,
     } = this.state;
     return (
-      <ContainerView>
+      <ContainerScrollView
+        bottomPadding
+      >
         <CommStatusBar />
         <ProductImage >
           <Thumbnail
@@ -100,8 +102,7 @@ class ModifyProductPrice extends React.PureComponent {
           <Name>{productName}</Name>
           <StandPrice> {`标准价格: ${standardPrice}`} </StandPrice>
         </ProductImage>
-        <ContainerScrollView
-          bottomPadding
+        <ContainerView
           backgroundColor={theme.whiteColor}
         >
           <NavInputItem
@@ -151,8 +152,8 @@ class ModifyProductPrice extends React.PureComponent {
               placeholderTextColor={theme.textPlaceholderColor}
             />
           </TextareaGroup>
-        </ContainerScrollView>
-      </ContainerView>
+        </ContainerView>
+      </ContainerScrollView>
     );
   }
 }
