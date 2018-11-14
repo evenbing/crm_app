@@ -146,9 +146,12 @@ export function handleRemoveItem({
 }) {
   if (!list.length) return [];
   if (list[pareIndex].type !== type) return list;
-  const arr = list[pareIndex].list; // curr list
+  const { selectedIndex, list: arr } = list[pareIndex]; // curr list
   if (currIndex >= arr.length - 1) return list;
   arr.splice(currIndex, 1);
   list[pareIndex].list = arr;
+  if (selectedIndex === currIndex) {
+    list[pareIndex].selectedIndex = -1;
+  }
   return [...list];
 }

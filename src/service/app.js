@@ -175,9 +175,15 @@ export function deleteFollow({
 /**
  * 获取用户的通知列表
  */
-export function getMessage(options) {
+export function getMessage({
+  pageNumber = 1,
+  pageSize = 100,
+  ...restProps
+}) {
   return post({
     method: 'api.foundation.message.find',
-    ...options,
+    pageNumber,
+    pageSize,
+    ...restProps,
   });
 }

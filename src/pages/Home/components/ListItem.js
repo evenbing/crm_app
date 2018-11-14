@@ -103,6 +103,16 @@ const OperateIcon = styled.Image.attrs({
   height: ${moderateScale(22)};
 `;
 
+const OperateCompletedView = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding: 0px ${moderateScale(12)}px;
+`;
+
+const OperateCompletedTex = styled.Text`
+  color: ${theme.primaryColor};
+`;
+
 const OperateView = styled.View`
   height: ${props => props.showOperateView ? moderateScale(37) : '0px'};
   background-color: ${theme.whiteColor};
@@ -145,26 +155,60 @@ class ListItem extends React.PureComponent {
     }
   }
 
+  renderOperate = () => {
+    const {
+      props: {
+        item: {
+          id,
+          type,
+          startTime,
+          endTime,
+          moduleId,
+          moduleType,
+          rowVersion,
+          isCompleted,
+        },
+        showOperate,
+      },
+    } = this;
+    if (!isCompleted && showOperate) {
+      return (
+        <Operate
+          onPress={
+            this.onToggleOperateView({
+              id, type, startTime, endTime, moduleId, moduleType, rowVersion,
+            })
+          }
+        >
+          <OperateIcon />
+        </Operate>
+      );
+    }
+    return (
+      <OperateCompletedView>
+        <OperateCompletedTex>已完成</OperateCompletedTex>
+      </OperateCompletedView>
+    );
+  };
+
   render() {
     const {
-      item: {
-        id,
-        duration,
-        type,
-        name,
-        comment,
-        startTime,
-        endTime,
-        moduleId,
-        moduleType,
-        rowVersion,
-        operateList,
+      state: {
+        showOperateView,
       },
-      index,
-      isLast,
-      showOperate,
-    } = this.props;
-    const { showOperateView } = this.state;
+      props: {
+        item: {
+          id,
+          duration,
+          type,
+          name,
+          comment,
+          operateList,
+        },
+        index,
+        isLast,
+      },
+    } = this;
     return (
       <ContainerView
         isFirst={index === 0}
@@ -183,19 +227,7 @@ class ListItem extends React.PureComponent {
             <Time>{comment}</Time>
           </Theme>
           <Divder />
-          {
-            showOperate ? (
-              <Operate
-                onPress={
-                  this.onToggleOperateView({
-                    id, type, startTime, endTime, moduleId, moduleType, rowVersion,
-                  })
-                }
-              >
-                <OperateIcon />
-              </Operate>
-            ) : null
-          }
+          {this.renderOperate()}
         </SectionItemView>
         <OperateView showOperateView={showOperateView}>
           <HorizontalDivider height={moderateScale(1)} />

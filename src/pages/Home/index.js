@@ -136,6 +136,7 @@ class Home extends React.Component {
       name,
       comment,
       rowVersion,
+      isCompleted,
     } = item;
     let typeText = '';
     let duration = '';
@@ -170,6 +171,7 @@ class Home extends React.Component {
       moduleId,
       moduleType,
       rowVersion,
+      isCompleted,
       reFetchTaskScheduleList: this.reFetchTaskScheduleList,
       operateList: [
         { key: `${id}1`, text: firstButtonText, onPress: firstButtonPress },
