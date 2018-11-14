@@ -119,12 +119,16 @@ export function handleAddItem({
   if (currIndex !== arr.length - 1) return list;
   // unqiue arr
   const index = arr.findIndex(v => v.name === hashMap.name);
-  if (index > -1) return list;
+  if (index > -1) {
+    list[pareIndex].selectedIndex = index;
+    return list;
+  }
   // save arr
   const lastMap = arr[currIndex];
   arr[currIndex] = hashMap;
   arr[currIndex + 1] = lastMap;
   list[pareIndex].list = arr;
+  list[pareIndex].selectedIndex = currIndex;
   return [...list];
 }
 

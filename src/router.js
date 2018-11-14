@@ -126,6 +126,8 @@ const HomeRouteConfig = {
 const HomeNavigatorConfig = {
   initialRouteName: routers.home,
   cardStyle: { shadowColor: 'transparent' },
+  mode: 'card',
+  transitionConfig: theme.transitionConfig,
   navigationOptions: {
     headerStyle: {
       paddingTop: getHeaderPadding(true),
@@ -312,6 +314,7 @@ const RootRouteConfig = {
 const RootNavigatorConfig = {
   initialRouteName: routers.authLoading,
   cardStyle: { shadowColor: 'transparent' },
+  mode: 'modal',
   headerMode: 'none',
 };
 
