@@ -5,29 +5,35 @@
  * @Last Modified time: 2018-10-09 14:51:07
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import DateTimePicker from '../../components/DateTimePicker';
-import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
-import { moderateScale } from '../../utils/scale';
-import { theme, routers } from '../../constants';
-import NavInputItem from '../../components/NavInputItem';
+// utils
 import { formatDate } from '../../utils/base';
-import { FormActionSheet } from '../../components/Modal';
+import { moderateScale } from '../../utils/scale';
+import Toast from '../../utils/toast';
+
+// constants
+import { theme, routers } from '../../constants';
 import { NoticeTypes } from '../../constants/enum';
 import { TaskEnum } from '../../constants/form';
+
+// components
+import DateTimePicker from '../../components/DateTimePicker';
+import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
+import NavInputItem from '../../components/NavInputItem';
+import { FormActionSheet } from '../../components/Modal';
 import { CenterText } from '../../components/Styles/Form';
 import ImageCollector from '../../components/ImageCollector';
 import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
+import { ContainerView } from '../../components/Drawer/Styles';
+
 import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
-import Toast from '../../utils/toast';
 import { getNewId } from '../../service/app';
-import { ContainerView } from '../../components/Drawer/Styles';
 
 const formatDateType = 'yyyy-MM-dd hh:mm';
 
