@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { CheckBox } from 'native-base';
 
 import { theme } from '../../../constants';
 
@@ -34,6 +33,12 @@ const Price = styled.Text`
   color: ${theme.textColor};
 `;
 
+const LeftIconView = styled.View`
+  align-items: center;
+  padding-left: ${theme.moderateScale(10)};
+  padding-right: ${theme.moderateScale(5)};
+`;
+
 const ProductListItem = ({
   item,
   onPressItem,
@@ -46,7 +51,12 @@ const ProductListItem = ({
   } = item;
   return (
     <Container onPress={() => onPressItem(item)}>
-      <CheckBox checked={checked} color="green" />
+      <LeftIconView>
+        <Thumbnail
+          source={checked ? require('../../../img/company/selected.png') : require('../../../img/company/unselected.png')}
+          size={20}
+        />
+      </LeftIconView>
       <ProductImage
         imgUri={productImage}
       />

@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { moderateScale } from '../../../../utils/scale';
 import { theme } from '../../../../constants';
-import productImage from '../../../../img/crm/ico_product.png';
+
+// components
+import Thumbnail from '../../../../components/Thumbnail';
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
   padding: ${moderateScale(11)}px ${moderateScale(15)}px;
 `;
 
-const Image = styled.Image`
-  width: ${moderateScale(109)}px;
-  height: ${moderateScale(109)}px;
+const ImageView = styled(Thumbnail)`
   margin-right: ${moderateScale(15)}px;
 `;
 
@@ -86,14 +86,12 @@ const ProductItem = (props) => {
     salesTotalPrice,
     onPress,
   } = props;
-  let url = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540205823&di=de0e73b2da3a8c2f8cd28b6edff8d6f6&imgtype=jpg&er=1&src=http%3A%2F%2Fs16.sinaimg.cn%2Fmw690%2F003gRgrCzy73OGZAV434f%26amp%3B690';
-  if (attachmentList.length > 0) {
-    const { filePath } = attachmentList[0];
-    url = filePath;
-  }
   return (
     <Container onPress={onPress}>
-      <Image source={{ uri: url }} defaultSource={productImage} />
+      <ImageView
+        imgUri={attachmentList.length ? attachmentList[0].filePath : null}
+        size={109}
+      />
       <DiscountView>
         <Discount>{discount ? `折扣:${discount}%` : ''}</Discount>
       </DiscountView>
