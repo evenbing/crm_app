@@ -128,14 +128,22 @@ class FormActionSheet extends React.PureComponent {
             key={`${key}`}
             isLast={index === len - 1}
             onPress={() => {
-              this.setState({ isVisible: false }, () => {
+
+              // this.setState({ isVisible: false }, () => {
+              //   onConfirm({
+              //     key,
+              //     value,
+              //     index,
+              //   });
+              // });
+              this.setState({isVisible: false });
+              setTimeout(() =>{
                 onConfirm({
                   key,
                   value,
                   index,
                 });
-              });
-              // this.onHideModal();
+              },900);
             }}
           >
             {this.getEleme(value, this.getItemTextStyle(location))}
