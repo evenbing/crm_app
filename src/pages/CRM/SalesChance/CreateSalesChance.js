@@ -14,7 +14,7 @@ import { SalesChanceEnum } from '../../../constants/form';
 import { CustomerType, MarkActivityType } from '../../../constants/enum';
 
 // utils
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatDateType } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
 // components
@@ -33,7 +33,6 @@ import SalesChanceStore from '../../../logicStores/salesChance';
 import BusinessStore from '../../../logicStores/business';
 import { getNewId } from '../../../service/app';
 
-const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 @observer
 class CreateSalesChance extends Component {
   constructor(props) {
@@ -207,7 +206,7 @@ class CreateSalesChance extends Component {
             titleBackColor="transparent"
           />
           <NavInputItem
-            leftText="姓名"
+            leftText="名称"
             {...theme.getLeftStyle({
                 placeholder: SalesChanceEnum.name,
                 value: name,
@@ -274,7 +273,7 @@ class CreateSalesChance extends Component {
               date =>
                 this.setState({
                   expectedDate: formatDateByMoment(date),
-                  expectedDateShow: formatDateByMoment(date, formatDateTypeShow),
+                  expectedDateShow: formatDateByMoment(date, formatDateType),
                 })
             }
           >

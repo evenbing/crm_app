@@ -7,13 +7,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { StatusBar } from 'react-native';
+import { StatusBar, KeyboardAvoidingView } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+
+// utils
 import { moderateScale } from '../../utils/scale';
-import { theme } from '../../constants';
-import { getFooterBottom } from '../../utils/utils';
+import { getFooterBottom, isIos, isIphoneX } from '../../utils/utils';
 import { mapToArray, formatPickerImage } from '../../utils/base';
 import Toast from '../../utils/toast';
+
+// constants
+import { theme } from '../../constants';
 import { DynamicRecordType, CameraOrPickerType } from '../../constants/enum';
 
 // components
@@ -27,8 +31,7 @@ const ContainerView = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
-  height: ${moderateScale(50 + getFooterBottom())};
-  padding-bottom: ${getFooterBottom()};
+  height: ${moderateScale(50)};
   border-top-width: 1px;
   border-top-color: #F6F6F6;
   background-color: #fff;
@@ -145,6 +148,11 @@ class SendFooter extends React.PureComponent {
     }
   };
 
+  getKeyboardVerticalOffset = () => {
+    if (isIphoneX()) return 85;
+    if (isIos()) return 60;
+  };
+
   selectRecordType= () => {
     this.setState({
       isVisible: !this.state.isVisible,
@@ -164,36 +172,40 @@ class SendFooter extends React.PureComponent {
       },
     } = this;
     return (
-      <ContainerView>
-        <SendFilterList
-          isVisible={isVisible}
-          onPressClose={this.selectRecordType}
-          selectedIndex={selectedIndex}
-          onPressItem={this.onPressFilterItem}
-          // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
-          marginBottom={50 + getFooterBottom()}
-          flexDirection="column-reverse"
-          list={recordTypeList}
-        />
-        <RecordType onPress={this.selectRecordType}>
-          <RecordText>记录类型</RecordText>
-        </RecordType>
-        <Thumbnail
-          source={require('../../img/crm/details/triangleUp.png')}
-          size={8}
-        />
-        <SendView>
-          <TextInput
-            value={content}
-            onChangeText={content => this.setState({ content })}
+      <KeyboardAvoidingView
+        behavior={isIos ? 'position' : null}
+        keyboardVerticalOffset={this.getKeyboardVerticalOffset()}
+      >
+        <ContainerView>
+          <SendFilterList
+            isVisible={isVisible}
+            onPressClose={this.selectRecordType}
+            selectedIndex={selectedIndex}
+            onPressItem={this.onPressFilterItem}
+            // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
+            marginBottom={50 + getFooterBottom()}
+            flexDirection="column-reverse"
+            list={recordTypeList}
           />
-          <SendTextView
-            onPress={this.onPressSend}
-          >
-            <SendText>发送</SendText>
-          </SendTextView>
-        </SendView>
-        {/*
+          <RecordType onPress={this.selectRecordType}>
+            <RecordText>记录类型</RecordText>
+          </RecordType>
+          <Thumbnail
+            source={require('../../img/crm/details/triangleUp.png')}
+            size={8}
+          />
+          <SendView>
+            <TextInput
+              value={content}
+              onChangeText={content => this.setState({ content })}
+            />
+            <SendTextView
+              onPress={this.onPressSend}
+            >
+              <SendText>发送</SendText>
+            </SendTextView>
+          </SendView>
+          {/*
          <IconView
           marginLeft={3}
         >
@@ -203,22 +215,23 @@ class SendFooter extends React.PureComponent {
           />
         </IconView>
          */}
-        <FormActionSheet
-          onConfirm={this.onPickImage}
-          typeEnum={CameraOrPickerType}
-        >
-          <IconView
-            marginLeft={8}
-            marginRight={13}
+          <FormActionSheet
+            onConfirm={this.onPickImage}
+            typeEnum={CameraOrPickerType}
           >
-            <Thumbnail
-              imgUri={cacheImageMap.filePath}
-              source={require('../../img/picture.png')}
-              size={27}
-            />
-          </IconView>
-        </FormActionSheet>
-      </ContainerView>
+            <IconView
+              marginLeft={8}
+              marginRight={13}
+            >
+              <Thumbnail
+                imgUri={cacheImageMap.filePath}
+                source={require('../../img/picture.png')}
+                size={27}
+              />
+            </IconView>
+          </FormActionSheet>
+        </ContainerView>
+      </KeyboardAvoidingView>
     );
   }
 }

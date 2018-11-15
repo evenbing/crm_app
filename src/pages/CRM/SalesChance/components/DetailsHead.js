@@ -7,7 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+// base
+import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+
+// constants
 import { theme } from '../../../../constants';
+import { MarketActivityStatus } from '../../../../constants/enum';
 
 // static source
 import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
@@ -16,8 +22,6 @@ import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
 import { HeaderBack } from '../../../../components/Details';
 import Thumbnail from '../../../../components/Thumbnail';
 import TouchableView from '../../../../components/TouchableView';
-import { MarketActivityStatus } from '../../../../constants/enum';
-import { formatDateByMoment } from '../../../../utils/base';
 
 // padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
@@ -132,7 +136,7 @@ class DetailsHead extends React.PureComponent {
             marginBottom={20}
           >
             <TimeText>{`销售金额：¥${item.planAmount}`}</TimeText>
-            <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate)}`}</TimeText>
+            <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate, formatDateType)}`}</TimeText>
           </ItemView>
           <FooterView>
             <TimeText>活动状态：</TimeText>

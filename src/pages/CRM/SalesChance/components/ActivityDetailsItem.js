@@ -9,47 +9,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 
-import { theme } from '../../../../constants';
-// components
-import NavItemComponent from '../../../../components/NavItem';
-import TitleItemComponent from '../../../../components/Details/TitleItem';
+// utils
+import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+
+// constants
 import { OpportunityTypes, OpportunitySource } from '../../../../constants/enum';
-import { formatDateByMoment } from '../../../../utils/base';
+
+// components
+import TitleItemComponent from '../../../../components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
 import ProductItem from './ProductItem';
+
 import BusinessStore from '../../../../logicStores/business';
 
 const ContainerView = styled.View``;
-
-const RightSuffix = styled.Text`
-  margin-left: ${theme.moderateScale(13)};
-  color: #373737;
-  font-size: ${theme.moderateScale(16)};
-`;
-
-const RemarkView = styled.View`
-  padding: 0 ${theme.moderateScale(15)}px;
-`;
-
-const RemarkText = styled.Text`
-  font-size: ${theme.moderateScale(16)};
-  color: #AEAEAE;
-`;
-
-const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
-const renderBasicItem = (leftText, rightText, rightSuffix, rightStyle = {}, isLast = false) => (
-  <NavItemComponent
-    height={44}
-    leftText={leftText}
-    rightText={rightText}
-    showNavIcon={false}
-    isLast={isLast}
-    rightTextStyle={{
-      color: theme.textGrayColor,
-      ...rightStyle,
-    }}
-    rightSuffix={rightSuffix}
-  />
-);
 
 @observer
 class ActivityDetailsItem extends React.Component {
@@ -94,7 +67,7 @@ class ActivityDetailsItem extends React.Component {
     } = this.state;
     const opportunityTypeName = OpportunityTypes[opportunityType];
     const sourceTypeName = OpportunitySource[sourceType];
-    const expectedDateShow = formatDateByMoment(expectedDate, formatDateTypeShow);
+    const expectedDateShow = formatDateByMoment(expectedDate, formatDateType);
     getDetailItem({
       ...this.props,
       budinessProducts,

@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 
 // constants
 import { theme as themeVar, routers } from '../../../constants';
@@ -17,6 +17,7 @@ import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayT
 // utils
 import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
 import { verifyDateTime } from '../../../utils/formVerify';
+import { isIos } from '../../../utils/utils';
 import Toast from '../../../utils/toast';
 
 // components
@@ -107,6 +108,13 @@ class EditorMore extends React.Component {
       Toast.showWarning(e.message);
     }
   };
+  onFocus = (y = 40) => {
+    this.scrollViewRef.scrollTo({
+      x: 0,
+      y: themeVar.moderateScale(y),
+      animated: true,
+    });
+  };
   initState = () => {
     const {
       props: {
@@ -176,26 +184,33 @@ class EditorMore extends React.Component {
       },
     } = this;
     return (
-      <ContainerScrollView
-        bottomPadding
+      <KeyboardAvoidingView
+        behavior={isIos() ? 'padding' : null}
+        style={{ flex: 1 }}
       >
-        <CommStatusBar />
-        <HorizontalDivider
-          height={9}
-        />
-        <TitleItem text="基本信息" />
-        <ListView>
-          <NavInputItem
-            leftText="合同名称"
-            {...themeVar.getLeftStyle({
-              placeholder: ContractEnum.theme,
-              value: theme,
-              onChangeText: theme => this.setState({ theme }),
-            })}
+        <ContainerScrollView
+          bottomPadding
+          innerRef={(ref) => { this.scrollViewRef = ref; }}
+        >
+          <CommStatusBar />
+          <HorizontalDivider
+            height={9}
           />
-          <NavInputItem
-            leftText="客户"
-            onPress={() => navigate(routers.customer, {
+          <TitleItem text="基本信息" />
+          <ListView>
+            <NavInputItem
+              leftText="合同名称"
+              {...themeVar.getLeftStyle({
+                placeholder: ContractEnum.theme,
+                value: theme,
+                onChangeText: theme => this.setState({ theme }),
+                onFocus: () => this.onFocus(),
+                onBlur: () => this.onFocus(0),
+            })}
+            />
+            <NavInputItem
+              leftText="客户"
+              onPress={() => navigate(routers.customer, {
               type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -205,19 +220,19 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={customerId && customerName}>
-                {
+              center={
+                <CenterText active={customerId && customerName}>
+                  {
                   (customerId && customerName) ? customerName :
                     ContractEnum.customerName
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-          />
-          <NavInputItem
-            leftText="销售机会"
-            onPress={() => navigate(routers.salesChance, {
+              {...themeVar.navItemStyle}
+            />
+            <NavInputItem
+              leftText="销售机会"
+              onPress={() => navigate(routers.salesChance, {
               type: SalesChanceType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -227,162 +242,164 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={salesOpportunitiesId && salesOpportunitiesName}>
-                {
+              center={
+                <CenterText active={salesOpportunitiesId && salesOpportunitiesName}>
+                  {
                   (salesOpportunitiesId && salesOpportunitiesName) ? salesOpportunitiesName :
                     ContractEnum.salesOpportunities
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-          />
-          <FormActionSheet
-            onConfirm={({ key }) => {
+              {...themeVar.navItemStyle}
+            />
+            <FormActionSheet
+              onConfirm={({ key }) => {
               this.setState({
                 type: key,
               });
             }}
-            typeEnum={PackType}
-          >
-            <NavInputItem
-              leftText="合同类型"
-              needPress={false}
-              center={
-                <CenterText active={type}>
-                  { type ? PackType[type] : ContractEnum.type }
-                </CenterText>
+              typeEnum={PackType}
+            >
+              <NavInputItem
+                leftText="合同类型"
+                needPress={false}
+                center={
+                  <CenterText active={type}>
+                    { type ? PackType[type] : ContractEnum.type }
+                  </CenterText>
               }
-              {...themeVar.navItemStyle}
-            />
-          </FormActionSheet>
-          <FormActionSheet
-            onConfirm={({ key }) => {
+                {...themeVar.navItemStyle}
+              />
+            </FormActionSheet>
+            <FormActionSheet
+              onConfirm={({ key }) => {
               this.setState({
                 status: key,
               });
             }}
-            typeEnum={PackStatus}
-          >
-            <NavInputItem
-              leftText="合同状态"
-              needPress={false}
-              center={
-                <CenterText active={status}>
-                  { status ? PackStatus[status] : ContractEnum.status }
-                </CenterText>
+              typeEnum={PackStatus}
+            >
+              <NavInputItem
+                leftText="合同状态"
+                needPress={false}
+                center={
+                  <CenterText active={status}>
+                    { status ? PackStatus[status] : ContractEnum.status }
+                  </CenterText>
               }
-              {...themeVar.navItemStyle}
-            />
-          </FormActionSheet>
-          <FormActionSheet
-            onConfirm={({ key }) => {
+                {...themeVar.navItemStyle}
+              />
+            </FormActionSheet>
+            <FormActionSheet
+              onConfirm={({ key }) => {
               this.setState({
                 payType: key,
               });
             }}
-            typeEnum={PayType}
-          >
-            <NavInputItem
-              leftText="付款方式"
-              needPress={false}
-              center={
-                <CenterText active={payType}>
-                  { payType ? PayType[payType] : ContractEnum.payType }
-                </CenterText>
+              typeEnum={PayType}
+            >
+              <NavInputItem
+                leftText="付款方式"
+                needPress={false}
+                center={
+                  <CenterText active={payType}>
+                    { payType ? PayType[payType] : ContractEnum.payType }
+                  </CenterText>
               }
+                {...themeVar.navItemStyle}
+              />
+            </FormActionSheet>
+            <NavInputItem
+              leftText="总金额"
+              {...themeVar.getLeftStyle({
+                keyboardType: 'numeric',
+                placeholder: ContractEnum.totalMoney,
+                value: totalMoney,
+                onChangeText: totalMoney => this.setState({ totalMoney }),
+                onFocus: () => this.onFocus(200),
+            })}
+              right={
+                <RightText>元</RightText>
+            }
               {...themeVar.navItemStyle}
             />
-          </FormActionSheet>
-          <NavInputItem
-            leftText="总金额"
-            {...themeVar.getLeftStyle({
-              keyboardType: 'numeric',
-              placeholder: ContractEnum.totalMoney,
-              value: totalMoney,
-              onChangeText: totalMoney => this.setState({ totalMoney }),
-            })}
-            right={
-              <RightText>元</RightText>
-            }
-            {...themeVar.navItemStyle}
-          />
-          <DateTimePicker
-            onConfirm={
+            <DateTimePicker
+              onConfirm={
               date =>
                 this.setState({
                   startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                   // startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="开始日期"
-              needPress={false}
-              center={
-                <CenterText active={startDate}>
-                  {startDate || ContractEnum.startDate }
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="开始日期"
+                needPress={false}
+                center={
+                  <CenterText active={startDate}>
+                    {startDate || ContractEnum.startDate }
+                  </CenterText>
               }
-              {...themeVar.navItemStyle}
-            />
-          </DateTimePicker>
-          <DateTimePicker
-            isEnd
-            onConfirm={
+                {...themeVar.navItemStyle}
+              />
+            </DateTimePicker>
+            <DateTimePicker
+              isEnd
+              onConfirm={
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                   // endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="结束日期"
-              needPress={false}
-              center={
-                <CenterText active={endDate}>
-                  {endDate || ContractEnum.endDate }
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="结束日期"
+                needPress={false}
+                center={
+                  <CenterText active={endDate}>
+                    {endDate || ContractEnum.endDate }
+                  </CenterText>
               }
-              isLast
-              {...themeVar.navItemStyle}
-            />
-          </DateTimePicker>
-        </ListView>
-        <TitleItem text="其他信息" />
-        <ListView>
-          <NavInputItem
-            leftText="合同编号"
-            {...themeVar.getLeftStyle({
-              placeholder: ContractEnum.number,
-              value: number,
-              onChangeText: number => this.setState({ number }),
+                isLast
+                {...themeVar.navItemStyle}
+              />
+            </DateTimePicker>
+          </ListView>
+          <TitleItem text="其他信息" />
+          <ListView>
+            <NavInputItem
+              leftText="合同编号"
+              {...themeVar.getLeftStyle({
+                placeholder: ContractEnum.number,
+                value: number,
+                onChangeText: number => this.setState({ number }),
+                onFocus: () => this.onFocus(300),
             })}
-            height={44}
-          />
-          <DateTimePicker
-            onConfirm={
+              height={44}
+            />
+            <DateTimePicker
+              onConfirm={
               date =>
                 this.setState({
                   pactDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="签约日期"
-              needPress={false}
-              center={
-                <CenterText active={pactDate}>
-                  { pactDate || ContractEnum.pactDate }
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="签约日期"
+                needPress={false}
+                center={
+                  <CenterText active={pactDate}>
+                    { pactDate || ContractEnum.pactDate }
+                  </CenterText>
               }
-              {...themeVar.navItemStyle}
-            />
-          </DateTimePicker>
-          <NavInputItem
-            leftText="我方签约人"
-            onPress={() => navigate(routers.selectEmployee, {
+                {...themeVar.navItemStyle}
+              />
+            </DateTimePicker>
+            <NavInputItem
+              leftText="我方签约人"
+              onPress={() => navigate(routers.selectEmployee, {
               title: '选择我方签约人',
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -392,20 +409,20 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={ourContractId && ourContractName}>
-                {
+              center={
+                <CenterText active={ourContractId && ourContractName}>
+                  {
                   (ourContractId && ourContractName) ? ourContractName :
                     ContractEnum.ourContract
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-            leftWidth={110}
-          />
-          <NavInputItem
-            leftText="客户方签约人"
-            onPress={() => {
+              {...themeVar.navItemStyle}
+              leftWidth={110}
+            />
+            <NavInputItem
+              leftText="客户方签约人"
+              onPress={() => {
               if (!customerId) {
                 Toast.showError('请先选择客户');
                 return;
@@ -422,20 +439,20 @@ class EditorMore extends React.Component {
                 },
               });
             }}
-            center={
-              <CenterText active={customerContractId && customerContractName}>
-                {
+              center={
+                <CenterText active={customerContractId && customerContractName}>
+                  {
                   (customerContractId && customerContractName) ? customerContractName :
                     ContractEnum.customerContractName
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-            leftWidth={110}
-          />
-          <NavInputItem
-            leftText="所属部门"
-            onPress={() => navigate(routers.selectDepartment, {
+              {...themeVar.navItemStyle}
+              leftWidth={110}
+            />
+            <NavInputItem
+              leftText="所属部门"
+              onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -445,19 +462,19 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={departmentId && departmentName}>
-                {
+              center={
+                <CenterText active={departmentId && departmentName}>
+                  {
                   (departmentId && departmentName) ? departmentName :
                     ContractEnum.departmentName
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-          />
-          <NavInputItem
-            leftText="负责人"
-            onPress={() => navigate(routers.selectEmployee, {
+              {...themeVar.navItemStyle}
+            />
+            <NavInputItem
+              leftText="负责人"
+              onPress={() => navigate(routers.selectEmployee, {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
@@ -466,51 +483,55 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={ownerId && ownerName}>
-                {
+              center={
+                <CenterText active={ownerId && ownerName}>
+                  {
                   (ownerId && ownerName) ? ownerName :
                     ContractEnum.ownerId
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...themeVar.navItemStyle}
-          />
-          <NavInputItem
-            leftText="合同正文"
-            center={<View />}
-            right={<View />}
-            height={44}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={content}
-              onChangeText={content => this.setState({ content })}
-              placeholder="请输入合同正文"
-              placeholderTextColor={themeVar.textPlaceholderColor}
+              {...themeVar.navItemStyle}
             />
-          </TextareaGroup>
-          <NavInputItem
-            leftText="备注"
-            center={<View />}
-            right={<View />}
-            height={44}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={comment}
-              onChangeText={comment => this.setState({ comment })}
-              placeholder="请输入备注说明"
-              placeholderTextColor={themeVar.textPlaceholderColor}
+            <NavInputItem
+              leftText="合同正文"
+              center={<View />}
+              right={<View />}
+              height={44}
             />
-          </TextareaGroup>
-        </ListView>
-        <HorizontalDivider height={8} />
-      </ContainerScrollView>
+            <TextareaGroup>
+              <TextareaView
+                rowSpan={5}
+                bordered
+                value={content}
+                onChangeText={content => this.setState({ content })}
+                placeholder="请输入合同正文"
+                placeholderTextColor={themeVar.textPlaceholderColor}
+                onFocus={() => this.onFocus(550)}
+              />
+            </TextareaGroup>
+            <NavInputItem
+              leftText="备注"
+              center={<View />}
+              right={<View />}
+              height={44}
+            />
+            <TextareaGroup>
+              <TextareaView
+                rowSpan={5}
+                bordered
+                value={comment}
+                onChangeText={comment => this.setState({ comment })}
+                placeholder="请输入备注说明"
+                placeholderTextColor={themeVar.textPlaceholderColor}
+                onFocus={() => this.onFocus(720)}
+                onBlur={() => this.onFocus(0)}
+              />
+            </TextareaGroup>
+          </ListView>
+          <HorizontalDivider height={8} />
+        </ContainerScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

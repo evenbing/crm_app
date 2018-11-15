@@ -25,6 +25,10 @@ export function formatStringWithHtml(originString) {
   return newString;
 }
 
+// 是否 isIphoneX
+export function isIos() {
+  return platform === 'ios';
+}
 
 // 是否 isIphoneX
 export function isIphoneX() {

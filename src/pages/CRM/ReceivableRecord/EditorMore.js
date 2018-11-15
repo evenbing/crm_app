@@ -7,13 +7,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
+
+// constants
 import theme from '../../../constants/theme';
-import { moderateScale } from '../../../utils/scale';
 import { ReceivablePlanEnum, ReceivableRecordEnum } from '../../../constants/form';
-import Toast from '../../../utils/toast';
-import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
 import { DataTitleTypes, PayType } from '../../../constants/enum';
+
+// utils
+import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { moderateScale } from '../../../utils/scale';
+import { isIos } from '../../../utils/utils';
+import Toast from '../../../utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -90,6 +95,13 @@ class EditorMore extends React.Component {
       Toast.showWarning(e.message);
     }
   };
+  onFocus = (y = 40) => {
+    this.scrollViewRef.scrollTo({
+      x: 0,
+      y: theme.moderateScale(y),
+      animated: true,
+    });
+  };
   initState = () => {
     const {
       props: {
@@ -132,144 +144,152 @@ class EditorMore extends React.Component {
       },
     } = this;
     return (
-      <ContainerScrollView
-        bottomPadding
+      <KeyboardAvoidingView
+        behavior={isIos() ? 'padding' : null}
+        style={{ flex: 1 }}
       >
-        <CommStatusBar />
-        <HorizontalDivider
-          height={12}
-        />
-        <ListView>
-          <NavInputItem
-            leftText="回款期次"
-            center={
-              <CenterText active>
-                {
+        <ContainerScrollView
+          bottomPadding
+          innerRef={(ref) => { this.scrollViewRef = ref; }}
+        >
+          <CommStatusBar />
+          <HorizontalDivider
+            height={12}
+          />
+          <ListView>
+            <NavInputItem
+              leftText="回款期次"
+              center={
+                <CenterText active>
+                  {
                   typeof issueNumber !== 'undefined' ?
                     DataTitleTypes[issueNumber - 1] : null
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="实际回款金额"
-            {...theme.getLeftStyle({
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="实际回款金额"
+              {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: '请输入金额',
               value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),
             }, 110)}
-            right={
-              <RightText>元</RightText>
+              right={
+                <RightText>元</RightText>
             }
-          />
-          <DateTimePicker
-            onConfirm={
+            />
+            <DateTimePicker
+              onConfirm={
               date =>
                 this.setState({
                   receivableDate: `${formatDateByMoment(date)}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="实际回款日期"
-              needPress={false}
-              center={
-                <CenterText active={receivableDate}>
-                  { receivableDate || ReceivableRecordEnum.receivableDate }
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="实际回款日期"
+                needPress={false}
+                center={
+                  <CenterText active={receivableDate}>
+                    { receivableDate || ReceivableRecordEnum.receivableDate }
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-              leftWidth={LeftViewWidth}
+                {...theme.navItemStyle}
+                leftWidth={LeftViewWidth}
+              />
+            </DateTimePicker>
+            <NavInputItem
+              leftText="负责人"
+              center={
+                <CenterText active>{ownerUserName}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
             />
-          </DateTimePicker>
-          <NavInputItem
-            leftText="负责人"
-            center={
-              <CenterText active>{ownerUserName}</CenterText>
+            <NavInputItem
+              leftText="合同"
+              center={
+                <CenterText active>{pactName}</CenterText>
             }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="合同"
-            center={
-              <CenterText active>{pactName}</CenterText>
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="客户名称"
+              center={
+                <CenterText active>{customerName}</CenterText>
             }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="客户名称"
-            center={
-              <CenterText active>{customerName}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="付款方式"
-            center={
-              <CenterText active>
-                {
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="付款方式"
+              center={
+                <CenterText active>
+                  {
                   payType ? PayType[payType] : null
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="所属部门"
-            center={
-              <CenterText active>{departmentName}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="创建人"
-            center={
-              <CenterText active>{createdByName}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="创建时间"
-            center={
-              <CenterText active>{creationTime}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="最近修改人"
-            center={
-              <CenterText active>{lastUpdatedByName}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-            leftWidth={LeftViewWidth}
-          />
-          <NavInputItem
-            leftText="最近时间"
-            center={
-              <CenterText active>{}</CenterText>
-            }
-            {...theme.navItemOnlyShowStyle}
-          />
-          <NavInputItem
-            leftText="备注"
-            center={<View />}
-            right={<View />}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={comment}
-              onChangeText={comment => this.setState({ comment })}
-              placeholder={ReceivableRecordEnum.comment}
-              placeholderTextColor={theme.textPlaceholderColor}
+              {...theme.navItemOnlyShowStyle}
             />
-          </TextareaGroup>
-        </ListView>
-        <HorizontalDivider height={20} />
-      </ContainerScrollView>
+            <NavInputItem
+              leftText="所属部门"
+              center={
+                <CenterText active>{departmentName}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="创建人"
+              center={
+                <CenterText active>{createdByName}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="创建时间"
+              center={
+                <CenterText active>{creationTime}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="最近修改人"
+              center={
+                <CenterText active>{lastUpdatedByName}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
+              leftWidth={LeftViewWidth}
+            />
+            <NavInputItem
+              leftText="最近时间"
+              center={
+                <CenterText active>{}</CenterText>
+            }
+              {...theme.navItemOnlyShowStyle}
+            />
+            <NavInputItem
+              leftText="备注"
+              center={<View />}
+              right={<View />}
+            />
+            <TextareaGroup>
+              <TextareaView
+                rowSpan={5}
+                bordered
+                value={comment}
+                onChangeText={comment => this.setState({ comment })}
+                placeholder={ReceivableRecordEnum.comment}
+                placeholderTextColor={theme.textPlaceholderColor}
+                onFocus={() => this.onFocus(350)}
+                onBlur={() => this.onFocus(0)}
+              />
+            </TextareaGroup>
+          </ListView>
+          <HorizontalDivider height={20} />
+        </ContainerScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

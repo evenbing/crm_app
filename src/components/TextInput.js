@@ -64,7 +64,7 @@ TextInput.defaultProps = {
   autoFocus: false,
   maxLength: 128,
   value: '',
-  onChangeText: null,
+  onChangeText: () => null,
   onSubmitEditing: null,
   selectionColor: 'grey',
   color: theme.textColor,

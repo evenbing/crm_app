@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
 // constants
@@ -16,6 +16,7 @@ import { CustomerType, SexTypes } from '../../../constants/enum';
 import { routers } from '../../../constants';
 
 // utils
+import { isIos } from '../../../utils/utils';
 import { formatDateByMoment, formatLocationMap, formatNumberToString } from '../../../utils/base';
 import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
@@ -98,6 +99,13 @@ class EditorMore extends React.Component {
       Toast.showWarning(e.message);
     }
   };
+  onFocus = (y = 40) => {
+    this.scrollViewRef.scrollTo({
+      x: 0,
+      y: theme.moderateScale(y),
+      animated: true,
+    });
+  };
   initState = () => {
     const {
       props: {
@@ -151,66 +159,73 @@ class EditorMore extends React.Component {
       },
     } = this;
     return (
-      <ContainerScrollView
-        bottomPadding
+      <KeyboardAvoidingView
+        behavior={isIos() ? 'padding' : null}
+        style={{ flex: 1 }}
       >
-        <CommStatusBar />
-        <HorizontalDivider
-          height={9}
-        />
-        <TitleItem text="基本信息" />
-        <ListView>
-          <NavInputItem
-            leftText="姓名"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.name,
-              value: name,
-              onChangeText: name => this.setState({ name }),
-            })}
+        <ContainerScrollView
+          bottomPadding
+          innerRef={(ref) => { this.scrollViewRef = ref; }}
+        >
+          <CommStatusBar />
+          <HorizontalDivider
+            height={9}
           />
-          <FormActionSheet
-            onConfirm={({ key }) =>
+          <TitleItem text="基本信息" />
+          <ListView>
+            <NavInputItem
+              leftText="姓名"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.name,
+                value: name,
+                onChangeText: name => this.setState({ name }),
+                onFocus: () => this.onFocus(),
+                onBlur: () => this.onFocus(0),
+            })}
+            />
+            <FormActionSheet
+              onConfirm={({ key }) =>
               this.setState({
                 sex: key,
               })
             }
-            typeEnum={SexTypes}
-          >
-            <NavInputItem
-              leftText="性别"
-              needPress={false}
-              center={
-                <CenterText
-                  active={sex}
-                >
-                  {sex ? SexTypes[sex] : ContactsEnum.sex}
-                </CenterText>
+              typeEnum={SexTypes}
+            >
+              <NavInputItem
+                leftText="性别"
+                needPress={false}
+                center={
+                  <CenterText
+                    active={sex}
+                  >
+                    {sex ? SexTypes[sex] : ContactsEnum.sex}
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-            />
-          </FormActionSheet>
-          <DateTimePicker
-            onConfirm={
+                {...theme.navItemStyle}
+              />
+            </FormActionSheet>
+            <DateTimePicker
+              onConfirm={
               date =>
                 this.setState({
                   birthDate: `${formatDateByMoment(date)}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="出生日期"
-              needPress={false}
-              center={
-                <CenterText active={birthDate}>
-                  { birthDate || ContactsEnum.birthDate }
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="出生日期"
+                needPress={false}
+                center={
+                  <CenterText active={birthDate}>
+                    { birthDate || ContactsEnum.birthDate }
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-            />
-          </DateTimePicker>
-          <NavInputItem
-            leftText="公司名称"
-            onPress={() => navigate(routers.customer, {
+                {...theme.navItemStyle}
+              />
+            </DateTimePicker>
+            <NavInputItem
+              leftText="公司名称"
+              onPress={() => navigate(routers.customer, {
               type: CustomerType,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -220,16 +235,16 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={companyName}>
-                { companyName || ContactsEnum.companyName }
-              </CenterText>
+              center={
+                <CenterText active={companyName}>
+                  { companyName || ContactsEnum.companyName }
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="部门"
-            onPress={() => navigate(routers.selectDepartment, {
+              {...theme.navItemStyle}
+            />
+            <NavInputItem
+              leftText="部门"
+              onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -239,56 +254,60 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={departmentId && departmentName}>
-                {
+              center={
+                <CenterText active={departmentId && departmentName}>
+                  {
                   (departmentId && departmentName) ? departmentName : ContactsEnum.departmentName
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="职务"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.jobTitle,
-              value: jobTitle,
-              onChangeText: jobTitle => this.setState({ jobTitle }),
+              {...theme.navItemStyle}
+            />
+            <NavInputItem
+              leftText="职务"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.jobTitle,
+                value: jobTitle,
+                onChangeText: jobTitle => this.setState({ jobTitle }),
+                onFocus: () => this.onFocus(100),
             })}
-            isLast
-          />
-        </ListView>
-        <TitleItem text="联系信息" />
-        <ListView>
-          <NavInputItem
-            leftText="电话"
-            {...theme.getLeftStyle({
-              keyboardType: 'numeric',
-              placeholder: ContactsEnum.phoneNumber,
-              value: phoneNumber,
-              onChangeText: phoneNumber => this.setState({ phoneNumber }),
+              isLast
+            />
+          </ListView>
+          <TitleItem text="联系信息" />
+          <ListView>
+            <NavInputItem
+              leftText="电话"
+              {...theme.getLeftStyle({
+                keyboardType: 'numeric',
+                placeholder: ContactsEnum.phoneNumber,
+                value: phoneNumber,
+                onChangeText: phoneNumber => this.setState({ phoneNumber }),
+                onFocus: () => this.onFocus(150),
             })}
-          />
-          <NavInputItem
-            leftText="手机"
-            {...theme.getLeftStyle({
-              keyboardType: 'numeric',
-              placeholder: ContactsEnum.mobilePhone,
-              value: mobilePhone,
-              onChangeText: mobilePhone => this.setState({ mobilePhone }),
+            />
+            <NavInputItem
+              leftText="手机"
+              {...theme.getLeftStyle({
+                keyboardType: 'numeric',
+                placeholder: ContactsEnum.mobilePhone,
+                value: mobilePhone,
+                onChangeText: mobilePhone => this.setState({ mobilePhone }),
+                onFocus: () => this.onFocus(200),
             })}
-          />
-          <NavInputItem
-            leftText="微博"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.weibo,
-              value: weibo,
-              onChangeText: weibo => this.setState({ weibo }),
+            />
+            <NavInputItem
+              leftText="微博"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.weibo,
+                value: weibo,
+                onChangeText: weibo => this.setState({ weibo }),
+                onFocus: () => this.onFocus(250),
             })}
-          />
-          <NavInputItem
-            leftText="省份"
-            onPress={() => navigate(routers.cityPicker, {
+            />
+            <NavInputItem
+              leftText="省份"
+              onPress={() => navigate(routers.cityPicker, {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
@@ -299,66 +318,72 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={locationInfo.formatLocation}>
-                { locationInfo.formatLocation || ContactsEnum.location}
-              </CenterText>
+              center={
+                <CenterText active={locationInfo.formatLocation}>
+                  { locationInfo.formatLocation || ContactsEnum.location}
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="地址"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.address,
-              value: locationInfo.address,
-              onChangeText: address => this.setState({
-                locationInfo: {
-                  ...locationInfo,
-                  address,
-                },
-              }),
-            })}
-          />
-          <NavInputItem
-            leftText="邮箱"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.email,
-              value: email,
-              onChangeText: email => this.setState({ email }),
-            })}
-            isLast
-          />
-          <NavInputItem
-            leftText="邮编"
-            {...theme.getLeftStyle({
-              placeholder: ContactsEnum.postCode,
-              value: postCode,
-              onChangeText: postCode => this.setState({ postCode }),
-            })}
-            isLast
-          />
-        </ListView>
-        <TitleItem text="其他信息" />
-        <ListView>
-          <NavInputItem
-            leftText="备注"
-            center={<View />}
-            right={<View />}
-            height={44}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={description}
-              onChangeText={description => this.setState({ description })}
-              placeholder={ContactsEnum.description}
-              placeholderTextColor={theme.textPlaceholderColor}
+              {...theme.navItemStyle}
             />
-          </TextareaGroup>
-        </ListView>
-        <HorizontalDivider height={8} />
-      </ContainerScrollView>
+            <NavInputItem
+              leftText="地址"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.address,
+                value: locationInfo.address,
+                onChangeText: address => this.setState({
+                  locationInfo: {
+                    ...locationInfo,
+                    address,
+                  },
+                }),
+                onFocus: () => this.onFocus(300),
+            })}
+            />
+            <NavInputItem
+              leftText="邮箱"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.email,
+                value: email,
+                onChangeText: email => this.setState({ email }),
+                onFocus: () => this.onFocus(350),
+            })}
+              isLast
+            />
+            <NavInputItem
+              leftText="邮编"
+              {...theme.getLeftStyle({
+                placeholder: ContactsEnum.postCode,
+                value: postCode,
+                onChangeText: postCode => this.setState({ postCode }),
+                onFocus: () => this.onFocus(430),
+            })}
+              isLast
+            />
+          </ListView>
+          <TitleItem text="其他信息" />
+          <ListView>
+            <NavInputItem
+              leftText="备注"
+              center={<View />}
+              right={<View />}
+              height={44}
+            />
+            <TextareaGroup>
+              <TextareaView
+                rowSpan={5}
+                bordered
+                value={description}
+                onChangeText={description => this.setState({ description })}
+                placeholder={ContactsEnum.description}
+                placeholderTextColor={theme.textPlaceholderColor}
+                onFocus={() => this.onFocus(500)}
+                onBlur={() => this.onFocus(0)}
+              />
+            </TextareaGroup>
+          </ListView>
+          <HorizontalDivider height={8} />
+        </ContainerScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

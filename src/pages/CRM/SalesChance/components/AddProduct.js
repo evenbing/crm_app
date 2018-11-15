@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { moderateScale } from '../../../../utils/scale';
+import { getFooterBottom } from '../../../../utils/utils';
 
 const Container = styled.View`
   flex-direction: row;
   align-items: center;
   border-top-width: ${moderateScale(1)}px;
   border-top-color: #DDDDDD;
+  padding-bottom: ${getFooterBottom()};
 `;
 
 const CountView = styled.View`

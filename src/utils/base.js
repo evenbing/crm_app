@@ -12,7 +12,7 @@ import Toast from './toast';
 export const formatDateType = 'YYYY-MM-DD';
 // 格式化
 export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
-  if (!str) return null;
+  if (!str) return '无';
   if (typeof str === 'string') {
     if (Number.isNaN(Number(str))) return str;
     str = Number(str);
