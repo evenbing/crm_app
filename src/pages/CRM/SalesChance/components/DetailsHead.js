@@ -13,7 +13,7 @@ import { formatDateByMoment, formatDateType } from '../../../../utils/base';
 
 // constants
 import { theme } from '../../../../constants';
-import { MarketActivityStatus } from '../../../../constants/enum';
+// import { MarketActivityStatus } from '../../../../constants/enum';
 
 // static source
 import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
@@ -70,13 +70,13 @@ const FollowText = styled.Text`
   color: ${theme.whiteColor};
 `;
 
-const FooterView = styled.View`
-  height: ${theme.moderateScale(36)};
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .15);
-`;
+// const FooterView = styled.View`
+//   height: ${theme.moderateScale(36)};
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: rgba(0, 0, 0, .15);
+// `;
 
 const OwnerUserNameView = styled(TouchableView)`
   flex-direction: row;
@@ -88,10 +88,10 @@ const OwnerUserNameView = styled(TouchableView)`
 `;
 
 
-const PlanStatusText = styled.Text`
-  color: #e2c244;
-  margin-right: ${theme.moderateScale(2)};
-`;
+// const PlanStatusText = styled.Text`
+//   color: #e2c244;
+//   margin-right: ${theme.moderateScale(2)};
+// `;
 
 class DetailsHead extends React.PureComponent {
   render() {
@@ -138,18 +138,18 @@ class DetailsHead extends React.PureComponent {
             <TimeText>{`销售金额：¥${item.planAmount}`}</TimeText>
             <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate, formatDateType)}`}</TimeText>
           </ItemView>
-          <FooterView>
+          {/* <FooterView>
             <TimeText>活动状态：</TimeText>
             <PlanStatusText>
               {MarketActivityStatus[item.activityStatus] || '--'}
             </PlanStatusText>
-            {/*
+
              <Thumbnail
               source={PrincipalIcon}
               size={15}
             />
-             */}
-          </FooterView>
+
+          </FooterView> */}
         </ContainerView>
       </HeaderBack>
     );

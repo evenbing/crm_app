@@ -7,8 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+// utils
+import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+
+// constants
 import { MarketActivityStatus, MarketActivityTypes } from '../../../../constants/enum';
-import { formatDateByMoment } from '../../../../utils/base';
 
 // components
 import TitleItemComponent from '../../../../components/Details/TitleItem';
@@ -27,7 +31,7 @@ const ActivityDetailsItem = ({
     actualRevenue,
     createdByName, // "测试员工1"
     creationTime, // "1538210392000"
-    departmentId, // "982932499611389952"
+    // departmentId, // "982932499611389952"
     departmentName,
     description, // "hdhdhdhdw"
     effect, // "54646464"
@@ -60,8 +64,8 @@ const ActivityDetailsItem = ({
       <TitleItemComponent
         text="计划信息"
       />
-      {renderBasicItem('开始日期', formatDateByMoment(beginDate))}
-      {renderBasicItem('结束日期', formatDateByMoment(endDate))}
+      {renderBasicItem('开始日期', formatDateByMoment(beginDate, formatDateType))}
+      {renderBasicItem('结束日期', formatDateByMoment(endDate, formatDateType))}
       {renderBasicItem('活动成本', budgetCost, <RightSuffix>元</RightSuffix>)}
       {renderBasicItem('预期收入', budgetRevenue, <RightSuffix>元</RightSuffix>)}
       {renderBasicItem('邀请人数', budgetPeopleNumber, <RightSuffix>人</RightSuffix>)}

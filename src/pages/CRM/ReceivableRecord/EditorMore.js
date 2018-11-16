@@ -15,7 +15,7 @@ import { ReceivablePlanEnum, ReceivableRecordEnum } from '../../../constants/for
 import { DataTitleTypes, PayType } from '../../../constants/enum';
 
 // utils
-import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { formatDateByMoment, formatDateType, formatNumberToString } from '../../../utils/base';
 import { moderateScale } from '../../../utils/scale';
 import { isIos } from '../../../utils/utils';
 import Toast from '../../../utils/toast';
@@ -112,18 +112,26 @@ class EditorMore extends React.Component {
     if (!Object.keys(item).length) return;
     let {
       receivableDate,
+      receivableDateShow,
       creationTime,
+      lastUpdateTime,
     } = item;
     if (receivableDate) {
+      receivableDateShow = formatDateByMoment(receivableDateShow, formatDateType);
       receivableDate = formatDateByMoment(receivableDate);
     }
     if (creationTime) {
-      creationTime = formatDateByMoment(creationTime);
+      creationTime = formatDateByMoment(creationTime, formatDateType);
+    }
+    if (lastUpdateTime) {
+      lastUpdateTime = formatDateByMoment(lastUpdateTime, formatDateType);
     }
     this.setState({
       ...formatNumberToString(item),
+      receivableDateShow,
       receivableDate,
       creationTime,
+      lastUpdateTime,
     });
   };
   render() {
@@ -134,13 +142,14 @@ class EditorMore extends React.Component {
         ownerUserName,
         pactName,
         comment,
-        receivableDate,
+        receivableDateShow,
         createdByName,
         creationTime,
         departmentName,
         customerName,
         payType,
         lastUpdatedByName,
+        lastUpdateTime,
       },
     } = this;
     return (
@@ -182,10 +191,12 @@ class EditorMore extends React.Component {
             }
             />
             <DateTimePicker
+              mode="date"
               onConfirm={
               date =>
                 this.setState({
                   receivableDate: `${formatDateByMoment(date)}`,
+                  receivableDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -193,8 +204,8 @@ class EditorMore extends React.Component {
                 leftText="实际回款日期"
                 needPress={false}
                 center={
-                  <CenterText active={receivableDate}>
-                    { receivableDate || ReceivableRecordEnum.receivableDate }
+                  <CenterText active={receivableDateShow}>
+                    { receivableDateShow || ReceivableRecordEnum.receivableDate }
                   </CenterText>
               }
                 {...theme.navItemStyle}
@@ -263,11 +274,12 @@ class EditorMore extends React.Component {
               leftWidth={LeftViewWidth}
             />
             <NavInputItem
-              leftText="最近时间"
+              leftText="最近修改时间"
               center={
-                <CenterText active>{}</CenterText>
+                <CenterText active>{lastUpdateTime}</CenterText>
             }
               {...theme.navItemOnlyShowStyle}
+              leftWidth={LeftViewWidth}
             />
             <NavInputItem
               leftText="备注"

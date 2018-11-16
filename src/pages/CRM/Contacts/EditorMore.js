@@ -17,7 +17,7 @@ import { routers } from '../../../constants';
 
 // utils
 import { isIos } from '../../../utils/utils';
-import { formatDateByMoment, formatLocationMap, formatNumberToString } from '../../../utils/base';
+import { formatDateByMoment, formatLocationMap, formatNumberToString, formatDateType } from '../../../utils/base';
 import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
@@ -143,7 +143,7 @@ class EditorMore extends React.Component {
         sex,
         weibo,
         locationInfo,
-        birthDate,
+        birthDateShow,
         email,
         postCode,
         companyName,
@@ -209,6 +209,7 @@ class EditorMore extends React.Component {
               date =>
                 this.setState({
                   birthDate: `${formatDateByMoment(date)}`,
+                  birthDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -216,15 +217,15 @@ class EditorMore extends React.Component {
                 leftText="出生日期"
                 needPress={false}
                 center={
-                  <CenterText active={birthDate}>
-                    { birthDate || ContactsEnum.birthDate }
+                  <CenterText active={birthDateShow}>
+                    { birthDateShow || ContactsEnum.birthDate }
                   </CenterText>
               }
                 {...theme.navItemStyle}
               />
             </DateTimePicker>
             <NavInputItem
-              leftText="公司名称"
+              leftText="客户名称"
               onPress={() => navigate(routers.customer, {
               type: CustomerType,
               callback: (item) => {

@@ -15,7 +15,7 @@ import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/en
 
 // utils
 import { isIos } from '../../../utils/utils';
-import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { formatDateByMoment, formatDateType, formatNumberToString } from '../../../utils/base';
 import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
@@ -109,18 +109,24 @@ class EditorMore extends React.Component {
     if (!Object.keys(item).length) return;
     let {
       beginDate,
+      beginDateShow,
       endDate,
+      endDateShow,
     } = item;
     if (beginDate) {
+      beginDateShow = formatDateByMoment(beginDate, formatDateType);
       beginDate = formatDateByMoment(beginDate);
     }
     if (endDate) {
+      endDateShow = formatDateByMoment(endDate, formatDateType);
       endDate = formatDateByMoment(endDate);
     }
     this.setState({
       ...formatNumberToString(item),
       beginDate,
+      beginDateShow,
       endDate,
+      endDateShow,
     });
   };
 
@@ -128,8 +134,8 @@ class EditorMore extends React.Component {
     const {
       state: {
         name,
-        beginDate,
-        endDate,
+        beginDateShow,
+        endDateShow,
         departmentId,
         departmentName,
         description,
@@ -256,10 +262,12 @@ class EditorMore extends React.Component {
             </TextareaGroup>
             <TitleItem text="计划信息" />
             <DateTimePicker
+              mode="date"
               onConfirm={
               date =>
                 this.setState({
                   beginDate: `${formatDateByMoment(date)}`,
+                  beginDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -267,19 +275,21 @@ class EditorMore extends React.Component {
                 leftText="开始日期"
                 needPress={false}
                 center={
-                  <CenterText active={beginDate}>
-                    {beginDate || MarkActivityEnum.beginDate}
+                  <CenterText active={beginDateShow}>
+                    {beginDateShow || MarkActivityEnum.beginDate}
                   </CenterText>
               }
                 {...theme.navItemStyle}
               />
             </DateTimePicker>
             <DateTimePicker
+              mode="date"
               isEnd
               onConfirm={
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date)}`,
+                  endDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -287,8 +297,8 @@ class EditorMore extends React.Component {
                 leftText="结束日期"
                 needPress={false}
                 center={
-                  <CenterText active={endDate}>
-                    {endDate || MarkActivityEnum.endDate}
+                  <CenterText active={endDateShow}>
+                    {endDateShow || MarkActivityEnum.endDate}
                   </CenterText>
               }
                 {...theme.navItemStyle}

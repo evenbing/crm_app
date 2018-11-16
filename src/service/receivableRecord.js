@@ -24,6 +24,8 @@ import { post } from '../utils/rpc';
  * @return Promise<ArrayList>
  */
 export function getReceivableRecordList({
+  pageNumber = 1,
+  pageSize = 15,
   pactIds,
   pactId,
   issueId,
@@ -38,6 +40,8 @@ export function getReceivableRecordList({
 } = {}) {
   return post({
     method: 'api.customerrelations.receivableDetail.find',
+    pageNumber,
+    pageSize,
     pactIds,
     pactId,
     issueId,

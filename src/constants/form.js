@@ -97,7 +97,7 @@ export const MarkActivityEnum = {
 export const ContactsEnum = {
   name: '请输入姓名',
   jobTitle: '请输入职务',
-  companyName: '请选择公司名称',
+  companyName: '请选择客户名称',
   phoneNumber: '请输入联系电话',
   mobilePhone: '请输入手机',
   departmentName: '请选择所属部门',
@@ -115,7 +115,7 @@ export const ContactsEnum = {
 // 销售线索表单
 export const SalesClueEnum = {
   name: '请输入姓名',
-  companyName: '请输入公司名称',
+  companyName: '请输入客户名称',
   activityId: '请选择市场活动',
   departmentId: '请选择所属部门',
   // more
@@ -135,7 +135,7 @@ export const SalesClueEnum = {
 
 // 销售机会表单
 export const SalesChanceEnum = {
-  name: '请输入名称',
+  name: '请输入机会名称',
   customer: '请选择客户',
   price: '请选择价格表',
   budgetCost: '请输入项目预算',

@@ -205,7 +205,7 @@ class CreateSalesClueMore extends React.Component {
               />
             </FormActionSheet>
             <NavInputItem
-              leftText="公司名称"
+              leftText="客户名称"
               {...theme.getLeftStyle({
                 placeholder: SalesClueEnum.companyName,
                 value: companyName,

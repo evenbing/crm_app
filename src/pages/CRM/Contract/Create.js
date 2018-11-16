@@ -11,11 +11,10 @@ import { observer } from 'mobx-react/native';
 // constants
 import { routers, theme as themeVar } from '../../../constants';
 import { ContractEnum } from '../../../constants/form';
-// import { CustomerType, PackType } from '../../../constants/enum';
 import { CustomerType } from '../../../constants/enum';
 
 // utils
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatDateType } from '../../../utils/base';
 import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
@@ -191,11 +190,12 @@ class Create extends React.Component {
             {...themeVar.navItemStyle}
           />
           <DateTimePicker
+            mode="date"
             onConfirm={
               date =>
                 this.setState({
-                  startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  startDate: `${formatDateByMoment(date)}`,
+                  startDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -211,12 +211,13 @@ class Create extends React.Component {
             />
           </DateTimePicker>
           <DateTimePicker
+            mode="date"
             isEnd
             onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  endDate: `${formatDateByMoment(date)}`,
+                  endDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >

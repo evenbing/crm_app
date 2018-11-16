@@ -7,8 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+// constants
 import { SexTypes } from '../../../../constants/enum';
-import { formatDateByMoment, formatLocationMap } from '../../../../utils/base';
+
+// utils
+import { formatDateByMoment, formatDateType, formatLocationMap } from '../../../../utils/base';
 
 // components
 import TitleItemComponent from '../../../../components/Details/TitleItem';
@@ -25,8 +29,8 @@ const ActivityDetailsItem = ({
     />
     {renderBasicItem('姓名', item.name)}
     {renderBasicItem('性别', item.sex ? (SexTypes[item.sex] || item.sex) : null)}
-    {renderBasicItem('出生日期', formatDateByMoment(item.birthDate))}
-    {renderBasicItem('公司名称', item.companyName)}
+    {renderBasicItem('出生日期', formatDateByMoment(item.birthDate, formatDateType))}
+    {renderBasicItem('客户名称', item.companyName)}
     {renderBasicItem('部门', item.departmentName)}
     {renderBasicItem('职务', item.jobTitle)}
     <TitleItemComponent

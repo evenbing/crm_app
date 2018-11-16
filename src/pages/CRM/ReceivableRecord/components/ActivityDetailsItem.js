@@ -7,7 +7,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { formatDateByMoment } from '../../../../utils/base';
+
+// utils
+import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+
+// constants
 import { DataTitleTypes, PayType } from '../../../../constants/enum';
 
 // components
@@ -25,7 +29,7 @@ const ActivityDetailsItem = ({
         DataTitleTypes[item.issueNumber - 1] : null)
     }
     {renderBasicItem('实际回款金额', item.receivablePrice, <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('实际回款日期', formatDateByMoment(item.receivableDate))}
+    {renderBasicItem('实际回款日期', formatDateByMoment(item.receivableDate, formatDateType))}
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('合同', item.pactName)}
     {renderBasicItem('客户名称', item.customerName)}
@@ -33,7 +37,7 @@ const ActivityDetailsItem = ({
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('所属部门', item.departmentName)}
     {renderBasicItem('创建人', item.createdByName)}
-    {renderBasicItem('创建时间', formatDateByMoment(item.creationTime))}
+    {renderBasicItem('创建时间', formatDateByMoment(item.creationTime, formatDateType))}
     {renderBasicItem('最近修改人', item.lastUpdatedByName)}
     <TitleItemComponent
       text="备注"

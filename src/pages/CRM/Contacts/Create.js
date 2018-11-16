@@ -120,7 +120,7 @@ class Create extends React.Component {
             })}
           />
           <NavInputItem
-            leftText="公司名称"
+            leftText="客户名称"
             onPress={() => navigate(routers.customer, {
               type: CustomerType,
               callback: (item) => {

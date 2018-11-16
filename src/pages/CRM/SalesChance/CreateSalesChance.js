@@ -206,7 +206,7 @@ class CreateSalesChance extends Component {
             titleBackColor="transparent"
           />
           <NavInputItem
-            leftText="名称"
+            leftText="机会名称"
             {...theme.getLeftStyle({
                 placeholder: SalesChanceEnum.name,
                 value: name,

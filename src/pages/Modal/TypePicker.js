@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, List, ListItem, Left, Right, Text } from 'native-base';
+import { List, ListItem, Left, Right, Text } from 'native-base';
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
 import Thumbnail from '../../components/Thumbnail';
-import { ContainerView } from '../../components/Drawer/Styles';
+import { ContainerScrollView } from '../../components/Styles/Layout';
 
 const TypePicker = (props) => {
   const {
@@ -19,7 +19,7 @@ const TypePicker = (props) => {
     },
   } = props;
   return (
-    <ContainerView bottomPadding >
+    <ContainerScrollView bottomPadding >
       <CommStatusBar />
       <List>
         {
@@ -47,7 +47,7 @@ const TypePicker = (props) => {
           ))
         }
       </List>
-    </ContainerView>
+    </ContainerScrollView>
   );
 };
 

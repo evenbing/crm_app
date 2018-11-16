@@ -43,7 +43,7 @@ const ActivityDetailsItem = ({
     />
     {renderBasicItem('姓名', name)}
     {renderBasicItem('性别', SexTypes[sex])}
-    {renderBasicItem('公司名称', companyName)}
+    {renderBasicItem('客户名称', companyName)}
     {renderBasicItem('部门', departmentName)}
     {renderBasicItem('职务', jobTitle, null, null, true)}
     <TitleItemComponent

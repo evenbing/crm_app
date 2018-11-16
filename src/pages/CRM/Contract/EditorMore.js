@@ -15,7 +15,7 @@ import { ContractEnum } from '../../../constants/form';
 import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayType } from '../../../constants/enum';
 
 // utils
-import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { formatDateByMoment, formatNumberToString, formatDateType } from '../../../utils/base';
 import { verifyDateTime } from '../../../utils/formVerify';
 import { isIos } from '../../../utils/utils';
 import Toast from '../../../utils/toast';
@@ -124,20 +124,26 @@ class EditorMore extends React.Component {
     const { item = {} } = state.params || {};
     if (!Object.keys(item).length) return;
     let {
+      startDateShow,
       startDate,
+      endDateShow,
       endDate,
+      pactDateShow,
       pactDate,
     } = item;
     const {
       salesleadName,
     } = item;
     if (startDate) {
+      startDateShow = formatDateByMoment(startDate, formatDateType);
       startDate = formatDateByMoment(startDate);
     }
     if (endDate) {
+      endDateShow = formatDateByMoment(endDate, formatDateType);
       endDate = formatDateByMoment(endDate);
     }
     if (pactDate) {
+      pactDateShow = formatDateByMoment(pactDate, formatDateType);
       pactDate = formatDateByMoment(pactDate);
     }
     let salesOpportunitiesName = null;
@@ -147,8 +153,11 @@ class EditorMore extends React.Component {
     this.setState({
       salesOpportunitiesName,
       ...formatNumberToString(item),
+      startDateShow,
       startDate,
+      endDateShow,
       endDate,
+      pactDateShow,
       pactDate,
     });
   };
@@ -164,10 +173,10 @@ class EditorMore extends React.Component {
         status,
         payType,
         totalMoney,
-        startDate,
-        endDate,
+        startDateShow,
+        endDateShow,
         number,
-        pactDate,
+        pactDateShow,
         ourContractId,
         ourContractName,
         customerContractId,
@@ -324,11 +333,12 @@ class EditorMore extends React.Component {
               {...themeVar.navItemStyle}
             />
             <DateTimePicker
+              mode="date"
               onConfirm={
               date =>
                 this.setState({
-                  startDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  // startDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  startDate: `${formatDateByMoment(date)}`,
+                  startDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -336,20 +346,21 @@ class EditorMore extends React.Component {
                 leftText="开始日期"
                 needPress={false}
                 center={
-                  <CenterText active={startDate}>
-                    {startDate || ContractEnum.startDate }
+                  <CenterText active={startDateShow}>
+                    {startDateShow || ContractEnum.startDate }
                   </CenterText>
               }
                 {...themeVar.navItemStyle}
               />
             </DateTimePicker>
             <DateTimePicker
+              mode="date"
               isEnd
               onConfirm={
               date =>
                 this.setState({
-                  endDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
-                  // endDateShow: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  endDate: `${formatDateByMoment(date)}`,
+                  endDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -357,8 +368,8 @@ class EditorMore extends React.Component {
                 leftText="结束日期"
                 needPress={false}
                 center={
-                  <CenterText active={endDate}>
-                    {endDate || ContractEnum.endDate }
+                  <CenterText active={endDateShow}>
+                    {endDateShow || ContractEnum.endDate }
                   </CenterText>
               }
                 isLast
@@ -379,10 +390,12 @@ class EditorMore extends React.Component {
               height={44}
             />
             <DateTimePicker
+              mode="date"
               onConfirm={
               date =>
                 this.setState({
-                  pactDate: `${formatDateByMoment(date, 'YYYY-MM-DD')}`,
+                  pactDate: `${formatDateByMoment(date)}`,
+                  pactDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
             >
@@ -390,8 +403,8 @@ class EditorMore extends React.Component {
                 leftText="签约日期"
                 needPress={false}
                 center={
-                  <CenterText active={pactDate}>
-                    { pactDate || ContractEnum.pactDate }
+                  <CenterText active={pactDateShow}>
+                    { pactDateShow || ContractEnum.pactDate }
                   </CenterText>
               }
                 {...themeVar.navItemStyle}

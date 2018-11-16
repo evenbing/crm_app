@@ -13,7 +13,7 @@ import { theme, routers } from '../../../constants';
 import { MarkActivityEnum } from '../../../constants/form';
 
 // utils
-import { formatDateByMoment } from '../../../utils/base';
+import { formatDateByMoment, formatDateType } from '../../../utils/base';
 import { verifyDateTime } from '../../../utils/formVerify';
 import Toast from '../../../utils/toast';
 
@@ -30,7 +30,6 @@ import { ListView, CenterText } from '../../../components/Styles/Form';
 
 import MarkActivityStore from '../../../logicStores/markActivity';
 
-// const formatDateTypeShow = 'YYYY-MM-DD HH:mm';
 class Create extends React.Component {
   state = {
     name: null,
@@ -79,8 +78,8 @@ class Create extends React.Component {
     const {
       state: {
         name,
-        beginDate,
-        endDate,
+        beginDateShow,
+        endDateShow,
         departmentId,
         departmentName,
         description,
@@ -111,10 +110,12 @@ class Create extends React.Component {
             })}
           />
           <DateTimePicker
+            mode="date"
             onConfirm={
               date =>
                 this.setState({
                   beginDate: `${formatDateByMoment(date)}`,
+                  beginDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -122,19 +123,21 @@ class Create extends React.Component {
               leftText="开始日期"
               needPress={false}
               center={
-                <CenterText active={beginDate}>
-                  {beginDate || MarkActivityEnum.beginDate}
+                <CenterText active={beginDateShow}>
+                  {beginDateShow || MarkActivityEnum.beginDate}
                 </CenterText>
               }
               {...theme.navItemStyle}
             />
           </DateTimePicker>
           <DateTimePicker
+            mode="date"
             isEnd
             onConfirm={
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date)}`,
+                  endDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -142,8 +145,8 @@ class Create extends React.Component {
               leftText="结束日期"
               needPress={false}
               center={
-                <CenterText active={endDate}>
-                  {endDate || MarkActivityEnum.endDate}
+                <CenterText active={endDateShow}>
+                  {endDateShow || MarkActivityEnum.endDate}
                 </CenterText>
               }
               {...theme.navItemStyle}
