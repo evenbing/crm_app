@@ -13,10 +13,11 @@ import {
   updateContract,
   updateOwnerUser,
 } from '../service/contract';
-import Toast from '../utils/toast';
 import { contractFlatList, initDetailMap } from './initState';
 import { getReceivableIssueList } from '../service/receivable';
 import { getAttachmentList } from '../service/attachment';
+import { getAppModuleType } from '../utils/base';
+import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -113,10 +114,10 @@ class ContractStore {
       });
       if (issueErrors.length) throw new Error(issueErrors[0].message);
       const {
-        totalCount: attaTotal = 0,
+        attachmentList = [],
         errors: attaErrors = [],
       } = await getAttachmentList({
-        businessType: moduleType,
+        businessType: getAppModuleType(moduleType),
         businessId: id,
         pageSize,
       });
@@ -124,7 +125,7 @@ class ContractStore {
       runInAction(() => {
         this.contractTotal = {
           issueTotal,
-          attaTotal,
+          attaTotal: attachmentList.length,
         };
       });
     } catch (e) {

@@ -9,9 +9,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
+
+// constants
 import { theme, routers } from '../../../constants';
 import { ModuleType } from '../../../constants/enum';
-import { getNewId } from '../../../service/app';
+
+// utils
+import { formatDateByMoment, getUserId } from '../../../utils/base';
 import Toast from '../../../utils/toast';
 
 // components
@@ -28,6 +32,7 @@ import ActivityDetailsItem from './components/ActivityDetailsItem';
 import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 import DynamicModel from '../../../logicStores/dynamic';
 import AttachmentModel from '../../../logicStores/attachment';
+import { getNewId } from '../../../service/app';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -116,6 +121,26 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    const { receivableRecordDetails: { map } } = ReceivableRecordModel;
+    if (map.ownerId && (getUserId() !== map.ownerId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        ReceivableRecordModel.updateReceivableRecordReq({
+          id: item.id,
+          ...map,
+          receivableDate: map.receivableDate ? formatDateByMoment(map.receivableDate) : null,
+          ownerId: obj.userId,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -169,6 +194,7 @@ class Details extends React.Component {
     const { receivableRecordDetails: { map } } = ReceivableRecordModel;
     const detailHeaderProps = {
       item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
     };
     return (
       <View>

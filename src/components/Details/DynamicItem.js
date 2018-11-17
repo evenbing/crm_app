@@ -11,6 +11,7 @@ import moment from 'moment';
 import { theme } from '../../constants';
 import { DynamicRecordType } from '../../constants/enum';
 import { moderateScale } from '../../utils/scale';
+import { getIamgeByFileExtension } from '../../utils/fileExtension';
 
 // components
 import TouchableView from '../TouchableView';
@@ -85,15 +86,13 @@ class DynamicItem extends React.PureComponent {
     } = this.props;
     const attList = [...attachmentList];
     if (!(attList.length && typeof attList[0].filePath === 'string' && attList[0].filePath)) return null;
-    // remove xlsx zip ...
-    if (attList[0].filePath.endsWith('.jpg')) {
-      return (
-        <PicImage
-          imgUri={attList[0].filePath || null}
-        />
-      );
-    }
-    return null;
+    const { filePath } = attList[0] || {};
+    return (
+      <PicImage
+        imgUri={filePath || null}
+        source={getIamgeByFileExtension(filePath)}
+      />
+    );
   };
   render() {
     const {

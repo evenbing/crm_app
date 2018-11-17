@@ -7,11 +7,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { ListItem, Left, Thumbnail, Body, Text, Right, Icon } from 'native-base';
+import { ListItem, Left, Body, Text, Right, Icon } from 'native-base';
+
+import { formatDateByMoment, getAppModuleType } from '../../../utils/base';
+import { getIamgeByFileExtension } from '../../../utils/fileExtension';
 
 import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
 import { ContainerView } from '../../../components/Styles/Layout';
 import FlatListTable from '../../../components/FlatListTable';
+import Thumbnail from '../../../components/Thumbnail';
 
 import RelatedDocsModel from '../../../logicStores/relatedDocs';
 
@@ -25,29 +29,20 @@ class RelatedDocs extends Component {
     RelatedDocsModel.clearAttachmentList();
   }
 
-  onEndReached = () => {
-    const {
-      relatedDocsList: { total = 0, list = [], pageNumber = 1, loadingMore },
-    } = RelatedDocsModel;
-    if (list.length < total && loadingMore === false) {
-      this.getDynamicList(pageNumber + 1);
-    }
-  };
-
   getData = (pageNumber = 1) => {
     const { item, moduleType } = this.props.navigation.state.params || {};
     RelatedDocsModel.getAttachmentList({
       pageNumber,
-      businessType: moduleType,
+      businessType: getAppModuleType(moduleType),
       businessId: item.id,
     });
   };
 
   renderItem = ({ item }) => {
     const {
-      docIcon,
+      filePath,
       displayName,
-      // time,
+      createTime,
     } = item;
     const {
       item: {
@@ -57,12 +52,15 @@ class RelatedDocs extends Component {
     return (
       <ListItem thumbnail noBorder style={{ backgroundColor: 'white' }}>
         <Left>
-          <Thumbnail square source={docIcon} />
+          <Thumbnail
+            imgUri={filePath ? filePath.trim() : null}
+            source={getIamgeByFileExtension(filePath)}
+          />
         </Left>
         <Body>
           <Text>{displayName}</Text>
           <Text note numberOfLines={1}> {customerName} </Text>
-          {/* <Text note numberOfLines={1}> {time} </Text> */}
+          <Text note numberOfLines={1}> {formatDateByMoment(createTime, 'YYYY-MM-DD HH:mm')} </Text>
         </Body>
         <Right>
           <Icon name="arrow-forward" />
@@ -75,7 +73,6 @@ class RelatedDocs extends Component {
     const {
       relatedDocsList: {
         list = [],
-        loadingMore,
         refreshing,
       },
     } = RelatedDocsModel;
@@ -83,10 +80,8 @@ class RelatedDocs extends Component {
       data: list,
       renderItem: this.renderItem,
       onRefresh: this.getData,
-      onEndReached: this.onEndReached,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <ContainerView>

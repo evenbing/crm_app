@@ -22,33 +22,22 @@ class RelatedDocsStore {
 
   @action async getAttachmentList({ pageNumber = 1, ...restProps } = {}) {
     try {
-      if (pageNumber === 1) {
-        this.relatedDocsList.refreshing = true;
-      } else {
-        this.relatedDocsList.loadingMore = true;
-      }
+      this.relatedDocsList.refreshing = true;
       const {
-        result = [],
-        totalCount = 0,
+        attachmentList = [],
         errors = [],
       } = await getAttachmentList({ pageNumber, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        this.relatedDocsList.total = totalCount;
+        this.relatedDocsList.total = attachmentList.length;
         this.relatedDocsList.pageNumber = pageNumber;
-
-        if (pageNumber === 1) {
-          this.relatedDocsList.list = [...result];
-        } else {
-          this.relatedDocsList.list = this.relatedDocsList.list.concat(result);
-        }
+        this.relatedDocsList.list = [...attachmentList];
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
         this.relatedDocsList.refreshing = false;
-        this.relatedDocsList.loadingMore = false;
       });
     }
   }

@@ -11,9 +11,10 @@ import {
   getReceivableRecordDetails,
   updateReceivableRecord,
 } from '../service/receivableRecord';
-import Toast from '../utils/toast';
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
+import { getAppModuleType } from '../utils/base';
+import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -105,17 +106,17 @@ class ReceivableRecordStore {
     try {
       this.receivableRecordTotal = initTotal;
       const {
-        totalCount: attaTotal = 0,
+        attachmentList = [],
         errors: attaErrors = [],
       } = await getAttachmentList({
-        businessType: moduleType,
+        businessType: getAppModuleType(moduleType),
         businessId: id,
         pageSize,
       });
       if (attaErrors.length) throw new Error(attaErrors[0].message);
       runInAction(() => {
         this.receivableRecordTotal = {
-          attaTotal,
+          attaTotal: attachmentList.length,
         };
       });
     } catch (e) {

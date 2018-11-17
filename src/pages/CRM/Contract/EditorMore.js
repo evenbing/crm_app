@@ -488,22 +488,22 @@ class EditorMore extends React.Component {
             <NavInputItem
               leftText="负责人"
               onPress={() => navigate(routers.selectEmployee, {
-              callback: (item) => {
-                if (!Object.keys(item).length) return;
-                this.setState({
-                  ownerId: item.userId,
-                  ownerName: item.userName,
-                });
-              },
-            })}
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    ownerId: item.userId,
+                    ownerName: item.userName,
+                  });
+                },
+              })}
               center={
                 <CenterText active={ownerId && ownerName}>
                   {
-                  (ownerId && ownerName) ? ownerName :
-                    ContractEnum.ownerId
-                }
+                    (ownerId && ownerName) ? ownerName :
+                      ContractEnum.ownerId
+                  }
                 </CenterText>
-            }
+              }
               {...themeVar.navItemStyle}
             />
             <NavInputItem

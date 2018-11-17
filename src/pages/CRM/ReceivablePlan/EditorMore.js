@@ -11,7 +11,7 @@ import { KeyboardAvoidingView, View } from 'react-native';
 
 // constants
 import theme from '../../../constants/theme';
-import { ReceivablePlanEnum } from '../../../constants/form';
+import {ContractEnum, ReceivablePlanEnum} from '../../../constants/form';
 import { DataTitleTypes } from '../../../constants/enum';
 
 // utils
@@ -31,6 +31,7 @@ import DateTimePicker from '../../../components/DateTimePicker';
 import { getReceivablePriceStatus, getDateTimeStatus } from './components/ActivityDetailsItem';
 
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
+import routers from "../../../constants/routers";
 
 const LeftViewWidth = moderateScale(110);
 
@@ -130,6 +131,7 @@ class EditorMore extends React.Component {
       state: {
         issueNumber,
         receivablePrice,
+        ownerId,
         ownerUserName,
         pactName,
         createdByName,
@@ -142,6 +144,9 @@ class EditorMore extends React.Component {
         lastUpdatedByName,
         formatPriceStatus,
         formatDateTimeStatus,
+      },
+      props: {
+        navigation: { navigate },
       },
     } = this;
     return (
@@ -205,9 +210,23 @@ class EditorMore extends React.Component {
             </DateTimePicker>
             <NavInputItem
               leftText="负责人"
+              onPress={() => navigate(routers.selectEmployee, {
+                callback: (item) => {
+                  if (!Object.keys(item).length) return;
+                  this.setState({
+                    ownerId: item.userId,
+                    ownerUserName: item.userName,
+                  });
+                },
+              })}
               center={
-                <CenterText active>{ownerUserName}</CenterText>
-            }
+                <CenterText active={ownerId && ownerUserName}>
+                  {
+                    (ownerId && ownerUserName) ? ownerUserName :
+                      ContractEnum.ownerId
+                  }
+                </CenterText>
+              }
               {...theme.navItemOnlyShowStyle}
             />
             <NavInputItem

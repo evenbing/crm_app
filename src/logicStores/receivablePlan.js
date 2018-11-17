@@ -11,9 +11,10 @@ import {
   getReceivablePlanDetails,
   updateReceivablePlan,
 } from '../service/receivablePlan';
-import Toast from '../utils/toast';
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
+import { getAppModuleType } from '../utils/base';
+import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -105,17 +106,17 @@ class ReceivablePlanStore {
     try {
       this.receivablePlanTotal = initTotal;
       const {
-        totalCount: attaTotal = 0,
+        attachmentList = [],
         errors: attaErrors = [],
       } = await getAttachmentList({
-        businessType: moduleType,
+        businessType: getAppModuleType(moduleType),
         businessId: id,
         pageSize,
       });
       if (attaErrors.length) throw new Error(attaErrors[0].message);
       runInAction(() => {
         this.receivablePlanTotal = {
-          attaTotal,
+          attaTotal: attachmentList.length,
         };
       });
     } catch (e) {

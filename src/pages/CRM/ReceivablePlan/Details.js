@@ -28,6 +28,7 @@ import ActivityDetailsItem from './components/ActivityDetailsItem';
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
 import DynamicModel from '../../../logicStores/dynamic';
 import AttachmentModel from '../../../logicStores/attachment';
+import {formatDateByMoment, getUserId} from '../../../utils/base';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -119,6 +120,26 @@ class Details extends React.Component {
       callback && callback();
     });
   };
+  onPressChoiceTeam = () => {
+    const {
+      props: {
+        navigation: { navigate, state },
+      },
+    } = this;
+    const { item } = state.params || {};
+    const { receivablePlanDetails: { map } } = ReceivablePlanModel;
+    if (map.ownerId && (getUserId() !== map.ownerId)) return;
+    navigate(routers.selectEmployee, {
+      callback: (obj) => {
+        ReceivablePlanModel.updateReceivablePlanReq({
+          id: item.id,
+          ...map,
+          receivableDate: map.receivableDate ? formatDateByMoment(map.receivableDate) : null,
+          ownerId: obj.userId,
+        });
+      },
+    });
+  };
   getDynamicList = (pageNumber = 1) => {
     const { item } = this.props.navigation.state.params || {};
     DynamicModel.getDynamicListReq({
@@ -172,6 +193,7 @@ class Details extends React.Component {
     const { receivablePlanDetails: { map } } = ReceivablePlanModel;
     const detailHeaderProps = {
       item: map,
+      onPressChoiceTeam: this.onPressChoiceTeam,
     };
     return (
       <View>

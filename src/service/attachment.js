@@ -26,7 +26,7 @@ export function uploadImage(formData) {
  */
 export function getAttachmentList({
   pageNumber = 1,
-  pageSize = 15,
+  pageSize = 0,
   businessType,
   businessId,
   businessCategory,

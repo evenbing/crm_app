@@ -21,6 +21,12 @@ export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
 }
 
 // nav go back
+export function getAppModuleType(moduleType) {
+  if (!moduleType) throw new Error('模块类型不为空');
+  return `CRM_${moduleType}`;
+}
+
+// nav go back
 export function nativeGoBack() {
   try {
     NativeModules.system.navTo('BACK');
