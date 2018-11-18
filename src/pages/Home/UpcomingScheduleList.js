@@ -5,96 +5,167 @@
  * @author
  */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Alert } from 'react-native';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+// constants
+import { CreateActionSheetType, DelayActionSheetType } from '../../constants';
+
+// utils
+import { formatDateByMoment, formatDateTaskScheduleType } from '../../utils/base';
+
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import ListItem from './components/ListItem';
-import { get2Date } from '../../utils/date';
-import TaskScheduleStore from '../../logicStores/taskSchedule';
 import FlatListTable from '../../components/FlatListTable';
 import { ContainerView } from '../../components/Styles/Layout';
+import ActionSheet from '../../components/Modal/ActionSheet';
+import ListItem from './components/ListItem';
+
+import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 useStrict(true);
 
 @observer
 class UpcomingScheduleList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      createActionSheetVisible: false,
+      delayActionSheetVisible: false,
+    };
+
+    this.oldTaskScheduleId = null;
+  }
   componentDidMount() {
     this.getData();
   }
 
-  onEndReached = () => {
-    const {
-      total,
-      list,
-      pageNumber,
-      loadingMore,
-    } = TaskScheduleStore.taskScheduleList;
-    if (list.length < total && loadingMore === false) {
-      this.getData(pageNumber + 1);
+  onSelectCreateType = ({ item }) => {
+    const param = {};
+    if (this.oldTaskScheduleId) {
+      param.oldTaskScheduleId = this.oldTaskScheduleId;
     }
+    const { navigate } = this.props.navigation;
+    if (!Object.keys(item).length) return;
+    navigate(item.path, param);
+  };
+
+
+  onPressItem = (item) => {
+    this.selectedCacheItem = { ...item };
+  };
+
+  onSelectDelayType = ({ item }) => {
+    if (!Object.keys(item).length) return;
+    TaskScheduleStore.updateTaskHoursReq({
+      id: this.selectedCacheItem.id,
+      delayHours: item.delayHours,
+    });
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      pageNumber,
-      type: 'SCHEDULE',
-      category: 'UNREAD',
+    TaskScheduleStore.getScheduleRelatedToMeReq({ pageNumber });
+  };
+
+  selectDelayType = () => {
+    this.setState({
+      delayActionSheetVisible: true,
     });
   };
 
-  keyExtractor = item => item.id;
+  nextSelectCreateType = id => () => {
+    this.oldTaskScheduleId = id;
+    this.setState({
+      createActionSheetVisible: true,
+    });
+  };
+
+  deleteTaskSchedule = id => () => {
+    Alert.alert(
+      '提示',
+      '确定删除吗？',
+      [
+        {
+          text: '取消',
+          onPress: () => { },
+          style: 'cancel',
+        },
+        {
+          text: '确定',
+          onPress: () => {
+            TaskScheduleStore.deleteTaskScheduleRelatedToMeReq({ id });
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
+
+  renderItem = ({ item, index }) => {
+    const {
+      id,
+      startTime,
+      endTime,
+    } = item;
+    return (
+      <ListItem
+        index={index}
+        item={{
+          ...item,
+          type: '日程',
+          startDuration: `${formatDateByMoment(startTime, formatDateTaskScheduleType)}`,
+          endDuration: `${formatDateByMoment(endTime, formatDateTaskScheduleType)}`,
+          operateList: [
+            { key: `${id}1`, text: '下一步', onPress: this.nextSelectCreateType(id) },
+            { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
+            { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
+          ],
+          onPressItem: this.onPressItem,
+        }}
+      />
+    );
+  };
 
   render() {
     const {
-      taskScheduleList: { list, refreshing, loadingMore },
+      state: {
+        createActionSheetVisible,
+        delayActionSheetVisible,
+      },
+    } = this;
+    const {
+      scheduleList: {
+        refreshing,
+        list,
+      },
     } = TaskScheduleStore;
-    const data = list.map((item) => {
-      const {
-        id,
-        startTime,
-        endTime,
-        type,
-        name,
-        comment,
-      } = item;
-      let typeText = '';
-      let duration = '';
-      const startDate = new Date(parseInt(startTime, 10));
-      const endDate = new Date(parseInt(endTime, 10));
-      switch (type) {
-        case 'TASK':
-          typeText = '任务';
-          duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-          break;
-        case 'SCHEDULE':
-          typeText = ' 日程';
-          duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-          break;
-        default:
-          break;
-      }
-      return ({
-        id,
-        type: typeText,
-        duration,
-        name,
-        comment,
-      });
-    });
+    const flatProps = {
+      data: list,
+      keyExtractor: item => item.id,
+      renderItem: this.renderItem,
+      onRefresh: this.getData,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+    };
+    const createActionSheetProps = {
+      isVisible: createActionSheetVisible,
+      onPressClose: () => { this.setState({ createActionSheetVisible: false }); },
+      onPressItem: this.onSelectCreateType,
+      list: CreateActionSheetType,
+    };
+    const delayActionSheetProps = {
+      isVisible: delayActionSheetVisible,
+      onPressClose: () => { this.setState({ delayActionSheetVisible: false }); },
+      onPressItem: this.onSelectDelayType,
+      list: DelayActionSheetType,
+    };
     return (
       <ContainerView bottomPadding>
         <CommStatusBar />
-        <FlatListTable
-          data={data}
-          keyExtractor={this.keyExtractor}
-          renderItemElem={<ListItem />}
-          onRefresh={this.getData}
-          onEndReached={this.onEndReached}
-          refreshing={refreshing}
-          noDataBool={!refreshing && list.length === 0}
-          loadingMore={loadingMore}
-        />
+        <ActionSheet {...createActionSheetProps} />
+        <ActionSheet {...delayActionSheetProps} />
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
@@ -108,5 +179,22 @@ UpcomingScheduleList.navigationOptions = ({ navigation }) => ({
     />
   ),
 });
+
+UpcomingScheduleList.defaultProps = {};
+
+UpcomingScheduleList.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    setParams: PropTypes.func,
+    state: PropTypes.shape({
+      key: PropTypes.string,
+      routeName: PropTypes.string,
+      params: PropTypes.object,
+    }),
+  }).isRequired,
+};
+
 
 export default UpcomingScheduleList;

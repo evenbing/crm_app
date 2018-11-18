@@ -2,6 +2,7 @@
  * @Author: Edmond.Shi
  * @Date: 2018-09-06 22:15:31
  * @Last Modified by: Edmond.Shi
+ * @Add Justin Xu
  * @Last Modified time: 2018-10-11 17:54:17
  */
 
@@ -167,6 +168,8 @@ class TaskScheduleStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        this.getTaskRelatedToMeReq();
+        this.getScheduleRelatedToMeReq();
         callback && callback();
         Toast.showSuccess(options.successMsg || '创建成功');
       });
@@ -187,6 +190,7 @@ class TaskScheduleStore {
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         this.getTaskRelatedToMeReq();
+        this.getScheduleRelatedToMeReq();
         callback && callback();
         Toast.showSuccess('更新延时成功');
       });
@@ -244,6 +248,7 @@ class TaskScheduleStore {
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         this.getTaskRelatedToMeReq();
+        this.getScheduleRelatedToMeReq();
         callback && callback();
       });
     } catch (e) {

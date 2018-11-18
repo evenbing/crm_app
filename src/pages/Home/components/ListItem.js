@@ -51,7 +51,6 @@ const TimeView = styled.View`
 
 const Duration = styled.Text.attrs({
   numberOfLines: 1,
-  ellipsizeMode: 'tail',
 })`
   color: ${theme.primaryColor};
   font-size: ${moderateScale(16)};
@@ -200,6 +199,8 @@ class ListItem extends React.PureComponent {
         item: {
           id,
           duration,
+          startDuration,
+          endDuration,
           type,
           name,
           comment,
@@ -213,7 +214,18 @@ class ListItem extends React.PureComponent {
         <SectionItemView>
           <Lace />
           <TimeView>
-            <Duration>{duration}</Duration>
+            {
+              startDuration ? (<Duration>{startDuration}</Duration>) : null
+            }
+            {
+              startDuration && endDuration ? <Type>至</Type> : null
+            }
+            {
+              endDuration ? (<Duration>{endDuration}</Duration>) : null
+            }
+            {
+              duration ? (<Duration>{duration}</Duration>) : null
+            }
             <Type>{type}</Type>
           </TimeView>
           <DivderView />

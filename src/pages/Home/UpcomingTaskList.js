@@ -64,7 +64,6 @@ class UpcomingTaskList extends React.Component {
   };
 
   deleteTaskSchedule = id => () => {
-    console.log(id);
     Alert.alert(
       '提示',
       '确定删除吗？',
