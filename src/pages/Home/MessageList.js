@@ -21,23 +21,7 @@ useStrict(true);
 @observer
 class MessageList extends Component {
   componentDidMount() {
-    TaskScheduleStore.getScheduleRelatedToMeReq({
-      pageNumber: 1,
-      pageSize: 1,
-      type: 'SCHEDULE',
-      category: 'UNREAD',
-    });
-    TaskScheduleStore.getTaskRelatedToMeReq({
-      pageNumber: 1,
-      pageSize: 1,
-      type: 'TASK',
-      category: 'UNREAD',
-    });
-    TaskScheduleStore.getMessageReq({
-      pageNumber: 1,
-      pageSize: 1,
-      category: 'UNREAD',
-    });
+    TaskScheduleStore.getUnFinishTotalReq();
   }
 
   render() {

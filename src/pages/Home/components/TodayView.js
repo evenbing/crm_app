@@ -68,7 +68,7 @@ const HeaderViewRight = styled.View`
   padding-top: ${moderateScale(10)};
 `;
 
-const TodayView = ({ showMessageList }) => {
+const TodayView = ({ showMessageList, showPoint }) => {
   const curYear = new Date().getFullYear();
   const curMonth = new Date().getMonth() + 1;
   const curDay = new Date().getDate();
@@ -90,15 +90,24 @@ const TodayView = ({ showMessageList }) => {
           <WeekDay> {getDayOfWeek(curYear, curMonth, curDay, '星期')} </WeekDay>
         </HeaderViewMiddle>
         <HeaderViewRight>
-          <NoticeView yes onPress={showMessageList} />
+          <NoticeView
+            onPress={showMessageList}
+            showPoint={showPoint}
+          />
         </HeaderViewRight>
       </HeaderView>
     </LinearGradient>
   );
 };
 
+TodayView.defaultProps = {
+  showPoint: false,
+};
+
+
 TodayView.propTypes = {
   showMessageList: PropTypes.func.isRequired,
+  showPoint: PropTypes.bool,
 };
 
 export default TodayView;

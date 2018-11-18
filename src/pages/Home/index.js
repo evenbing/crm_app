@@ -50,6 +50,8 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.getData();
+    // 获取未完成
+    TaskScheduleStore.getUnFinishTotalReq();
   }
 
   onSelectCreateType = ({ item }) => {
@@ -60,7 +62,7 @@ class Home extends React.Component {
     const { navigate } = this.props.navigation;
     if (!Object.keys(item).length) return;
     navigate(item.path, param);
-  }
+  };
 
   onSelectDelayType = ({ item }) => {
     if (!Object.keys(item).length) return;
@@ -68,12 +70,12 @@ class Home extends React.Component {
       id: this.selectedItemId,
       delayHours: item.delayHours,
     });
-  }
+  };
 
   onSelectedDayChange = (date) => {
     this.curSelectedDate = date;
     this.getData();
-  }
+  };
 
   onPressItem = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => {
     this.selectedItemId = id;
@@ -98,6 +100,7 @@ class Home extends React.Component {
     });
   };
 
+  // 获取任务/日程
   getData = (pageNumber = 1) => {
     let currDate = this.curSelectedDate;
     if (!currDate) {
@@ -180,27 +183,27 @@ class Home extends React.Component {
       ],
       onPressItem: this.onPressItem,
     });
-  }
+  };
 
   selectCreateType = () => {
     this.oldTaskScheduleId = null;
     this.setState({
       createActionSheetVisible: true,
     });
-  }
+  };
 
   nextSelectCreateType = id => () => {
     this.oldTaskScheduleId = id;
     this.setState({
       createActionSheetVisible: true,
     });
-  }
+  };
 
   selectDelayType = () => {
     this.setState({
       delayActionSheetVisible: true,
     });
-  }
+  };
 
   deleteTaskSchedule = id => () => {
     console.log(id);
@@ -216,15 +219,13 @@ class Home extends React.Component {
         {
           text: '确定',
           onPress: () => {
-            TaskScheduleStore.deleteTaskScheduleRelatedToMeReq({
-              id,
-            }, this.reFetchTaskScheduleList);
+            TaskScheduleStore.deleteTaskScheduleRelatedToMeReq({ id });
           },
         },
       ],
       { cancelable: false },
     );
-  }
+  };
 
   renderHeader = () => {
     const {
@@ -234,11 +235,15 @@ class Home extends React.Component {
         },
       },
     } = this;
+    const {
+      getUnFinishTotal,
+    } = TaskScheduleStore;
     return (
       <View>
         <TodayView
           key="todayView"
           showMessageList={this.showMessageList}
+          showPoint={getUnFinishTotal > 0}
         />
         <Calendar
           key="calendar"

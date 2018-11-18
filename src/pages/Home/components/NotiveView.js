@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { moderateScale } from '../../../utils/scale';
 import AlarmIcon from '../../../img/home/alarm.png';
@@ -30,13 +31,23 @@ const Point = styled.View`
 `;
 
 const NoticeView = ({
-  onPress = null,
-  yes,
+  onPress,
+  showPoint,
 }) => (
   <Container onPress={onPress}>
     <Icon />
-    {yes && <Point />}
+    {showPoint && <Point />}
   </Container>
 );
+
+NoticeView.defaultProps = {
+  onPress: () => null,
+  showPoint: false,
+};
+
+NoticeView.propTypes = {
+  onPress: PropTypes.func,
+  showPoint: PropTypes.bool,
+};
 
 export default NoticeView;

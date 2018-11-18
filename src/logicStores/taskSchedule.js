@@ -5,48 +5,25 @@
  * @Last Modified time: 2018-10-11 17:54:17
  */
 
-import { action, observable, runInAction, useStrict } from 'mobx';
+import { action, observable, runInAction, useStrict, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
   find, create, update, del, updateTaskHours, updateTaskComplete,
 } from '../service/taskSchedule';
 import { getMessage } from '../service/app';
+import { initFlatList } from './initState';
 import Toast from '../utils/toast';
-import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
 @autobind
 class TaskScheduleStore {
-  // 列表
-  @observable taskScheduleList = initFlatList;
-
-  // 详情
-  @observable taskSchedule = initDetailMap;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   /**
-   * 删除任务或详情
-   */
-  @action async deleteTaskScheduleRelatedToMeReq(options, callback) {
-    try {
-      const {
-        errors = [],
-      } = await del(options);
-      if (errors.length) throw new Error(errors[0].message);
-      runInAction(() => {
-        this.getTaskScheduleRelatedToMeReq(this.queryProps);
-        callback && callback();
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    }
-  }
-
-  /**
    * 查询任务或日程
    */
+  @observable taskScheduleList = initFlatList;
   @action async getTaskScheduleRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
       this.queryProps = restProps;
@@ -80,10 +57,45 @@ class TaskScheduleStore {
     }
   }
 
-  @observable taskList = initFlatList;
+  // 获取未完成总数
+  @computed get getUnFinishTotal() {
+    const {
+      taskList,
+      scheduleList,
+      messageList,
+    } = this;
+    return Number(taskList.total) + Number(scheduleList.total) + Number(messageList.total);
+  }
+
   /**
-   * 查询任务或日程
+   * 查询未完成日程/任务/消息
    */
+  @action async getUnFinishTotalReq({ pageNumber = 1, pageSize = 1 } = {}) {
+    Promise.all([
+      this.getScheduleRelatedToMeReq({
+        pageNumber,
+        pageSize,
+        type: 'SCHEDULE',
+        category: 'UNREAD',
+      }),
+      this.getTaskRelatedToMeReq({
+        pageNumber,
+        pageSize,
+        type: 'TASK',
+        category: 'UNREAD',
+      }),
+      this.getMessageReq({
+        pageNumber,
+        pageSize,
+        category: 'UNREAD',
+      }),
+    ]);
+  }
+
+  /**
+   * 查询未完成任务
+   */
+  @observable taskList = initFlatList;
   @action async getTaskRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
       if (pageNumber === 1) {
@@ -116,10 +128,10 @@ class TaskScheduleStore {
     }
   }
 
-  @observable scheduleList = initFlatList;
   /**
-   * 查询任务或日程
+   * 查询未完成日程
    */
+  @observable scheduleList = initFlatList;
   @action async getScheduleRelatedToMeReq({ pageNumber = 1, ...restProps }) {
     try {
       if (pageNumber === 1) {
@@ -226,7 +238,27 @@ class TaskScheduleStore {
     }
   }
 
-  // 消息列表
+  /**
+   * 删除任务或详情
+   */
+  @action async deleteTaskScheduleRelatedToMeReq(options, callback) {
+    try {
+      const {
+        errors = [],
+      } = await del(options);
+      if (errors.length) throw new Error(errors[0].message);
+      runInAction(() => {
+        this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        callback && callback();
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    }
+  }
+
+  /**
+   * 查询未读消息列表
+   */
   @observable messageList = initFlatList;
   @action async getMessageReq({ pageNumber = 1, ...restProps }) {
     try {
