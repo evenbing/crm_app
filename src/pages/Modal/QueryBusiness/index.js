@@ -195,7 +195,7 @@ class QueryBusiness extends React.Component {
   }
 }
 
-QueryBusiness.navigationOptions = ({ navigation, screenProps }) => ({
+QueryBusiness.navigationOptions = ({ navigation }) => ({
   title: '工商信息查询',
   headerLeft: (
     <LeftBackIcon
@@ -204,7 +204,7 @@ QueryBusiness.navigationOptions = ({ navigation, screenProps }) => ({
   ),
   headerRight: (
     <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : () => null}
       right="回填"
       rightStyle={{
         color: theme.primaryColor,

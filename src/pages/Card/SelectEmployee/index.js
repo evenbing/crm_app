@@ -117,7 +117,7 @@ SelectEmployee.navigationOptions = ({ navigation }) => {
     ),
     headerRight: (
       <RightView
-        onPress={onPressRight || null}
+        onPress={onPressRight || (() => null)}
         right="完成"
         rightStyle={{
           color: theme.primaryColor,

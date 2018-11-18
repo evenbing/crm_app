@@ -112,7 +112,7 @@ class CompanyDepartment extends React.Component {
   }
 }
 
-CompanyDepartment.navigationOptions = ({ navigation, screenProps }) => ({
+CompanyDepartment.navigationOptions = ({ navigation }) => ({
   title: '公司部门',
   headerLeft: (
     <LeftBackIcon

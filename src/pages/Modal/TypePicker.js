@@ -66,7 +66,7 @@ TypePicker.propTypes = {
 };
 
 TypePicker.navigationOptions = ({ navigation }) => {
-  const { title = '请选择' } = navigation.state.params;
+  const { title = '请选择' } = navigation.state.params || {};
   return ({
     title,
     headerLeft: (

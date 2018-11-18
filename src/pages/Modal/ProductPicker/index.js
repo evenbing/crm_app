@@ -287,7 +287,7 @@ ProductPicker.navigationOptions = ({ navigation }) => {
     ),
     headerRight: (
       <RightView
-        onPress={navigation.state.params ? navigation.state.params.onPressRight : null}
+        onPress={navigation.state.params ? navigation.state.params.onPressRight : () => null}
         right="完成"
         rightStyle={{
           color: theme.primaryColor,

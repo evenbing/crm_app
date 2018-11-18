@@ -171,32 +171,23 @@ class CreateSalesClue extends React.Component {
   }
 }
 
-CreateSalesClue.navigationOptions = ({ navigation }) => {
-  const {
-    state: {
-      params: {
-        onPressRight = () => null,
-      } = {},
-    },
-  } = navigation;
-  return {
-    title: '新增线索',
-    headerLeft: (
-      <LeftBackIcon
-        onPress={() => navigation.goBack()}
-      />
-    ),
-    headerRight: (
-      <RightView
-        onPress={onPressRight}
-        right="完成"
-        rightStyle={{
-          color: theme.primaryColor,
-        }}
-      />
-    ),
-  };
-};
+CreateSalesClue.navigationOptions = ({ navigation }) => ({
+  title: '新增线索',
+  headerLeft: (
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
+  ),
+  headerRight: (
+    <RightView
+      onPress={navigation.state.params ? navigation.state.params.onPressRight : () => null}
+      right="完成"
+      rightStyle={{
+        color: theme.primaryColor,
+      }}
+    />
+  ),
+});
 
 CreateSalesClue.defaultProps = {};
 

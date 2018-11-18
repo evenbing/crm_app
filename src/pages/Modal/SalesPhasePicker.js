@@ -22,12 +22,12 @@ class SalesPhasePicker extends Component {
   }
 
   render() {
-    const { 
+    const {
       goBack,
       state: { params: {
         callback,
         selectedKey = null,
-      } }, 
+      } },
     } = this.props.navigation;
 
     return (
@@ -79,7 +79,7 @@ SalesPhasePicker.propTypes = {
 };
 
 SalesPhasePicker.navigationOptions = ({ navigation }) => {
-  const { title = '请选择' } = navigation.state.params;
+  const { title = '请选择' } = navigation.state.params || {};
   return ({
     title,
     headerLeft: (

@@ -100,7 +100,7 @@ class TeamRoles extends React.Component {
   }
 }
 
-TeamRoles.navigationOptions = ({ navigation, screenProps }) => ({
+TeamRoles.navigationOptions = ({ navigation }) => ({
   title: '团队成员',
   headerLeft: (
     <LeftBackIcon
