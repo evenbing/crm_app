@@ -33,7 +33,7 @@ class DateTimePicker extends React.PureComponent {
     const currDate = new Date();
     const year = currDate.getFullYear();
     const month = currDate.getMonth();
-    const date = currDate.getDate();
+    let date = currDate.getDate();
     let hour = currDate.getHours();
     let minutes = currDate.getMinutes();
     if (minuteInterval === 30) {
@@ -41,11 +41,21 @@ class DateTimePicker extends React.PureComponent {
         minutes = 30;
       } else {
         minutes = 0;
-        hour = hour === 23 ? 0 : hour + 1;
+        if (hour === 23) {
+          hour = 0;
+          date += 1;
+        } else {
+          hour += 1;
+        }
       }
     }
     if (isEnd) {
-      hour = hour === 23 ? 0 : hour + 1;
+      if (hour === 23) {
+        hour = 0;
+        date += 1;
+      } else {
+        hour += 1;
+      }
     }
     this.setState({
       isVisible: true,

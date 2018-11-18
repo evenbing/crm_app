@@ -14,6 +14,7 @@ import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
+import TouchableView from '../../../components/TouchableView';
 
 const DivderView = styled.View`
   width: ${moderateScale(1)}px;
@@ -27,8 +28,7 @@ const ContainerView = styled.View`
   padding-right: ${theme.moderateScale(15)};
 `;
 
-// const SectionItemView = styled.TouchableOpacity`
-const SectionItemView = styled.View`
+const SectionItemView = styled(TouchableView)`
   background-color: ${theme.whiteColor};
   padding: ${moderateScale(15)}px 0px;
   flex-direction: row;
@@ -142,7 +142,8 @@ class ListItem extends React.PureComponent {
 
   onToggleOperateView = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion } = {}) => () => {
     const {
-      item: { operateList, onPressItem },
+      item: { operateList },
+      onPressItem,
     } = this.props;
     if (operateList && operateList.length > 0) {
       if (type === '任务') {
@@ -206,12 +207,14 @@ class ListItem extends React.PureComponent {
           comment,
           operateList,
         },
+        onPressDetails,
       },
     } = this;
     return (
       <ContainerView>
-        {/* onPress={() => null} */}
-        <SectionItemView>
+        <SectionItemView
+          onPress={onPressDetails}
+        >
           <Lace />
           <TimeView>
             {
@@ -265,11 +268,15 @@ class ListItem extends React.PureComponent {
 ListItem.defaultProps = {
   item: {},
   showOperate: true,
+  onPressItem: () => null,
+  onPressDetails: () => null,
 };
 
 ListItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
   showOperate: PropTypes.bool,
+  onPressItem: PropTypes.func,
+  onPressDetails: PropTypes.func,
 };
 
 export default ListItem;

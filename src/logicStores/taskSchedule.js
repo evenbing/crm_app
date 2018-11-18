@@ -167,11 +167,13 @@ class TaskScheduleStore {
       } = await create(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
+        Toast.showSuccess(options.successMsg || '创建成功');
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         this.getTaskRelatedToMeReq();
         this.getScheduleRelatedToMeReq();
-        callback && callback();
-        Toast.showSuccess(options.successMsg || '创建成功');
+        setTimeout(() => {
+          callback && callback();
+        }, 1500);
       });
     } catch (e) {
       Toast.showError(e.message);

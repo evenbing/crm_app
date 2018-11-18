@@ -28,19 +28,23 @@ import TypePickerScreen from './pages/Modal/TypePicker';
 // root page -> home
 import HomeScreen from './pages/Home';
 // root page -> home -> SelectYear
-import SelectYear from './pages/Modal/SelectYear';
+import SelectYearScreen from './pages/Modal/SelectYear';
 // root page -> home -> MessageList
-import MessageList from './pages/Home/MessageList';
+import MessageListScreen from './pages/Home/MessageList';
 // root page -> home -> UpcomingScheduleList
-import UpcomingScheduleList from './pages/Home/UpcomingScheduleList';
+import UpcomingScheduleListScreen from './pages/Home/UpcomingScheduleList';
 // root page -> home -> UpcomingTaskList
-import UpcomingTaskList from './pages/Home/UpcomingTaskList';
+import UpcomingTaskListScreen from './pages/Home/UpcomingTaskList';
 // root page -> home -> NotificationList
-import NotificationList from './pages/Home/NotificationList';
+import NotificationListScreen from './pages/Home/NotificationList';
 // root page -> home -> AddSchedule
-import AddSchedule from './pages/Home/AddSchedule';
+import AddScheduleScreen from './pages/Home/AddSchedule';
 // root page -> home -> AddTask
-import AddTask from './pages/Home/AddTask';
+import AddTaskScreen from './pages/Home/AddTask';
+// root page -> home -> TaskDetails
+import TaskDetailsScreen from './pages/Home/TaskDetails';
+// root page -> home -> ScheduleDetails
+import ScheduleDetailsScreen from './pages/Home/ScheduleDetails';
 // root page -> CRM
 import CRMScreen from './pages/CRM';
 // root page -> CRM -> 客户 module
@@ -105,13 +109,15 @@ import ProductPickerScreen from './pages/Modal/ProductPicker';
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
-  [routers.selectYear]: { screen: SelectYear },
-  [routers.messageList]: { screen: MessageList },
-  [routers.upcomingScheduleList]: { screen: UpcomingScheduleList },
-  [routers.upcomingTaskList]: { screen: UpcomingTaskList },
-  [routers.notificationList]: { screen: NotificationList },
-  [routers.addSchedule]: { screen: AddSchedule },
-  [routers.addTask]: { screen: AddTask },
+  [routers.selectYear]: { screen: SelectYearScreen },
+  [routers.messageList]: { screen: MessageListScreen },
+  [routers.upcomingScheduleList]: { screen: UpcomingScheduleListScreen },
+  [routers.upcomingTaskList]: { screen: UpcomingTaskListScreen },
+  [routers.notificationList]: { screen: NotificationListScreen },
+  [routers.addSchedule]: { screen: AddScheduleScreen },
+  [routers.addTask]: { screen: AddTaskScreen },
+  [routers.taskDetails]: { screen: TaskDetailsScreen },
+  [routers.scheduleDetails]: { screen: ScheduleDetailsScreen },
 
   // common
   [routers.typePicker]: { screen: TypePickerScreen },

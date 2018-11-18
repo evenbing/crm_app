@@ -92,6 +92,14 @@ class Home extends React.Component {
     navigate(routers.messageList);
   };
 
+  onPressDetails = ({ path, item }) => {
+    if (!path) return;
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(path, { item });
+  };
+
   // 获取任务/日程
   getData = (pageNumber = 1) => {
     let currDate = this.curSelectedDate;
@@ -119,6 +127,7 @@ class Home extends React.Component {
     } = item;
     if (type === 'TASK') {
       return {
+        path: routers.taskDetails,
         typeText: '任务',
         firstButtonText: '完成',
         firstButtonPress: this.onPressFinish,
@@ -127,6 +136,7 @@ class Home extends React.Component {
     }
     if (type === 'SCHEDULE') {
       return {
+        path: routers.scheduleDetails,
         typeText: '日程',
         firstButtonText: '下一步',
         firstButtonPress: this.nextSelectCreateType(id),
@@ -210,6 +220,7 @@ class Home extends React.Component {
       id,
     } = item;
     const {
+      path,
       typeText,
       duration,
       firstButtonText,
@@ -227,8 +238,9 @@ class Home extends React.Component {
             { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
             { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
           ],
-          onPressItem: this.onPressItem,
         }}
+        onPressItem={this.onPressItem}
+        onPressDetails={() => this.onPressDetails({ path, item })}
       />
     );
   };

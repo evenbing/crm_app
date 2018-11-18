@@ -17,6 +17,8 @@ export default {
   notificationList: 'app.tabView.root.home.notificationList',
   addSchedule: 'app.tabView.root.home.addSchedule',
   addTask: 'app.tabView.root.home.addTask',
+  taskDetails: 'app.tabView.root.home.taskDetails',
+  scheduleDetails: 'app.tabView.root.home.scheduleDetails',
   // crm module
   crm: 'app.tabView.root.crm',
   // customer module

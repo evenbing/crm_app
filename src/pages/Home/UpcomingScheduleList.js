@@ -2,7 +2,7 @@
  * @component UpcomingScheduleList.js
  * @description 未完成日程列表
  * @time 2018/8/5
- * @author
+ * @add Justin Xu
  */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
 // constants
-import { CreateActionSheetType, DelayActionSheetType } from '../../constants';
+import { routers, CreateActionSheetType, DelayActionSheetType } from '../../constants';
 
 // utils
 import { formatDateByMoment, formatDateTaskScheduleType } from '../../utils/base';
@@ -62,6 +62,14 @@ class UpcomingScheduleList extends React.Component {
       id: this.selectedCacheItem.id,
       delayHours: item.delayHours,
     });
+  };
+
+  onPressDetails = ({ path, item }) => {
+    if (!path) return;
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(path, { item });
   };
 
   getData = (pageNumber = 1) => {
@@ -121,8 +129,9 @@ class UpcomingScheduleList extends React.Component {
             { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
             { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
           ],
-          onPressItem: this.onPressItem,
         }}
+        onPressItem={this.onPressItem}
+        onPressDetails={() => this.onPressDetails({ path: routers.scheduleDetails, item })}
       />
     );
   };

@@ -9,10 +9,9 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import moment from 'moment';
 
 // utils
-import { formatDate } from '../../utils/base';
+import { formatDateByMoment } from '../../utils/base';
 import { moderateScale } from '../../utils/scale';
 import Toast from '../../utils/toast';
 
@@ -35,7 +34,7 @@ import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import { getNewId } from '../../service/app';
 
-const formatDateType = 'yyyy-MM-dd hh:mm';
+const formatDateType = 'YYYY-MM-DD HH:mm';
 
 const ScrollView = styled.ScrollView`
   background-color: white;
@@ -50,31 +49,28 @@ const Divder = styled.View`
 
 @observer
 class AddTask extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: 'TASK', // 'TASK',
-      name: null, // 'new task',
-      // startTime: null, // '2018-09-09 11:12:12',
-      endTime: null, // '2019-09-19 12:12:12',
-      moduleType: null,
-      moduleTypeName: null,
-      moduleId: null,
-      moduleName: null,
-      comment: null,
-      needNotice: false,
-      noticeTime: null,
-      noticeTimeName: null,
-      // longitudeAndLatitude: null,
-      // locationInfo: null,
-      isPrivate: 1, // 先默认写1
-      principal: null,
-      principalName: null,
-      userIds: [],
-      userIdNames: [],
-      images: [],
-    };
-  }
+  state = {
+    type: 'TASK', // 'TASK',
+    name: null, // 'new task',
+    // startTime: null, // '2018-09-09 11:12:12',
+    endTime: null, // '2019-09-19 12:12:12',
+    moduleType: null,
+    moduleTypeName: null,
+    moduleId: null,
+    moduleName: null,
+    comment: null,
+    needNotice: false,
+    noticeTime: null,
+    noticeTimeName: null,
+    // longitudeAndLatitude: null,
+    // locationInfo: null,
+    isPrivate: 1, // 先默认写1
+    principal: null,
+    principalName: null,
+    userIds: [],
+    userIdNames: [],
+    images: [],
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -133,7 +129,7 @@ class AddTask extends Component {
         type,
         name,
         // startTime,
-        endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        endTime,
         moduleType,
         moduleId,
         comment,
@@ -153,16 +149,11 @@ class AddTask extends Component {
     }
   };
 
-  onChangeTaskName = (name) => {
-    this.setState({ name });
-  }
-
   render() {
     const {
       state: {
         name,
-        // startTime,
-        endTime,
+        endTimeShow,
         moduleType,
         moduleTypeName,
         moduleId,
@@ -203,7 +194,8 @@ class AddTask extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  endTime: `${formatDate(date, formatDateType)}`,
+                  endTime: `${formatDateByMoment(date)}`,
+                  endTimeShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -211,8 +203,8 @@ class AddTask extends Component {
               leftText="截止时间"
               needPress={false}
               center={
-                <CenterText active={endTime}>
-                  {endTime || TaskEnum.endTime}
+                <CenterText active={endTimeShow}>
+                  {endTimeShow || TaskEnum.endTime}
                 </CenterText>
               }
               {...theme.navItemStyle}

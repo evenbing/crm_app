@@ -10,11 +10,10 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import moment from 'moment';
 
 // utils
 import { moderateScale } from '../../utils/scale';
-import { formatDate } from '../../utils/base';
+import { formatDateByMoment } from '../../utils/base';
 import Toast from '../../utils/toast';
 
 // constants
@@ -36,7 +35,7 @@ import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import { getNewId, createLocationId } from '../../service/app';
 
-const formatDateType = 'yyyy-MM-dd hh:mm';
+const formatDateType = 'YYYY-MM-DD HH:mm';
 
 const ScrollView = styled.ScrollView`
   background-color: white;
@@ -51,36 +50,33 @@ const Divder = styled.View`
 
 @observer
 class AddSchedule extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: 'SCHEDULE', // 'TASK',
-      name: null, // 'new task',
-      startTime: null, // '2018-09-09 11:12:12',
-      endTime: null, // '2019-09-19 12:12:12',
-      moduleType: null,
-      moduleTypeName: null,
-      moduleId: null,
-      moduleName: null,
-      comment: null,
-      needNotice: false,
-      noticeTime: null,
-      noticeTimeName: null,
-      longitudeAndLatitude: null,
-      locationInfo: null,
-      provinceId: null,
-      cityId: null,
-      districtId: null,
-      isPrivate: 1, // 先默认写1
-      principal: null,
-      // principalName: null,
-      repeatTypeId: null,
-      repeatTypeName: '',
-      userIds: [],
-      userIdNames: [],
-      images: [],
-    };
-  }
+  state = {
+    type: 'SCHEDULE', // 'TASK',
+    name: null, // 'new task',
+    startTime: null, // '2018-09-09 11:12:12',
+    endTime: null, // '2019-09-19 12:12:12',
+    moduleType: null,
+    moduleTypeName: null,
+    moduleId: null,
+    moduleName: null,
+    comment: null,
+    needNotice: false,
+    noticeTime: null,
+    noticeTimeName: null,
+    longitudeAndLatitude: null,
+    locationInfo: null,
+    provinceId: null,
+    cityId: null,
+    districtId: null,
+    isPrivate: 1, // 先默认写1
+    principal: null,
+    // principalName: null,
+    repeatTypeId: null,
+    repeatTypeName: '',
+    userIds: [],
+    userIdNames: [],
+    images: [],
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -154,8 +150,8 @@ class AddSchedule extends Component {
         oldTaskScheduleId,
         type,
         name,
-        startTime: moment(startTime).format('YYYY-MM-DD HH:mm:ss'),
-        endTime: moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        startTime,
+        endTime,
         moduleType,
         moduleId,
         comment,
@@ -176,16 +172,12 @@ class AddSchedule extends Component {
     }
   };
 
-  onChangeTaskName = (name) => {
-    this.setState({ name });
-  }
-
   render() {
     const {
       state: {
         name,
-        startTime,
-        endTime,
+        startTimeShow,
+        endTimeShow,
         moduleType,
         moduleTypeName,
         moduleId,
@@ -231,7 +223,8 @@ class AddSchedule extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  startTime: `${formatDate(date, formatDateType)}`,
+                  startTime: `${formatDateByMoment(date)}`,
+                  startTimeShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -239,8 +232,8 @@ class AddSchedule extends Component {
               leftText="开始时间"
               needPress={false}
               center={
-                <CenterText active={startTime}>
-                  {startTime || TaskEnum.startTime}
+                <CenterText active={startTimeShow}>
+                  {startTimeShow || TaskEnum.startTime}
                 </CenterText>
               }
               {...theme.navItemStyle}
@@ -252,7 +245,8 @@ class AddSchedule extends Component {
             onConfirm={
               date =>
                 this.setState({
-                  endTime: `${formatDate(date, formatDateType)}`,
+                  endTime: `${formatDateByMoment(date)}`,
+                  endTimeShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -260,8 +254,8 @@ class AddSchedule extends Component {
               leftText="结束时间"
               needPress={false}
               center={
-                <CenterText active={endTime}>
-                  {endTime || TaskEnum.endTime}
+                <CenterText active={endTimeShow}>
+                  {endTimeShow || TaskEnum.endTime}
                 </CenterText>
               }
               {...theme.navItemStyle}
