@@ -14,7 +14,7 @@ import { routers, CreateActionSheetType, DelayActionSheetType } from '../../cons
 
 // utils
 import { get2Date } from '../../utils/date';
-import { nativeGoBack } from '../../utils/base';
+import { formatDateByMoment, nativeGoBack } from '../../utils/base';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
@@ -26,6 +26,8 @@ import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';
+
+const formatDateTaskScheduleType = 'HH:mm';
 
 @observer
 class Home extends React.Component {
@@ -55,10 +57,14 @@ class Home extends React.Component {
     navigate(item.path, param);
   };
 
+  onPressItem = (item) => {
+    this.selectedCacheItem = { ...item };
+  };
+
   onSelectDelayType = ({ item }) => {
     if (!Object.keys(item).length) return;
     TaskScheduleStore.updateTaskHoursReq({
-      id: this.selectedItemId,
+      id: this.selectedCacheItem.id,
       delayHours: item.delayHours,
     });
   };
@@ -66,16 +72,6 @@ class Home extends React.Component {
   onSelectedDayChange = (date) => {
     this.curSelectedDate = date;
     this.getData();
-  };
-
-  onPressItem = ({ id, type, startTime, endTime, moduleId, moduleType, rowVersion }) => {
-    this.selectedItemId = id;
-    this.selectedItemType = type;
-    this.selectedStartTime = startTime;
-    this.selectedEndTime = endTime;
-    this.selectedMoudleId = moduleId;
-    this.selectedMoudleType = moduleType;
-    this.selectedRowVersion = rowVersion;
   };
 
   onEndReached = () => {
@@ -86,9 +82,14 @@ class Home extends React.Component {
   };
 
   onPressFinish = (id) => {
-    TaskScheduleStore.updateTaskCompleteReq({
-      id,
-    });
+    TaskScheduleStore.updateTaskCompleteReq({ id });
+  };
+
+  onPressMessageList = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(routers.messageList);
   };
 
   // 获取任务/日程
@@ -108,67 +109,31 @@ class Home extends React.Component {
     });
   };
 
-  showMessageList = () => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(routers.messageList);
-  }
-
-  formatTaskScheduleListData = (item) => {
+  // 获取item props
+  getTaskScheduleProps = (item) => {
     const {
       id,
       startTime,
       endTime,
-      moduleId = '',
-      moduleType = '',
       type,
-      name,
-      comment,
-      rowVersion,
-      isCompleted,
     } = item;
-    let typeText = '';
-    let duration = '';
-    let firstButtonText = '';
-    let firstButtonPress = null;
-    const startDate = new Date(parseInt(startTime, 10));
-    const endDate = new Date(parseInt(endTime, 10));
-    switch (type) {
-      case 'TASK':
-        typeText = '任务';
-        firstButtonText = '完成';
-        firstButtonPress = this.onPressFinish;
-        duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-        break;
-      case 'SCHEDULE':
-        typeText = ' 日程';
-        firstButtonText = '下一步';
-        firstButtonPress = this.nextSelectCreateType(id);
-        duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-        break;
-      default:
-        break;
+    if (type === 'TASK') {
+      return {
+        typeText: '任务',
+        firstButtonText: '完成',
+        firstButtonPress: this.onPressFinish,
+        duration: formatDateByMoment(endTime, formatDateTaskScheduleType),
+      };
     }
-    return ({
-      id,
-      duration,
-      type: typeText,
-      name,
-      comment,
-      startTime,
-      endTime,
-      moduleId,
-      moduleType,
-      rowVersion,
-      isCompleted,
-      operateList: [
-        { key: `${id}1`, text: firstButtonText, onPress: firstButtonPress },
-        { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
-        { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
-      ],
-      onPressItem: this.onPressItem,
-    });
+    if (type === 'SCHEDULE') {
+      return {
+        typeText: '日程',
+        firstButtonText: '下一步',
+        firstButtonPress: this.nextSelectCreateType(id),
+        duration: `${formatDateByMoment(startTime, formatDateTaskScheduleType)}-${formatDateByMoment(endTime, formatDateTaskScheduleType)}`,
+      };
+    }
+    return {};
   };
 
   selectCreateType = () => {
@@ -227,7 +192,7 @@ class Home extends React.Component {
       <View>
         <TodayView
           key="todayView"
-          showMessageList={this.showMessageList}
+          showMessageList={this.onPressMessageList}
           showPoint={getUnFinishTotal > 0}
         />
         <Calendar
@@ -237,6 +202,34 @@ class Home extends React.Component {
           onSelectedDayChange={this.onSelectedDayChange}
         />
       </View>
+    );
+  };
+
+  renderItem = ({ item, index }) => {
+    const {
+      id,
+    } = item;
+    const {
+      typeText,
+      duration,
+      firstButtonText,
+      firstButtonPress,
+    } = this.getTaskScheduleProps(item);
+    return (
+      <TaskScheduleListItem
+        index={index}
+        item={{
+          ...item,
+          type: typeText,
+          duration,
+          operateList: [
+            { key: `${id}1`, text: firstButtonText, onPress: firstButtonPress },
+            { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
+            { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
+          ],
+          onPressItem: this.onPressItem,
+        }}
+      />
     );
   };
 
@@ -260,14 +253,18 @@ class Home extends React.Component {
       list: DelayActionSheetType,
     };
     const {
-      taskScheduleList: { refreshing, list, total, loadingMore },
+      taskScheduleList: {
+        refreshing,
+        list,
+        total,
+        loadingMore,
+      },
     } = TaskScheduleStore;
-    const data = TaskScheduleStore.taskScheduleList.list.map(item => this.formatTaskScheduleListData(item));
     const flatProps = {
-      data,
+      data: list,
       headerHeight: 217,
       renderHeader: this.renderHeader(),
-      renderItemElem: <TaskScheduleListItem />,
+      renderItem: this.renderItem,
       onRefresh: this.getData,
       onEndReached: this.onEndReached,
       ListFooterComponent: (Number(total) === list.length && !!total) ? <ListFooterComponent /> : null,
