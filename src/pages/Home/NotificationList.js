@@ -104,10 +104,12 @@ class NotificationList extends Component {
   }
 }
 
-NotificationList.navigationOptions = () => ({
+NotificationList.navigationOptions = ({ navigation }) => ({
   title: '通知',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
   ),
 });
 

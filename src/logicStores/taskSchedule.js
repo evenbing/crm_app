@@ -70,96 +70,88 @@ class TaskScheduleStore {
   /**
    * 查询未完成日程/任务/消息
    */
-  @action async getUnFinishTotalReq({ pageNumber = 1, pageSize = 1 } = {}) {
+  @action async getUnFinishTotalReq() {
     Promise.all([
-      this.getScheduleRelatedToMeReq({
-        pageNumber,
-        pageSize,
-        type: 'SCHEDULE',
-        category: 'UNREAD',
-      }),
-      this.getTaskRelatedToMeReq({
-        pageNumber,
-        pageSize,
-        type: 'TASK',
-        category: 'UNREAD',
-      }),
-      this.getMessageReq({
-        pageNumber,
-        pageSize,
-        category: 'UNREAD',
-      }),
+      this.getScheduleRelatedToMeReq(),
+      this.getTaskRelatedToMeReq(),
+      this.getMessageReq(),
     ]);
-  }
-
-  /**
-   * 查询未完成任务
-   */
-  @observable taskList = initFlatList;
-  @action async getTaskRelatedToMeReq({ pageNumber = 1, ...restProps }) {
-    try {
-      if (pageNumber === 1) {
-        this.taskList.refreshing = true;
-      } else {
-        this.taskList.loadingMore = true;
-      }
-      const {
-        result = [],
-        totalCount = 0,
-        errors = [],
-      } = await find({ pageNumber, ...restProps });
-      if (errors.length) throw new Error(errors[0].message);
-      runInAction(() => {
-        this.taskList.total = totalCount;
-        this.taskList.pageNumber = pageNumber;
-        if (pageNumber === 1) {
-          this.taskList.list = [...result];
-        } else {
-          this.taskList.list = this.taskList.list.concat(result);
-        }
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    } finally {
-      runInAction(() => {
-        this.taskList.refreshing = false;
-        this.taskList.loadingMore = false;
-      });
-    }
   }
 
   /**
    * 查询未完成日程
    */
   @observable scheduleList = initFlatList;
-  @action async getScheduleRelatedToMeReq({ pageNumber = 1, ...restProps }) {
+  @action async getScheduleRelatedToMeReq({
+    pageNumber = 1,
+    pageSize = 0,
+    type = 'SCHEDULE',
+    category = 'UNREAD',
+    ...restProps
+  } = {}) {
     try {
-      if (pageNumber === 1) {
-        this.scheduleList.refreshing = true;
-      } else {
-        this.scheduleList.loadingMore = true;
-      }
+      this.scheduleList.refreshing = true;
       const {
         result = [],
         totalCount = 0,
         errors = [],
-      } = await find({ pageNumber, ...restProps });
+      } = await find({
+        pageNumber,
+        pageSize,
+        type,
+        category,
+        ...restProps,
+      });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.scheduleList.total = totalCount;
         this.scheduleList.pageNumber = pageNumber;
-        if (pageNumber === 1) {
-          this.scheduleList.list = [...result];
-        } else {
-          this.scheduleList.list = this.scheduleList.list.concat(result);
-        }
+        this.scheduleList.list = [...result];
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
         this.scheduleList.refreshing = false;
-        this.scheduleList.loadingMore = false;
+      });
+    }
+  }
+
+  /**
+   * 查询未完成任务
+   */
+  @observable taskList = initFlatList;
+  @action async getTaskRelatedToMeReq({
+    pageNumber = 1,
+    pageSize = 0,
+    type = 'TASK',
+    category = 'UNREAD',
+    ...restProps
+  } = {}) {
+    try {
+      this.taskList.refreshing = true;
+      const {
+        result = [],
+        errors = [],
+      } = await find({
+        pageNumber,
+        pageSize,
+        type,
+        category,
+        ...restProps,
+      });
+      if (errors.length) throw new Error(errors[0].message);
+      const list = result.filter(v => !v.isCompleted);
+      runInAction(() => {
+        this.taskList.total = list.length || 0;
+        this.taskList.pageNumber = pageNumber;
+        this.taskList.list = list;
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.taskList.refreshing = false;
       });
     }
   }
@@ -194,6 +186,7 @@ class TaskScheduleStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        this.getTaskRelatedToMeReq();
         callback && callback();
         Toast.showSuccess('更新延时成功');
       });
@@ -213,6 +206,7 @@ class TaskScheduleStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        this.getTaskRelatedToMeReq();
         callback && callback();
         Toast.showSuccess('设置完成成功');
       });
@@ -249,6 +243,7 @@ class TaskScheduleStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        this.getTaskRelatedToMeReq();
         callback && callback();
       });
     } catch (e) {
@@ -260,7 +255,7 @@ class TaskScheduleStore {
    * 查询未读消息列表
    */
   @observable messageList = initFlatList;
-  @action async getMessageReq({ pageNumber = 1, ...restProps }) {
+  @action async getMessageReq({ pageNumber = 1, pageSize = 0, category = 'UNREAD', ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
         this.messageList.refreshing = true;
@@ -271,7 +266,7 @@ class TaskScheduleStore {
         result = [],
         totalCount = 0,
         errors = [],
-      } = await getMessage({ pageNumber, ...restProps });
+      } = await getMessage({ pageNumber, pageSize, category, ...restProps });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.messageList.total = totalCount;

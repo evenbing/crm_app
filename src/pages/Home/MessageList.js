@@ -18,6 +18,11 @@ const Container = styled.View`
 `;
 
 useStrict(true);
+
+const RightTextStyle = {
+  color: '#E03C3C',
+};
+
 @observer
 class MessageList extends Component {
   componentDidMount() {
@@ -33,27 +38,21 @@ class MessageList extends Component {
           icon={IcoSchedule}
           leftText="待办日程"
           rightText={TaskScheduleStore.scheduleList.total}
-          rightTextStyle={{
-            color: '#E03C3C',
-          }}
+          rightTextStyle={RightTextStyle}
           onPress={() => navigate(routers.upcomingScheduleList)}
         />
         <NavItem
           icon={IcoUpcomingTasks}
           leftText="待办任务"
           rightText={TaskScheduleStore.taskList.total}
-          rightTextStyle={{
-            color: '#E03C3C',
-          }}
+          rightTextStyle={RightTextStyle}
           onPress={() => navigate(routers.upcomingTaskList)}
         />
         <NavItem
           icon={IcoNotice}
           leftText="通知"
           rightText={TaskScheduleStore.messageList.total}
-          rightTextStyle={{
-            color: '#E03C3C',
-          }}
+          rightTextStyle={RightTextStyle}
           onPress={() => navigate(routers.notificationList)}
         />
       </Container>
@@ -61,10 +60,12 @@ class MessageList extends Component {
   }
 }
 
-MessageList.navigationOptions = () => ({
+MessageList.navigationOptions = ({ navigation }) => ({
   title: '消息提醒',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
   ),
 });
 

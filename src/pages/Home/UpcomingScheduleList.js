@@ -1,4 +1,10 @@
-import React, { Component } from 'react';
+/**
+ * @component UpcomingScheduleList.js
+ * @description 未完成日程列表
+ * @time 2018/8/5
+ * @author
+ */
+import React from 'react';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
@@ -12,13 +18,7 @@ import { ContainerView } from '../../components/Styles/Layout';
 useStrict(true);
 
 @observer
-class UpcomingScheduleList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
+class UpcomingScheduleList extends React.Component {
   componentDidMount() {
     this.getData();
   }
@@ -100,10 +100,12 @@ class UpcomingScheduleList extends Component {
   }
 }
 
-UpcomingScheduleList.navigationOptions = () => ({
+UpcomingScheduleList.navigationOptions = ({ navigation }) => ({
   title: '待办日程',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
   ),
 });
 

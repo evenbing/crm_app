@@ -1,104 +1,157 @@
-import React, { Component } from 'react';
+/**
+ * @component UpcomingTaskList.js
+ * @description 未完成任务列表
+ * @time 2018/8/5
+ * @author
+ */
+import React from 'react';
+import { Alert } from 'react-native';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+// constants
+import { DelayActionSheetType } from '../../constants';
+
+
+// utils
+import { formatDateByMoment, formatDateTaskScheduleType } from '../../utils/base';
+
 import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import ListItem from './components/ListItem';
-import { get2Date } from '../../utils/date';
-import TaskScheduleStore from '../../logicStores/taskSchedule';
 import FlatListTable from '../../components/FlatListTable';
 import { ContainerView } from '../../components/Styles/Layout';
+import ListItem from './components/ListItem';
 
+import TaskScheduleStore from '../../logicStores/taskSchedule';
+import ActionSheet from '../../components/Modal/ActionSheet';
 
 useStrict(true);
 
 @observer
-class UpcomingTaskList extends Component {
+class UpcomingTaskList extends React.Component {
+  state = {
+    delayActionSheetVisible: false,
+  };
   componentDidMount() {
     this.getData();
   }
 
-  onEndReached = () => {
-    const {
-      total,
-      list,
-      pageNumber,
-      loadingMore,
-    } = TaskScheduleStore.taskScheduleList;
-    if (list.length < total && loadingMore === false) {
-      this.getData(pageNumber + 1);
-    }
+  onPressFinish = (id) => {
+    TaskScheduleStore.updateTaskCompleteReq({
+      id,
+    });
+  };
+
+  onPressItem = (item) => {
+    this.selectedCacheItem = { ...item };
+  };
+
+  onSelectDelayType = ({ item }) => {
+    if (!Object.keys(item).length) return;
+    TaskScheduleStore.updateTaskHoursReq({
+      id: this.selectedCacheItem.id,
+      delayHours: item.delayHours,
+    });
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getTaskScheduleRelatedToMeReq({
-      pageNumber,
-      type: 'TASK',
-      category: 'UNREAD',
+    TaskScheduleStore.getTaskRelatedToMeReq({ pageNumber });
+  };
+
+  selectDelayType = () => {
+    this.setState({
+      delayActionSheetVisible: true,
     });
   };
 
-  keyExtractor = item => item.id;
+  deleteTaskSchedule = id => () => {
+    console.log(id);
+    Alert.alert(
+      '提示',
+      '确定删除吗？',
+      [
+        {
+          text: '取消',
+          onPress: () => { },
+          style: 'cancel',
+        },
+        {
+          text: '确定',
+          onPress: () => {
+            TaskScheduleStore.deleteTaskScheduleRelatedToMeReq({ id });
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
+
+  renderItem = ({ item, index }) => {
+    const {
+      id,
+      endTime,
+    } = item;
+    return (
+      <ListItem
+        index={index}
+        item={{
+          ...item,
+          type: '任务',
+          duration: formatDateByMoment(endTime, formatDateTaskScheduleType),
+          operateList: [
+            { key: `${id}1`, text: '完成', onPress: this.onPressFinish },
+            { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
+            { key: `${id}3`, text: '删除', onPress: this.deleteTaskSchedule },
+          ],
+          onPressItem: this.onPressItem,
+        }}
+      />
+    );
+  };
 
   render() {
     const {
-      taskScheduleList: { list, refreshing, loadingMore },
+      state: {
+        delayActionSheetVisible,
+      },
+    } = this;
+    const {
+      taskList: {
+        refreshing,
+        list,
+      },
     } = TaskScheduleStore;
-    const data = list.map((item) => {
-      const {
-        id,
-        startTime,
-        endTime,
-        type,
-        name,
-        comment,
-      } = item;
-      let typeText = '';
-      let duration = '';
-      const startDate = new Date(parseInt(startTime, 10));
-      const endDate = new Date(parseInt(endTime, 10));
-      switch (type) {
-        case 'TASK':
-          typeText = '任务';
-          duration = `${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-          break;
-        case 'SCHEDULE':
-          typeText = ' 日程';
-          duration = `${get2Date(startDate.getHours())}:${get2Date(startDate.getMinutes())}-${get2Date(endDate.getHours())}:${get2Date(endDate.getMinutes())}`;
-          break;
-        default:
-          break;
-      }
-      return ({
-        id,
-        type: typeText,
-        duration,
-        name,
-        comment,
-      });
-    });
+    const flatProps = {
+      data: list,
+      keyExtractor: item => item.id,
+      renderItem: this.renderItem,
+      onRefresh: this.getData,
+      refreshing,
+      noDataBool: !refreshing && list.length === 0,
+    };
+    const delayActionSheetProps = {
+      isVisible: delayActionSheetVisible,
+      onPressClose: () => { this.setState({ delayActionSheetVisible: false }); },
+      onPressItem: this.onSelectDelayType,
+      list: DelayActionSheetType,
+    };
     return (
-      <ContainerView bottomPadding>
+      <ContainerView
+        bottomPadding
+      >
         <CommStatusBar />
-        <FlatListTable
-          data={data}
-          keyExtractor={this.keyExtractor}
-          renderItemElem={<ListItem />}
-          onRefresh={this.getData}
-          onEndReached={this.onEndReached}
-          refreshing={refreshing}
-          noDataBool={!refreshing && list.length === 0}
-          loadingMore={loadingMore}
-        />
+        <ActionSheet {...delayActionSheetProps} />
+        <FlatListTable {...flatProps} />
       </ContainerView>
     );
   }
 }
 
-UpcomingTaskList.navigationOptions = () => ({
+UpcomingTaskList.navigationOptions = ({ navigation }) => ({
   title: '待办任务',
   headerLeft: (
-    <LeftBackIcon />
+    <LeftBackIcon
+      onPress={() => navigation.goBack()}
+    />
   ),
 });
 

@@ -9,7 +9,10 @@ import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
 import Toast from './toast';
 
+// 格式化类型
 export const formatDateType = 'YYYY-MM-DD';
+export const formatDateTaskScheduleType = 'MM-DD HH:mm';
+
 // 格式化
 export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
   if (!str) return '无';

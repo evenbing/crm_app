@@ -15,7 +15,7 @@ import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
 
-const Divder = styled.View`
+const DivderView = styled.View`
   width: ${moderateScale(1)}px;
   height: ${moderateScale(39)}px;
   background-color: ${theme.pageBackColor};
@@ -38,7 +38,7 @@ const SectionItemView = styled.View`
 const Lace = styled.View`
     width: ${moderateScale(4)};
     height: ${moderateScale(48)};
-    background-color: #26B34E;
+    background-color: ${theme.primaryColor};
     margin-right: ${moderateScale(15)};
   `;
 
@@ -53,7 +53,7 @@ const Duration = styled.Text.attrs({
   numberOfLines: 1,
   ellipsizeMode: 'tail',
 })`
-  color: #26B34E;
+  color: ${theme.primaryColor};
   font-size: ${moderateScale(16)};
 `;
 
@@ -205,15 +205,10 @@ class ListItem extends React.PureComponent {
           comment,
           operateList,
         },
-        index,
-        isLast,
       },
     } = this;
     return (
-      <ContainerView
-        isFirst={index === 0}
-        isLast={isLast}
-      >
+      <ContainerView>
         {/* onPress={() => null} */}
         <SectionItemView>
           <Lace />
@@ -221,12 +216,12 @@ class ListItem extends React.PureComponent {
             <Duration>{duration}</Duration>
             <Type>{type}</Type>
           </TimeView>
-          <Divder />
+          <DivderView />
           <Theme>
             <Title>{name}</Title>
             <Time>{comment}</Time>
           </Theme>
-          <Divder />
+          <DivderView />
           {this.renderOperate()}
         </SectionItemView>
         <OperateView showOperateView={showOperateView}>
@@ -257,15 +252,11 @@ class ListItem extends React.PureComponent {
 
 ListItem.defaultProps = {
   item: {},
-  index: 0,
-  isLast: false,
   showOperate: true,
 };
 
 ListItem.propTypes = {
   item: PropTypes.objectOf(PropTypes.any),
-  index: PropTypes.number,
-  isLast: PropTypes.bool,
   showOperate: PropTypes.bool,
 };
 

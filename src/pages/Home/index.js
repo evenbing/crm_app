@@ -9,7 +9,10 @@ import PropTypes from 'prop-types';
 import { Alert, View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
-import { routers } from '../../constants';
+// constants
+import { routers, CreateActionSheetType, DelayActionSheetType } from '../../constants';
+
+// utils
 import { get2Date } from '../../utils/date';
 import { nativeGoBack } from '../../utils/base';
 
@@ -23,18 +26,6 @@ import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';
-
-const createTypes = [
-  { leftText: '新建日程', path: routers.addSchedule },
-  { leftText: '新建任务', path: routers.addTask },
-];
-
-const delayTypes = [
-  { leftText: '1小时以后', delayHours: 1 },
-  { leftText: '3小时以后', delayHours: 3 },
-  { leftText: '明天', delayHours: 24 },
-  { leftText: '后天', delayHours: 48 },
-];
 
 @observer
 class Home extends React.Component {
@@ -117,10 +108,6 @@ class Home extends React.Component {
     });
   };
 
-  reFetchTaskScheduleList = () => {
-    this.getData();
-  }
-
   showMessageList = () => {
     const {
       navigation: { navigate },
@@ -175,7 +162,6 @@ class Home extends React.Component {
       moduleType,
       rowVersion,
       isCompleted,
-      reFetchTaskScheduleList: this.reFetchTaskScheduleList,
       operateList: [
         { key: `${id}1`, text: firstButtonText, onPress: firstButtonPress },
         { key: `${id}2`, text: '延时', onPress: this.selectDelayType },
@@ -266,13 +252,13 @@ class Home extends React.Component {
       isVisible: createActionSheetVisible,
       onPressClose: () => { this.setState({ createActionSheetVisible: false }); },
       onPressItem: this.onSelectCreateType,
-      list: createTypes,
+      list: CreateActionSheetType,
     };
     const delayActionSheetProps = {
       isVisible: delayActionSheetVisible,
       onPressClose: () => { this.setState({ delayActionSheetVisible: false }); },
       onPressItem: this.onSelectDelayType,
-      list: delayTypes,
+      list: DelayActionSheetType,
     };
     const {
       taskScheduleList: { refreshing, list, total, loadingMore },
