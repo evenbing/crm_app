@@ -7,15 +7,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+
+// constants
+import { theme } from 'constants';
+
+// logicStores
+import TeamStore from 'logicStores/team';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
-// import CompanyHeader from '../../../components/MemberList/CompanyHeader';
-import MemberList from '../../../components/MemberList/MemberList';
-import TeamStore from '../../../logicStores/team';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import SearchInput from 'components/SearchInput';
+import { ContainerView } from 'components/Styles/Layout';
+// import CompanyHeader from 'components/MemberList/CompanyHeader';
+import MemberList from 'components/MemberList/MemberList';
 
 @observer
 class TeamMembers extends React.Component {

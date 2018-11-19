@@ -214,8 +214,7 @@ export function detail({
  * type 日程任务的类型
  * moduleType 关联业务类型
  * moduleId 业务ID
- * startDateId 任务日程的开始日期ID yyyyMMdd
- * endDateId 任务日程的结束日期ID  yyyyMMdd
+ * currentDateId 当前 yyyyMMdd
  * 参数为category：ALL-全部，READ-已读，UNREAD-未读，此处传参UNREAD
  * }
  * @return Promise<Object>
@@ -229,8 +228,7 @@ export function find({
   type,
   moduleType,
   moduleId,
-  startDateId,
-  endDateId,
+  currentDateId,
   category,
 } = {}) {
   return post({
@@ -244,8 +242,7 @@ export function find({
     type,
     moduleType,
     moduleId,
-    startDateId,
-    endDateId,
+    currentDateId,
     category,
   });
 }

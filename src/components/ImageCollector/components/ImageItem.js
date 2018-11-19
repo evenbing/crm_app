@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { ActionSheet } from 'native-base';
 import { theme } from '../../../constants';
 import { width } from '../../../utils/scale';
 import { KEY_ADD } from '../Constants';

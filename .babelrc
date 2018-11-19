@@ -2,6 +2,17 @@
   "presets": ["react-native"],
   "plugins": [
     "transform-decorators-legacy",
-    ["import", { "libraryName": "antd-mobile-rn" }]
+    ["import", { "libraryName": "antd-mobile-rn" }],
+    ["module-resolver", {
+      "alias": {
+        "components": "./src/components",
+        "constants": "./src/constants",
+        "img": "./src/img",
+        "logicStores": "./src/logicStores",
+        "pages": "./src/pages",
+        "service": "./src/service",
+        "utils": "./src/utils"
+      }
+    }]
   ]
 }

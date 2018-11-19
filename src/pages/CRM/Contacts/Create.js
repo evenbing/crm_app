@@ -9,25 +9,26 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 
 // constants
-import { routers, theme } from '../../../constants';
-import { ContactsEnum } from '../../../constants/form';
-import { CustomerType } from '../../../constants/enum';
+import { routers, theme } from 'constants';
+import { ContactsEnum } from 'constants/form';
+import { CustomerType } from 'constants/enum';
 
 // utils
-import { verifyPhone, verifyMobile } from '../../../utils/formVerify';
-import Toast from '../../../utils/toast';
+import { verifyPhone, verifyMobile } from 'utils/formVerify';
+import Toast from 'utils/toast';
+
+// logicStores
+import ContactsModel from 'logicStores/contacts';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-// import ScanCard from '../../../components/Create/ScanCard';
-import { ListView, CenterText } from '../../../components/Styles/Form';
-
-import ContactsModel from '../../../logicStores/contacts';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+// import ScanCard from 'components/Create/ScanCard';
+import { ListView, CenterText } from 'components/Styles/Form';
 
 @observer
 class Create extends React.Component {

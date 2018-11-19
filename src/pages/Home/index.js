@@ -10,22 +10,23 @@ import { Alert, View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
 // constants
-import { routers, CreateActionSheetType, DelayActionSheetType } from '../../constants';
+import { routers, CreateActionSheetType, DelayActionSheetType } from 'constants';
 
 // utils
-import { get2Date } from '../../utils/date';
-import { formatDateByMoment, nativeGoBack } from '../../utils/base';
+import { get2Date } from 'utils/date';
+import { formatDateByMoment, nativeGoBack } from 'utils/base';
+
+// logicStores
+import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { ActionSheet } from '../../components/Modal';
-import { ContainerView, ListFooterComponent } from '../../components/Styles/Layout';
-import FlatListTable from '../../components/FlatListTable';
+import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+import { ActionSheet } from 'components/Modal';
+import { ContainerView, ListFooterComponent } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
 import Calendar from './components/Calendar';
 import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
-
-import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 const formatDateTaskScheduleType = 'HH:mm';
 
@@ -112,8 +113,7 @@ class Home extends React.Component {
     }
     TaskScheduleStore.getTaskScheduleRelatedToMeReq({
       pageNumber,
-      startDateId: currDate,
-      endDateId: currDate,
+      currentDateId: currDate,
     });
   };
 

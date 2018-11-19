@@ -6,18 +6,43 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { ListItem, Left, Body, Text, Right, Icon } from 'native-base';
+import { ListItem, Left, Body, Text, Right } from 'native-base';
 
-import { formatDateByMoment, getAppModuleType } from '../../../utils/base';
-import { getIamgeByFileExtension } from '../../../utils/fileExtension';
+// constants
+import { theme } from 'constants';
 
-import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import FlatListTable from '../../../components/FlatListTable';
-import Thumbnail from '../../../components/Thumbnail';
+// utils
+import { formatDateByMoment, getAppModuleType } from 'utils/base';
+import { getIamgeByFileExtension } from 'utils/fileExtension';
+import { moderateScale } from 'utils/scale';
 
-import RelatedDocsModel from '../../../logicStores/relatedDocs';
+// static source
+import navIcon from 'img/nav.png';
+
+// logicStores
+import RelatedDocsModel from 'logicStores/relatedDocs';
+
+// components
+import { LeftBackIcon, CommStatusBar } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
+import Thumbnail from 'components/Thumbnail';
+
+const NavIconView = styled.Image`
+  width: ${moderateScale(6)};
+  height: ${moderateScale(11)};
+`;
+
+const WrapperView = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: 1px;
+  border-bottom-color: ${theme.borderColor};
+`;
 
 @observer
 class RelatedDocs extends Component {
@@ -50,21 +75,39 @@ class RelatedDocs extends Component {
       },
     } = this.props.navigation.state.params || {};
     return (
-      <ListItem thumbnail noBorder style={{ backgroundColor: 'white' }}>
-        <Left>
-          <Thumbnail
-            imgUri={filePath ? filePath.trim() : null}
-            source={getIamgeByFileExtension(filePath)}
-          />
-        </Left>
-        <Body>
-          <Text>{displayName}</Text>
-          <Text note numberOfLines={1}> {customerName} </Text>
-          <Text note numberOfLines={1}> {formatDateByMoment(createTime, 'YYYY-MM-DD HH:mm')} </Text>
-        </Body>
-        <Right>
-          <Icon name="arrow-forward" />
-        </Right>
+      <ListItem
+        thumbnail
+        noBorder
+        style={{
+          backgroundColor: 'white',
+          paddingLeft: moderateScale(14),
+          marginLeft: 0,
+          paddingRight: moderateScale(14),
+        }}
+      >
+        <WrapperView>
+          <Left>
+            <Thumbnail
+              imgUri={filePath ? filePath.trim() : null}
+              source={getIamgeByFileExtension(filePath)}
+            />
+          </Left>
+          <Body>
+            <Text>{displayName}</Text>
+            <Text note numberOfLines={1}> {customerName} </Text>
+            <Text note numberOfLines={1}> {formatDateByMoment(createTime, 'YYYY-MM-DD HH:mm')} </Text>
+          </Body>
+          <Right
+            style={{
+              paddingRight: 0,
+            }}
+          >
+            <NavIconView
+              source={navIcon}
+              resizeMode="contain"
+            />
+          </Right>
+        </WrapperView>
       </ListItem>
     );
   }

@@ -9,19 +9,22 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { RefreshControl } from 'react-native';
 import { observer } from 'mobx-react/native';
-import {theme, routers, theme as themeVar} from '../../../constants';
+
+// constants
+import { theme, routers } from 'constants';
+
+// logicStores
+import PrefStatistModel from 'logicStores/prefStatist';
 
 // components
-import TabsPanel from '../../../components/TabsPanel';
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
+import TabsPanel from 'components/TabsPanel';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import LineChart from 'components/LineChart';
 import TotalList from './components/TotalList';
 import TitleHeader from './components/TitleHeader';
-import LineChart from '../../../components/LineChart';
 import SalesFunnel from './components/SalesFunnel';
 import RankItem from './components/RankItem';
-
-import PrefStatistModel from '../../../logicStores/prefStatist';
 
 const SectionView = styled.ScrollView`
   padding-top: ${theme.moderateScale(8)};
@@ -74,8 +77,8 @@ class PerfStatist extends React.Component {
     const salesTotalProps = {
       list: [
         { title: '漏斗总值', text: `${salesSumMap.funnelSalesSum}元` },
-        { title: '预计完成', text: `${salesSumMap.expectSalesSum}元` },
-        { title: '完成总值', text: `${salesSumMap.completedSalesSum}元` },
+        // { title: '预计完成', text: `${salesSumMap.expectSalesSum}元` },
+        // { title: '完成总值', text: `${salesSumMap.completedSalesSum}元` },
       ],
     };
     const rankTotalProps = {
@@ -184,7 +187,7 @@ PerfStatist.navigationOptions = ({ navigation }) => ({
       right="跟进统计"
       onPress={() => navigation.navigate(routers.followUpStat)}
       rightStyle={{
-        color: themeVar.primaryColor,
+        color: theme.primaryColor,
       }}
     />
   ),

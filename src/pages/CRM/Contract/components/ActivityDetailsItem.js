@@ -80,6 +80,7 @@ const ActivityDetailsItem = ({ item }) => (
     <TitleItemComponent
       text="备注"
       color="#373737"
+      fontSize={16}
     />
     <RemarkView>
       <RemarkText>

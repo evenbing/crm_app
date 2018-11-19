@@ -50,6 +50,7 @@ TitleItem.defaultProps = {
   titleStyle: {},
   text: null,
   fontSize: 14,
+  titleBackColor: null,
 };
 
 TitleItem.propTypes = {
@@ -57,6 +58,7 @@ TitleItem.propTypes = {
   titleStyle: PropTypes.objectOf(PropTypes.any),
   text: PropTypes.string,
   fontSize: PropTypes.number,
+  titleBackColor: PropTypes.number,
 };
 
 export default TitleItem;

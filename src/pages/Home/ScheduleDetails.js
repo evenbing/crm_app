@@ -7,29 +7,81 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useStrict, toJS } from 'mobx';
-// import styled from 'styled-components';
+import { observer } from 'mobx-react/native';
+import { Alert } from 'react-native';
 
 // constants
-import { theme } from '../../constants';
-import { NoticeTypes, RepeatTypes, ModuleType } from '../../constants/enum';
+import { routers, theme } from 'constants';
+import { NoticeTypes, RepeatTypes } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, formatLocationMap } from '../../utils/base';
+import { formatDateByMoment } from 'utils/base';
+
+// logicStores
+import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { ContainerView, ContainerScrollView } from '../../components/Styles/Layout';
-import { HorizontalDivider } from '../../components/Styles/Divider';
-import { renderBasicItem, RemarkView, RemarkText } from '../../components/Details/Styles';
+import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+import { ContainerView, ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { renderBasicItem, RemarkView, RemarkText } from 'components/Details/Styles';
+import TitleItemComponent from 'components/Details/TitleItem';
 // import DetailFooter from './components/DetailFooter';
-import TitleItemComponent from '../../components/Details/TitleItem';
 
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
 useStrict(true);
 
+@observer
 class ScheduleDetails extends React.Component {
-  render() {
+  componentDidMount() {
+    this.getData();
+  }
+  onPressEditor = () => {
+    const {
+      scheduleDetailMap,
+    } = TaskScheduleStore;
+    const {
+      navigation: {
+        navigate,
+      },
+    } = this.props;
+    if (!Object.keys(scheduleDetailMap).length) return null;
+    navigate(routers.addSchedule, { item: scheduleDetailMap });
+  };
+  onPressDelete = () => {
+    const {
+      navigation: {
+        state: {
+          params: {
+            item,
+          } = {},
+        },
+        goBack,
+      },
+    } = this.props;
+    Alert.alert(
+      '提示',
+      '确定删除吗？',
+      [
+        {
+          text: '取消',
+          onPress: () => { },
+          style: 'cancel',
+        },
+        {
+          text: '确定',
+          onPress: () => {
+            TaskScheduleStore.deleteTaskScheduleRelatedToMeReq(item, () => {
+              goBack();
+            });
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
+  getData = () => {
     const {
       navigation: {
         state: {
@@ -39,7 +91,26 @@ class ScheduleDetails extends React.Component {
         },
       },
     } = this.props;
-    console.log(toJS(item));
+    if (!Object.keys(item).length) return null;
+    TaskScheduleStore.getScheduleDetailMapReq(item);
+  };
+  render() {
+    const {
+      scheduleDetailMap: {
+        name,
+        startTime,
+        endTime,
+        noticeTime,
+        locationOutputName,
+        sourceType,
+        sourceName,
+        repeatTypeName,
+        participatePeopleList = [],
+        comment,
+      },
+    } = TaskScheduleStore;
+    console.log(toJS(TaskScheduleStore.scheduleDetailMap));
+    const source = (sourceType && sourceName) ? `${sourceType}${sourceName}` : null;
     return (
       <ContainerView
         bottomPadding
@@ -47,26 +118,33 @@ class ScheduleDetails extends React.Component {
       >
         <CommStatusBar />
         <ContainerScrollView>
-          {renderBasicItem('日程主题', item.name)}
-          {renderBasicItem('开始时间', formatDateByMoment(item.startTime, formatDateType))}
-          {renderBasicItem('截止时间', formatDateByMoment(item.endTime, formatDateType))}
-          {renderBasicItem('提醒', NoticeTypes[item.noticeTime])}
-          {renderBasicItem('位置', formatLocationMap(item.location))}
-          {renderBasicItem('关联业务', ModuleType[item.moduleType])}
-          {renderBasicItem('重复规则', RepeatTypes[item.repeatTypeName])}
-          {renderBasicItem('参与人', item.userIdNames ? item.userIdNames.join(',') : null)}
+          {renderBasicItem('日程主题', name)}
+          {renderBasicItem('开始时间', formatDateByMoment(startTime, formatDateType))}
+          {renderBasicItem('截止时间', formatDateByMoment(endTime, formatDateType))}
+          {renderBasicItem('提醒', NoticeTypes[noticeTime])}
+          {renderBasicItem('位置', locationOutputName)}
+          {renderBasicItem('关联业务', source)}
+          {renderBasicItem('重复规则', RepeatTypes[repeatTypeName])}
+          {renderBasicItem('参与人', participatePeopleList.join(','))}
           <TitleItemComponent
             text="描述"
             color="#373737"
           />
           <RemarkView>
             <RemarkText>
-              {item.comment}
+              {comment}
             </RemarkText>
           </RemarkView>
         </ContainerScrollView>
         <HorizontalDivider height={50} />
-        {/* <DetailFooter /> */}
+        {/* {
+          Object.keys(TaskScheduleStore.scheduleDetailMap).length ? (
+            <DetailFooter
+              onPressEditor={this.onPressEditor}
+              onPressDelete={this.onPressDelete}
+            />
+          ) : null
+        } */}
       </ContainerView>
     );
   }

@@ -351,7 +351,7 @@ class Contract extends React.Component {
         >
           <CommStatusBar />
           <SearchInput
-            placeholder="输入市场活动名称"
+            placeholder="输入合同名称"
             value={searchValue}
             onChangeText={async (searchValue) => {
               await this.setState({ searchValue });

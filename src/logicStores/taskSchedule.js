@@ -5,17 +5,17 @@
  * @Add Justin Xu
  * @Last Modified time: 2018-10-11 17:54:17
  */
-
 import { action, observable, runInAction, useStrict, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, create, update, del, updateTaskHours, updateTaskComplete,
+  find, detail, create, update, del, updateTaskHours, updateTaskComplete,
 } from '../service/taskSchedule';
 import { getMessage } from '../service/app';
 import { initFlatList } from './initState';
 import Toast from '../utils/toast';
 
 useStrict(true);
+
 @autobind
 class TaskScheduleStore {
   // 保存list的搜索对象, 提供给新增调取接口使用
@@ -54,6 +54,50 @@ class TaskScheduleStore {
       runInAction(() => {
         this.taskScheduleList.refreshing = false;
         this.taskScheduleList.loadingMore = false;
+      });
+    }
+  }
+
+  /**
+   * 查询任务详情
+   */
+  @observable taskDetailMap = {};
+  @action async getTaskDetailMapReq(options) {
+    try {
+      this.taskDetailMap = {};
+      const {
+        taskSchedule = {},
+      } = await detail(options);
+      runInAction(() => {
+        this.taskDetailMap = { ...taskSchedule };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.taskScheduleList.refreshing = false;
+      });
+    }
+  }
+
+  /**
+   * 查询日程详情
+   */
+  @observable scheduleDetailMap = {};
+  @action async getScheduleDetailMapReq(options) {
+    try {
+      this.scheduleDetailMap = {};
+      const {
+        taskSchedule = {},
+      } = await detail(options);
+      runInAction(() => {
+        this.scheduleDetailMap = { ...taskSchedule };
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.taskScheduleList.refreshing = false;
       });
     }
   }

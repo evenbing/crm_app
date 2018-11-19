@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants/index';
+import { theme } from '../../constants';
 
 // components
 import TouchableView from '../TouchableView';
@@ -64,7 +64,7 @@ const MemberItem = ({
         )
       }
       <Thumbnail
-        source={item.url || require('../../img/default_avatar.png')}
+        source={item.headImg || require('../../img/default_avatar.png')}
         size={60}
       />
       <NameText>{item.userName}</NameText>

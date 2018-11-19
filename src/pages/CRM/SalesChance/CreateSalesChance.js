@@ -9,29 +9,30 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 
 // constants
-import { theme, routers } from '../../../constants';
-import { SalesChanceEnum } from '../../../constants/form';
-import { CustomerType, MarkActivityType } from '../../../constants/enum';
+import { theme, routers } from 'constants';
+import { SalesChanceEnum } from 'constants/form';
+import { CustomerType, MarkActivityType } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, formatDateType } from '../../../utils/base';
-import Toast from '../../../utils/toast';
+import { formatDateByMoment, formatDateType } from 'utils/base';
+import Toast from 'utils/toast';
+
+// logicStores
+import SalesChanceStore from 'logicStores/salesChance';
+import BusinessStore from 'logicStores/business';
+import { getNewId } from 'service/app';
 
 // components
-import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { ContainerScrollView, ContainerView } from '../../../components/Styles/Layout';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import { CenterText, RightText } from '../../../components/Styles/Form';
-import DateTimePicker from '../../../components/DateTimePicker';
+import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { ContainerScrollView, ContainerView } from 'components/Styles/Layout';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+import { CenterText, RightText } from 'components/Styles/Form';
+import DateTimePicker from 'components/DateTimePicker';
 import ProductItem from './components/ProductItem';
 import AddProduct from './components/AddProduct';
-
-import SalesChanceStore from '../../../logicStores/salesChance';
-import BusinessStore from '../../../logicStores/business';
-import { getNewId } from '../../../service/app';
 
 @observer
 class CreateSalesChance extends Component {

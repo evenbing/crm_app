@@ -187,3 +187,15 @@ export function getMessage({
     ...restProps,
   });
 }
+
+/** *
+ * 查重新增客户和新增销售机会功能
+* */
+export function getCustomerName({
+  name,
+}) {
+  return post({
+    method: 'api.customerrelations.customer.find',
+    name,
+  });
+}

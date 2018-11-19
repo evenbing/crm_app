@@ -18,6 +18,7 @@ import {
   createFollow,
   deleteFollow,
   createLocationId,
+  getCustomerName,
 } from '../service/app';
 import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
@@ -155,8 +156,12 @@ class CustomerStore {
   }
 
   // 新增
-  @action async createCustomerReq({ locationInfo, ...restProps }, callback) {
+  @action async createCustomerReq({ locationInfo, name, ...restProps }, callback) {
     try {
+      const {
+        result = [],
+      } = await getCustomerName({ name });
+      if (result.length) throw new Error('客户已存在');
       let locationId = null;
       if (locationInfo) {
         const { location: { id } } = await createLocationId(locationInfo);
@@ -164,7 +169,7 @@ class CustomerStore {
       }
       const {
         errors = [],
-      } = await createCustomer({ ...restProps, locationId });
+      } = await createCustomer({ ...restProps, locationId, name });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getCustomerListReq(this.queryProps);
@@ -176,8 +181,12 @@ class CustomerStore {
   }
 
   // 编辑
-  @action async updateCustomerReq({ locationInfo, ...restProps }, callback) {
+  @action async updateCustomerReq({ locationInfo, name, ...restProps }, callback) {
     try {
+      const {
+        result = [],
+      } = await getCustomerName({ name });
+      if (result.length) throw new Error('客户已存在');
       let locationId = null;
       if (locationInfo) {
         const { location: { id } } = await createLocationId(locationInfo);
@@ -185,7 +194,7 @@ class CustomerStore {
       }
       const {
         errors = [],
-      } = await updateCustomer({ ...restProps, locationId });
+      } = await updateCustomer({ ...restProps, locationId, name });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getCustomerDetailReq({ id: restProps.id });

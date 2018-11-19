@@ -36,21 +36,11 @@ const initTotal = {
 
 @autobind
 class SalesChanceStore {
-  // 列表
-  @observable salesChanceList = initFlatList;
-  // 销售机会详情
-  @observable salesChanceDetail = initDetailMap;
-  // 销售阶段列表
-  @observable salesPhaseList = initFlatList;
-  // 销售阶段详情
-  @observable salesPhaseDetail = initDetailMap;
-  // 统计
-  @observable salesClueTotal = initTotal;
-
   // 保存list的搜索对象, 提供给新增调取接口使用
   static queryProps = {};
 
   // 列表
+  @observable salesChanceList = initFlatList;
   @action async getSalesChanceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       this.queryProps = restProps;
@@ -85,7 +75,8 @@ class SalesChanceStore {
     }
   }
 
-  // 详情
+  // 销售机会详情
+  @observable salesChanceDetail = initDetailMap;
   @action async getSalesChanceDetailReq({ id }) {
     try {
       if (!id) throw new Error('id 不为空');
@@ -104,6 +95,7 @@ class SalesChanceStore {
   }
 
   // 总计
+  @observable salesClueTotal = initTotal;
   @action async getSalesChanceTotalReq({ id, pageSize = 1 }) {
     try {
       this.salesClueTotal = initTotal;
@@ -238,6 +230,7 @@ class SalesChanceStore {
   }
 
   // 高级查询销售阶段
+  @observable salesPhaseList = initFlatList;
   @action async findSalesPhaseReq(options) {
     try {
       const {

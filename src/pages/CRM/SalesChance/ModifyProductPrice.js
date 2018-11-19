@@ -4,28 +4,28 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // utils
-import { isIos } from '../../../utils/utils';
+import { isIos } from 'utils/utils';
 
 // constants
-import { theme } from '../../../constants';
+import { theme } from 'constants';
 
 // components
 import {
   ContainerView,
   ContainerScrollView,
-} from '../../../components/Styles/Layout';
+} from 'components/Styles/Layout';
 import {
   CommStatusBar,
   LeftBackIcon,
   RightView,
-} from '../../../components/Layout';
-import NavInputItem from '../../../components/NavInputItem';
+} from 'components/Layout';
+import NavInputItem from 'components/NavInputItem';
 import {
   TextareaGroup,
   TextareaView,
-} from '../../../components/Styles/Editor';
-import Thumbnail from '../../../components/Thumbnail';
-import { CenterText } from '../../../components/Styles/Form';
+} from 'components/Styles/Editor';
+import Thumbnail from 'components/Thumbnail';
+import { CenterText } from 'components/Styles/Form';
 
 const ProductImage = styled.View`
   padding-top: ${theme.moderateScale(14)}px;
@@ -106,9 +106,9 @@ class ModifyProductPrice extends React.PureComponent {
       salesTotalPrice = Number(salesPrice) * Number(salesNumber) || 0;
     }
     if (salesTotalPrice && discount && discount <= 100 && discount > 0) {
-      salesTotalPrice *= (1 - (discount / 100));
+      salesTotalPrice *= (discount / 100);
     }
-    this.setState({ salesTotalPrice });
+    this.setState({ salesTotalPrice: Number(salesTotalPrice).toFixed(2) });
   };
 
   render() {

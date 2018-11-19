@@ -39,7 +39,9 @@ class EditorFooter extends React.PureComponent {
   render() {
     const {
       onPress,
+      isCanEditor,
     } = this.props;
+    if (!isCanEditor) return null;
     return (
       <FooterView onPress={onPress}>
         <FooterText>编辑资料</FooterText>
@@ -50,10 +52,12 @@ class EditorFooter extends React.PureComponent {
 
 EditorFooter.defaultProps = {
   onPress: () => null,
+  isCanEditor: true,
 };
 
 EditorFooter.propTypes = {
   onPress: PropTypes.func,
+  isCanEditor: PropTypes.bool,
 };
 
 export default EditorFooter;
