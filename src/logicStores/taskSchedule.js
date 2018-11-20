@@ -10,9 +10,12 @@ import autobind from 'autobind-decorator';
 import {
   find, detail, create, update, del, updateTaskHours, updateTaskComplete,
 } from '../service/taskSchedule';
+// import { getAttachmentList } from '../service/attachment';
 import { getMessage } from '../service/app';
+// import { ModuleType } from '../constants/enum';
 import { initFlatList } from './initState';
 import Toast from '../utils/toast';
+// import { getAppModuleType } from '../utils/base';
 
 useStrict(true);
 
@@ -87,6 +90,11 @@ class TaskScheduleStore {
   @action async getScheduleDetailMapReq(options) {
     try {
       this.scheduleDetailMap = {};
+      // const data = await getAttachmentList({
+      //   // businessType: getAppModuleType(ModuleType),
+      //   businessId: options.id,
+      // });
+      // debugger;
       const {
         taskSchedule = {},
       } = await detail(options);
@@ -268,7 +276,7 @@ class TaskScheduleStore {
   /**
    *  修改 任务或日程
    */
-  @action async updateTaskScheduleRelatedToMeReq(options) {
+  @action async updateTaskScheduleRelatedToMeReq(options, callback) {
     try {
       const {
         errors = [],
@@ -276,6 +284,7 @@ class TaskScheduleStore {
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);

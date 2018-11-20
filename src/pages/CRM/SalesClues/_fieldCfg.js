@@ -30,7 +30,7 @@ export const FilterList = [
     list: mapToArray(LeadsSource),
   },
   {
-    key: 'beginDateType',
+    key: 'followTimeType',
     label: '最近跟进日期',
     type: TYPE_LIST,
     selectedIndex: -1,

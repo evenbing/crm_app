@@ -233,15 +233,16 @@ class Details extends React.Component {
   };
   renderDetailsView = () => {
     const {
-      receivablePlanDetails: { list = [], refreshing },
+      receivablePlanDetails: { list = [], map, refreshing },
     } = ReceivablePlanModel;
+    const { status: isCanEditor = true } = map || {};
     const flatProps = {
       data: list,
       ListHeaderComponent: this.renderHeader(),
       renderItemElem: <ActivityDetailsItem />,
       onRefresh: this.getPlanDetail,
       flatListStyle: {
-        marginBottom: theme.moderateScale(50),
+        marginBottom: isCanEditor ? theme.moderateScale(50) : 0,
       },
       refreshing,
     };
@@ -263,6 +264,7 @@ class Details extends React.Component {
       receivablePlanDetails: { map },
     } = ReceivablePlanModel;
     const bool = tabIndex === 0;
+    const { status: isCanEditor = true } = map || {};
     return (
       <ContainerView
         backgroundColor={theme.whiteColor}
@@ -284,6 +286,7 @@ class Details extends React.Component {
             />
             : (
               <EditorFooter
+                isCanEditor={isCanEditor}
                 onPress={() => navigate(routers.receivablePlanEditorMore, { item: map })}
               />
             )

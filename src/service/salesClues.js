@@ -17,6 +17,7 @@ import { ModuleType } from '../constants/enum';
  *  all 全部否  关注对象类型必须传参
  *  status  线索状态否
  *  source  来源否
+ *  followTimeType  最近跟进日期
  *  name  姓名否
  *  companyName 公司名称否
  *  jobTitle  职位否
@@ -40,6 +41,7 @@ export function getSalesClueList({
   all,
   status,
   source,
+  followTimeType,
   name,
   companyName,
   jobTitle,
@@ -63,6 +65,7 @@ export function getSalesClueList({
     all,
     status,
     source,
+    followTimeType,
     name,
     companyName,
     jobTitle,

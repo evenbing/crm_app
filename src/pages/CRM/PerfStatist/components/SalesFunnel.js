@@ -81,7 +81,7 @@ class SalesFunnel extends React.PureComponent {
         <FunnelView>
           {
             list.map((_, i) => this.renderFunnelItem({
-              width: 300 - (i * 40),
+              width: 300 - (i * 20),
               backgroundColor: BGColorList[i],
               text: `${_.salesPhaseName}:${_.sumPlanAmount}/${_.salesPhaseCount}个`,
             }))

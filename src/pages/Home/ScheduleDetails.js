@@ -26,7 +26,7 @@ import { ContainerView, ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { renderBasicItem, RemarkView, RemarkText } from 'components/Details/Styles';
 import TitleItemComponent from 'components/Details/TitleItem';
-// import DetailFooter from './components/DetailFooter';
+import DetailFooter from './components/DetailFooter';
 
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
@@ -114,10 +114,11 @@ class ScheduleDetails extends React.Component {
     return (
       <ContainerView
         bottomPadding
-        backgroundColor={theme.whiteColor}
       >
         <CommStatusBar />
-        <ContainerScrollView>
+        <ContainerScrollView
+          backgroundColor={theme.whiteColor}
+        >
           {renderBasicItem('日程主题', name)}
           {renderBasicItem('开始时间', formatDateByMoment(startTime, formatDateType))}
           {renderBasicItem('截止时间', formatDateByMoment(endTime, formatDateType))}
@@ -136,15 +137,18 @@ class ScheduleDetails extends React.Component {
             </RemarkText>
           </RemarkView>
         </ContainerScrollView>
-        <HorizontalDivider height={50} />
-        {/* {
+        <HorizontalDivider
+          height={50}
+          backgroundColor={theme.whiteColor}
+        />
+        {
           Object.keys(TaskScheduleStore.scheduleDetailMap).length ? (
             <DetailFooter
               onPressEditor={this.onPressEditor}
               onPressDelete={this.onPressDelete}
             />
           ) : null
-        } */}
+        }
       </ContainerView>
     );
   }

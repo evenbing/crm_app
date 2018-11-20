@@ -12,24 +12,24 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 
 // utils
-import { moderateScale } from '../../utils/scale';
-import { formatDateByMoment } from '../../utils/base';
-import Toast from '../../utils/toast';
+import { moderateScale } from 'utils/scale';
+import { formatDateByMoment, formatNumberToString } from 'utils/base';
+import Toast from 'utils/toast';
 
 // constants
-import { theme, routers } from '../../constants';
-import { NoticeTypes, RepeatTypes } from '../../constants/enum';
-import { TaskEnum } from '../../constants/form';
+import { theme, routers } from 'constants';
+import { NoticeTypes, RepeatTypes } from 'constants/enum';
+import { TaskEnum } from 'constants/form';
 
 // components
-import DateTimePicker from '../../components/DateTimePicker';
-import { LeftBackIcon, CommStatusBar, RightView } from '../../components/Layout';
-import NavInputItem from '../../components/NavInputItem';
-import { FormActionSheet } from '../../components/Modal';
-import { CenterText } from '../../components/Styles/Form';
-import ImageCollector from '../../components/ImageCollector';
-import { TextareaGroup, TextareaView } from '../../components/Styles/Editor';
-import { ContainerView } from '../../components/Drawer/Styles';
+import DateTimePicker from 'components/DateTimePicker';
+import { LeftBackIcon, CommStatusBar, RightView } from 'components/Layout';
+import NavInputItem from 'components/NavInputItem';
+import { FormActionSheet } from 'components/Modal';
+import { CenterText } from 'components/Styles/Form';
+import ImageCollector from 'components/ImageCollector';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import { ContainerView } from 'components/Drawer/Styles';
 
 import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
@@ -82,6 +82,7 @@ class AddSchedule extends Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
+    this.initState();
   }
 
   onPressRight = async () => {
@@ -109,17 +110,17 @@ class AddSchedule extends Component {
       props: {
         navigation: {
           goBack,
-          state: { params: { oldTaskScheduleId } },
+          pop,
+          state: { params: { oldTaskScheduleId, item = {} } },
         },
       },
     } = this;
     try {
+      const bool = Object.keys(item).length;
       if (!name) throw new Error(TaskEnum.name);
       if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!startTime) throw new Error(TaskEnum.startTime);
       if (!endTime) throw new Error(TaskEnum.endTime);
-      // if (startTime >= endTime) throw new Error(TaskEnum.timeError);
-      // if (!(moduleId)) throw new Error(TaskEnum.moduleId);
 
       // 获取位置信息
       let locationId = null;
@@ -131,8 +132,10 @@ class AddSchedule extends Component {
         });
         locationId = id;
       }
-
-      const businessId = await getNewId();
+      let businessId = item.id;
+      if (!bool) {
+        businessId = await getNewId();
+      }
       // 上传图片
       for (let index = 0; index < images.length; index++) {
         const { image: { path } } = images[index];
@@ -145,6 +148,19 @@ class AddSchedule extends Component {
           businessId,
         });
       }
+      // 更新逻辑
+      if (Object.keys(item).length) {
+        TaskScheduleModel.updateTaskScheduleRelatedToMeReq({
+          ...this.state,
+          id: businessId,
+          locationInfo,
+          locationId,
+        }, () => {
+          pop(2);
+        });
+        return;
+      }
+      // 创建逻辑
       TaskScheduleModel.createTaskScheduleRelatedToMeReq({
         id: businessId,
         oldTaskScheduleId,
@@ -171,7 +187,37 @@ class AddSchedule extends Component {
       Toast.showError(e.message);
     }
   };
-
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { item = {} } = state.params || {};
+    if (!Object.keys(item).length) return;
+    let {
+      startTime,
+      startTimeShow,
+      endTime,
+      endTimeShow,
+    } = item;
+    if (startTime) {
+      startTimeShow = formatDateByMoment(startTime, formatDateType);
+      startTime = formatDateByMoment(startTime);
+    }
+    if (endTime) {
+      endTimeShow = formatDateByMoment(endTime, formatDateType);
+      endTime = formatDateByMoment(endTime);
+    }
+    this.setState({
+      ...formatNumberToString(item),
+      startTime,
+      startTimeShow,
+      endTime,
+      endTimeShow,
+      locationInfo: null,
+    });
+  };
   render() {
     const {
       state: {
@@ -423,21 +469,27 @@ class AddSchedule extends Component {
   }
 }
 
-AddSchedule.navigationOptions = ({ navigation }) => ({
-  title: '新增日程',
-  headerLeft: (
-    <LeftBackIcon />
-  ),
-  headerRight: (
-    <RightView
-      onPress={navigation.state.params ? navigation.state.params.onPressRight : () => null}
-      right="完成"
-      rightStyle={{
-        color: theme.primaryColor,
-      }}
-    />
-  ),
-});
+AddSchedule.navigationOptions = ({ navigation }) => {
+  const {
+    state: { params: { item = {} } = {} },
+  } = navigation;
+  const bool = Object.keys(item).length;
+  return {
+    title: bool ? '更新日程' : '新增日程',
+    headerLeft: (
+      <LeftBackIcon />
+    ),
+    headerRight: (
+      <RightView
+        onPress={navigation.state.params ? navigation.state.params.onPressRight : () => null}
+        right="完成"
+        rightStyle={{
+          color: theme.primaryColor,
+        }}
+      />
+    ),
+  };
+};
 
 AddSchedule.propTypes = {
   navigation: PropTypes.shape({
