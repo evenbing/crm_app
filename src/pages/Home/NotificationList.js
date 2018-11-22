@@ -46,7 +46,11 @@ useStrict(true);
 @observer
 class NotificationList extends Component {
   componentDidMount() {
-    this.getData(1);
+    this.getData();
+  }
+
+  componentWillUnmount() {
+    this.getData();
   }
 
   onEndReached = () => {
@@ -65,8 +69,10 @@ class NotificationList extends Component {
     TaskScheduleStore.getMessageReq({
       pageNumber,
       category: 'UNREAD',
+    }, () => {
+      TaskScheduleStore.updateReadMessageReq();
     });
-  }
+  };
 
   keyExtractor = item => item.id;
 

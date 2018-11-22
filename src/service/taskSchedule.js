@@ -204,7 +204,6 @@ export function detail({
   });
 }
 
-
 /** 查询日程任务列表
  * @add by zhao
  * @params options
@@ -245,5 +244,22 @@ export function find({
     moduleId,
     currentDateId,
     category,
+  });
+}
+
+/** 已读消息接口
+ * @add by justin
+ * @params options
+ * {
+ *  userIds 消息记录Id集合
+ * }
+ * @return Promise<Object>
+ */
+export function updateReadMessage({
+  ids,
+} = {}) {
+  return post({
+    method: 'api.message.read',
+    ids,
   });
 }

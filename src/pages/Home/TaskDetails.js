@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useStrict, toJS } from 'mobx';
+import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { Alert } from 'react-native';
 
@@ -107,7 +107,6 @@ class TaskDetails extends React.Component {
         comment,
       },
     } = TaskScheduleStore;
-    console.log(toJS(TaskScheduleStore.taskDetailMap));
     const source = (sourceType && sourceName) ? `${sourceType}${sourceName}` : null;
     return (
       <ContainerView

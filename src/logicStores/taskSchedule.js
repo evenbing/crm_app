@@ -8,7 +8,7 @@
 import { action, observable, runInAction, useStrict, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
-  find, detail, create, update, del, updateTaskHours, updateTaskComplete,
+  find, detail, create, update, del, updateTaskHours, updateTaskComplete, updateReadMessage,
 } from '../service/taskSchedule';
 // import { getAttachmentList } from '../service/attachment';
 import { getMessage } from '../service/app';
@@ -315,7 +315,7 @@ class TaskScheduleStore {
    * 查询未读消息列表
    */
   @observable messageList = initFlatList;
-  @action async getMessageReq({ pageNumber = 1, pageSize = 0, category = 'UNREAD', ...restProps } = {}) {
+  @action async getMessageReq({ pageNumber = 1, pageSize = 0, category = 'UNREAD', ...restProps } = {}, callback) {
     try {
       if (pageNumber === 1) {
         this.messageList.refreshing = true;
@@ -336,6 +336,7 @@ class TaskScheduleStore {
         } else {
           this.messageList.list = this.messageList.list.concat(result);
         }
+        callback && callback();
       });
     } catch (e) {
       Toast.showError(e.message);
@@ -344,6 +345,16 @@ class TaskScheduleStore {
         this.messageList.refreshing = false;
         this.messageList.loadingMore = false;
       });
+    }
+  }
+
+  @action async updateReadMessageReq() {
+    try {
+      const ids = this.messageList.list.map(v => v.id);
+      if (!ids.length) return;
+      await updateReadMessage({ ids });
+    } catch (e) {
+      Toast.showError(e.message);
     }
   }
 }
