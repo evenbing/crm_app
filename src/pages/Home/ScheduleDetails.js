@@ -129,6 +129,7 @@ class ScheduleDetails extends React.Component {
           <TitleItemComponent
             text="描述"
             color="#373737"
+            fontSize={16}
           />
           <RemarkView>
             <RemarkText>

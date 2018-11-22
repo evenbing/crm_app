@@ -82,6 +82,7 @@ class PriceListStore {
   @action async getPriceProductListReq({ id }) {
     try {
       this.priceProductList = initFlatList;
+      this.priceProductList.refreshing = true;
       const {
         priceProductList = [],
         errors = [],

@@ -183,10 +183,6 @@ class CustomerStore {
   // 编辑
   @action async updateCustomerReq({ locationInfo, name, ...restProps }, callback) {
     try {
-      const {
-        result = [],
-      } = await getCustomerName({ name });
-      if (result.length) throw new Error('客户已存在');
       let locationId = null;
       if (locationInfo) {
         const { location: { id } } = await createLocationId(locationInfo);

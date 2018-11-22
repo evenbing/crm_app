@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 
 // components
-import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
+import { LeftBackIcon, CommStatusBar } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
 import ProductItem from './components/ProductItem';
-import FlatListTable from '../../../components/FlatListTable';
 
 // model
 import PriceListModel from '../../../logicStores/priceList';
@@ -30,6 +30,7 @@ class PriceProductList extends React.Component {
     const {
       priceProductList: { list, refreshing },
     } = PriceListModel;
+    console.log(PriceListModel.priceProductList);
     const flatProps = {
       data: list,
       renderItemElem: <ProductItem />,

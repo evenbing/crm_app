@@ -7,12 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { StatusBar, KeyboardAvoidingView } from 'react-native';
+import { StatusBar } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 // utils
 import { moderateScale } from '../../utils/scale';
-import { getFooterBottom, isIos, isIphoneX, isAndroid } from '../../utils/utils';
+import { getFooterBottom, isIos, isIphoneX } from '../../utils/utils';
 import { mapToArray, formatPickerImage } from '../../utils/base';
 import Toast from '../../utils/toast';
 
@@ -233,17 +233,18 @@ class SendFooter extends React.PureComponent {
   };
 
   render() {
-    if (isAndroid) {
-      return this.renderSection();
-    }
-    return (
-      <KeyboardAvoidingView
-        behavior={isIos ? 'position' : null}
-        keyboardVerticalOffset={this.getKeyboardVerticalOffset()}
-      >
-        {this.renderSection()}
-      </KeyboardAvoidingView>
-    );
+    return this.renderSection();
+    // if (isAndroid) {
+    //   return this.renderSection();
+    // }
+    // return (
+    //   <KeyboardAvoidingView
+    //     behavior={isIos ? 'position' : null}
+    //     keyboardVerticalOffset={this.getKeyboardVerticalOffset()}
+    //   >
+    //     {this.renderSection()}
+    //   </KeyboardAvoidingView>
+    // );
   }
 }
 

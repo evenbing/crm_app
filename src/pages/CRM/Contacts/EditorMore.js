@@ -118,10 +118,12 @@ class EditorMore extends React.Component {
       location,
     } = item;
     let {
+      birthDateShow,
       birthDate,
     } = item;
 
     if (birthDate) {
+      birthDateShow = formatDateByMoment(birthDate, formatDateType);
       birthDate = formatDateByMoment(birthDate);
     }
     let locationInfo = {};
@@ -132,6 +134,7 @@ class EditorMore extends React.Component {
     }
     this.setState({
       ...formatNumberToString(item),
+      birthDateShow,
       birthDate,
       locationInfo,
     });

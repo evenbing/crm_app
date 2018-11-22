@@ -89,6 +89,12 @@ class SalesChanceStore {
         this.salesChanceDetail.list = [opportunity];
         this.salesChanceDetail.map = opportunity;
       });
+      if (opportunity.customerId) {
+        const {
+          totalCount: contactTotal = 0,
+        } = await getContactList({ customerId: opportunity.customerId, pageSize: 1 });
+        this.salesClueTotal.contactTotal = contactTotal;
+      }
     } catch (e) {
       Toast.showError(e.message);
     }
@@ -120,11 +126,6 @@ class SalesChanceStore {
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);
       const {
-        totalCount: contactTotal = 0,
-        errors: contactErrors = [],
-      } = await getContactList({ opportunityId: id, pageSize });
-      if (contactErrors.length) throw new Error(contactErrors[0].message);
-      const {
         totalCount: productTotal = 0,
         errors: productErrors = [],
       } = await getProductBusinessList({ opportunityId: id, pageSize });
@@ -136,9 +137,9 @@ class SalesChanceStore {
       if (pactErrors.length) throw new Error(pactErrors[0].message);
       runInAction(() => {
         this.salesClueTotal = {
+          ...this.salesClueTotal,
           scheduleTotal,
           taskTotal,
-          contactTotal,
           productTotal,
           pactTotal,
         };

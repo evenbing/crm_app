@@ -28,6 +28,18 @@ class Receivable extends Component {
     });
     this.getData();
   }
+  componentWillUnmount() {
+    const {
+      props: {
+        navigation: {
+          state: {
+            params = {},
+          },
+        },
+      },
+    } = this;
+    params.callback && params.callback();
+  }
   onPressRight = () => {
     const {
       props: {

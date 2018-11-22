@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { moderateScale } from '../../../../utils/scale';
 import { getFooterBottom } from '../../../../utils/utils';
+import theme from "../../../../constants/theme";
 
 const Container = styled.View`
   flex-direction: row;
@@ -38,7 +39,11 @@ const TotalPriceLabel = styled.Text`
   color: #888888;
 `;
 
-const TotalPriceValue = styled.Text`
+const TotalPriceValue = styled.Text.attrs({
+  numberOfLines: 3,
+})`
+  padding-left: 8px;
+  max-width: ${theme.moderateScale(80)};
   font-size: ${moderateScale(16)}px;
   color: #D13031;
 `;

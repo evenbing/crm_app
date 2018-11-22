@@ -7,12 +7,13 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 
 // utils
 import { moderateScale } from 'utils/scale';
+import { isIos } from 'utils/utils';
 import { formatDateByMoment, formatNumberToString } from 'utils/base';
 import Toast from 'utils/toast';
 
@@ -187,6 +188,13 @@ class AddSchedule extends Component {
       Toast.showError(e.message);
     }
   };
+  onFocus = (y = 40) => {
+    this.scrollViewRef.scrollTo({
+      x: 0,
+      y: theme.moderateScale(y),
+      animated: true,
+    });
+  };
   initState = () => {
     const {
       props: {
@@ -253,64 +261,72 @@ class AddSchedule extends Component {
     return (
       <ContainerView bottomPadding >
         <CommStatusBar />
-        <ScrollView>
-          <Divder height={9} />
-          <NavInputItem
-            leftText="日程主题"
-            {...theme.getLeftStyle({
-              placeholder: TaskEnum.name,
-              value: name,
-              onChangeText: name => this.setState({ name }),
+        <KeyboardAvoidingView
+          behavior={isIos() ? 'padding' : null}
+          style={{ flex: 1 }}
+        >
+          <ScrollView
+            innerRef={(ref) => { this.scrollViewRef = ref; }}
+          >
+            <Divder height={9} />
+            <NavInputItem
+              leftText="日程主题"
+              {...theme.getLeftStyle({
+                placeholder: TaskEnum.name,
+                value: name,
+                onChangeText: name => this.setState({ name }),
+                onFocus: () => this.onFocus(),
+                onBlur: () => this.onFocus(0),
             })}
-          />
-          <Divder height={10} />
-          <DateTimePicker
-            minuteInterval={30}
-            onConfirm={
+            />
+            <Divder height={10} />
+            <DateTimePicker
+              minuteInterval={30}
+              onConfirm={
               date =>
                 this.setState({
                   startTime: `${formatDateByMoment(date)}`,
                   startTimeShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="开始时间"
-              needPress={false}
-              center={
-                <CenterText active={startTimeShow}>
-                  {startTimeShow || TaskEnum.startTime}
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="开始时间"
+                needPress={false}
+                center={
+                  <CenterText active={startTimeShow}>
+                    {startTimeShow || TaskEnum.startTime}
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-            />
-          </DateTimePicker>
-          <DateTimePicker
-            isEnd
-            minuteInterval={30}
-            onConfirm={
+                {...theme.navItemStyle}
+              />
+            </DateTimePicker>
+            <DateTimePicker
+              isEnd
+              minuteInterval={30}
+              onConfirm={
               date =>
                 this.setState({
                   endTime: `${formatDateByMoment(date)}`,
                   endTimeShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
-          >
-            <NavInputItem
-              leftText="结束时间"
-              needPress={false}
-              center={
-                <CenterText active={endTimeShow}>
-                  {endTimeShow || TaskEnum.endTime}
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="结束时间"
+                needPress={false}
+                center={
+                  <CenterText active={endTimeShow}>
+                    {endTimeShow || TaskEnum.endTime}
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-            />
-          </DateTimePicker>
-          <Divder height={10} />
-          <FormActionSheet
-            typeEnum={NoticeTypes}
-            onConfirm={(item) => {
+                {...theme.navItemStyle}
+              />
+            </DateTimePicker>
+            <Divder height={10} />
+            <FormActionSheet
+              typeEnum={NoticeTypes}
+              onConfirm={(item) => {
               const {
                 key,
                 value,
@@ -321,21 +337,21 @@ class AddSchedule extends Component {
                 noticeTimeName: value,
               });
             }}
-          >
-            <NavInputItem
-              leftText="提醒"
-              needPress={false}
-              center={
-                <CenterText active={noticeTime && noticeTimeName}>
-                  {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="提醒"
+                needPress={false}
+                center={
+                  <CenterText active={noticeTime && noticeTimeName}>
+                    {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+                  </CenterText>
               }
-              {...theme.navItemStyle}
-            />
-          </FormActionSheet>
-          <NavInputItem
-            leftText="位置"
-            onPress={() => {
+                {...theme.navItemStyle}
+              />
+            </FormActionSheet>
+            <NavInputItem
+              leftText="位置"
+              onPress={() => {
               navigate(routers.cityPicker, {
                 callback: ({ formatLocation, provinceId, cityId, districtId }) => {
                   this.setState({
@@ -347,17 +363,17 @@ class AddSchedule extends Component {
                 },
               });
             }}
-            center={
-              <CenterText active={locationInfo}>
-                { locationInfo || TaskEnum.locationInfo }
-              </CenterText>
+              center={
+                <CenterText active={locationInfo}>
+                  { locationInfo || TaskEnum.locationInfo }
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <Divder height={1} />
-          <NavInputItem
-            leftText="参与人"
-            onPress={() => {
+              {...theme.navItemStyle}
+            />
+            <Divder height={1} />
+            <NavInputItem
+              leftText="参与人"
+              onPress={() => {
               // if (!(moduleId && moduleType)) {
               //   Toast.showError('请先选择关联业务');
               //   return;
@@ -374,20 +390,20 @@ class AddSchedule extends Component {
                 },
               });
             }}
-            center={
-              <CenterText active={userIds.length && userIdNames.length}>
-                {
+              center={
+                <CenterText active={userIds.length && userIdNames.length}>
+                  {
                   userIds.length && userIdNames.length
                     ? userIdNames.reduce((a, c) => `${a},${c}`) : TaskEnum.userIds
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <Divder height={10} />
-          <NavInputItem
-            leftText="关联业务"
-            onPress={() => {
+              {...theme.navItemStyle}
+            />
+            <Divder height={10} />
+            <NavInputItem
+              leftText="关联业务"
+              onPress={() => {
               navigate(routers.moduleTypePicker, {
                 selectedModuleType: moduleType,
                 selectedModuleId: moduleId,
@@ -401,19 +417,19 @@ class AddSchedule extends Component {
                 },
               });
             }}
-            center={
-              <CenterText active={moduleType && moduleTypeName}>
-                {
+              center={
+                <CenterText active={moduleType && moduleTypeName}>
+                  {
                   moduleId && moduleName && moduleType && moduleTypeName
                     ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
                 }
-              </CenterText>
+                </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <FormActionSheet
-            typeEnum={RepeatTypes}
-            onConfirm={(item) => {
+              {...theme.navItemStyle}
+            />
+            <FormActionSheet
+              typeEnum={RepeatTypes}
+              onConfirm={(item) => {
               const {
                 key,
                 value,
@@ -423,47 +439,50 @@ class AddSchedule extends Component {
                 repeatTypeName: value,
               });
             }}
-          >
-            <NavInputItem
-              leftText="重复规则"
-              needPress={false}
-              center={
-                <CenterText active={repeatTypeId && repeatTypeName}>
-                  {(repeatTypeId && repeatTypeName) ? repeatTypeName : TaskEnum.repeatType}
-                </CenterText>
+            >
+              <NavInputItem
+                leftText="重复规则"
+                needPress={false}
+                center={
+                  <CenterText active={repeatTypeId && repeatTypeName}>
+                    {(repeatTypeId && repeatTypeName) ? repeatTypeName : TaskEnum.repeatType}
+                  </CenterText>
               }
-              {...theme.navItemStyle}
+                {...theme.navItemStyle}
+              />
+            </FormActionSheet>
+            <Divder height={1} marginHorizontal={15} />
+            <NavInputItem
+              leftText="描述"
+              height={44}
+              center={<View />}
             />
-          </FormActionSheet>
-          <Divder height={1} marginHorizontal={15} />
-          <NavInputItem
-            leftText="描述"
-            height={44}
-            center={<View />}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={comment}
-              onChangeText={comment => this.setState({ comment })}
-              placeholder="请输入备注说明"
-              placeholderTextColor={theme.textPlaceholderColor}
+            <TextareaGroup>
+              <TextareaView
+                rowSpan={5}
+                bordered
+                value={comment}
+                onChangeText={comment => this.setState({ comment })}
+                placeholder="请输入备注说明"
+                placeholderTextColor={theme.textPlaceholderColor}
+                onFocus={() => this.onFocus(320)}
+                onBlur={() => this.onFocus(0)}
+              />
+            </TextareaGroup>
+            <NavInputItem
+              leftText="图片"
+              height={44}
+              center={<View />}
             />
-          </TextareaGroup>
-          <NavInputItem
-            leftText="图片"
-            height={44}
-            center={<View />}
-          />
-          <ImageCollector
-            onConfirm={(images) => {
+            <ImageCollector
+              onConfirm={(images) => {
               console.log(images);
               this.setState({ images });
             }}
-          />
-          <View style={{ height: 50 }} />
-        </ScrollView>
+            />
+            <View style={{ height: 50 }} />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </ContainerView>
     );
   }

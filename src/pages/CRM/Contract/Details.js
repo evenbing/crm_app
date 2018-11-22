@@ -216,7 +216,21 @@ class Details extends React.Component {
           });
         },
       },
-      { title: '回款', text: issueTotal, onPress: () => { navigate(routers.receivable, { id: item.id }); } },
+      {
+        title: '回款',
+        text: issueTotal,
+        onPress: () => {
+          navigate(
+            routers.receivable,
+            {
+              id: item.id,
+              callback: () => {
+                this.getContractDetail();
+                this.getContractTotal();
+              },
+            },
+          );
+        } },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >

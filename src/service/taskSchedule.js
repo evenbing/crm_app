@@ -259,7 +259,7 @@ export function updateReadMessage({
   ids,
 } = {}) {
   return post({
-    method: 'api.message.read',
+    method: 'api.customerrelations.message.read',
     ids,
   });
 }

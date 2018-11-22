@@ -159,6 +159,7 @@ class EditorMore extends React.Component {
       endDate,
       pactDateShow,
       pactDate,
+      ownerName: item.ownerUserName,
     });
   };
   render() {
