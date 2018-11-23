@@ -5,30 +5,30 @@
  * @author
  */
 import React from 'react';
-import { View, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 // constants
-import { theme, routers } from '../../../constants';
-import { CustomerEnum } from '../../../constants/form';
-import { CustomerLevelTypes, IndustryTypes, CustomerType } from '../../../constants/enum';
+import { theme, routers } from 'constants';
+import { CustomerEnum } from 'constants/form';
+import { CustomerLevelTypes, IndustryTypes, CustomerType } from 'constants/enum';
 
 // utils
-import { isIos } from '../../../utils/utils';
-import { verifyPhone, verifyLink } from '../../../utils/formVerify';
-import { formatLocationMap, formatNumberToString } from '../../../utils/base';
-import Toast from '../../../utils/toast';
+import { isIos } from 'utils/utils';
+import { verifyPhone, verifyLink } from 'utils/formVerify';
+import { delay, formatLocationMap, formatNumberToString } from 'utils/base';
+import Toast from 'utils/toast';
 
 // components
-import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import { CenterText, RightText } from '../../../components/Styles/Form';
+import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import { CenterText, RightText } from 'components/Styles/Form';
 
-import CustomerModel from '../../../logicStores/customer';
+import CustomerModel from 'logicStores/customer';
 
 class CreateCustomerMore extends React.Component {
   state = {
@@ -99,10 +99,11 @@ class CreateCustomerMore extends React.Component {
       Toast.showWarning(error.message);
     }
   };
-  onFocus = (y = 40) => {
+  onFocus = async (y = 40) => {
+    await delay();
     this.scrollViewRef.scrollTo({
       x: 0,
-      y: theme.moderateScale(y),
+      y: theme.moderateScale(isIos() ? y : y + 30),
       animated: true,
     });
   };
@@ -150,34 +151,30 @@ class CreateCustomerMore extends React.Component {
       props: { navigation: { navigate } },
     } = this;
     return (
-      <KeyboardAvoidingView
-        behavior={isIos() ? 'padding' : null}
-        style={{ flex: 1 }}
+      <ContainerScrollView
+        bottomPadding
+        backgroundColor={theme.whiteColor}
+        innerRef={(ref) => { this.scrollViewRef = ref; }}
       >
-        <ContainerScrollView
-          bottomPadding
-          backgroundColor={theme.whiteColor}
-          innerRef={(ref) => { this.scrollViewRef = ref; }}
-        >
-          <CommStatusBar />
-          <TitleItem
-            text="基本信息"
-            fontSize={16}
-            titleBackColor="transparent"
-          />
-          <NavInputItem
-            leftText="客户名称"
-            {...theme.getLeftStyle({
+        <CommStatusBar />
+        <TitleItem
+          text="基本信息"
+          fontSize={16}
+          titleBackColor="transparent"
+        />
+        <NavInputItem
+          leftText="客户名称"
+          {...theme.getLeftStyle({
               placeholder: CustomerEnum.name,
               value: name,
               onChangeText: name => this.setState({ name }),
               onFocus: () => this.onFocus(),
               onBlur: () => this.onFocus(0),
             })}
-          />
-          <NavInputItem
-            leftText="客户级别"
-            onPress={() => navigate(routers.typePicker, {
+        />
+        <NavInputItem
+          leftText="客户级别"
+          onPress={() => navigate(routers.typePicker, {
               selectedKey: level,
               typeEnum: CustomerLevelTypes,
               callback: (key) => {
@@ -186,17 +183,17 @@ class CreateCustomerMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={level}>
-                {level ? CustomerLevelTypes[level] : CustomerEnum.level}
-              </CenterText>
+          center={
+            <CenterText active={level}>
+              {level ? CustomerLevelTypes[level] : CustomerEnum.level}
+            </CenterText>
             }
-            isLast
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="上级客户"
-            onPress={() => navigate(routers.customer, {
+          isLast
+          {...theme.navItemStyle}
+        />
+        <NavInputItem
+          leftText="上级客户"
+          onPress={() => navigate(routers.customer, {
               type: CustomerType,
               callback: (item) => {
                 const {
@@ -209,17 +206,17 @@ class CreateCustomerMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={superiorCustomerId && superiorCustomerName}>
-                {(superiorCustomerId && superiorCustomerName) ? superiorCustomerName : CustomerEnum.superiorCustomerName}
-              </CenterText>
+          center={
+            <CenterText active={superiorCustomerId && superiorCustomerName}>
+              {(superiorCustomerId && superiorCustomerName) ? superiorCustomerName : CustomerEnum.superiorCustomerName}
+            </CenterText>
             }
-            isLast
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="所属行业"
-            onPress={() => navigate(routers.typePicker, {
+          isLast
+          {...theme.navItemStyle}
+        />
+        <NavInputItem
+          leftText="所属行业"
+          onPress={() => navigate(routers.typePicker, {
               selectedKey: industry,
               typeEnum: IndustryTypes,
               callback: (key) => {
@@ -228,22 +225,22 @@ class CreateCustomerMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={industry}>
-                {industry ? IndustryTypes[industry] : CustomerEnum.industry}
-              </CenterText>
+          center={
+            <CenterText active={industry}>
+              {industry ? IndustryTypes[industry] : CustomerEnum.industry}
+            </CenterText>
             }
-            isLast
-            {...theme.navItemStyle}
-          />
-          <TitleItem
-            text="联系信息"
-            fontSize={16}
-            titleBackColor="transparent"
-          />
-          <NavInputItem
-            leftText="省份地市"
-            onPress={() => navigate(routers.cityPicker, {
+          isLast
+          {...theme.navItemStyle}
+        />
+        <TitleItem
+          text="联系信息"
+          fontSize={16}
+          titleBackColor="transparent"
+        />
+        <NavInputItem
+          leftText="省份地市"
+          onPress={() => navigate(routers.cityPicker, {
               callback: (item) => {
                 if (!Object.keys(item).length) return;
                 this.setState({
@@ -254,16 +251,16 @@ class CreateCustomerMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={locationInfo.formatLocation}>
-                { locationInfo.formatLocation || CustomerEnum.location }
-              </CenterText>
+          center={
+            <CenterText active={locationInfo.formatLocation}>
+              { locationInfo.formatLocation || CustomerEnum.location }
+            </CenterText>
             }
-            {...theme.navItemStyle}
-          />
-          <NavInputItem
-            leftText="详细地址"
-            {...theme.getLeftStyle({
+          {...theme.navItemStyle}
+        />
+        <NavInputItem
+          leftText="详细地址"
+          {...theme.getLeftStyle({
               placeholder: CustomerEnum.address,
               value: locationInfo.address,
               onChangeText: address => this.setState({
@@ -274,78 +271,78 @@ class CreateCustomerMore extends React.Component {
               }),
               onFocus: () => this.onFocus(100),
             })}
-          />
-          <NavInputItem
-            leftText="电话"
-            {...theme.getLeftStyle({
+        />
+        <NavInputItem
+          leftText="电话"
+          {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: CustomerEnum.phone,
               value: phone,
               onChangeText: phone => this.setState({ phone }),
               onFocus: () => this.onFocus(150),
             })}
-          />
-          <NavInputItem
-            leftText="传真"
-            {...theme.getLeftStyle({
+        />
+        <NavInputItem
+          leftText="传真"
+          {...theme.getLeftStyle({
               placeholder: CustomerEnum.fax,
               value: fax,
               onChangeText: fax => this.setState({ fax }),
               onFocus: () => this.onFocus(200),
             })}
-          />
-          <NavInputItem
-            leftText="微博"
-            {...theme.getLeftStyle({
+        />
+        <NavInputItem
+          leftText="微博"
+          {...theme.getLeftStyle({
               placeholder: CustomerEnum.weibo,
               value: weibo,
               onChangeText: weibo => this.setState({ weibo }),
               onFocus: () => this.onFocus(250),
             })}
-          />
-          <NavInputItem
-            leftText="网址"
-            {...theme.getLeftStyle({
+        />
+        <NavInputItem
+          leftText="网址"
+          {...theme.getLeftStyle({
               placeholder: CustomerEnum.website,
               value: website,
               onChangeText: website => this.setState({ website }),
               onFocus: () => this.onFocus(300),
             })}
-          />
-          <TitleItem
-            text="其它信息"
-            fontSize={16}
-            titleBackColor="transparent"
-          />
-          <NavInputItem
-            leftText="总人数"
-            {...theme.getLeftStyle({
+        />
+        <TitleItem
+          text="其它信息"
+          fontSize={16}
+          titleBackColor="transparent"
+        />
+        <NavInputItem
+          leftText="总人数"
+          {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: CustomerEnum.peopleNumber,
               value: peopleNumber,
               onChangeText: peopleNumber => this.setState({ peopleNumber }),
               onFocus: () => this.onFocus(350),
             })}
-            right={
-              <RightText>人</RightText>
+          right={
+            <RightText>人</RightText>
             }
-          />
-          <NavInputItem
-            leftText="年销售额"
-            {...theme.getLeftStyle({
+        />
+        <NavInputItem
+          leftText="年销售额"
+          {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: CustomerEnum.salesNumber,
               value: salesNumber,
               onChangeText: salesNumber => this.setState({ salesNumber }),
               onFocus: () => this.onFocus(430),
             })}
-            right={
-              <RightText>元</RightText>
+          right={
+            <RightText>元</RightText>
             }
-          />
-          <NavInputItem
-            leftText="所属部门"
-            onPress={() => navigate(routers.selectDepartment, {
+        />
+        <NavInputItem
+          leftText="所属部门"
+          onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -355,38 +352,37 @@ class CreateCustomerMore extends React.Component {
                 });
               },
             })}
-            center={
-              <CenterText active={departmentId && departmentName}>
-                {
+          center={
+            <CenterText active={departmentId && departmentName}>
+              {
                   (departmentId && departmentName) ? departmentName : CustomerEnum.departmentName
                 }
-              </CenterText>
+            </CenterText>
             }
-            isLast
-            {...theme.navItemStyle}
+          isLast
+          {...theme.navItemStyle}
+        />
+        <NavInputItem
+          leftText="描述"
+          height={44}
+          center={<View />}
+        />
+        <TextareaGroup>
+          <TextareaView
+            rowSpan={5}
+            bordered
+            value={description}
+            onChangeText={description => this.setState({ description })}
+            placeholder="请输入备注说明"
+            placeholderTextColor={theme.textPlaceholderColor}
+            onFocus={() => this.onFocus(500)}
+            onBlur={() => this.onFocus(0)}
           />
-          <NavInputItem
-            leftText="描述"
-            height={44}
-            center={<View />}
-          />
-          <TextareaGroup>
-            <TextareaView
-              rowSpan={5}
-              bordered
-              value={description}
-              onChangeText={description => this.setState({ description })}
-              placeholder="请输入备注说明"
-              placeholderTextColor={theme.textPlaceholderColor}
-              onFocus={() => this.onFocus(500)}
-              onBlur={() => this.onFocus(0)}
-            />
-          </TextareaGroup>
-          <HorizontalDivider
-            height={20}
-          />
-        </ContainerScrollView>
-      </KeyboardAvoidingView>
+        </TextareaGroup>
+        <HorizontalDivider
+          height={20}
+        />
+      </ContainerScrollView>
     );
   }
 }
