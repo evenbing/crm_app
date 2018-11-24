@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 
 // utils
-import {formatDateByMoment, formatNumberToString} from 'utils/base';
+import { delay, formatDateByMoment, formatNumberToString } from 'utils/base';
 import { moderateScale } from 'utils/scale';
 import Toast from 'utils/toast';
 
@@ -33,6 +33,7 @@ import { ContainerView } from 'components/Drawer/Styles';
 import TaskScheduleModel from '../../logicStores/taskSchedule';
 import AttachmentModel from '../../logicStores/attachment';
 import { getNewId } from '../../service/app';
+import { isIos } from '../../utils/utils';
 
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
@@ -49,28 +50,33 @@ const Divder = styled.View`
 
 @observer
 class AddTask extends Component {
-  state = {
-    type: 'TASK', // 'TASK',
-    name: null, // 'new task',
-    // startTime: null, // '2018-09-09 11:12:12',
-    endTime: null, // '2019-09-19 12:12:12',
-    moduleType: null,
-    moduleTypeName: null,
-    moduleId: null,
-    moduleName: null,
-    comment: null,
-    needNotice: false,
-    noticeTime: null,
-    noticeTimeName: null,
-    // longitudeAndLatitude: null,
-    // locationInfo: null,
-    isPrivate: 1, // 先默认写1
-    principal: null,
-    principalName: null,
-    userIds: [],
-    userIdNames: [],
-    images: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: 'TASK', // 'TASK',
+      name: null, // 'new task',
+      // startTime: null, // '2018-09-09 11:12:12',
+      endTime: null, // '2019-09-19 12:12:12',
+      moduleType: null,
+      moduleTypeName: null,
+      moduleId: null,
+      moduleName: null,
+      comment: null,
+      needNotice: false,
+      noticeTime: null,
+      noticeTimeName: null,
+      // longitudeAndLatitude: null,
+      // locationInfo: null,
+      isPrivate: 1, // 先默认写1
+      principal: null,
+      principalName: null,
+      userIds: [],
+      userIdNames: [],
+      images: [],
+    };
+
+    this.createBool = false;
+  }
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -111,6 +117,12 @@ class AddTask extends Component {
       if (!name) throw new Error(TaskEnum.name);
       if (name.length > 100) throw new Error(TaskEnum.nameError);
       if (!endTime) throw new Error(TaskEnum.endTime);
+
+      // 处理新建
+      if (!Object.keys(item).length) {
+        if (this.createBool) return;
+        this.createBool = true;
+      }
 
       let businessId = item.id;
       if (!bool) {
@@ -158,12 +170,22 @@ class AddTask extends Component {
         principal,
         userIds,
         successMsg: '任务创建成功',
-      }, () => {
+      }, (result) => {
+        this.createBool = true;
+        if (result) return;
         goBack();
       });
     } catch (e) {
       Toast.showError(e.message);
     }
+  };
+  onFocus = async (y = 40) => {
+    await delay();
+    this.scrollViewRef.scrollTo({
+      x: 0,
+      y: theme.moderateScale(isIos() ? y : y + 30),
+      animated: true,
+    });
   };
   initState = () => {
     const {
@@ -375,6 +397,8 @@ class AddTask extends Component {
               onChangeText={comment => this.setState({ comment })}
               placeholder="请输入备注说明"
               placeholderTextColor={theme.textPlaceholderColor}
+              onFocus={() => this.onFocus(320)}
+              onBlur={() => this.onFocus(0)}
             />
           </TextareaGroup>
           <NavInputItem

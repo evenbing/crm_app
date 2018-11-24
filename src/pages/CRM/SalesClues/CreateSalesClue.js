@@ -7,22 +7,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { theme, routers } from '../../../constants';
-import { SalesClueEnum } from '../../../constants/form';
-import { MarkActivityType } from '../../../constants/enum';
-import Toast from '../../../utils/toast';
+// constants
+import { theme, routers } from 'constants';
+import { SalesClueEnum } from 'constants/form';
+import { MarkActivityType } from 'constants/enum';
+
+// utils
+import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
 // import ScanCard from '../../../components/Create/ScanCard';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import { ListView, CenterText } from '../../../components/Styles/Form';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+import { ListView, CenterText } from 'components/Styles/Form';
 
-import SalesCluesModel from '../../../logicStores/salesClues';
+// logicStores
+import SalesCluesModel from 'logicStores/salesClues';
 
 class CreateSalesClue extends React.Component {
   state = {

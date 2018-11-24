@@ -8,24 +8,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
-import { routers, theme } from '../../../constants';
-import { moderateScale } from '../../../utils/scale';
-import { ReceivablePlanEnum, ReceivableRecordEnum } from '../../../constants/form';
-import { PayType } from '../../../constants/enum';
-import Toast from '../../../utils/toast';
-import { formatDateByMoment } from '../../../utils/base';
+
+// constants
+import { routers, theme } from 'constants';
+import { ReceivablePlanEnum, ReceivableRecordEnum } from 'constants/form';
+import { PayType } from 'constants/enum';
+
+// utils
+import { formatDateByMoment, formatDateType } from 'utils/base';
+import { moderateScale } from 'utils/scale';
+import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import NavInputItem from '../../../components/NavInputItem';
-import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
-import DateTimePicker from '../../../components/DateTimePicker';
-import { FormActionSheet } from '../../../components/Modal';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import NavInputItem from 'components/NavInputItem';
+import { ListView, CenterText, RightText } from 'components/Styles/Form';
+import DateTimePicker from 'components/DateTimePicker';
+import { FormActionSheet } from 'components/Modal';
 
-import ReceivableModel from '../../../logicStores/receivable';
+// logicStores
+import ReceivableModel from 'logicStores/receivable';
 
 const LeftViewWidth = moderateScale(110);
 
@@ -100,7 +105,7 @@ class Create extends React.Component {
         ownerId,
         ownerName,
         comment,
-        receivableDate,
+        receivableDateShow,
         typeMap,
       },
       props: {
@@ -145,10 +150,12 @@ class Create extends React.Component {
             {...theme.navItemStyle}
           />
           <DateTimePicker
+            mode="date"
             onConfirm={
               date =>
                 this.setState({
                   receivableDate: `${formatDateByMoment(date)}`,
+                  receivableDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
           >
@@ -156,8 +163,8 @@ class Create extends React.Component {
               leftText="实际回款日期"
               needPress={false}
               center={
-                <CenterText active={receivableDate}>
-                  { receivableDate || ReceivableRecordEnum.receivableDate }
+                <CenterText active={receivableDateShow}>
+                  { receivableDateShow || ReceivableRecordEnum.receivableDate }
                 </CenterText>
               }
               {...theme.navItemStyle}

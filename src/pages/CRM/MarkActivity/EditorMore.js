@@ -6,30 +6,30 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardAvoidingView, View } from 'react-native';
+import { View } from 'react-native';
 
 // constants
-import { routers, theme } from '../../../constants';
-import { MarkActivityEnum } from '../../../constants/form';
-import { MarketActivityStatus, MarketActivityTypes } from '../../../constants/enum';
+import { routers, theme } from 'constants';
+import { MarkActivityEnum } from 'constants/form';
+import { MarketActivityStatus, MarketActivityTypes } from 'constants/enum';
 
 // utils
-import { isIos } from '../../../utils/utils';
-import { formatDateByMoment, formatDateType, formatNumberToString } from '../../../utils/base';
-import { verifyDateTime } from '../../../utils/formVerify';
-import Toast from '../../../utils/toast';
+import { isIos } from 'utils/utils';
+import { delay, formatDateByMoment, formatDateType, formatNumberToString } from 'utils/base';
+import { verifyDateTime } from 'utils/formVerify';
+import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
-import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
-import DateTimePicker from '../../../components/DateTimePicker';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
+import { ListView, CenterText, RightText } from 'components/Styles/Form';
+import DateTimePicker from 'components/DateTimePicker';
 
-import MarkActivityStore from '../../../logicStores/markActivity';
+import MarkActivityStore from 'logicStores/markActivity';
 
 class EditorMore extends React.Component {
   state = {
@@ -92,10 +92,11 @@ class EditorMore extends React.Component {
       Toast.showWarning(error.message);
     }
   };
-  onFocus = (y = 40) => {
+  onFocus = async (y = 40) => {
+    await delay();
     this.scrollViewRef.scrollTo({
       x: 0,
-      y: theme.moderateScale(y),
+      y: theme.moderateScale(isIos() ? y : y + 30),
       animated: true,
     });
   };
@@ -159,33 +160,29 @@ class EditorMore extends React.Component {
     const { item = {} } = state.params || {};
     const isCreateBool = !item.id;
     return (
-      <KeyboardAvoidingView
-        behavior={isIos() ? 'padding' : null}
-        style={{ flex: 1 }}
+      <ContainerScrollView
+        bottomPadding
+        innerRef={(ref) => { this.scrollViewRef = ref; }}
       >
-        <ContainerScrollView
-          bottomPadding
-          innerRef={(ref) => { this.scrollViewRef = ref; }}
-        >
-          <CommStatusBar />
-          <HorizontalDivider
-            height={12}
-          />
-          <ListView>
-            <TitleItem text="基本信息" />
-            <NavInputItem
-              leftText="活动名称"
-              {...theme.getLeftStyle({
+        <CommStatusBar />
+        <HorizontalDivider
+          height={12}
+        />
+        <ListView>
+          <TitleItem text="基本信息" />
+          <NavInputItem
+            leftText="活动名称"
+            {...theme.getLeftStyle({
                 placeholder: MarkActivityEnum.name,
                 value: name,
                 onChangeText: name => this.setState({ name }),
                 onFocus: () => this.onFocus(),
                 onBlur: () => this.onFocus(0),
             })}
-            />
-            <NavInputItem
-              leftText="活动状态"
-              onPress={() => navigate(routers.typePicker, {
+          />
+          <NavInputItem
+            leftText="活动状态"
+            onPress={() => navigate(routers.typePicker, {
               selectedKey: status,
               typeEnum: MarketActivityStatus,
               callback: (key) => {
@@ -194,17 +191,17 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-              center={
-                <CenterText active={status}>
-                  { status ? MarketActivityStatus[status] : MarkActivityEnum.status }
-                </CenterText>
+            center={
+              <CenterText active={status}>
+                { status ? MarketActivityStatus[status] : MarkActivityEnum.status }
+              </CenterText>
             }
-              isLast
-              {...theme.navItemStyle}
-            />
-            <NavInputItem
-              leftText="所属部门"
-              onPress={() => navigate(routers.selectDepartment, {
+            isLast
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="所属部门"
+            onPress={() => navigate(routers.selectDepartment, {
               id: departmentId,
               callback: (item) => {
                 if (!Object.keys(item).length) return;
@@ -214,19 +211,19 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-              center={
-                <CenterText active={departmentId && departmentName}>
-                  {
+            center={
+              <CenterText active={departmentId && departmentName}>
+                {
                   (departmentId && departmentName) ? departmentName : MarkActivityEnum.departmentName
                 }
-                </CenterText>
+              </CenterText>
             }
-              isLast
-              {...theme.navItemStyle}
-            />
-            <NavInputItem
-              leftText="活动类型"
-              onPress={() => navigate(routers.typePicker, {
+            isLast
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="活动类型"
+            onPress={() => navigate(routers.typePicker, {
               selectedKey: sourceType,
               typeEnum: MarketActivityTypes,
               callback: (key) => {
@@ -235,152 +232,152 @@ class EditorMore extends React.Component {
                 });
               },
             })}
-              center={
-                <CenterText active={sourceType}>
-                  { sourceType ? MarketActivityTypes[sourceType] : MarkActivityEnum.sourceType }
-                </CenterText>
+            center={
+              <CenterText active={sourceType}>
+                { sourceType ? MarketActivityTypes[sourceType] : MarkActivityEnum.sourceType }
+              </CenterText>
             }
-              isLast
-              {...theme.navItemStyle}
+            isLast
+            {...theme.navItemStyle}
+          />
+          <NavInputItem
+            leftText="活动说明"
+            center={<View />}
+            right={<View />}
+            height={44}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={description}
+              onChangeText={description => this.setState({ description })}
+              placeholder={MarkActivityEnum.description}
+              placeholderTextColor={theme.textPlaceholderColor}
+              onFocus={() => this.onFocus(80)}
             />
-            <NavInputItem
-              leftText="活动说明"
-              center={<View />}
-              right={<View />}
-              height={44}
-            />
-            <TextareaGroup>
-              <TextareaView
-                rowSpan={5}
-                bordered
-                value={description}
-                onChangeText={description => this.setState({ description })}
-                placeholder={MarkActivityEnum.description}
-                placeholderTextColor={theme.textPlaceholderColor}
-                onFocus={() => this.onFocus(80)}
-              />
-            </TextareaGroup>
-            <TitleItem text="计划信息" />
-            <DateTimePicker
-              mode="date"
-              onConfirm={
+          </TextareaGroup>
+          <TitleItem text="计划信息" />
+          <DateTimePicker
+            mode="date"
+            onConfirm={
               date =>
                 this.setState({
                   beginDate: `${formatDateByMoment(date)}`,
                   beginDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
-            >
-              <NavInputItem
-                leftText="开始日期"
-                needPress={false}
-                center={
-                  <CenterText active={beginDateShow}>
-                    {beginDateShow || MarkActivityEnum.beginDate}
-                  </CenterText>
+          >
+            <NavInputItem
+              leftText="开始日期"
+              needPress={false}
+              center={
+                <CenterText active={beginDateShow}>
+                  {beginDateShow || MarkActivityEnum.beginDate}
+                </CenterText>
               }
-                {...theme.navItemStyle}
-              />
-            </DateTimePicker>
-            <DateTimePicker
-              mode="date"
-              isEnd
-              onConfirm={
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <DateTimePicker
+            mode="date"
+            isEnd
+            onConfirm={
               date =>
                 this.setState({
                   endDate: `${formatDateByMoment(date)}`,
                   endDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
-            >
-              <NavInputItem
-                leftText="结束日期"
-                needPress={false}
-                center={
-                  <CenterText active={endDateShow}>
-                    {endDateShow || MarkActivityEnum.endDate}
-                  </CenterText>
-              }
-                {...theme.navItemStyle}
-              />
-            </DateTimePicker>
+          >
             <NavInputItem
-              leftText="活动成本"
-              {...theme.getLeftStyle({
+              leftText="结束日期"
+              needPress={false}
+              center={
+                <CenterText active={endDateShow}>
+                  {endDateShow || MarkActivityEnum.endDate}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </DateTimePicker>
+          <NavInputItem
+            leftText="活动成本"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.budgetCost,
                 value: budgetCost,
                 onChangeText: budgetCost => this.setState({ budgetCost }),
                 onFocus: () => this.onFocus(350),
             })}
-              right={
-                <RightText>元</RightText>
+            right={
+              <RightText>元</RightText>
             }
-            />
-            <NavInputItem
-              leftText="预期收入"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="预期收入"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.budgetRevenue,
                 value: budgetRevenue,
                 onChangeText: budgetRevenue => this.setState({ budgetRevenue }),
                 onFocus: () => this.onFocus(400),
             })}
-              right={
-                <RightText>元</RightText>
+            right={
+              <RightText>元</RightText>
             }
-            />
-            <NavInputItem
-              leftText="邀请人数"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="邀请人数"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.budgetPeopleNumber,
                 value: budgetPeopleNumber,
                 onChangeText: budgetPeopleNumber => this.setState({ budgetPeopleNumber }),
                 onFocus: () => this.onFocus(450),
             })}
-            />
-            <NavInputItem
-              leftText="预期响应"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="预期响应"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.effect,
                 value: effect,
                 onChangeText: effect => this.setState({ effect }),
                 onFocus: () => this.onFocus(500),
             })}
-              right={
-                <RightText>人</RightText>
+            right={
+              <RightText>人</RightText>
             }
-            />
-            <TitleItem text="实际信息" />
-            <NavInputItem
-              leftText="实际人数"
-              {...theme.getLeftStyle({
+          />
+          <TitleItem text="实际信息" />
+          <NavInputItem
+            leftText="实际人数"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.actualPeopleNumber,
                 value: actualPeopleNumber,
                 onChangeText: actualPeopleNumber => this.setState({ actualPeopleNumber }),
                 onFocus: () => this.onFocus(550),
             })}
-              right={
-                <RightText>人</RightText>
+            right={
+              <RightText>人</RightText>
             }
-            />
-            <NavInputItem
-              leftText="实际成本"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="实际成本"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: MarkActivityEnum.actualCost,
                 value: actualCost,
                 onChangeText: actualCost => this.setState({ actualCost }),
                 onFocus: () => this.onFocus(600),
             })}
-              right={
-                <RightText>元</RightText>
+            right={
+              <RightText>元</RightText>
             }
-            />
-            {
+          />
+          {
             isCreateBool ? null : (
               <NavInputItem
                 leftText="实际收入"
@@ -397,28 +394,27 @@ class EditorMore extends React.Component {
               />
             )
           }
-            <TitleItem text="其它信息" />
-            <NavInputItem
-              leftText="备注"
-              center={<View />}
-              right={<View />}
+          <TitleItem text="其它信息" />
+          <NavInputItem
+            leftText="备注"
+            center={<View />}
+            right={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={executeDetail}
+              onChangeText={(executeDetail) => { this.setState({ executeDetail }); }}
+              placeholder={MarkActivityEnum.executeDetail}
+              placeholderTextColor={theme.textPlaceholderColor}
+              onFocus={() => this.onFocus(isCreateBool ? 700 : 750)}
+              onBlur={() => this.onFocus(0)}
             />
-            <TextareaGroup>
-              <TextareaView
-                rowSpan={5}
-                bordered
-                value={executeDetail}
-                onChangeText={(executeDetail) => { this.setState({ executeDetail }); }}
-                placeholder={MarkActivityEnum.executeDetail}
-                placeholderTextColor={theme.textPlaceholderColor}
-                onFocus={() => this.onFocus(isCreateBool ? 700 : 750)}
-                onBlur={() => this.onFocus(0)}
-              />
-            </TextareaGroup>
-          </ListView>
-          <HorizontalDivider height={20} />
-        </ContainerScrollView>
-      </KeyboardAvoidingView>
+          </TextareaGroup>
+        </ListView>
+        <HorizontalDivider height={20} />
+      </ContainerScrollView>
     );
   }
 }

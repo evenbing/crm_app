@@ -7,18 +7,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { KeyboardAvoidingView, View } from 'react-native';
+import { View } from 'react-native';
 
 // constants
-import theme from '../../../constants/theme';
-import {ContractEnum, ReceivablePlanEnum} from '../../../constants/form';
-import { DataTitleTypes } from '../../../constants/enum';
+import theme from 'constants/theme';
+import { ContractEnum, ReceivablePlanEnum } from 'constants/form';
+import { DataTitleTypes } from 'constants/enum';
 
 // utils
-import { moderateScale } from '../../../utils/scale';
-import Toast from '../../../utils/toast';
-import { isIos } from '../../../utils/utils';
-import { formatDateByMoment, formatNumberToString } from '../../../utils/base';
+import { moderateScale } from 'utils/scale';
+import { isIos } from 'utils/utils';
+import { formatDateByMoment, formatNumberToString, formatDateType, delay } from 'utils/base';
+import Toast from 'utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
@@ -31,7 +31,7 @@ import DateTimePicker from '../../../components/DateTimePicker';
 import { getReceivablePriceStatus, getDateTimeStatus } from './components/ActivityDetailsItem';
 
 import ReceivablePlanModel from '../../../logicStores/receivablePlan';
-import routers from "../../../constants/routers";
+import routers from '../../../constants/routers';
 
 const LeftViewWidth = moderateScale(110);
 
@@ -91,10 +91,11 @@ class EditorMore extends React.Component {
       Toast.showWarning(e.message);
     }
   };
-  onFocus = (y = 40) => {
+  onFocus = async (y = 40) => {
+    await delay();
     this.scrollViewRef.scrollTo({
       x: 0,
-      y: theme.moderateScale(y),
+      y: theme.moderateScale(isIos() ? y : y + 30),
       animated: true,
     });
   };
@@ -108,9 +109,11 @@ class EditorMore extends React.Component {
     if (!Object.keys(item).length) return;
     let {
       receivableDate,
+      receivableDateShow,
       creationTime,
     } = item;
     if (receivableDate) {
+      receivableDateShow = formatDateByMoment(receivableDate, formatDateType);
       receivableDate = formatDateByMoment(receivableDate);
     }
     if (creationTime) {
@@ -121,6 +124,7 @@ class EditorMore extends React.Component {
     this.setState({
       ...formatNumberToString(item),
       receivableDate,
+      receivableDateShow,
       creationTime,
       formatPriceStatus,
       formatDateTimeStatus,
@@ -137,7 +141,7 @@ class EditorMore extends React.Component {
         createdByName,
         creationTime,
         comment,
-        receivableDate,
+        receivableDateShow,
         customerName,
         receivableFactPrice,
         departmentName,
@@ -150,67 +154,65 @@ class EditorMore extends React.Component {
       },
     } = this;
     return (
-      <KeyboardAvoidingView
-        behavior={isIos() ? 'padding' : null}
-        style={{ flex: 1 }}
+      <ContainerScrollView
+        bottomPadding
+        innerRef={(ref) => { this.scrollViewRef = ref; }}
       >
-        <ContainerScrollView
-          bottomPadding
-          innerRef={(ref) => { this.scrollViewRef = ref; }}
-        >
-          <CommStatusBar />
-          <HorizontalDivider
-            height={12}
-          />
-          <ListView>
-            <NavInputItem
-              leftText="回款期次"
-              center={
-                <CenterText active>
-                  {
+        <CommStatusBar />
+        <HorizontalDivider
+          height={12}
+        />
+        <ListView>
+          <NavInputItem
+            leftText="回款期次"
+            center={
+              <CenterText active>
+                {
                   typeof issueNumber !== 'undefined' ?
                     DataTitleTypes[issueNumber - 1] : null
                 }
-                </CenterText>
+              </CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="计划回款金额"
-              {...theme.navItemOnlyShowStyle}
-              {...theme.getLeftStyle({
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="计划回款金额"
+            {...theme.navItemOnlyShowStyle}
+            {...theme.getLeftStyle({
               keyboardType: 'numeric',
               placeholder: ReceivablePlanEnum.receivablePrice,
               value: receivablePrice,
               onChangeText: receivablePrice => this.setState({ receivablePrice }),
             }, 110)}
-              right={
-                <RightText>元</RightText>
+            right={
+              <RightText>元</RightText>
             }
-            />
-            <DateTimePicker
-              onConfirm={
+          />
+          <DateTimePicker
+            mode="date"
+            onConfirm={
               date =>
                 this.setState({
                   receivableDate: `${formatDateByMoment(date)}`,
+                  receivableDateShow: `${formatDateByMoment(date, formatDateType)}`,
                 })
             }
-            >
-              <NavInputItem
-                leftText="计划回款日期"
-                needPress={false}
-                center={
-                  <CenterText active={receivableDate}>
-                    { receivableDate || ReceivablePlanEnum.receivableDate }
-                  </CenterText>
-              }
-                {...theme.navItemOnlyShowStyle}
-                leftWidth={moderateScale(110)}
-              />
-            </DateTimePicker>
+          >
             <NavInputItem
-              leftText="负责人"
-              onPress={() => navigate(routers.selectEmployee, {
+              leftText="计划回款日期"
+              needPress={false}
+              center={
+                <CenterText active={receivableDateShow}>
+                  { receivableDateShow || ReceivablePlanEnum.receivableDate }
+                </CenterText>
+              }
+              {...theme.navItemOnlyShowStyle}
+              leftWidth={moderateScale(110)}
+            />
+          </DateTimePicker>
+          <NavInputItem
+            leftText="负责人"
+            onPress={() => navigate(routers.selectEmployee, {
                 callback: (item) => {
                   if (!Object.keys(item).length) return;
                   this.setState({
@@ -219,88 +221,88 @@ class EditorMore extends React.Component {
                   });
                 },
               })}
-              center={
-                <CenterText active={ownerId && ownerUserName}>
-                  {
+            center={
+              <CenterText active={ownerId && ownerUserName}>
+                {
                     (ownerId && ownerUserName) ? ownerUserName :
                       ContractEnum.ownerId
                   }
-                </CenterText>
+              </CenterText>
               }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="合同"
-              center={
-                <CenterText active>{pactName}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="合同"
+            center={
+              <CenterText active>{pactName}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="客户名称"
-              center={
-                <CenterText active>{customerName}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="客户名称"
+            center={
+              <CenterText active>{customerName}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="实际回款金额"
-              center={
-                <CenterText active>{receivableFactPrice}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="实际回款金额"
+            center={
+              <CenterText active>{receivableFactPrice}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-              leftWidth={LeftViewWidth}
-            />
-            <NavInputItem
-              leftText="本期回款状态"
-              center={
-                <CenterText active>
-                  {formatPriceStatus}
-                </CenterText>
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
+          />
+          <NavInputItem
+            leftText="本期回款状态"
+            center={
+              <CenterText active>
+                {formatPriceStatus}
+              </CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-              leftWidth={LeftViewWidth}
-            />
-            <NavInputItem
-              leftText="本期逾期状态"
-              center={
-                <CenterText active>
-                  {formatDateTimeStatus}
-                </CenterText>
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
+          />
+          <NavInputItem
+            leftText="本期逾期状态"
+            center={
+              <CenterText active>
+                {formatDateTimeStatus}
+              </CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-              leftWidth={LeftViewWidth}
-            />
-            <NavInputItem
-              leftText="所属部门"
-              center={
-                <CenterText active>{departmentName}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
+          />
+          <NavInputItem
+            leftText="所属部门"
+            center={
+              <CenterText active>{departmentName}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="创建人"
-              center={
-                <CenterText active>{createdByName}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="创建人"
+            center={
+              <CenterText active>{createdByName}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="创建时间"
-              center={
-                <CenterText active>{creationTime}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="创建时间"
+            center={
+              <CenterText active>{creationTime}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-            />
-            <NavInputItem
-              leftText="最近修改人"
-              center={
-                <CenterText active>{lastUpdatedByName}</CenterText>
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="最近修改人"
+            center={
+              <CenterText active>{lastUpdatedByName}</CenterText>
             }
-              {...theme.navItemOnlyShowStyle}
-              leftWidth={LeftViewWidth}
-            />
-            {/*
+            {...theme.navItemOnlyShowStyle}
+            leftWidth={LeftViewWidth}
+          />
+          {/*
            <NavInputItem
             leftText="最近时间"
             center={
@@ -309,27 +311,26 @@ class EditorMore extends React.Component {
             {...theme.navItemOnlyShowStyle}
           />
            */}
-            <NavInputItem
-              leftText="备注"
-              center={<View />}
-              right={<View />}
+          <NavInputItem
+            leftText="备注"
+            center={<View />}
+            right={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={5}
+              bordered
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder={ReceivablePlanEnum.comment}
+              placeholderTextColor={theme.textPlaceholderColor}
+              onFocus={() => this.onFocus(400)}
+              onBlur={() => this.onFocus(0)}
             />
-            <TextareaGroup>
-              <TextareaView
-                rowSpan={5}
-                bordered
-                value={comment}
-                onChangeText={comment => this.setState({ comment })}
-                placeholder={ReceivablePlanEnum.comment}
-                placeholderTextColor={theme.textPlaceholderColor}
-                onFocus={() => this.onFocus(400)}
-                onBlur={() => this.onFocus(0)}
-              />
-            </TextareaGroup>
-          </ListView>
-          <HorizontalDivider height={20} />
-        </ContainerScrollView>
-      </KeyboardAvoidingView>
+          </TextareaGroup>
+        </ListView>
+        <HorizontalDivider height={20} />
+      </ContainerScrollView>
     );
   }
 }

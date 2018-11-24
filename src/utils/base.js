@@ -9,6 +9,10 @@ import { NativeModules, Platform } from 'react-native';
 import { pinyin } from './pinyin';
 import Toast from './toast';
 
+export function delay(time = 300) {
+  return new Promise(resolve => setTimeout(() => resolve(time), time));
+}
+
 // 格式化类型
 export const formatDateType = 'YYYY-MM-DD';
 export const formatDateTaskScheduleType = 'MM-DD HH:mm';
@@ -22,6 +26,19 @@ export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
   }
   return moment(str).format(formatType);
 }
+
+/**
+ * 格式化money 适用于numberInput
+ * @param {*} value
+ * return 1,000
+ */
+export const formatMoney = value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+/**
+ * 解析money 1,000,000 适用于numberInput
+ * @param {*} value
+ */
+export const parserMoney = value => value.replace(/\$\s?|(,*)/g, '');
 
 // nav go back
 export function getAppModuleType(moduleType) {

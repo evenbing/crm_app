@@ -224,10 +224,11 @@ class TaskScheduleStore {
         this.getTaskRelatedToMeReq();
         this.getScheduleRelatedToMeReq();
         setTimeout(() => {
-          callback && callback();
+          callback && callback(null);
         }, 1500);
       });
     } catch (e) {
+      callback && callback(e);
       Toast.showError(e.message);
     }
   }

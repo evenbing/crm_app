@@ -7,12 +7,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { formatDateByMoment } from '../../../../utils/base';
-import { DataTitleTypes } from '../../../../constants/enum';
+
+// constants
+import { DataTitleTypes } from 'constants/enum';
+
+// utils
+import { formatDateByMoment, formatDateType } from 'utils/base';
 
 // components
-import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import TitleItemComponent from 'components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 
 const ContainerView = styled.View``;
 
@@ -44,7 +48,7 @@ const ActivityDetailsItem = ({
       DataTitleTypes[item.issueNumber - 1] : null)
     }
     {renderBasicItem('计划回款金额', item.receivablePrice, <RightSuffix>元</RightSuffix>)}
-    {renderBasicItem('计划回款日期', formatDateByMoment(item.receivableDate))}
+    {renderBasicItem('计划回款日期', formatDateByMoment(item.receivableDate, formatDateType))}
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('合同', item.pactName)}
     {renderBasicItem('客户名称', item.customerName)}

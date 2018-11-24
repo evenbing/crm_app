@@ -8,15 +8,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-// utils
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
-
 // constants
-import { DataTitleTypes, PayType } from '../../../../constants/enum';
+import { DataTitleTypes, PayType } from 'constants/enum';
+
+// utils
+import { formatDateByMoment, formatDateType } from 'utils/base';
+
 
 // components
-import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import TitleItemComponent from 'components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 
 const ContainerView = styled.View``;
 
