@@ -8,11 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+// constants
+import { CustomerLevelTypes, IndustryTypes } from 'constants/enum';
+
+// utils
+import { formatLocationMap, formatMoney } from 'utils/base';
+
 // components
-import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { CustomerLevelTypes, IndustryTypes } from '../../../../constants/enum';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
-import { formatLocationMap } from '../../../../utils/base';
+import TitleItemComponent from 'components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 
 const ContainerView = styled.View``;
 
@@ -55,8 +59,8 @@ const ActivityDetailsItem = ({
     <TitleItemComponent
       text="其他信息"
     />
-    {renderBasicItem('总人数', peopleNumber, <RightSuffix>个</RightSuffix>)}
-    {renderBasicItem('年销售额', salesNumber, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('总人数', formatMoney(peopleNumber), <RightSuffix>个</RightSuffix>)}
+    {renderBasicItem('年销售额', formatMoney(salesNumber), <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('所属部门', departmentName)}
     <TitleItemComponent
       text="备注"

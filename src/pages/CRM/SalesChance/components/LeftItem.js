@@ -7,8 +7,12 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -66,7 +70,7 @@ const LeftItem = ({
       </TitleView>
       <TipText color={theme.listTipColor}>{customerName}</TipText>
       <DetailsView>
-        <TipText>{`销售金额:¥${planAmount}`}</TipText>
+        <TipText>{`销售金额:¥${formatMoney(planAmount)}`}</TipText>
         <TipText>{`结单日期:${formatDateByMoment(expectedDate, formatDateType)}`}</TipText>
       </DetailsView>
     </ContainerView>

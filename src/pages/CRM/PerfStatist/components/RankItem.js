@@ -8,8 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Image, View } from 'react-native';
-import { theme } from '../../../../constants/index';
-import Thumbnail from '../../../../components/Thumbnail';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
+
+// components
+import Thumbnail from 'components/Thumbnail';
 
 const CardItemGroup = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -124,7 +131,7 @@ class RankItem extends React.PureComponent {
               <RightText
                 front={index < 2}
               >
-                {item.completedTotalMoney || 0}元
+                {formatMoney(item.completedTotalMoney) || 0}元
               </RightText>
             </RightItem>
           </CardItemWrapper>

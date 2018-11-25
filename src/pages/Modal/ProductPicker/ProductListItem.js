@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { theme } from '../../../constants';
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
 
 // component
-import Thumbnail from '../../../components/Thumbnail';
+import Thumbnail from 'components/Thumbnail';
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -65,7 +69,7 @@ const ProductListItem = ({
           {productName}
         </Name>
         <Price>
-          {`价格：${standardPrice}`}
+          {`价格：${formatMoney(standardPrice)}`}
         </Price>
       </ContentView>
     </Container>

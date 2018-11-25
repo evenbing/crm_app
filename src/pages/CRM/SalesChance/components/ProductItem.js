@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { moderateScale } from '../../../../utils/scale';
-import { theme } from '../../../../constants';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { moderateScale } from 'utils/scale';
+import { formatMoney } from 'utils/base';
 
 // components
-import Thumbnail from '../../../../components/Thumbnail';
+import Thumbnail from 'components/Thumbnail';
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -99,15 +104,15 @@ const ProductItem = (props) => {
         <Name> {productName} </Name>
         <InputView>
           <InputViewTitle>标准价格:</InputViewTitle>
-          <InputViewContent>{`¥${standardPrice}`}</InputViewContent>
+          <InputViewContent>{`¥${formatMoney(standardPrice)}`}</InputViewContent>
         </InputView>
         <InputView>
           <InputViewTitle>销售价格:</InputViewTitle>
-          <InputViewContent>{salesPrice ? `¥${salesPrice}` : ''}</InputViewContent>
+          <InputViewContent>{salesPrice ? `¥${formatMoney(salesPrice)}` : ''}</InputViewContent>
         </InputView>
         <InputView>
           <InputViewTitle>数量:</InputViewTitle>
-          <InputViewContent>{salesNumber || ''}</InputViewContent>
+          <InputViewContent>{formatMoney(salesNumber) || ''}</InputViewContent>
         </InputView>
         <InputView>
           <InputViewTitle>备注:</InputViewTitle>
@@ -115,7 +120,7 @@ const ProductItem = (props) => {
         </InputView>
         <TotalPrice>
           <TotalPriceLabel> 总价: </TotalPriceLabel>
-          <TotalPriceValue> {salesTotalPrice ? `¥${salesTotalPrice}` : ''} </TotalPriceValue>
+          <TotalPriceValue> {salesTotalPrice ? `¥${formatMoney(salesTotalPrice)}` : ''} </TotalPriceValue>
         </TotalPrice>
       </ContentView>
     </Container>

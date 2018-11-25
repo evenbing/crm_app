@@ -9,21 +9,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // base
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 // constants
-import { theme } from '../../../../constants';
+import { theme } from 'constants';
 // import { MarketActivityStatus } from '../../../../constants/enum';
 
 // static source
-import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
+import PrincipalIcon from 'img/crm/details/principalGo.png';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import Thumbnail from '../../../../components/Thumbnail';
-import TouchableView from '../../../../components/TouchableView';
+import { HeaderBack } from 'components/Details';
+import Thumbnail from 'components/Thumbnail';
+import TouchableView from 'components/TouchableView';
 
-// padding: 0 ${theme.moderateScale(15)}px;
 const ContainerView = styled.View``;
 
 const ItemView = styled.View`
@@ -135,7 +134,7 @@ class DetailsHead extends React.PureComponent {
             marginTop={11}
             marginBottom={20}
           >
-            <TimeText>{`销售金额：¥${item.planAmount}`}</TimeText>
+            <TimeText>{`销售金额：¥${formatMoney(item.planAmount)}`}</TimeText>
             <TimeText marginLeft={13}>{`结单日期：${formatDateByMoment(item.expectedDate, formatDateType)}`}</TimeText>
           </ItemView>
           {/* <FooterView>

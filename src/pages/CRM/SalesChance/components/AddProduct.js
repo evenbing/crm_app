@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { moderateScale } from '../../../../utils/scale';
-import { getFooterBottom } from '../../../../utils/utils';
-import theme from "../../../../constants/theme";
+
+// constants
+import theme from 'constants/theme';
+
+// utils
+import { formatMoney } from 'utils/base';
+import { moderateScale } from 'utils/scale';
+import { getFooterBottom } from 'utils/utils';
 
 const Container = styled.View`
   flex-direction: row;
@@ -69,11 +74,11 @@ const AddProduct = ({
   <Container>
     <CountView>
       <CountLabel>产品：</CountLabel>
-      <CountValue> {count}  </CountValue>
+      <CountValue> {formatMoney(count)}  </CountValue>
     </CountView>
     <TotalPriceView>
       <TotalPriceLabel>总金额：</TotalPriceLabel>
-      <TotalPriceValue> {totalPrice} </TotalPriceValue>
+      <TotalPriceValue> {formatMoney(totalPrice)} </TotalPriceValue>
     </TotalPriceView>
     <ButtonAdd onPress={onPress}>
       <ButtonAddText>添加产品</ButtonAddText>

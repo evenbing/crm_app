@@ -8,7 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { theme } from '../../../../constants';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
 
 const ContainerView = styled.View`
   flex: 1;
@@ -47,7 +52,7 @@ class LeftItem extends React.PureComponent {
           <TipText>合同：{item.pactName}</TipText>
         </TipView>
         <TipView>
-          <TipText>实际回款：¥{item.receivablePrice}</TipText>
+          <TipText>实际回款：¥{formatMoney(item.receivablePrice)}</TipText>
           <TipText>实际日期：{item.receivableDate ? moment(Number(item.receivableDate)).format('YYYY-MM-DD') : '--'}</TipText>
         </TipView>
       </ContainerView>

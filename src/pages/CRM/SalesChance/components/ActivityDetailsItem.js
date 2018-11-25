@@ -10,14 +10,14 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 
 // utils
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 // constants
-import { OpportunityTypes, OpportunitySource } from '../../../../constants/enum';
+import { OpportunityTypes, OpportunitySource } from 'constants/enum';
 
 // components
-import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import TitleItemComponent from 'components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 import ProductItem from './ProductItem';
 
 import BusinessStore from '../../../../logicStores/business';
@@ -84,12 +84,12 @@ class ActivityDetailsItem extends React.Component {
         {renderBasicItem('客户', customerName)}
         {renderBasicItem('价格表', priceName)}
         {renderBasicItem('机会类型', opportunityTypeName)}
-        {renderBasicItem('销售金额', planAmount, <RightSuffix>元</RightSuffix>)}
+        {renderBasicItem('销售金额', formatMoney(planAmount), <RightSuffix>元</RightSuffix>)}
         {renderBasicItem('来源', sourceTypeName)}
         {renderBasicItem('市场活动', activityName)}
         {renderBasicItem('结单日期', expectedDateShow)}
-        {renderBasicItem('项目预算', budgetCost, <RightSuffix>元</RightSuffix>)}
-        {renderBasicItem('实际花费', actualCost, <RightSuffix>元</RightSuffix>)}
+        {renderBasicItem('项目预算', formatMoney(budgetCost), <RightSuffix>元</RightSuffix>)}
+        {renderBasicItem('实际花费', formatMoney(actualCost), <RightSuffix>元</RightSuffix>)}
         <TitleItemComponent
           text="其他信息"
         />

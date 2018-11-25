@@ -7,15 +7,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
 
 // static source
-import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
+import PrincipalIcon from 'img/crm/details/principalGo.png';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import TouchableView from '../../../../components/TouchableView';
-import Thumbnail from '../../../../components/Thumbnail';
+import { HeaderBack } from 'components/Details';
+import TouchableView from 'components/TouchableView';
+import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
@@ -83,7 +88,7 @@ class DetailsHead extends React.PureComponent {
             marginTop={11}
             marginBottom={56}
           >
-            <CompanyText>计划回款金额：¥{item.receivablePlanPrice}</CompanyText>
+            <CompanyText>计划回款金额：¥{formatMoney(item.receivablePlanPrice)}</CompanyText>
           </ItemView>
         </ContainerView>
       </HeaderBack>

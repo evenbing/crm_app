@@ -7,7 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants/index';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
 
 const ContainerView = styled.View`
   padding-left: ${theme.moderateScale(15)};
@@ -83,7 +88,7 @@ class SalesFunnel extends React.PureComponent {
             list.map((_, i) => this.renderFunnelItem({
               width: 300 - (i * 20),
               backgroundColor: BGColorList[i],
-              text: `${_.salesPhaseName}:${_.sumPlanAmount}/${_.salesPhaseCount}个`,
+              text: `${_.salesPhaseName}:${formatMoney(_.sumPlanAmount)}/${formatMoney(_.salesPhaseCount)}个`,
             }))
           }
         </FunnelView>

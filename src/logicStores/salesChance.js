@@ -93,7 +93,9 @@ class SalesChanceStore {
         const {
           totalCount: contactTotal = 0,
         } = await getContactList({ customerId: opportunity.customerId, pageSize: 1 });
-        this.salesClueTotal.contactTotal = contactTotal;
+        runInAction(() => {
+          this.salesClueTotal.contactTotal = contactTotal;
+        });
       }
     } catch (e) {
       Toast.showError(e.message);

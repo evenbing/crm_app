@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { DataTitleTypes } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, formatDateType } from 'utils/base';
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 // components
 import TitleItemComponent from 'components/Details/TitleItem';
@@ -47,12 +47,12 @@ const ActivityDetailsItem = ({
       renderBasicItem('回款期次', typeof item.issueNumber !== 'undefined' ?
       DataTitleTypes[item.issueNumber - 1] : null)
     }
-    {renderBasicItem('计划回款金额', item.receivablePrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('计划回款金额', formatMoney(item.receivablePrice), <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('计划回款日期', formatDateByMoment(item.receivableDate, formatDateType))}
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('合同', item.pactName)}
     {renderBasicItem('客户名称', item.customerName)}
-    {renderBasicItem('实际回款金额', item.receivableFactPrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('实际回款金额', formatMoney(item.receivableFactPrice), <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('本期回款状态', getReceivablePriceStatus(item))}
     {renderBasicItem('本期逾期状态', getDateTimeStatus(item))}
     {renderBasicItem('负责人', item.ownerUserName)}

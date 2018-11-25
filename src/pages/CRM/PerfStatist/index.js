@@ -13,6 +13,9 @@ import { observer } from 'mobx-react/native';
 // constants
 import { theme, routers } from 'constants';
 
+// utils
+import { formatMoney } from 'utils/base';
+
 // logicStores
 import PrefStatistModel from 'logicStores/prefStatist';
 
@@ -58,7 +61,7 @@ class PerfStatist extends React.Component {
     // ];
     return list.map((_, i) => (
       <RankItem
-        key={`${_.ownerName}.${_.completedTotalMoney}`}
+        key={`${_.ownerName}.${formatMoney(_.completedTotalMoney)}`}
         item={_}
         index={i}
         isLast={i === list.length - 1}
@@ -76,15 +79,15 @@ class PerfStatist extends React.Component {
     } = PrefStatistModel;
     const salesTotalProps = {
       list: [
-        { title: '漏斗总值', text: `${salesSumMap.funnelSalesSum}元` },
+        { title: '漏斗总值', text: `${formatMoney(salesSumMap.funnelSalesSum)}元` },
         // { title: '预计完成', text: `${salesSumMap.expectSalesSum}元` },
         // { title: '完成总值', text: `${salesSumMap.completedSalesSum}元` },
       ],
     };
     const rankTotalProps = {
       list: [
-        { title: '总人数', text: total },
-        { title: '平均完成额', text: `${averAmount}元` },
+        { title: '总人数', text: formatMoney(total) },
+        { title: '平均完成额', text: `${formatMoney(averAmount)}元` },
       ],
     };
     const nowYear = new Date().getFullYear();

@@ -32,7 +32,14 @@ export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
  * @param {*} value
  * return 1,000
  */
-export const formatMoney = value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+export function formatMoney(value) {
+  if (!value && value !== 0) return null;
+  if (typeof value === 'string') {
+    if (Number.isNaN(Number(value))) return value;
+    value = Number(value);
+  }
+  return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 
 /**
  * 解析money 1,000,000 适用于numberInput

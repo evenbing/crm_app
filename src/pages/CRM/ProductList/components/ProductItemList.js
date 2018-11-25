@@ -8,12 +8,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { moderateScale } from '../../../../utils/scale';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { moderateScale } from 'utils/scale';
 
 // components
-import Thumbnail from '../../../../components/Thumbnail';
-import TouchableView from '../../../../components/TouchableView';
+import Thumbnail from 'components/Thumbnail';
+import TouchableView from 'components/TouchableView';
 import ProductItem from './ProductItem';
 
 const ContainerView = styled.View`

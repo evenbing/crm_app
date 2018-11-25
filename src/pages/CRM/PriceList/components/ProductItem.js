@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { moderateScale } from '../../../../utils/scale';
-import { theme } from '../../../../constants';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
+import { moderateScale } from 'utils/scale';
 
 // components
-import Thumbnail from '../../../../components/Thumbnail';
+import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled.View`
   padding: 0 ${moderateScale(15)}px;
@@ -54,7 +59,7 @@ const ProductItem = ({
       />
       <ContentView>
         <TitleText>{item.productName || '--'}</TitleText>
-        <PriceText>标准价格：¥{item.setPrice}</PriceText>
+        <PriceText>标准价格：¥{formatMoney(item.setPrice || 0)}</PriceText>
       </ContentView>
       <StatusText
         color={item.isActive ? theme.primaryColor : theme.borderColor}

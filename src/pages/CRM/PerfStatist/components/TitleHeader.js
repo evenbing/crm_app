@@ -7,10 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants/index';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import Thumbnail from '../../../../components/Thumbnail';
+import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled.View`
   margin-top: ${props => theme.moderateScale(props.marginTop || 10)};

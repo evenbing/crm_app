@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { DataTitleTypes, PayType } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, formatDateType } from 'utils/base';
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 
 // components
@@ -29,7 +29,7 @@ const ActivityDetailsItem = ({
       renderBasicItem('回款期次', typeof item.issueNumber !== 'undefined' ?
         DataTitleTypes[item.issueNumber - 1] : null)
     }
-    {renderBasicItem('实际回款金额', item.receivablePrice, <RightSuffix>元</RightSuffix>)}
+    {renderBasicItem('实际回款金额', formatMoney(item.receivablePrice), <RightSuffix>元</RightSuffix>)}
     {renderBasicItem('实际回款日期', formatDateByMoment(item.receivableDate, formatDateType))}
     {renderBasicItem('负责人', item.ownerUserName)}
     {renderBasicItem('合同', item.pactName)}

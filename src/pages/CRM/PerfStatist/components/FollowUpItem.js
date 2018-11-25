@@ -9,7 +9,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { theme } from '../../../../constants';
+// constants
+import { theme } from 'constants';
+
+// utils
+import { formatMoney } from 'utils/base';
 
 const ContainerView = styled.View`
   padding-left: ${theme.moderateScale(15)};
@@ -68,7 +72,7 @@ class FollowUpItem extends React.PureComponent {
             width={`${(Number(item.followUpCount) / maxValue) * 100}%`}
           >
             <TextView>
-              {item.followUpCount}
+              {formatMoney(item.followUpCount)}
             </TextView>
           </LinearView>
         </RightView>

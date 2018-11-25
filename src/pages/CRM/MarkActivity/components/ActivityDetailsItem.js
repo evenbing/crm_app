@@ -9,14 +9,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // utils
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 
 // constants
-import { MarketActivityStatus, MarketActivityTypes } from '../../../../constants/enum';
+import { MarketActivityStatus, MarketActivityTypes } from 'constants/enum';
 
 // components
-import TitleItemComponent from '../../../../components/Details/TitleItem';
-import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from '../../../../components/Details/Styles';
+import TitleItemComponent from 'components/Details/TitleItem';
+import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 
 const ContainerView = styled.View``;
 
@@ -66,16 +66,16 @@ const ActivityDetailsItem = ({
       />
       {renderBasicItem('开始日期', formatDateByMoment(beginDate, formatDateType))}
       {renderBasicItem('结束日期', formatDateByMoment(endDate, formatDateType))}
-      {renderBasicItem('活动成本', budgetCost, <RightSuffix>元</RightSuffix>)}
-      {renderBasicItem('预期收入', budgetRevenue, <RightSuffix>元</RightSuffix>)}
-      {renderBasicItem('邀请人数', budgetPeopleNumber, <RightSuffix>人</RightSuffix>)}
+      {renderBasicItem('活动成本', formatMoney(budgetCost), <RightSuffix>元</RightSuffix>)}
+      {renderBasicItem('预期收入', formatMoney(budgetRevenue), <RightSuffix>元</RightSuffix>)}
+      {renderBasicItem('邀请人数', formatMoney(budgetPeopleNumber), <RightSuffix>人</RightSuffix>)}
       {renderBasicItem('预期响应', effect, <RightSuffix>人</RightSuffix>, null, true)}
       <TitleItemComponent
         text="实际信息"
       />
-      {renderBasicItem('实际人数', actualPeopleNumber, <RightSuffix>人</RightSuffix>)}
-      {renderBasicItem('实际成本', actualCost, <RightSuffix>元</RightSuffix>)}
-      {renderBasicItem('实际收入', actualRevenue, <RightSuffix>元</RightSuffix>, null, true)}
+      {renderBasicItem('实际人数', formatMoney(actualPeopleNumber), <RightSuffix>人</RightSuffix>)}
+      {renderBasicItem('实际成本', formatMoney(actualCost), <RightSuffix>元</RightSuffix>)}
+      {renderBasicItem('实际收入', formatMoney(actualRevenue), <RightSuffix>元</RightSuffix>, null, true)}
       <TitleItemComponent
         text="其他信息"
       />
