@@ -13,9 +13,9 @@ import ImagePager from './components/ImagePager';
 import Toast from '../../utils/toast';
 
 const configOptions = {
-  // width: 400,
-  // height: 400,
-  cropping: false,
+  width: 400,
+  height: 400,
+  cropping: true,
 };
 
 const options = {

@@ -28,6 +28,12 @@ export const RemarkView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;
 `;
 
+export const ImageTitleView = styled.View`
+  padding: 0 ${theme.moderateScale(15)}px;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
 export const RemarkText = styled.Text`
   font-size: ${theme.moderateScale(16)};
   color: #AEAEAE;

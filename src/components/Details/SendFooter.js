@@ -31,12 +31,13 @@ const ContainerView = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
-  height: ${moderateScale(50)};
+  height: ${moderateScale(50 + getFooterBottom())};
   border-top-width: 1px;
   border-top-color: #F6F6F6;
   background-color: #fff;
   flex-direction: row;
   align-items: center;
+  padding-bottom: ${getFooterBottom()};
 `;
 
 const RecordType = styled.TouchableOpacity``;

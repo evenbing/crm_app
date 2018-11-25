@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { Alert } from 'react-native';
@@ -24,11 +25,18 @@ import TaskScheduleStore from 'logicStores/taskSchedule';
 import { CommStatusBar, LeftBackIcon } from 'components/Layout';
 import { ContainerView, ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
-import { renderBasicItem, RemarkView, RemarkText } from 'components/Details/Styles';
+import { renderBasicItem, RemarkView, RemarkText, ImageTitleView } from 'components/Details/Styles';
 import TitleItemComponent from 'components/Details/TitleItem';
 import DetailFooter from './components/DetailFooter';
 
 const formatDateType = 'YYYY-MM-DD HH:mm';
+
+const ImageView = styled.Image`
+  width: ${theme.moderateScale(75)};
+  height: ${theme.moderateScale(75)};
+  margin-right: ${theme.moderateScale(8)};
+  margin-bottom: ${theme.moderateScale(8)};
+`;
 
 useStrict(true);
 
@@ -97,6 +105,7 @@ class ScheduleDetails extends React.Component {
   render() {
     const {
       scheduleDetailMap: {
+        attachmentList = [],
         name,
         startTime,
         endTime,
@@ -136,6 +145,23 @@ class ScheduleDetails extends React.Component {
               {comment}
             </RemarkText>
           </RemarkView>
+          <TitleItemComponent
+            text="图片"
+            color="#373737"
+            fontSize={16}
+          />
+          <ImageTitleView>
+            {
+              attachmentList.length ? (
+                attachmentList.map((v, i) => (
+                  <ImageView
+                    key={i}
+                    source={v.filePath ? { uri: v.filePath } : null}
+                  />
+                ))
+              ) : null
+            }
+          </ImageTitleView>
         </ContainerScrollView>
         <HorizontalDivider
           height={50}

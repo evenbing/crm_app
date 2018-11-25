@@ -14,6 +14,7 @@ import { observer } from 'mobx-react/native';
 import { delay, formatDateByMoment, formatNumberToString } from 'utils/base';
 import { moderateScale } from 'utils/scale';
 import Toast from 'utils/toast';
+import { isIos } from 'utils/utils';
 
 // constants
 import { theme, routers } from 'constants';
@@ -30,10 +31,9 @@ import ImageCollector from 'components/ImageCollector';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
 import { ContainerView } from 'components/Drawer/Styles';
 
-import TaskScheduleModel from '../../logicStores/taskSchedule';
-import AttachmentModel from '../../logicStores/attachment';
+import TaskScheduleModel from 'logicStores/taskSchedule';
+import AttachmentModel from 'logicStores/attachment';
 import { getNewId } from '../../service/app';
-import { isIos } from '../../utils/utils';
 
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
@@ -138,9 +138,9 @@ class AddTask extends Component {
             name: path.substring(path.lastIndexOf('/') + 1),
           },
           businessId,
+          businessType: 'TASK',
         });
       }
-
       // 更新逻辑
       if (Object.keys(item).length) {
         TaskScheduleModel.updateTaskScheduleRelatedToMeReq({
@@ -238,7 +238,9 @@ class AddTask extends Component {
     return (
       <ContainerView bottomPadding >
         <CommStatusBar />
-        <ScrollView>
+        <ScrollView
+          innerRef={(ref) => { this.scrollViewRef = ref; }}
+        >
           <Divder height={9} />
           <NavInputItem
             leftText="任务主题"
@@ -397,7 +399,7 @@ class AddTask extends Component {
               onChangeText={comment => this.setState({ comment })}
               placeholder="请输入备注说明"
               placeholderTextColor={theme.textPlaceholderColor}
-              onFocus={() => this.onFocus(320)}
+              onFocus={() => this.onFocus(220)}
               onBlur={() => this.onFocus(0)}
             />
           </TextareaGroup>

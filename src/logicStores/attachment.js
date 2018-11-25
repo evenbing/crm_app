@@ -24,8 +24,8 @@ class AttachmentStore {
   @action async uploadImageReq({
     file,
     businessId,
-    businessType = 'APPSERVICE',
-    businessCategory = 'COMMON',
+    businessType,
+    // businessCategory = 'COMMON',
   } = {}, callback) {
     try {
       const fileName = file.name;
@@ -43,7 +43,7 @@ class AttachmentStore {
       formdata.append('method', 'api.foundation.attachment.upload');
       formdata.append('businessId', businessId);
       formdata.append('businessType', `CRM_${businessType}`);
-      formdata.append('businessCategory', businessCategory);
+      // formdata.append('businessCategory', businessCategory);
       const {
         errors = [],
         ...restProps

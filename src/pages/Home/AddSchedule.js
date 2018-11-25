@@ -156,6 +156,7 @@ class AddSchedule extends Component {
             name: path.substring(path.lastIndexOf('/') + 1),
           },
           businessId,
+          businessType: 'SCHEDULE',
         });
       }
       // 更新逻辑
