@@ -24,13 +24,6 @@ class ProductList extends React.Component {
   //   this.props.navigation.navigate(routers.modifyProductPrice, { item });
   // };
 
-  onEndReached = () => {
-    const { total, list, pageNumber, loadingMore } = ProductListModel.productList;
-    if (list.length < total && loadingMore === false) {
-      this.getData(pageNumber + 1);
-    }
-  };
-
   onPressItem = ({ item }) => {
     const {
       state: { params: {
@@ -45,8 +38,15 @@ class ProductList extends React.Component {
     }
   }
 
-  getData = (pageNumber = 1) => {
-    ProductListModel.getProductClazzListReq({ pageNumber });
+  getData = () => {
+    const {
+      state: {
+        params: {
+          priceId,
+        } = {},
+      },
+    } = this.props.navigation;
+    ProductListModel.getProductClazzListReq({ priceId });
   };
 
   renderItem = (itemProps) => {
@@ -64,7 +64,7 @@ class ProductList extends React.Component {
 
   render() {
     const {
-      productList: { list, refreshing, loadingMore },
+      productList: { list, refreshing },
       topList,
     } = ProductListModel;
     // console.log(toJS(topList));
@@ -72,11 +72,9 @@ class ProductList extends React.Component {
       data: topList,
       renderItem: this.renderItem,
       onRefresh: this.getData,
-      onEndReached: this.onEndReached,
       keyExtractor: item => item.id,
       refreshing,
       noDataBool: !refreshing && list.length === 0,
-      loadingMore,
     };
     return (
       <ContainerView

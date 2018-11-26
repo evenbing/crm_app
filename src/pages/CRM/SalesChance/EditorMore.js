@@ -124,7 +124,7 @@ class EditorMore extends React.Component {
       const businessId = await getNewId();
       if (budinessProducts.length > 0) {
         const businessDetails = budinessProducts.map(({
-          productId,
+          id: productId,
           productName,
           standardPrice,
           salesPrice,
@@ -426,6 +426,7 @@ class EditorMore extends React.Component {
             {...theme.navItemStyle}
           />
           <DateTimePicker
+            mode="date"
             onConfirm={
               (date) => {
                 this.setState({

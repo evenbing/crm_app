@@ -29,6 +29,31 @@ export function getProductClazzList({
   });
 }
 
+
+/** 查询价格表明细列表
+ * @add by zhao
+ * @params options
+ * {
+ *   pageNumber 页码
+ *   pageSize 每页数量 0 通用为全部
+ *   objectType  关注对象类型  否必填
+ *   priceId 价格表Id
+ * }
+ * @return Promise<ArrayList>
+ */
+export function getPriceProductList({
+  pageSize = 0,
+  objectType = ModuleType.product,
+  priceId,
+} = {}) {
+  return post({
+    method: 'api.customerrelations.priceProduct.find',
+    pageSize,
+    objectType,
+    priceId,
+  });
+}
+
 /** 分页查询产品列表
  * @add by zhao
  * @params options

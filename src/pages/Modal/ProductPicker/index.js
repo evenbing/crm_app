@@ -141,6 +141,7 @@ class ProductPicker extends Component {
     const { navigate } = this.props.navigation;
     navigate(routers.productList, {
       type: ProductType,
+      priceId: this.state.priceId,
       callback: (item) => {
         const { products } = this.state;
         const index = products.findIndex(p => p.id === item.id);
@@ -176,8 +177,6 @@ class ProductPicker extends Component {
   }
 
   confirm = () => {
-    console.log('confirmconfirmconfirmconfirmconfirm');
-
     const {
       state: {
         products,
@@ -189,8 +188,6 @@ class ProductPicker extends Component {
         goBack,
       } },
     } = this;
-    console.log({ callback });
-
     callback && callback({
       products: products.filter(item => item.checked),
       priceId,

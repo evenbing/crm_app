@@ -92,11 +92,10 @@ class CreateSalesChance extends Component {
       if (!salesPhaseId || !salesPhaseName) throw new Error(SalesChanceEnum.salesPhase);
       if (!planAmount) throw new Error(SalesChanceEnum.planAmount);
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
-
       const businessId = await getNewId();
       if (budinessProducts.length > 0) {
         const businessDetails = budinessProducts.map(({
-          productId,
+          id: productId,
           productName,
           standardPrice,
           salesPrice,
@@ -270,6 +269,7 @@ class CreateSalesChance extends Component {
             {...theme.navItemStyle}
           />
           <DateTimePicker
+            mode="date"
             onConfirm={
               date =>
                 this.setState({

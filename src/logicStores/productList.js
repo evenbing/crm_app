@@ -9,6 +9,7 @@ import autobind from 'autobind-decorator';
 import {
   getProductClazzList,
   updateProduct,
+  getPriceProductList,
 } from '../service/product';
 import Toast from '../utils/toast';
 import { getArrayByPid } from '../utils/base';
@@ -44,38 +45,34 @@ class ProductListStore {
   }
 
   // 获取产品列表
-  @action async getProductClazzListReq({ pageNumber = 1, ...restProps } = {}) {
+  @action async getProductClazzListReq({ priceId, ...restProps } = {}) {
     try {
-      if (pageNumber === 1) {
-        this.productList.refreshing = true;
+      this.productList.refreshing = true;
+      let data = {};
+      if (priceId) {
+        data = await getPriceProductList({ priceId });
       } else {
-        this.productList.loadingMore = true;
+        data = await getProductClazzList(restProps);
       }
       const {
         result = [],
         totalCount = 0,
         errors = [],
-      } = await getProductClazzList({ pageNumber, ...restProps });
+      } = data;
       if (errors.length) throw new Error(errors[0].message);
       const topList = getArrayByPid(result);
       runInAction(() => {
         this.productList.total = totalCount;
-        this.productList.pageNumber = pageNumber;
+        this.productList.pageNumber = restProps.pageNumber;
 
-        if (pageNumber === 1) {
-          this.productList.list = [...result];
-          this.productList.topList = [...topList];
-        } else {
-          this.productList.list = this.productList.list.concat(result);
-          this.productList.topList = this.productList.topList.concat(topList);
-        }
+        this.productList.list = [...result];
+        this.productList.topList = [...topList];
       });
     } catch (e) {
       Toast.showError(e.message);
     } finally {
       runInAction(() => {
         this.productList.refreshing = false;
-        this.productList.loadingMore = false;
       });
     }
   }

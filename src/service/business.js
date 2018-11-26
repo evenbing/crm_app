@@ -39,37 +39,37 @@ export function find({
  *  产品的lsit ，以下是list item的结构
  * 主键
  *private Long id;
- 
+
  * 承租人ID
  * private Long tenantId;
- * 
+ *
  * 机会ID
  * private Long opportunityId;
- * 
+ *
  * 产品ID
  * private Long productId;
- * 
+ *
  * 产品名
  * private String productName;
- * 
+ *
  * 价格表ID
  * private Long priceId;
- * 
+ *
  * 标准价格
  * private Double standardPrice;
- * 
+ *
  * 销售价格
  * private Double salesPrice;
- * 
+ *
  * 折扣
  * private Double discount;
- * 
+ *
  * 销售数量
  * private Double salesNumber;
- * 
+ *
  * 销售总价
  * private Double salesTotalPrice;
- * 
+ *
  * 备注
  *private String comment;
  *
@@ -85,7 +85,7 @@ export function find({
 销售数量 - salesNumber，
 销售总价 - salesTotalPrice，
 备注 - comment
- * 
+ *
  * }
  * @return Promise<Object>
  */

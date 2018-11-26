@@ -21,10 +21,6 @@ useStrict(true);
 class PriceListStore {
   // 获取价格表
   @observable priceList = initFlatList;
-  // 价格详情列表
-  @observable priceProductList = initFlatList;
-
-  // 获取价格表
   @action async getPriceListReq({ pageNumber = 1, ...restProps } = {}) {
     try {
       if (pageNumber === 1) {
@@ -79,6 +75,7 @@ class PriceListStore {
   }
 
   // 查看价格产品表
+  @observable priceProductList = initFlatList;
   @action async getPriceProductListReq({ id }) {
     try {
       this.priceProductList = initFlatList;
