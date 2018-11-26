@@ -40,14 +40,17 @@ const ImagePager = ({
       }
     >
       {
-        data.map((item) => {
+        data.map((item, index) => {
           const {
-            key,
             image,
+            filePath,
           } = item;
           return (
-            <View key={key}>
-              <Image style={{ flex: 1 }} source={image} />
+            <View key={index}>
+              <Image
+                style={{ flex: 1 }}
+                source={filePath ? { uri: filePath } : image}
+              />
             </View>
           );
         })

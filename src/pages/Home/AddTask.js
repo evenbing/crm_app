@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
+import uuidv1 from 'uuid/v1';
 
 // utils
 import { delay, formatDateByMoment, formatNumberToString } from 'utils/base';
@@ -64,7 +65,6 @@ class AddTask extends Component {
       comment: null,
       needNotice: false,
       noticeTime: null,
-      noticeTimeName: null,
       // longitudeAndLatitude: null,
       // locationInfo: null,
       isPrivate: 1, // 先默认写1
@@ -130,7 +130,8 @@ class AddTask extends Component {
       }
       // 上传图片
       for (let index = 0; index < images.length; index++) {
-        const { image: { path } } = images[index];
+        const { image: { path } = {}, filePath } = images[index];
+        if (filePath) continue;
         AttachmentModel.uploadImageReq({
           file: {
             uri: path,
@@ -207,6 +208,12 @@ class AddTask extends Component {
       ...formatNumberToString(item),
       endTime,
       endTimeShow,
+      moduleTypeName: item.sourceType,
+      moduleName: item.sourceName,
+      principalName: item.ownerUserName,
+      userIds: [...item.userIdsStr],
+      userIdNames: item.participatePeopleList,
+      images: [...item.attachmentList],
     });
   };
   render() {
@@ -221,7 +228,6 @@ class AddTask extends Component {
         comment,
         // needNotice,
         noticeTime,
-        noticeTimeName,
         // longitudeAndLatitude,
         // locationInfo,
         // isPrivate,
@@ -229,6 +235,7 @@ class AddTask extends Component {
         principalName,
         userIds,
         userIdNames,
+        images,
       },
       props: {
         navigation: { navigate },
@@ -278,12 +285,10 @@ class AddTask extends Component {
             onConfirm={(item) => {
               const {
                 key,
-                value,
               } = item;
               this.setState({
                 needNotice: key !== 0,
                 noticeTime: key,
-                noticeTimeName: value,
               });
             }}
           >
@@ -291,8 +296,8 @@ class AddTask extends Component {
               leftText="提醒"
               needPress={false}
               center={
-                <CenterText active={noticeTime && noticeTimeName}>
-                  {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+                <CenterText active={noticeTime}>
+                  {(noticeTime) ? NoticeTypes[noticeTime] : TaskEnum.noticeTime}
                 </CenterText>
               }
               {...theme.navItemStyle}
@@ -310,7 +315,7 @@ class AddTask extends Component {
                     moduleId: id,
                     moduleName: name,
                     moduleType,
-                    moduleTypeName,
+                    moduleTypeName: `${moduleTypeName}:`,
                   });
                 },
               });
@@ -319,7 +324,7 @@ class AddTask extends Component {
               <CenterText active={moduleType && moduleTypeName}>
                 {
                   moduleId && moduleName && moduleType && moduleTypeName
-                  ? `${moduleTypeName},${moduleName}` : TaskEnum.moduleType
+                  ? `${moduleTypeName}${moduleName}` : TaskEnum.moduleType
                 }
               </CenterText>
             }
@@ -409,6 +414,7 @@ class AddTask extends Component {
             center={<View />}
           />
           <ImageCollector
+            data={images}
             onConfirm={(images) => {
               console.log(images);
               this.setState({ images });

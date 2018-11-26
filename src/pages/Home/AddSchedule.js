@@ -65,7 +65,6 @@ class AddSchedule extends Component {
       comment: null,
       needNotice: false,
       noticeTime: null,
-      noticeTimeName: null,
       longitudeAndLatitude: null,
       locationInfo: null,
       provinceId: null,
@@ -148,7 +147,8 @@ class AddSchedule extends Component {
       }
       // 上传图片
       for (let index = 0; index < images.length; index++) {
-        const { image: { path } } = images[index];
+        const { image: { path } = {}, filePath } = images[index];
+        if (filePath) continue;
         AttachmentModel.uploadImageReq({
           file: {
             uri: path,
@@ -236,7 +236,13 @@ class AddSchedule extends Component {
       startTimeShow,
       endTime,
       endTimeShow,
-      locationInfo: null,
+      moduleTypeName: item.sourceType,
+      moduleName: item.sourceName,
+      locationInfo: item.locationOutputName,
+      principalName: item.ownerUserName,
+      userIds: [...item.userIdsStr],
+      userIdNames: item.participatePeopleList,
+      images: [...item.attachmentList],
     });
   };
   render() {
@@ -252,7 +258,6 @@ class AddSchedule extends Component {
         comment,
         // needNotice,
         noticeTime,
-        noticeTimeName,
         // longitudeAndLatitude,
         locationInfo,
         // provinceId,
@@ -265,6 +270,7 @@ class AddSchedule extends Component {
         userIdNames,
         repeatTypeId,
         repeatTypeName,
+        images,
       },
       props: {
         navigation: { navigate },
@@ -336,12 +342,10 @@ class AddSchedule extends Component {
             onConfirm={(item) => {
               const {
                 key,
-                value,
               } = item;
               this.setState({
                 needNotice: key !== 0,
                 noticeTime: key,
-                noticeTimeName: value,
               });
             }}
           >
@@ -349,8 +353,8 @@ class AddSchedule extends Component {
               leftText="提醒"
               needPress={false}
               center={
-                <CenterText active={noticeTime && noticeTimeName}>
-                  {(noticeTime && noticeTimeName) ? noticeTimeName : TaskEnum.noticeTime}
+                <CenterText active={noticeTime}>
+                  {(noticeTime) ? NoticeTypes[noticeTime] : TaskEnum.noticeTime}
                 </CenterText>
               }
               {...theme.navItemStyle}
@@ -482,6 +486,7 @@ class AddSchedule extends Component {
             center={<View />}
           />
           <ImageCollector
+            data={images}
             onConfirm={(images) => {
               console.log(images);
               this.setState({ images });

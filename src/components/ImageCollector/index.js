@@ -5,28 +5,22 @@ import styled from 'styled-components';
 import ImagePicker from 'react-native-image-crop-picker';
 import uuidv1 from 'uuid/v1';
 
-import addIcon from '../../img/add.png';
+// static source
+import addIcon from 'img/add.png';
+
+// utils
+import Toast from 'utils/toast';
+import { attachmentDelete } from 'service/attachment';
+
 import { theme } from '../../constants';
 import { KEY_ADD } from './Constants';
 import ImageItem from './components/ImageItem';
 import ImagePager from './components/ImagePager';
-import Toast from '../../utils/toast';
 
 const configOptions = {
   width: 400,
   height: 400,
   cropping: true,
-};
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [
-    { name: 'fb', title: 'Choose Photo from Facebook' },
-  ],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
 };
 
 const addIconObject = {
@@ -55,33 +49,19 @@ class ImageCollector extends React.PureComponent {
     };
   }
 
-  onPickImage1 =() => {
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = {
-          uri: response.uri,
-          path: response.path,
-        };
-        const pagerData = [...this.state.pagerData];
-        pagerData.push({
-          key: uuidv1(),
-          image: source,
-        });
-        const data = [...pagerData];
-        data.push(addIconObject);
-        this.setState({
-          pagerData,
-          data,
-        });
-        this.props.onConfirm && this.props.onConfirm(pagerData);
-      }
-    });
+  componentWillReceiveProps(props) {
+    if (this.props.data !== props.data && props.data.length) {
+      this.setState({
+        data: [
+          ...props.data,
+          {
+            key: KEY_ADD,
+            image: addIcon,
+          },
+        ],
+        pagerData: [...props.data],
+      });
+    }
   }
 
   onPickImage = async ({ value }) => {
@@ -128,7 +108,8 @@ class ImageCollector extends React.PureComponent {
       selectedIndex: index,
     }, () => {
       this.setState({
-        isVisible: true });
+        isVisible: true,
+      });
     });
   }
 
@@ -136,27 +117,25 @@ class ImageCollector extends React.PureComponent {
     this.setState({ isVisible: false });
   }
 
-  onDeleteImage = () => {
-    const { selectedIndex } = this.state;
-    const pagerData = this.state.pagerData.filter((item, index) => index !== selectedIndex);
-    const data = [...pagerData];
+  onDeleteImage = async () => {
+    const { selectedIndex, pagerData } = this.state;
+    const { id, filePath } = pagerData[selectedIndex];
+    if (filePath) {
+      await attachmentDelete({ id });
+    }
+    const currPagerData = pagerData.filter((item, index) => index !== selectedIndex);
+    const data = [...currPagerData];
     data.push(addIconObject);
-    if (pagerData.length === 0) {
-      this.setState({
+    if (currPagerData.length === 0) {
+      await this.setState({
         isVisible: false,
-      }, () => {
-        this.setState({
-          pagerData,
-          data,
-        });
-      });
-    } else {
-      this.setState({
-        pagerData,
-        data,
       });
     }
-    this.props.onConfirm && this.props.onConfirm(pagerData);
+    await this.setState({
+      pagerData: currPagerData,
+      data,
+    });
+    this.props.onConfirm && this.props.onConfirm(currPagerData);
   }
 
   onPageSelected = (selectedIndex) => {
@@ -181,6 +160,7 @@ class ImageCollector extends React.PureComponent {
       pagerData,
       selectedIndex,
     } = this.state;
+    console.log(data);
     return (
       <View>
         <Container
@@ -202,8 +182,13 @@ class ImageCollector extends React.PureComponent {
   }
 }
 
+ImageCollector.defaultProps = {
+  data: [],
+};
+
 ImageCollector.propTypes = {
   onConfirm: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default ImageCollector;

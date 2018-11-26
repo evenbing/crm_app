@@ -32,6 +32,7 @@ const ImageItem = ({
   item: {
     key,
     image,
+    filePath,
   },
   onPressAdd,
   onPressItem,
@@ -45,7 +46,7 @@ const ImageItem = ({
         <ImageView
           onPress={onPressAdd}
         >
-          <Image source={image} />
+          <Image source={filePath ? { uri: filePath } : image} />
         </ImageView>
       </FormActionSheet>
     );
@@ -54,21 +55,13 @@ const ImageItem = ({
     <ImageViewPress
       onPress={key === KEY_ADD ? onPressAdd : onPressItem}
     >
-      <Image source={image} />
+      <Image source={filePath ? { uri: filePath } : image} />
     </ImageViewPress>
   );
 };
 
 ImageItem.propTypes = {
-  item: PropTypes.shape({
-    key: PropTypes.string,
-    image: PropTypes.oneOfType([
-      PropTypes.shape({
-        uri: PropTypes.string,
-      }),
-      PropTypes.number,
-    ]),
-  }).isRequired,
+  item: PropTypes.objectOf(PropTypes.any).isRequired,
   onPressAdd: PropTypes.func.isRequired,
   onPressItem: PropTypes.func.isRequired,
 };

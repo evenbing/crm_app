@@ -42,3 +42,14 @@ export function getAttachmentList({
     businessIds,
   });
 }
+
+/**
+ * 删除附件
+ * @param {*} param0
+ */
+export function attachmentDelete({ id } = {}) {
+  return post({
+    method: 'api.foundation.attachment.delete',
+    attachmentId: id,
+  });
+}
