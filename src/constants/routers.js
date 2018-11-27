@@ -82,7 +82,6 @@ export default {
   productPicker: 'app.tabView.root.model.productPicker',
   // common card
   companyDepartment: 'app.tabView.root.card.companyDepartment',
-  teamMembers: 'app.tabView.root.card.teamMembers',
   teamRoles: 'app.tabView.root.card.teamRoles',
   relatedDocs: 'app.tabView.root.card.relatedDocs',
   selectDepartment: 'app.tabView.root.card.selectDepartment',

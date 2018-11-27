@@ -9,21 +9,25 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { theme, routers } from '../../../constants';
-import { ModuleType } from '../../../constants/enum';
-import { getUserId, formatDateByMoment } from '../../../utils/base';
-import { getNewId } from '../../../service/app';
-import Toast from '../../../utils/toast';
+
+// constants
+import { theme, routers } from 'constants';
+import { ModuleType } from 'constants/enum';
+
+// utils
+import { getUserId, formatDateByMoment } from 'utils/base';
+import { getNewId } from 'service/app';
+import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../../components/TabContainer';
-import DynamicList from '../../../components/Details/DynamicList';
-import SendFooter from '../../../components/Details/SendFooter';
-import EditorFooter from '../../../components/Details/EditorFooter';
+import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import FlatListTable from 'components/FlatListTable';
+import TabContainer from 'components/TabContainer';
+import DynamicList from 'components/Details/DynamicList';
+import SendFooter from 'components/Details/SendFooter';
+import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 
@@ -127,6 +131,7 @@ class Details extends React.Component {
   };
   onPressFollow = () => {
     const { markActivityDetail: { map } } = MarkActivityModel;
+    if (!Object.keys(map).length) return;
     MarkActivityModel.updateFollowStatusReq({
       objectType: ModuleType.activity,
       objectId: map.id,
@@ -146,8 +151,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { markActivityDetail: { map } } = MarkActivityModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerUserId,
+      moduleId: map.id,
+      moduleType: ModuleType.activity,
       callback: (obj) => {
         MarkActivityModel.updateOwnerUserReq({
           id: item.id,
@@ -159,6 +168,7 @@ class Details extends React.Component {
   };
   onPressStatus = ({ key }) => {
     const { markActivityDetail: { map } } = MarkActivityModel;
+    if (!Object.keys(map).length) return;
     if (map.status === key) return;
     let {
       beginDate,

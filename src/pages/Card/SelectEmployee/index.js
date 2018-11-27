@@ -7,21 +7,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView } from '../../../components/Styles/Layout';
-import MemberList from '../../../components/MemberList/MemberList';
+import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
+import SearchInput from 'components/SearchInput';
+import { ContainerView } from 'components/Styles/Layout';
+import MemberList from 'components/MemberList/MemberList';
 
-import EmployeeStore from '../../../logicStores/employee';
+// logicStores
+import EmployeeStore from 'logicStores/employee';
 
 @observer
 class SelectEmployee extends React.Component {
   state = {
     search: null,
   };
+
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,

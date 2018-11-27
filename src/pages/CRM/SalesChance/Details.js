@@ -132,6 +132,7 @@ class Details extends React.Component {
   };
   onPressFollow = () => {
     const { salesChanceDetail: { map } } = SalesChanceModel;
+    if (!Object.keys(map).length) return;
     SalesChanceModel.updateFollowStatusReq({
       objectType: ModuleType.opportunity,
       objectId: map.id,
@@ -151,8 +152,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { salesChanceDetail: { map } } = SalesChanceModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerUserId,
+      moduleId: map.id,
+      moduleType: ModuleType.opportunity,
       callback: (obj) => {
         SalesChanceModel.updateOwnerUserReq({
           id: item.id,

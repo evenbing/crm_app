@@ -8,18 +8,26 @@ import { action, observable, computed, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
 import {
   getEmployeeList,
+  createTeamUser,
+  getManageTeamList,
+  getOwnerUserName,
 } from '../service/employee';
 import Toast from '../utils/toast';
 import { formatMemberList } from '../utils/base';
 
 useStrict(true);
 
+const initManageTeamList = {
+  refreshing: false,
+  ownerUserList: [],
+  teamList: [],
+};
+
 @autobind
 class EmployeeStore {
   // 列表
   @observable employeeList = [];
   @observable refreshing = false;
-
   @observable search = null;
 
   @computed get filterEmployeeList() {
@@ -60,6 +68,49 @@ class EmployeeStore {
       runInAction(() => {
         this.refreshing = false;
       });
+    }
+  }
+
+  // 查询业务团队成员
+  @observable manageTeamList = initManageTeamList;
+  @action async getManageTeamListReq(options) {
+    try {
+      this.manageTeamList.refreshing = true;
+      const {
+        user = {},
+      } = await getOwnerUserName({ id: options.ownerUserId });
+      runInAction(() => {
+        this.manageTeamList.ownerUserList = [{
+          ...user,
+          headImg: user.avatar,
+          userName: user.name,
+        }];
+      });
+      const {
+        result: teamList = [],
+      } = await getManageTeamList(options);
+      runInAction(() => {
+        this.manageTeamList.teamList = [...teamList];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.manageTeamList.refreshing = false;
+      });
+    }
+  }
+
+  /**
+   *  创建团队成员
+   */
+  /* eslint-disable class-methods-use-this */
+  @action async createTeamUserReq(options, callback) {
+    try {
+      await createTeamUser(options);
+      callback && callback();
+    } catch (e) {
+      Toast.showError(e.message);
     }
   }
 }

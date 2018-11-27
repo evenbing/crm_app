@@ -64,7 +64,8 @@ const MemberItem = ({
         )
       }
       <Thumbnail
-        source={item.headImg || require('../../img/default_avatar.png')}
+        source={require('../../img/default_avatar.png')}
+        imgUri={item.headImg ? item.headImg.trim() : null}
         size={60}
       />
       <NameText>{item.userName}</NameText>

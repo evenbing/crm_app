@@ -7,51 +7,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { RefreshControl } from 'react-native';
+import { observer } from 'mobx-react/native';
 
-// components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import Accordion from '../../../components/Accordion';
-import MemberItem from '../../../components/MemberList/MemberItem';
+// constants
+import { theme, routers } from 'constants';
 
 // static source
-import HeaderIcon from '../../../img/test/mine_head.png';
-import LeaderIcon from '../../../img/team/leader.png';
-import AddUserIcon from '../../../img/team/addUser.png';
+import LeaderIcon from 'img/team/leader.png';
+import AddUserIcon from 'img/team/addUser.png';
 
-const SectionView = styled.View`
+// components
+import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import Accordion from 'components/Accordion';
+import MemberItem from 'components/MemberList/MemberItem';
+
+// logicStores
+import EmployeeStore from 'logicStores/employee';
+
+const SectionView = styled.ScrollView`
    background-color: ${theme.whiteColor};
 `;
 
+@observer
 class TeamRoles extends React.Component {
-  state = {
-    memberList: [
-      { active: false, name: '张三', url: HeaderIcon },
-      { active: false, name: '张三三', url: HeaderIcon },
-      { active: false, name: '三张三', url: HeaderIcon },
-    ],
-  };
   componentDidMount() {
-    this.props.navigation.setParams({
-      onPressRight: this.onPressRight,
-    });
+    this.getData();
   }
-  onPressRight = () => alert('finish');
   onPressItem = ({ item, index }) => {
     // TODO 判断当前的激活list
-    const { memberList } = this.state;
-    memberList[index].active = !memberList[index].active;
-    this.setState({
-      memberList,
+    console.log('@item', item);
+    console.log('@index', index);
+  };
+  getData = () => {
+    const {
+      moduleId,
+      moduleType,
+      ownerUserId,
+    } = this.props.navigation.state.params || {};
+    EmployeeStore.getManageTeamListReq({
+      moduleID: moduleId,
+      moduleType,
+      ownerUserId,
     });
   };
   renderMemeberItem = (list) => {
     if (!list.length) return null;
     return list.map((v, i) => (
       <MemberItem
-        key={v.name}
+        key={v.userName}
         item={v}
         index={i}
         hiddenIcon
@@ -61,16 +67,31 @@ class TeamRoles extends React.Component {
   };
   render() {
     const {
-      state: {
-        memberList,
+      manageTeamList: {
+        refreshing,
+        ownerUserList,
+        teamList,
+      },
+    } = EmployeeStore;
+    const {
+      props: {
+        navigation: { navigate, state, goBack },
       },
     } = this;
+    const { moduleId, moduleType, callback } = state.params || {};
     return (
       <ContainerView
         bottomPadding
       >
         <CommStatusBar />
-        <SectionView>
+        <SectionView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={this.getData}
+            />
+          }
+        >
           <Accordion
             left="负责人"
             rightUnit={null}
@@ -78,9 +99,14 @@ class TeamRoles extends React.Component {
             unfoldIcon={LeaderIcon}
             showMain
             iconSize={23}
-            onPress={() => alert(1)}
+            onPress={() => navigate(routers.selectEmployee, {
+              callback: (obj) => {
+                callback && callback(obj);
+                goBack();
+              },
+            })}
           >
-            {this.renderMemeberItem(memberList.slice(0, 1))}
+            {this.renderMemeberItem(ownerUserList)}
           </Accordion>
           <HorizontalDivider />
           <Accordion
@@ -90,9 +116,19 @@ class TeamRoles extends React.Component {
             foldIcon={AddUserIcon}
             unfoldIcon={AddUserIcon}
             iconSize={23}
-            onPress={() => alert(2)}
+            onPress={() => navigate(routers.selectEmployee, {
+              title: '请选择团队成员',
+              callback: (obj) => {
+                EmployeeStore.createTeamUserReq({
+                  userId: obj.userId,
+                  userName: obj.userName,
+                  moduleId,
+                  moduleType,
+                }, this.getData);
+              },
+            })}
           >
-            {this.renderMemeberItem(memberList)}
+            {this.renderMemeberItem(teamList)}
           </Accordion>
         </SectionView>
       </ContainerView>

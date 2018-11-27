@@ -128,8 +128,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { contractDetails: { map } } = ContractModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerId && (getUserId() !== map.ownerId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerId,
+      moduleId: map.id,
+      moduleType: ModuleType.pact,
       callback: (obj) => {
         ContractModel.updateOwnerUserReq({
           id: item.id,
@@ -143,6 +147,7 @@ class Details extends React.Component {
   };
   onPressStatus = ({ key }) => {
     const { contractDetails: { map } } = ContractModel;
+    if (!Object.keys(map).length) return;
     if (map.status === key) return;
     let {
       startDate,

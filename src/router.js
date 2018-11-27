@@ -18,7 +18,6 @@ import AuthLoadingScreen from './pages/AuthLoading';
 
 // root page -> common card
 import CompanyDepartmentScreen from './pages/Card/CompanyDepartment';
-import TeamMembersScreen from './pages/Card/TeamMembers';
 import TeamRolesScreen from './pages/Card/TeamRoles';
 import SelectDepartmentScreen from './pages/Card/SelectDepartment';
 import SelectEmployeeScreen from './pages/Card/SelectEmployee';
@@ -121,7 +120,7 @@ const HomeRouteConfig = {
 
   // common
   [routers.typePicker]: { screen: TypePickerScreen },
-  [routers.teamMembers]: { screen: TeamMembersScreen },
+  [routers.selectEmployee]: { screen: SelectEmployeeScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.moduleTypePicker]: { screen: ModuleTypePickerScreen },
@@ -241,7 +240,6 @@ const CrmRouteConfig = {
   [routers.queryBusiness]: { screen: QueryBusinessScreen },
   [routers.companyDepartment]: { screen: CompanyDepartmentScreen },
   [routers.relatedDocs]: { screen: RelatedDocs },
-  [routers.teamMembers]: { screen: TeamMembersScreen },
   [routers.teamRoles]: { screen: TeamRolesScreen },
   [routers.selectDepartment]: { screen: SelectDepartmentScreen },
   [routers.typePicker]: { screen: TypePickerScreen },

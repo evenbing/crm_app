@@ -36,6 +36,8 @@ const ImageView = styled.Image`
   height: ${theme.moderateScale(75)};
   margin-right: ${theme.moderateScale(8)};
   margin-bottom: ${theme.moderateScale(8)};
+  border-width: 1px;
+  border-color: ${theme.borderColor};
 `;
 
 useStrict(true);

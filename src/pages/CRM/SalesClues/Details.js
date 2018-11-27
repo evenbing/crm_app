@@ -132,8 +132,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { salesClueDetail: { map } } = SalesCluesModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerUserId,
+      moduleId: map.id,
+      moduleType: ModuleType.clues,
       callback: (obj) => {
         SalesCluesModel.updateOwnerUserReq({
           id: item.id,
@@ -145,6 +149,7 @@ class Details extends React.Component {
   };
   onPressStatus = ({ key }) => {
     const { salesClueDetail: { map } } = SalesCluesModel;
+    if (!Object.keys(map).length) return;
     if (map.status === key) return;
     const {
       location,

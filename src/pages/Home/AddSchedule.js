@@ -390,9 +390,10 @@ class AddSchedule extends Component {
               //   Toast.showError('请先选择关联业务');
               //   return;
               // }
-              navigate(routers.teamMembers, {
+              navigate(routers.selectEmployee, {
                 moduleId,
                 moduleType,
+                title: '请选择参与人',
                 radio: true,
                 callback: (list) => {
                   this.setState({

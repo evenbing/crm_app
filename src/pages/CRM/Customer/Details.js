@@ -74,11 +74,11 @@ class Details extends React.Component {
     this.setState({ tabIndex: index });
   };
   onEndReached = () => {
-    const { 
-      total = 0, 
-      [dynamicPactList]: list = [], 
-      pageNumber = 1, 
-      loadingMore, 
+    const {
+      total = 0,
+      [dynamicPactList]: list = [],
+      pageNumber = 1,
+      loadingMore,
     } = DynamicModel.dynamicList;
     if (list.length < total && loadingMore === false) {
       this.getDynamicList(pageNumber + 1);
@@ -127,6 +127,7 @@ class Details extends React.Component {
   };
   onPressFollow = () => {
     const { customerDetail: { map } } = CustomerModel;
+    if (!Object.keys(map).length) return;
     CustomerModel.updateFollowStatusReq({
       objectType: ModuleType.customer,
       objectId: map.id,
@@ -146,8 +147,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { customerDetail: { map } } = CustomerModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerUserId,
+      moduleId: map.id,
+      moduleType: ModuleType.customer,
       callback: (obj) => {
         CustomerModel.updateOwnerUserReq({
           id: item.id,

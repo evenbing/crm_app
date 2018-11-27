@@ -338,7 +338,7 @@ class AddTask extends Component {
                 Toast.showError('请先选择关联业务');
                 return;
               }
-              navigate(routers.teamMembers, {
+              navigate(routers.selectEmployee, {
                 moduleId,
                 moduleType,
                 callback: ({ userId, userName }) => {
@@ -367,10 +367,11 @@ class AddTask extends Component {
                 Toast.showError('请先选择关联业务');
                 return;
               }
-              navigate(routers.teamMembers, {
+              navigate(routers.selectEmployee, {
                 moduleId,
                 moduleType,
                 radio: true,
+                title: '请选择参与人',
                 callback: (list) => {
                   this.setState({
                     userIds: list.map(user => user.userId),

@@ -9,11 +9,15 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { theme, routers } from '../../../constants';
-import { ModuleType } from '../../../constants/enum';
-import { getUserId, nativeCallPhone } from '../../../utils/base';
-import { getNewId } from '../../../service/app';
-import Toast from '../../../utils/toast';
+
+// constants
+import { theme, routers } from 'constants';
+import { ModuleType } from 'constants/enum';
+
+// utils
+import { getUserId, nativeCallPhone } from 'utils/base';
+import { getNewId } from 'service/app';
+import Toast from 'utils/toast';
 
 // components
 import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
@@ -134,8 +138,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { contactDetails: { map } } = ContactsModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerUserId,
+      moduleId: map.id,
+      moduleType: ModuleType.contact,
       callback: (obj) => {
         ContactsModel.updateOwnerUserReq({
           id: item.id,

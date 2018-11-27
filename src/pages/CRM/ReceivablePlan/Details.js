@@ -128,8 +128,12 @@ class Details extends React.Component {
     } = this;
     const { item } = state.params || {};
     const { receivablePlanDetails: { map } } = ReceivablePlanModel;
+    if (!Object.keys(map).length) return;
     if (map.ownerId && (getUserId() !== map.ownerId)) return;
-    navigate(routers.selectEmployee, {
+    navigate(routers.teamRoles, {
+      ownerUserId: map.ownerId,
+      moduleId: map.id,
+      moduleType: ModuleType.plan,
       callback: (obj) => {
         ReceivablePlanModel.updateReceivablePlanReq({
           id: item.id,
