@@ -47,7 +47,6 @@ import AddProduct from './components/AddProduct';
 
 import SalesChanceStore from '../../../logicStores/salesChance';
 import BusinessStore from '../../../logicStores/business';
-import { getNewId } from '../../../service/app';
 
 @observer
 class EditorMore extends React.Component {
@@ -110,7 +109,6 @@ class EditorMore extends React.Component {
       },
       props: { navigation: {
         pop,
-        state: { params: { reFetchDataList } },
       } },
     } = this;
     try {
@@ -121,44 +119,72 @@ class EditorMore extends React.Component {
       if (!planAmount) throw new Error(SalesChanceEnum.planAmount);
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
 
-      const businessId = await getNewId();
-      if (budinessProducts.length > 0) {
-        const businessDetails = budinessProducts.map(({
-          id: productId,
-          productName,
-          standardPrice,
-          salesPrice,
-          salesNumber,
-          salesTotalPrice,
-          comment,
-          discount,
-          tenantId,
-        }) => ({
-          opportunityId: businessId,
-          productId,
-          productName,
-          standardPrice,
-          salesPrice,
-          salesNumber,
-          salesTotalPrice,
-          comment,
-          discount,
-          tenantId,
-          priceId,
-        }));
-        BusinessStore.createBusinessReq({ businessDetails });
-      }
       const { id } = this.props.navigation.state.params.item;
       // 新增
       if (!id) {
-        SalesChanceStore.createSalesChanceReq(this.state, () => {
-          reFetchDataList && reFetchDataList();
+        SalesChanceStore.createSalesChanceReq(this.state, (id) => {
+          debugger;
+          if (budinessProducts.length > 0 && id) {
+            const businessDetails = budinessProducts.map(({
+              id: productId,
+              productName,
+              standardPrice,
+              salesPrice,
+              salesNumber,
+              salesTotalPrice,
+              comment,
+              discount,
+              tenantId,
+            }) => ({
+              opportunityId: id,
+              productId,
+              productName,
+              standardPrice,
+              salesPrice,
+              salesNumber,
+              salesTotalPrice,
+              comment,
+              discount,
+              tenantId,
+              priceId,
+            }));
+            BusinessStore.createBusinessReq({ businessDetails });
+          }
           pop(2);
         });
         return;
       }
       if (!id) throw new Error('id 不为空');
       SalesChanceStore.updateSalesChanceReq(this.state, () => {
+        if (budinessProducts.length > 0) {
+          const businessDetails = budinessProducts.map(({
+            id: productId,
+            productName,
+            standardPrice,
+            salesPrice,
+            salesNumber,
+            salesTotalPrice,
+            comment,
+            discount,
+            tenantId,
+          }) => ({
+            opportunityId: id,
+            productId,
+            productName,
+            standardPrice,
+            salesPrice,
+            salesNumber,
+            salesTotalPrice,
+            comment,
+            discount,
+            tenantId,
+            priceId,
+          }));
+          BusinessStore.createBusinessReq({ businessDetails }, () => {
+            SalesChanceStore.getSalesChanceTotalReq({ id });
+            BusinessStore.getBusinessDetailReq({ opportunityId: id });
+          });
+        }
         pop(1);
       });
     } catch (error) {

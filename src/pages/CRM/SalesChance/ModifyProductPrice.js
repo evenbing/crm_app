@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 // utils
 import { isIos } from 'utils/utils';
+import { formatDateByMoment, formatNumberToString } from 'utils/base';
 
 // constants
 import { theme } from 'constants';
@@ -46,36 +47,23 @@ const StandPrice = styled.Text`
 `;
 
 class ModifyProductPrice extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    const {
-      id,
-      productName = null,
-      standardPrice = null,
-      salesPrice = '',
-      salesNumber = '',
-      comment = '',
-      discount = '',
-      salesTotalPrice = '',
-      attachmentList = [],
-    } = props.navigation.state.params;
-    this.state = {
-      id,
-      productName,
-      standardPrice,
-      salesPrice,
-      salesNumber,
-      comment,
-      discount,
-      salesTotalPrice,
-      attachmentList,
-    };
-  }
+  state = {
+    id: null,
+    productName: null,
+    standardPrice: null,
+    salesPrice: null,
+    salesNumber: null,
+    comment: null,
+    discount: null,
+    salesTotalPrice: null,
+    attachmentList: [],
+  };
   componentDidMount() {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
     this.getSalesTotalPrice();
+    this.initState();
   }
 
   onPressRight = () => {
@@ -109,6 +97,20 @@ class ModifyProductPrice extends React.PureComponent {
       salesTotalPrice *= (discount / 100);
     }
     this.setState({ salesTotalPrice: Number(salesTotalPrice).toFixed(2) });
+  };
+
+  initState = () => {
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const { params = {} } = state || {};
+    if (!Object.keys(params).length) return;
+    this.setState({
+      ...formatNumberToString(params),
+      attachmentList: params.attachmentList || [],
+    });
   };
 
   render() {

@@ -12,18 +12,14 @@ import {
   find,
 } from '../service/business';
 import Toast from '../utils/toast';
-import { initFlatList, initDetailMap } from './initState';
+import { initDetailMap } from './initState';
 
 useStrict(true);
 
 @autobind
 class BusinessStore {
-  // 列表
-  @observable businessList = initFlatList;
   // 详情
   @observable businessDetail = initDetailMap;
-
-  // 详情
   @action async getBusinessDetailReq({ opportunityId }, callback) {
     try {
       if (!opportunityId) throw new Error('opportunityId 不为空');

@@ -20,7 +20,6 @@ import Toast from 'utils/toast';
 // logicStores
 import SalesChanceStore from 'logicStores/salesChance';
 import BusinessStore from 'logicStores/business';
-import { getNewId } from 'service/app';
 
 // components
 import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
@@ -82,7 +81,6 @@ class CreateSalesChance extends Component {
       },
       props: { navigation: {
         goBack,
-        state: { params: { reFetchDataList } },
       } },
     } = this;
     try {
@@ -92,36 +90,34 @@ class CreateSalesChance extends Component {
       if (!salesPhaseId || !salesPhaseName) throw new Error(SalesChanceEnum.salesPhase);
       if (!planAmount) throw new Error(SalesChanceEnum.planAmount);
       if (!departmentId || !departmentName) throw new Error(SalesChanceEnum.department);
-      const businessId = await getNewId();
-      if (budinessProducts.length > 0) {
-        const businessDetails = budinessProducts.map(({
-          id: productId,
-          productName,
-          standardPrice,
-          salesPrice,
-          salesNumber,
-          salesTotalPrice,
-          comment,
-          discount,
-          tenantId,
-        }) => ({
-          opportunityId: businessId,
-          productId,
-          productName,
-          standardPrice,
-          salesPrice,
-          salesNumber,
-          salesTotalPrice,
-          comment,
-          discount,
-          tenantId,
-          priceId,
-        }));
-        BusinessStore.createBusinessReq({ businessDetails });
-      }
 
-      SalesChanceStore.createSalesChanceReq(this.state, () => {
-        reFetchDataList && reFetchDataList();
+      SalesChanceStore.createSalesChanceReq(this.state, (id) => {
+        if (budinessProducts.length > 0 && id) {
+          const businessDetails = budinessProducts.map(({
+            id: productId,
+            productName,
+            standardPrice,
+            salesPrice,
+            salesNumber,
+            salesTotalPrice,
+            comment,
+            discount,
+            tenantId,
+          }) => ({
+            opportunityId: id,
+            productId,
+            productName,
+            standardPrice,
+            salesPrice,
+            salesNumber,
+            salesTotalPrice,
+            comment,
+            discount,
+            tenantId,
+            priceId,
+          }));
+          BusinessStore.createBusinessReq({ businessDetails });
+        }
         goBack();
       });
     } catch (error) {
@@ -203,7 +199,6 @@ class CreateSalesChance extends Component {
           <TitleItem
             text="基本信息"
             fontSize={16}
-            titleBackColor="transparent"
           />
           <NavInputItem
             leftText="机会名称"

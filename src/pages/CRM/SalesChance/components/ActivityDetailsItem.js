@@ -31,20 +31,12 @@ class ActivityDetailsItem extends React.Component {
 
     this.state = {
       ...props,
-      budinessProducts: [],
     };
   }
 
   componentDidMount() {
     BusinessStore.getBusinessDetailReq({
       opportunityId: this.state.id,
-    }, (budinessProducts) => {
-      this.setState({
-        budinessProducts: budinessProducts.map(item => ({
-          ...item,
-          attachmentList: [...item.attachmentList],
-        })),
-      });
     });
   }
 
@@ -63,11 +55,17 @@ class ActivityDetailsItem extends React.Component {
       sourceType, // "SALES_OPPORTUNITY__INTRODUCTION"
       getDetailItem,
       discription,
-      budinessProducts,
     } = this.state;
+    const {
+      list,
+    } = BusinessStore.businessDetail;
     const opportunityTypeName = OpportunityTypes[opportunityType];
     const sourceTypeName = OpportunitySource[sourceType];
     const expectedDateShow = formatDateByMoment(expectedDate, formatDateType);
+    const budinessProducts = list.map(item => ({
+      ...item,
+      attachmentList: [...item.attachmentList],
+    }));
     getDetailItem({
       ...this.props,
       budinessProducts,

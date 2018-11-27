@@ -58,7 +58,7 @@ TitleItem.propTypes = {
   titleStyle: PropTypes.objectOf(PropTypes.any),
   text: PropTypes.string,
   fontSize: PropTypes.number,
-  titleBackColor: PropTypes.number,
+  titleBackColor: PropTypes.string,
 };
 
 export default TitleItem;

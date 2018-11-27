@@ -159,11 +159,12 @@ class SalesChanceStore {
     try {
       const {
         errors = [],
+        id,
       } = await createSalesChance(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.getSalesChanceListReq(this.queryProps);
-        callback && callback();
+        callback && callback(id);
       });
     } catch (e) {
       Toast.showError(e.message);
