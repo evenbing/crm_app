@@ -73,7 +73,7 @@ class AddSchedule extends Component {
       isPrivate: 1, // 先默认写1
       principal: null,
       // principalName: null,
-      repeatTypeId: null,
+      repeatType: null,
       repeatTypeName: '',
       userIds: [],
       userIdNames: [],
@@ -111,6 +111,7 @@ class AddSchedule extends Component {
         principal,
         userIds,
         images,
+        repeatType,
       },
       props: {
         navigation: {
@@ -190,6 +191,7 @@ class AddSchedule extends Component {
         isPrivate,
         principal,
         userIds,
+        repeatType,
         successMsg: '日程创建成功',
       }, (result) => {
         this.createBool = true;
@@ -268,8 +270,7 @@ class AddSchedule extends Component {
         // principalName,
         userIds,
         userIdNames,
-        repeatTypeId,
-        repeatTypeName,
+        repeatType,
         images,
       },
       props: {
@@ -445,7 +446,7 @@ class AddSchedule extends Component {
                 key,
               } = item;
               this.setState({
-                repeatTypeId: key,
+                repeatType: key,
               });
             }}
           >
@@ -453,8 +454,8 @@ class AddSchedule extends Component {
               leftText="重复规则"
               needPress={false}
               center={
-                <CenterText active={repeatTypeId}>
-                  {repeatTypeId ? RepeatTypes[repeatTypeId] : TaskEnum.repeatType}
+                <CenterText active={repeatType}>
+                  {repeatType ? RepeatTypes[repeatType] : TaskEnum.repeatType}
                 </CenterText>
               }
               {...theme.navItemStyle}

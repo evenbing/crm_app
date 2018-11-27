@@ -42,6 +42,7 @@ export function del({
  * isPrivate 是否私密 must
  * principal 责任人的ID
  * userIds 参与用户的ID的集合（数组格式）
+ * repeatType 重复规则 不重复NOT_REPEAT/每天DAILY/每周WEEKLY/每月MONTHLY',创建页面重复类型下拉修改
  * rowVersion 详情接口会返回该字段，更新时，需要上传
  * }
  * @return Promise<Object>
@@ -62,9 +63,9 @@ export function update({
   isPrivate = true,
   principal,
   userIds,
+  repeatType,
   rowVersion,
 } = {}) {
-  debugger;
   return post({
     method: 'api.customerrelations.taskSchedule.update',
     id,
@@ -82,6 +83,7 @@ export function update({
     isPrivate,
     principal,
     userIds,
+    repeatType,
     rowVersion,
   });
 }
@@ -143,6 +145,7 @@ export function updateTaskComplete({
  *  isPrivate 是否私密  是  true或者false，(甲方回复：默认传1，UI上暂时不做)
  *  principal 责任人的ID  否
  *  userIds 参与用户的ID的集合（数组格式）  否
+ *  repeatType 重复规则 不重复NOT_REPEAT/每天DAILY/每周WEEKLY/每月MONTHLY',创建页面重复类型下拉修改
  * }
  * @return Promise<Object>
  */
@@ -164,6 +167,7 @@ export function create({
   isPrivate,
   principal,
   userIds,
+  repeatType,
 } = {}) {
   return post({
     method: 'api.customerrelations.taskSchedule.create',
@@ -184,6 +188,7 @@ export function create({
     isPrivate,
     principal,
     userIds,
+    repeatType,
   });
 }
 
