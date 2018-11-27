@@ -113,7 +113,7 @@ class ScheduleDetails extends React.Component {
         locationOutputName,
         sourceType,
         sourceName,
-        repeatTypeName,
+        repeatTypeId,
         participatePeopleList = [],
         comment,
       },
@@ -133,7 +133,7 @@ class ScheduleDetails extends React.Component {
           {renderBasicItem('提醒', NoticeTypes[noticeTime])}
           {renderBasicItem('位置', locationOutputName)}
           {renderBasicItem('关联业务', source)}
-          {renderBasicItem('重复规则', RepeatTypes[repeatTypeName])}
+          {renderBasicItem('重复规则', RepeatTypes[repeatTypeId])}
           {renderBasicItem('参与人', participatePeopleList.join(','))}
           <TitleItemComponent
             text="描述"

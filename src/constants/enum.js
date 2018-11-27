@@ -239,8 +239,10 @@ export const NoticeTypes = {
 // label：显示的给用户
 // value：用于上传（单位为分钟）
 export const RepeatTypes = {
-  0: ' 重复',
-  1: '不重复',
+  NOT_REPEAT: '不重复',
+  DAILY: ' 每天',
+  WEEKLY: ' 每周',
+  MONTHLY: ' 每月',
 };
 
 // 期次数

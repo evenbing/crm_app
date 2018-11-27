@@ -156,7 +156,7 @@ class AddSchedule extends Component {
             name: path.substring(path.lastIndexOf('/') + 1),
           },
           businessId,
-          businessType: 'SCHEDULE',
+          businessType: 'TASK',
         });
       }
       // 更新逻辑
@@ -443,11 +443,9 @@ class AddSchedule extends Component {
             onConfirm={(item) => {
               const {
                 key,
-                value,
               } = item;
               this.setState({
                 repeatTypeId: key,
-                repeatTypeName: value,
               });
             }}
           >
@@ -455,8 +453,8 @@ class AddSchedule extends Component {
               leftText="重复规则"
               needPress={false}
               center={
-                <CenterText active={repeatTypeId && repeatTypeName}>
-                  {(repeatTypeId && repeatTypeName) ? repeatTypeName : TaskEnum.repeatType}
+                <CenterText active={repeatTypeId}>
+                  {repeatTypeId ? RepeatTypes[repeatTypeId] : TaskEnum.repeatType}
                 </CenterText>
               }
               {...theme.navItemStyle}

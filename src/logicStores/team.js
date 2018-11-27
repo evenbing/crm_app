@@ -3,11 +3,19 @@ import autobind from 'autobind-decorator';
 import {
   getTeamList,
   createTeamUser,
+  getManageTeamList,
+  getOwnerUserName,
 } from '../service/team';
 import Toast from '../utils/toast';
 import { formatMemberList } from '../utils/base';
 
 useStrict(true);
+
+const initManageTeamList = {
+  refreshing: false,
+  ownerUserInfo: {},
+  teamList: [],
+};
 
 @autobind
 class TeamStore {
@@ -60,6 +68,30 @@ class TeamStore {
     } finally {
       runInAction(() => {
         this.refreshing = false;
+      });
+    }
+  }
+
+  // 查询业务团队成员
+  @observable manageTeamList = initManageTeamList;
+  @action async getManageTeamListReq(options) {
+    try {
+      this.manageTeamList = initManageTeamList;
+      this.manageTeamList.refreshing = true;
+      // const {
+      //   result = [],
+      // } = await getOwnerUserName();
+      const {
+        result = [],
+      } = await getManageTeamList(options);
+      runInAction(() => {
+        this.teamList = [...result];
+      });
+    } catch (e) {
+      Toast.showError(e.message);
+    } finally {
+      runInAction(() => {
+        this.manageTeamList.refreshing = false;
       });
     }
   }
