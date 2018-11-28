@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // utils
 import { isIos } from 'utils/utils';
-import { formatDateByMoment, formatNumberToString } from 'utils/base';
+import { delay, formatNumberToString } from 'utils/base';
 
 // constants
 import { theme } from 'constants';
@@ -75,14 +75,14 @@ class ModifyProductPrice extends React.PureComponent {
     goBack();
   }
 
-  onFocus = (y = 40) => {
+  onFocus = async (y = 40) => {
+    await delay();
     this.scrollViewRef.scrollTo({
       x: 0,
-      y: theme.moderateScale(y),
+      y: theme.moderateScale(isIos() ? y : y + 30),
       animated: true,
     });
   };
-
   getSalesTotalPrice = () => {
     const {
       salesPrice,
@@ -125,30 +125,25 @@ class ModifyProductPrice extends React.PureComponent {
       attachmentList,
     } = this.state;
     return (
-      <KeyboardAvoidingView
-        behavior={isIos() ? 'padding' : null}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={0}
+      <ContainerScrollView
+        bottomPadding
+        innerRef={(ref) => { this.scrollViewRef = ref; }}
       >
-        <ContainerScrollView
-          bottomPadding
-          innerRef={(ref) => { this.scrollViewRef = ref; }}
+        <CommStatusBar />
+        <ProductImage >
+          <Thumbnail
+            imgUri={attachmentList.length ? attachmentList[0].filePath : null}
+            size={120}
+          />
+          <Name>{productName}</Name>
+          <StandPrice> {`标准价格: ${standardPrice}`} </StandPrice>
+        </ProductImage>
+        <ContainerView
+          backgroundColor={theme.whiteColor}
         >
-          <CommStatusBar />
-          <ProductImage >
-            <Thumbnail
-              imgUri={attachmentList.length ? attachmentList[0].filePath : null}
-              size={120}
-            />
-            <Name>{productName}</Name>
-            <StandPrice> {`标准价格: ${standardPrice}`} </StandPrice>
-          </ProductImage>
-          <ContainerView
-            backgroundColor={theme.whiteColor}
-          >
-            <NavInputItem
-              leftText="销售单价"
-              {...theme.getLeftStyle({
+          <NavInputItem
+            leftText="销售单价"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: '请输入销售单价',
                 value: salesPrice,
@@ -156,13 +151,11 @@ class ModifyProductPrice extends React.PureComponent {
                   await this.setState({ salesPrice });
                   this.getSalesTotalPrice();
                 },
-                onFocus: () => this.onFocus(),
-                onBlur: () => this.onFocus(0),
               })}
-            />
-            <NavInputItem
-              leftText="数量"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="数量"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: '请输入数量',
                 value: salesNumber,
@@ -172,10 +165,10 @@ class ModifyProductPrice extends React.PureComponent {
                 },
                 onFocus: () => this.onFocus(60),
               })}
-            />
-            <NavInputItem
-              leftText="折扣%"
-              {...theme.getLeftStyle({
+          />
+          <NavInputItem
+            leftText="折扣%"
+            {...theme.getLeftStyle({
                 keyboardType: 'numeric',
                 placeholder: '请输入折扣',
                 value: discount,
@@ -185,34 +178,33 @@ class ModifyProductPrice extends React.PureComponent {
                 },
                 onFocus: () => this.onFocus(80),
               })}
-            />
-            <NavInputItem
-              leftText="总价"
-              center={
-                <CenterText active>{salesTotalPrice}</CenterText>
+          />
+          <NavInputItem
+            leftText="总价"
+            center={
+              <CenterText active>{salesTotalPrice}</CenterText>
               }
-              {...theme.navItemOnlyShowStyle}
+            {...theme.navItemOnlyShowStyle}
+          />
+          <NavInputItem
+            leftText="备注"
+            height={44}
+            center={<View />}
+          />
+          <TextareaGroup>
+            <TextareaView
+              rowSpan={2}
+              bordered
+              value={comment}
+              onChangeText={comment => this.setState({ comment })}
+              placeholder="请输入备注，十字以内"
+              placeholderTextColor={theme.textPlaceholderColor}
+              onFocus={() => this.onFocus(180)}
+              onBlur={() => this.onFocus(0)}
             />
-            <NavInputItem
-              leftText="备注"
-              height={44}
-              center={<View />}
-            />
-            <TextareaGroup>
-              <TextareaView
-                rowSpan={2}
-                bordered
-                value={comment}
-                onChangeText={comment => this.setState({ comment })}
-                placeholder="请输入备注，十字以内"
-                placeholderTextColor={theme.textPlaceholderColor}
-                onFocus={() => this.onFocus(180)}
-                onBlur={() => this.onFocus(0)}
-              />
-            </TextareaGroup>
-          </ContainerView>
-        </ContainerScrollView>
-      </KeyboardAvoidingView>
+          </TextareaGroup>
+        </ContainerView>
+      </ContainerScrollView>
     );
   }
 }

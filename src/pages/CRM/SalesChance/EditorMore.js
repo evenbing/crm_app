@@ -561,16 +561,15 @@ class EditorMore extends React.Component {
           count={
             budinessProducts.map((item) => {
               const { salesNumber = 0 } = item;
-              return salesNumber;
+              return Number(salesNumber);
             })
-              .reduce((accumulator, currentValue) => (accumulator + currentValue), 0)
+              .reduce((accumulator, currentValue) => Number(accumulator + currentValue), 0)
           }
           totalPrice={
             budinessProducts.map((item) => {
               const { salesTotalPrice = 0 } = item;
-              return salesTotalPrice;
-            })
-              .reduce((accumulator, currentValue) => (accumulator + currentValue), 0)
+              return Number(salesTotalPrice);
+            }).reduce((accumulator, currentValue) => Number(accumulator + currentValue), 0)
           }
           onPress={this.onAddProduct}
         />

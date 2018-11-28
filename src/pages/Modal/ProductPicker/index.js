@@ -102,7 +102,21 @@ class ProductPicker extends Component {
       priceName,
     } = this.state;
     callback && callback({
-      products: products.filter(item => item.checked),
+      products: products.filter(item => item.checked).map((v) => {
+        if (!v.salesNumber) {
+          v.salesNumber = 1;
+        }
+        if (!v.salesPrice) {
+          v.salesPrice = v.standardPrice;
+        }
+        if (!v.salesTotalPrice) {
+          v.salesTotalPrice = `${v.standardPrice}`;
+        }
+        if (!v.discount) {
+          v.discount = '100';
+        }
+        return v;
+      }),
       priceId,
       priceName,
     });
@@ -176,26 +190,6 @@ class ProductPicker extends Component {
     goBack();
   }
 
-  confirm = () => {
-    const {
-      state: {
-        products,
-        priceId,
-        priceName,
-      },
-      props: { navigation: {
-        state: { params: { callback } },
-        goBack,
-      } },
-    } = this;
-    callback && callback({
-      products: products.filter(item => item.checked),
-      priceId,
-      priceName,
-    });
-    goBack();
-  }
-
   keyExtractor = item => item.id;
 
   renderItem = ({ item }) => (
@@ -261,7 +255,7 @@ class ProductPicker extends Component {
           </Button>
           <Button
             backgroundColor={theme.primaryColor}
-            onPress={this.confirm}
+            onPress={this.onPressRight}
           >
             <ButtonText color={theme.whiteColor}>
               {`确认(${products.filter(item => item.checked).length})`}

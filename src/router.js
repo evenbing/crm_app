@@ -283,7 +283,7 @@ const TabBarRouteConfig = {
 };
 
 const TabBarNavigatorConfig = {
-  initialRouteName: routers.home,
+  initialRouteName: routers.crm,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

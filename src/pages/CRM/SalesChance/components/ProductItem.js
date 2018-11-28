@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 // constants
 import { theme } from 'constants';
 
+// static source
+import EditorIcon from 'img/editor.png';
+
 // utils
 import { moderateScale } from 'utils/scale';
 import { formatMoney } from 'utils/base';
@@ -15,6 +18,8 @@ import Thumbnail from 'components/Thumbnail';
 const Container = styled.TouchableOpacity`
   flex-direction: row;
   padding: ${moderateScale(11)}px ${moderateScale(15)}px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const ImageView = styled(Thumbnail)`
@@ -42,6 +47,7 @@ const Discount = styled.Text.attrs({
 `;
 const ContentView = styled.View`
   justify-content: space-around;
+  flex: 1;
 `;
 
 const Name = styled.Text`
@@ -119,10 +125,14 @@ const ProductItem = (props) => {
           <InputViewContent>{comment}</InputViewContent>
         </InputView>
         <TotalPrice>
-          <TotalPriceLabel> 总价: </TotalPriceLabel>
+          <TotalPriceLabel>总价: </TotalPriceLabel>
           <TotalPriceValue> {salesTotalPrice ? `¥${formatMoney(salesTotalPrice)}` : ''} </TotalPriceValue>
         </TotalPrice>
       </ContentView>
+      <Thumbnail
+        source={EditorIcon}
+        size={26}
+      />
     </Container>
   );
 };
