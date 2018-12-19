@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { StatusBar } from 'react-native';
+import { StatusBar, KeyboardAvoidingView } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 // utils
@@ -175,61 +175,64 @@ class SendFooter extends React.PureComponent {
       },
     } = this;
     return (
-      <ContainerView>
-        <SendFilterList
-          isVisible={isVisible}
-          onPressClose={this.selectRecordType}
-          selectedIndex={selectedIndex}
-          onPressItem={this.onPressFilterItem}
-          // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
-          marginBottom={50 + getFooterBottom()}
-          flexDirection="column-reverse"
-          list={recordTypeList}
-        />
-        <RecordType onPress={this.selectRecordType}>
-          <RecordText>记录类型</RecordText>
-        </RecordType>
-        <Thumbnail
-          source={require('../../img/crm/details/triangleUp.png')}
-          size={8}
-        />
-        <SendView>
-          <TextInput
-            value={content}
-            onChangeText={content => this.setState({ content })}
+      <KeyboardAvoidingView keyboardVerticalOffset={62} behavior="position" enabled>
+        <ContainerView>
+          <SendFilterList
+            isVisible={isVisible}
+            onPressClose={this.selectRecordType}
+            selectedIndex={selectedIndex}
+            onPressItem={this.onPressFilterItem}
+            // marginTop={getHeaderHeight() + getHeaderPadding() + 88}
+            marginBottom={50 + getFooterBottom()}
+            flexDirection="column-reverse"
+            list={recordTypeList}
           />
-          <SendTextView
-            onPress={this.onPressSend}
-          >
-            <SendText>发送</SendText>
-          </SendTextView>
-        </SendView>
-        {/*
-         <IconView
-          marginLeft={3}
-        >
+          <RecordType onPress={this.selectRecordType}>
+            <RecordText>记录类型</RecordText>
+          </RecordType>
           <Thumbnail
-            source={require('../../img/voice.png')}
-            size={27}
+            source={require('../../img/crm/details/triangleUp.png')}
+            size={8}
           />
-        </IconView>
-         */}
-        <FormActionSheet
-          onConfirm={this.onPickImage}
-          typeEnum={CameraOrPickerType}
-        >
+
+          <SendView>
+            <TextInput
+              value={content}
+              onChangeText={content => this.setState({ content })}
+            />
+            <SendTextView
+              onPress={this.onPressSend}
+            >
+              <SendText>发送</SendText>
+            </SendTextView>
+          </SendView>
+          {/*
           <IconView
-            marginLeft={8}
-            marginRight={13}
+            marginLeft={3}
           >
             <Thumbnail
-              imgUri={cacheImageMap.filePath}
-              source={require('../../img/picture.png')}
+              source={require('../../img/voice.png')}
               size={27}
             />
           </IconView>
-        </FormActionSheet>
-      </ContainerView>
+          */}
+          <FormActionSheet
+            onConfirm={this.onPickImage}
+            typeEnum={CameraOrPickerType}
+          >
+            <IconView
+              marginLeft={8}
+              marginRight={13}
+            >
+              <Thumbnail
+                imgUri={cacheImageMap.filePath}
+                source={require('../../img/picture.png')}
+                size={27}
+              />
+            </IconView>
+          </FormActionSheet>
+        </ContainerView>
+      </KeyboardAvoidingView>
     );
   };
 
