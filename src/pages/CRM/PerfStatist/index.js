@@ -49,8 +49,11 @@ const DescriptionText = styled.Text`
 @observer
 class PerfStatist extends React.Component {
   componentDidMount() {
-    PrefStatistModel.getData();
+    this.getData();
   }
+  getData = () => {
+    PrefStatistModel.getData();
+  };
 
   renderRankItem = () => {
     const {
