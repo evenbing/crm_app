@@ -76,7 +76,7 @@ class MemberList extends React.PureComponent {
       if (i >= index) continue;
       position += this.totalHeight[i];
     }
-    if (isAndroid) position += 2;
+    if (isAndroid()) position += 2;
     this.refListView.scrollTo({ y: position });
   }
 

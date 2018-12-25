@@ -12,10 +12,10 @@ import { isAndroid } from '../utils/utils';
 import defaultImage from '../img/notFound.png';
 
 function getRound(size) {
-  return (isAndroid ? size * 2 : `${size / 2}`);
+  return (isAndroid() ? size * 2 : `${size / 2}`);
 }
 function getRadius(size) {
-  return (isAndroid ? size * 2 : size);
+  return (isAndroid() ? size * 2 : size);
 }
 const AvatarImg = styled.Image.attrs({
   resizeMode: 'contain',

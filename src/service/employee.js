@@ -19,12 +19,14 @@ export function getEmployeeList({
   pageSize = 0,
   name,
   isOpenUser = true,
+  isActive = true,
 } = {}) {
   return post({
     method: 'api.master.humanresource.employee.find',
     pageSize,
     name,
     isOpenUser,
+    isActive,
   });
 }
 

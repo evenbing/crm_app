@@ -33,7 +33,7 @@ const WeekDayText = styled.Text.attrs({
   numberOfLines: 1,
 })`
   font-size: ${moderateScale(14)}px;
-  color: ${theme.textWeekDayColor};
+  color: ${props => props.selected ? theme.whiteColor : theme.textWeekDayColor};
 `;
 
 const ListItem = ({
@@ -54,7 +54,7 @@ const ListItem = ({
     >
       <WeekText>{week}</WeekText>
       <WeekDayView selected={selected}>
-        <WeekDayText>{weekDay}</WeekDayText>
+        <WeekDayText selected={selected}>{weekDay}</WeekDayText>
       </WeekDayView>
     </Container>
   );

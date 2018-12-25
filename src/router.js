@@ -10,7 +10,7 @@ import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 import { routers, theme } from './constants';
 import { DefaultHeaderView } from './components/Styles/Layout';
-import { getHeaderPadding, getHeaderHeight } from './utils/utils';
+import { getStatusBarHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
 
 // root page -> loading
@@ -135,10 +135,10 @@ const HomeNavigatorConfig = {
   transitionConfig: theme.transitionConfig,
   navigationOptions: {
     headerStyle: {
-      paddingTop: getHeaderPadding(true),
+      paddingTop: getStatusBarHeight(true),
       backgroundColor: '#333238',
-      elevation: 0, // 去掉阴影
-      height: getHeaderHeight() - getHeaderPadding(),
+      height: theme.headerHeight + getStatusBarHeight(true),
+      borderBottomWidth: 0,
     },
     headerTitleStyle: {
       color: 'white',

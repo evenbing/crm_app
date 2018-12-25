@@ -8,10 +8,6 @@ import { Platform, Dimensions, StatusBar } from 'react-native';
 export const deviceHeight = Dimensions.get('window').height;
 export const deviceWidth = Dimensions.get('window').width;
 
-const platform = Platform.OS;
-
-export const isAndroid = platform === 'android';
-
 export function formatStringWithHtml(originString) {
   if (originString === undefined) {
     return '';
@@ -25,29 +21,66 @@ export function formatStringWithHtml(originString) {
   return newString;
 }
 
-// 是否 isIphoneX
+export const currPlatform = Platform.OS;
 export function isIos() {
-  return platform === 'ios';
+  return currPlatform === 'ios';
 }
+
+export function isAndroid() {
+  return currPlatform === 'android';
+}
+
+// iPhoneX Xs
+const X_WIDTH = 375;
+const X_HEIGHT = 812;
 
 // 是否 isIphoneX
 export function isIphoneX() {
-  const dimen = Dimensions.get('window');
   return (
     Platform.OS === 'ios' &&
     !Platform.isPad &&
     !Platform.isTVOS &&
-    (dimen.height === 812 || dimen.width === 812)
+    ((deviceHeight === X_HEIGHT && deviceWidth === X_WIDTH) ||
+      (deviceHeight === X_WIDTH && deviceWidth === X_HEIGHT))
   );
 }
 
-// 获取头部填充高度
-export function getHeaderPadding(androidBar = false) {
-  if (Platform.OS === 'android') {
+// iPhoneXR XsMax
+const XR_WIDTH = 414;
+const XR_HEIGHT = 896;
+
+// 判断是否为iphoneXR或XsMAX
+export function isIphoneXR() {
+  return (
+    Platform.OS === 'ios' &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    ((deviceHeight === XR_HEIGHT && deviceWidth === XR_WIDTH) ||
+      (deviceHeight === XR_WIDTH && deviceWidth === XR_HEIGHT))
+  );
+}
+
+// 获取头部高度
+export const getStatusBarHeight = (androidBar = false) => {
+  if (isAndroid()) {
     return androidBar ? StatusBar.currentHeight : 0;
   }
-  if (Platform.OS === 'ios') {
-    if (isIphoneX()) {
+  if (isIos()) {
+    if (androidBar) return 0;
+    if (isIphoneX() || isIphoneXR()) {
+      return 44;
+    }
+    return 20;
+  }
+};
+
+// 获取头部填充高度
+export function getHeaderPadding(androidBar = false) {
+  if (isAndroid()) {
+    return androidBar ? StatusBar.currentHeight : 0;
+  }
+  if (isIos()) {
+    if (isIphoneX() || isIphoneXR()) {
       return 44;
     }
     return 20;
@@ -56,11 +89,11 @@ export function getHeaderPadding(androidBar = false) {
 
 // 获取头部高度
 export function getHeaderHeight() {
-  if (Platform.OS === 'android') {
+  if (isAndroid()) {
     return 64;
   }
-  if (Platform.OS === 'ios') {
-    if (isIphoneX()) {
+  if (isIos()) {
+    if (isIphoneX() || isIphoneXR()) {
       return 88;
     }
     return 64;
@@ -69,11 +102,11 @@ export function getHeaderHeight() {
 
 // 获取头部填充底部填充高度
 export function getFooterBottom() {
-  if (Platform.OS === 'android') {
+  if (isAndroid()) {
     return 0;
   }
-  if (Platform.OS === 'ios') {
-    if (isIphoneX()) {
+  if (isIos()) {
+    if (isIphoneX() || isIphoneXR()) {
       return 34;
     }
     return 0;
