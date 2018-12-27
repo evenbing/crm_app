@@ -4,14 +4,21 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { nativeGoBack } from '../../utils/base';
-import { moderateScale } from '../../utils/scale';
+
+// static source
+import MoreIcon from 'img/more.png';
+import CheckedIcon from 'img/checked.png';
+
+// utils
+import { nativeGoBack } from 'utils/base';
+import { moderateScale } from 'utils/scale';
+
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { HeadItem } from '../../components/CRM';
-import NavItem from '../../components/NavItem';
-import { routers } from '../../constants';
+import { CommStatusBar, RightView } from 'components/Layout';
+import { HeadItem } from 'components/CRM';
+import NavItem from 'components/NavItem';
+import { routers } from 'constants';
 
 const ContainerView = styled.ScrollView`
   flex: 1;
@@ -91,6 +98,17 @@ const NavList = [
   },
 ];
 
+const RightList = [
+  {
+    image: MoreIcon,
+    onPress: nativeGoBack,
+  },
+  {
+    image: CheckedIcon,
+    onPress: nativeGoBack,
+  },
+];
+
 @observer
 class CRM extends React.Component {
   onNavHandler = (path) => {
@@ -137,12 +155,11 @@ class CRM extends React.Component {
   }
 }
 
-// { navigation, screenProps }
 CRM.navigationOptions = () => ({
   title: 'CRM',
-  headerLeft: (
-    <LeftBackIcon
-      onPress={nativeGoBack}
+  headerRight: (
+    <RightView
+      list={RightList}
     />
   ),
 });

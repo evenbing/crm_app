@@ -79,7 +79,7 @@ export default class xnLoading extends Component {
             this.onClose();
           }}
           >
-            <Image style={styles.xnLoadingHdIcon} source={require('../img/loadBack.png')} resizeMode="contain" />
+            <Image style={styles.xnLoadingHdIcon} source={require('../img/back-dark.png')} resizeMode="contain" />
           </TouchableOpacity>
         </View>
         <View style={styles.xnLoadingBd}>

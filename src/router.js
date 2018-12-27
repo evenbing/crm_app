@@ -34,8 +34,6 @@ import MessageListScreen from './pages/Home/MessageList';
 import UpcomingScheduleListScreen from './pages/Home/UpcomingScheduleList';
 // root page -> home -> UpcomingTaskList
 import UpcomingTaskListScreen from './pages/Home/UpcomingTaskList';
-// root page -> home -> NotificationList
-import NotificationListScreen from './pages/Home/NotificationList';
 // root page -> home -> AddSchedule
 import AddScheduleScreen from './pages/Home/AddSchedule';
 // root page -> home -> AddTask
@@ -112,7 +110,6 @@ const HomeRouteConfig = {
   [routers.messageList]: { screen: MessageListScreen },
   [routers.upcomingScheduleList]: { screen: UpcomingScheduleListScreen },
   [routers.upcomingTaskList]: { screen: UpcomingTaskListScreen },
-  [routers.notificationList]: { screen: NotificationListScreen },
   [routers.addSchedule]: { screen: AddScheduleScreen },
   [routers.addTask]: { screen: AddTaskScreen },
   [routers.taskDetails]: { screen: TaskDetailsScreen },
@@ -136,12 +133,12 @@ const HomeNavigatorConfig = {
   navigationOptions: {
     headerStyle: {
       paddingTop: getStatusBarHeight(true),
-      backgroundColor: '#333238',
+      backgroundColor: '#ffffff',
       height: theme.headerHeight + getStatusBarHeight(true),
       borderBottomWidth: 0,
     },
     headerTitleStyle: {
-      color: 'white',
+      color: '#333238',
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',

@@ -10,12 +10,8 @@ import autobind from 'autobind-decorator';
 import {
   find, detail, create, update, del, updateTaskHours, updateTaskComplete, updateReadMessage,
 } from '../service/taskSchedule';
-// import { getAttachmentList } from '../service/attachment';
-import { getMessage } from '../service/app';
-// import { ModuleType } from '../constants/enum';
 import { initFlatList } from './initState';
 import Toast from '../utils/toast';
-// import { getAppModuleType } from '../utils/base';
 
 useStrict(true);
 
@@ -115,19 +111,17 @@ class TaskScheduleStore {
     const {
       taskList,
       scheduleList,
-      messageList,
     } = this;
-    return Number(taskList.total) + Number(scheduleList.total) + Number(messageList.total);
+    return Number(taskList.total) + Number(scheduleList.total);
   }
 
   /**
-   * 查询未完成日程/任务/消息
+   * 查询未完成日程/任务
    */
   @action async getUnFinishTotalReq() {
-    Promise.all([
+    await Promise.all([
       this.getScheduleRelatedToMeReq(),
       this.getTaskRelatedToMeReq(),
-      this.getMessageReq(),
     ]);
   }
 
@@ -309,43 +303,6 @@ class TaskScheduleStore {
       });
     } catch (e) {
       Toast.showError(e.message);
-    }
-  }
-
-  /**
-   * 查询未读消息列表
-   */
-  @observable messageList = initFlatList;
-  @action async getMessageReq({ pageNumber = 1, pageSize = 0, category = 'UNREAD', ...restProps } = {}, callback) {
-    try {
-      if (pageNumber === 1) {
-        this.messageList.refreshing = true;
-      } else {
-        this.messageList.loadingMore = true;
-      }
-      const {
-        result = [],
-        totalCount = 0,
-        errors = [],
-      } = await getMessage({ pageNumber, pageSize, category, ...restProps });
-      if (errors.length) throw new Error(errors[0].message);
-      runInAction(() => {
-        this.messageList.total = totalCount;
-        this.messageList.pageNumber = pageNumber;
-        if (pageNumber === 1) {
-          this.messageList.list = [...result];
-        } else {
-          this.messageList.list = this.messageList.list.concat(result);
-        }
-        callback && callback();
-      });
-    } catch (e) {
-      Toast.showError(e.message);
-    } finally {
-      runInAction(() => {
-        this.messageList.refreshing = false;
-        this.messageList.loadingMore = false;
-      });
     }
   }
 

@@ -19,5 +19,7 @@ export const HorizontalDivider = styled.View`
 export const VerticalDivider = styled.View`
   width: 1px;
   height: ${props => theme.moderateScale(props.height || 43)};
+  margin-left: ${props => theme.moderateScale(props.marginLeft || 0)};
+  margin-right: ${props => theme.moderateScale(props.marginRight || 0)};
   background-color: ${props => props.backgroundColor || theme.borderColor};
 `;

@@ -12,7 +12,7 @@ export default {
   whiteColor: '#FFFFFF',
   headerBackgroundColor: '#333333',
   dangerColor: '#D32E2B',
-  headerColor: '#ffffff',
+  headerColor: '#333238',
   borderColor: '#F6F6F6',
   pageBackColor: '#F6F6F6',
   textColor: '#484848',

@@ -9,6 +9,10 @@ import PropTypes from 'prop-types';
 import { Alert, View } from 'react-native';
 import { observer } from 'mobx-react/native';
 
+// static source
+import MoreIcon from 'img/more.png';
+import CheckedIcon from 'img/checked.png';
+
 // constants
 import { routers, CreateActionSheetType, DelayActionSheetType } from 'constants';
 
@@ -20,7 +24,7 @@ import { formatDateByMoment, nativeGoBack } from 'utils/base';
 import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
-import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+import { CommStatusBar, RightView } from 'components/Layout';
 import { ActionSheet } from 'components/Modal';
 import { ContainerView, ListFooterComponent } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
@@ -29,6 +33,17 @@ import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
 
 const formatDateTaskScheduleType = 'HH:mm';
+
+const RightList = [
+  {
+    image: MoreIcon,
+    onPress: nativeGoBack,
+  },
+  {
+    image: CheckedIcon,
+    onPress: nativeGoBack,
+  },
+];
 
 @observer
 class Home extends React.Component {
@@ -297,8 +312,10 @@ class Home extends React.Component {
 
 Home.navigationOptions = () => ({
   title: '首页',
-  headerLeft: (
-    <LeftBackIcon onPress={nativeGoBack} />
+  headerRight: (
+    <RightView
+      list={RightList}
+    />
   ),
 });
 

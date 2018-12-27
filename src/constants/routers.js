@@ -14,7 +14,6 @@ export default {
   messageList: 'app.tabView.root.home.messageList',
   upcomingScheduleList: 'app.tabView.root.home.upcomingScheduleList',
   upcomingTaskList: 'app.tabView.root.home.upcomingTaskList',
-  notificationList: 'app.tabView.root.home.notificationList',
   addSchedule: 'app.tabView.root.home.addSchedule',
   addTask: 'app.tabView.root.home.addTask',
   taskDetails: 'app.tabView.root.home.taskDetails',

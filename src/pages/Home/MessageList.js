@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import IcoSchedule from '../../img/home/ico_schedule.png';
-import IcoUpcomingTasks from '../../img/home/ico_upcomingtasks.png';
-import IcoNotice from '../../img/home/ico_notice.png';
-import NavItem from '../../components/NavItem';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { routers } from '../../constants';
-import TaskScheduleStore from '../../logicStores/taskSchedule';
+// constants
+import { routers } from 'constants';
+
+// static source
+import IcoSchedule from 'img/home/ico_schedule.png';
+import IcoUpcomingTasks from 'img/home/ico_upcomingtasks.png';
+
+// components
+import NavItem from 'components/NavItem';
+import { CommStatusBar, LeftBackIcon } from 'components/Layout';
+
+// logicStores
+import TaskScheduleStore from 'logicStores/taskSchedule';
 
 const Container = styled.View`
   flex: 1;
@@ -47,13 +53,6 @@ class MessageList extends Component {
           rightText={TaskScheduleStore.taskList.total}
           rightTextStyle={RightTextStyle}
           onPress={() => navigate(routers.upcomingTaskList)}
-        />
-        <NavItem
-          icon={IcoNotice}
-          leftText="通知"
-          rightText={TaskScheduleStore.messageList.total}
-          rightTextStyle={RightTextStyle}
-          onPress={() => navigate(routers.notificationList)}
         />
       </Container>
     );
