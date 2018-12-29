@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, Left, Right, Text } from 'native-base';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import Thumbnail from '../../../components/Thumbnail';
-import { ContainerView } from '../../../components/Drawer/Styles';
-import { ModuleTypes } from '../../../constants/enum';
-import rightArrowIcon from '../../../img/ico_right_arrow.png';
-import { routers } from '../../../constants';
+import { CommStatusBar, LeftBackIcon, Thumbnail } from 'xn-react-native-applets';
+
+// static source
+import rightArrowIcon from 'img/ico_right_arrow.png';
+
+// constants
+import { ModuleTypes } from 'constants/enum';
+import { routers } from 'constants';
+
+// components
+import { ContainerView } from 'components/Drawer/Styles';
 
 const ModuleTypePicker = (props) => {
   const {

@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { routers, theme } from 'constants';
@@ -17,10 +18,11 @@ import { PayType } from 'constants/enum';
 // utils
 import { formatDateByMoment, formatDateType } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-import Toast from 'utils/toast';
+
+// logicStores
+import ReceivableModel from 'logicStores/receivable';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
@@ -28,9 +30,6 @@ import NavInputItem from 'components/NavInputItem';
 import { ListView, CenterText, RightText } from 'components/Styles/Form';
 import DateTimePicker from 'components/DateTimePicker';
 import { FormActionSheet } from 'components/Modal';
-
-// logicStores
-import ReceivableModel from 'logicStores/receivable';
 
 const LeftViewWidth = moderateScale(110);
 
@@ -90,7 +89,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   onPressActionSheetItem = ({ key, value }) => {

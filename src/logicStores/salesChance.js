@@ -7,6 +7,7 @@
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getSalesChanceList,
   getSalesChanceDetail,
@@ -15,7 +16,6 @@ import {
   changeOwnerUser,
   findSalesPhase,
 } from '../service/salesChance';
-import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 import { deleteFollow, createFollow } from '../service/app';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
@@ -66,7 +66,7 @@ class SalesChanceStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.salesChanceList.refreshing = false;
@@ -98,7 +98,7 @@ class SalesChanceStore {
         });
       }
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -147,7 +147,7 @@ class SalesChanceStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.salesClueTotal = initTotal;
       });
@@ -167,7 +167,7 @@ class SalesChanceStore {
         callback && callback(id);
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -184,7 +184,7 @@ class SalesChanceStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -201,7 +201,7 @@ class SalesChanceStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -214,14 +214,14 @@ class SalesChanceStore {
           errors = [],
         } = await deleteFollow({ id: followId });
         if (errors.length) throw new Error(errors[0].message);
-        Toast.showSuccess('取消关注成功');
+        ToastUtil.showSuccess('取消关注成功');
       } else {
         // 执行关注
         const {
           errors = [],
         } = await createFollow(restProps);
         if (errors.length) throw new Error(errors[0].message);
-        Toast.showSuccess('关注成功');
+        ToastUtil.showSuccess('关注成功');
       }
       runInAction(() => {
         this.getSalesChanceDetailReq({ id: restProps.objectId });
@@ -229,7 +229,7 @@ class SalesChanceStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -246,7 +246,7 @@ class SalesChanceStore {
         this.salesPhaseList.list = result;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

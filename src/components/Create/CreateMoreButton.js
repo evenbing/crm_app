@@ -7,11 +7,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
-// components
-import TouchableView from '../TouchableView';
-import Thumbnail from '../Thumbnail';
+import { theme } from '../../constants';
 
 const ContainerView = styled.View`
   height: ${theme.moderateScale(49)};

@@ -10,19 +10,27 @@ import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { theme, routers } from '../../../constants';
-import { ContactsType } from '../../../constants/enum';
-import { nativeCallPhone, filterObject } from '../../../utils/base';
-import * as drawerUtils from '../../../utils/drawer';
+import { CommStatusBar, LeftBackIcon, RightView, NativeUtil } from 'xn-react-native-applets';
+
+// static source
+import AddressIcon from 'img/crm/buttonList/address.png';
+import PhoneIcon from 'img/crm/buttonList/phone.png';
+
+// constants
+import { theme, routers } from 'constants';
+import { ContactsType } from 'constants/enum';
+
+// utils
+import { filterObject } from 'utils/base';
+import * as drawerUtils from 'utils/drawer';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList/index';
-import FlatListTable from '../../../components/FlatListTable';
+import SearchInput from 'components/SearchInput';
+import { ContainerView, DefaultHeaderView } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from 'components/SwipeList/index';
+import FlatListTable from 'components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
 import LeftItem from './components/LeftItem';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
 
 import ContactsModel from '../../../logicStores/contacts';
 
@@ -36,11 +44,10 @@ import {
   FilterList,
 } from './_fieldCfg';
 
-// static source
-import AddressIcon from '../../../img/crm/buttonList/address.png';
-import PhoneIcon from '../../../img/crm/buttonList/phone.png';
 
 useStrict(true);
+
+const { nativeCallPhone } = NativeUtil;
 
 @observer
 class Contacts extends React.Component {

@@ -7,6 +7,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -14,13 +15,10 @@ import { CustomerEnum } from 'constants/form';
 import { CustomerLevelTypes, IndustryTypes, CustomerType } from 'constants/enum';
 
 // utils
-import { isIos } from 'utils/utils';
 import { verifyPhone, verifyLink } from 'utils/formVerify';
 import { delay, formatLocationMap, formatNumberToString } from 'utils/base';
-import Toast from 'utils/toast';
 
 // components
-import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import TitleItem from 'components/Details/TitleItem';
 import NavInputItem from 'components/NavInputItem';
@@ -29,6 +27,8 @@ import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
 import { CenterText, RightText } from 'components/Styles/Form';
 
 import CustomerModel from 'logicStores/customer';
+
+const { isIos } = DevicesUtil;
 
 class CreateCustomerMore extends React.Component {
   state = {
@@ -96,7 +96,7 @@ class CreateCustomerMore extends React.Component {
         pop(1);
       });
     } catch (error) {
-      Toast.showWarning(error.message);
+      ToastUtil.showWarning(error.message);
     }
   };
   onFocus = async (y = 40) => {

@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { routers, theme } from 'constants';
@@ -14,13 +15,13 @@ import { MarkActivityEnum } from 'constants/form';
 import { MarketActivityStatus, MarketActivityTypes } from 'constants/enum';
 
 // utils
-import { isIos } from 'utils/utils';
 import { delay, formatDateByMoment, formatDateType, formatNumberToString } from 'utils/base';
 import { verifyDateTime } from 'utils/formVerify';
-import Toast from 'utils/toast';
+
+// logicStores
+import MarkActivityStore from 'logicStores/markActivity';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
@@ -29,7 +30,7 @@ import NavInputItem from 'components/NavInputItem';
 import { ListView, CenterText, RightText } from 'components/Styles/Form';
 import DateTimePicker from 'components/DateTimePicker';
 
-import MarkActivityStore from 'logicStores/markActivity';
+const { isIos } = DevicesUtil;
 
 class EditorMore extends React.Component {
   state = {
@@ -89,7 +90,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (error) {
-      Toast.showWarning(error.message);
+      ToastUtil.showWarning(error.message);
     }
   };
   onFocus = async (y = 40) => {

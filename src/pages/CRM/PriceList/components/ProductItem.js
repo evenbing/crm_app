@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Thumbnail } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
@@ -8,9 +9,6 @@ import { theme } from 'constants';
 // utils
 import { formatMoney } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-
-// components
-import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled.View`
   padding: 0 ${moderateScale(15)}px;

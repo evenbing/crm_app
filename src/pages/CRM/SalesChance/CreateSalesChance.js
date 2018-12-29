@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -15,14 +16,12 @@ import { CustomerType, MarkActivityType } from 'constants/enum';
 
 // utils
 import { formatDateByMoment, formatDateType } from 'utils/base';
-import Toast from 'utils/toast';
 
 // logicStores
 import SalesChanceStore from 'logicStores/salesChance';
 import BusinessStore from 'logicStores/business';
 
 // components
-import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { ContainerScrollView, ContainerView } from 'components/Styles/Layout';
 import TitleItem from 'components/Details/TitleItem';
@@ -121,7 +120,7 @@ class CreateSalesChance extends Component {
         goBack();
       });
     } catch (error) {
-      Toast.showError(error.message);
+      ToastUtil.showError(error.message);
     }
   }
 

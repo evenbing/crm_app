@@ -7,26 +7,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
-import { theme, routers } from '../../../constants';
+import { theme, routers } from 'constants';
 
 // utils
-import Toast from '../../../utils/toast';
-import { verifyPhone } from '../../../utils/formVerify';
+import { verifyPhone } from 'utils/formVerify';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
 // import ScanCard from '../../../components/Create/ScanCard';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import { CustomerEnum } from '../../../constants/form';
-import { CenterText } from '../../../components/Styles/Form';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+import { CustomerEnum } from 'constants/form';
+import { CenterText } from 'components/Styles/Form';
 
-import CustomerModel from '../../../logicStores/customer';
+// logicStores
+import CustomerModel from 'logicStores/customer';
 
 @observer
 class CreateCustomer extends React.Component {
@@ -73,7 +73,7 @@ class CreateCustomer extends React.Component {
         goBack();
       });
     } catch (error) {
-      Toast.showWarning(error.message);
+      ToastUtil.showWarning(error.message);
     }
   };
 

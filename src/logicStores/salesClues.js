@@ -8,6 +8,7 @@
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getSalesClueList,
   createSalesClue,
@@ -15,7 +16,6 @@ import {
   updateSalesClue,
   changeOwnerUser,
 } from '../service/salesClues';
-import Toast from '../utils/toast';
 import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
@@ -60,7 +60,7 @@ class SalesClueStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.salesClueList.refreshing = false;
@@ -84,7 +84,7 @@ class SalesClueStore {
         this.salesClueDetail.map = leads;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -120,7 +120,7 @@ class SalesClueStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.salesClueTotal = initTotal;
       });
@@ -144,7 +144,7 @@ class SalesClueStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -166,7 +166,7 @@ class SalesClueStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -183,7 +183,7 @@ class SalesClueStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

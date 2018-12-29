@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import FlatListTable from '../../../components/FlatListTable';
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
 import ProductItemList from './components/ProductItemList';
 
 import ProductListModel from '../../../logicStores/productList';

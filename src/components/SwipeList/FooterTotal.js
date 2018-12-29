@@ -7,11 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
-import { getFooterBottom } from '../../utils/utils';
+import { DevicesUtil, TouchableView } from 'xn-react-native-applets';
 
-// components
-import TouchableView from '../TouchableView';
+// constants
+import { theme } from 'constants';
+
+const { getFooterBottom } = DevicesUtil;
 
 const ContainerView = styled(TouchableView)`
   position: absolute;

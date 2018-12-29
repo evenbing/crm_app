@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { RefreshControl } from 'react-native';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -21,7 +22,6 @@ import PrefStatistModel from 'logicStores/prefStatist';
 
 // components
 import TabsPanel from 'components/TabsPanel';
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import LineChart from 'components/LineChart';
 import TotalList from './components/TotalList';

@@ -7,13 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../constants';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import NavInputItem from '../../../components/NavInputItem';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import NavInputItem from 'components/NavInputItem';
 import QueryHead from './components/QueryHead';
 
 const ListView = styled.View`

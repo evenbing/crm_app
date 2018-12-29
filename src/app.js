@@ -8,11 +8,14 @@ import React from 'react';
 import { BackHandler } from 'react-native';
 import { Root } from 'native-base';
 import RootModal from 'js-root-toast';
+import { NativeUtil } from 'xn-react-native-applets';
 import Navigator from './router';
 
 // utils
-import { nativeGoBack, getCurrRoutes } from './utils/base';
+import { getCurrRoutes } from './utils/base';
 import { goBack, registerTopNavigator } from './utils/navigationService';
+
+const { nativeGoBack } = NativeUtil;
 
 class App extends React.Component {
   componentDidMount() {

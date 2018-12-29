@@ -6,6 +6,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getContractList,
   getContractDetails,
@@ -17,7 +18,6 @@ import { contractFlatList, initDetailMap } from './initState';
 import { getReceivableIssueList } from '../service/receivable';
 import { getAttachmentList } from '../service/attachment';
 import { getAppModuleType } from '../utils/base';
-import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -67,7 +67,7 @@ class ContractStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.contractList.refreshing = false;
@@ -92,7 +92,7 @@ class ContractStore {
         this.contractDetails.map = pact;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.contractDetails.refreshing = false;
@@ -129,7 +129,7 @@ class ContractStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.contractTotal = initTotal;
       });
@@ -148,7 +148,7 @@ class ContractStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -165,7 +165,7 @@ class ContractStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -182,7 +182,7 @@ class ContractStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

@@ -8,13 +8,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import RootModal from 'js-root-toast';
-import { theme } from '../../constants';
-import { moderateScale } from '../../utils/scale';
-import { deviceWidth, deviceHeight } from '../../utils/utils';
+import { DevicesUtil, TouchableView, Thumbnail } from 'xn-react-native-applets';
 
-// components
-import TouchableView from '../../components/TouchableView';
-import Thumbnail from '../../components/Thumbnail';
+// toast
+import { theme } from 'constants';
+import { moderateScale } from 'utils/scale';
+
+const { deviceWidth, deviceHeight } = DevicesUtil;
 
 const ContainerView = styled.View`
   background-color: ${theme.whiteColor};

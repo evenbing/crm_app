@@ -9,17 +9,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import { CommStatusBar, LeftBackIcon, Thumbnail, TouchableView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TouchableView from '../../../components/TouchableView';
-import FlatListTable from '../../../components/FlatListTable';
-import Thumbnail from '../../../components/Thumbnail';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import FlatListTable from 'components/FlatListTable';
 
-import OrganizationModel from '../../../logicStores/organization';
+// logicStores
+import OrganizationModel from 'logicStores/organization';
 
 const ListItemView = styled(TouchableView)`
   padding: 0 ${theme.moderateScale(14)}px;

@@ -7,9 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../../constants/theme';
-import { moderateScale } from '../../utils/scale';
-import TouchableView from '../TouchableView';
+import { TouchableView } from 'xn-react-native-applets';
+
+// constants
+import theme from 'constants/theme';
+
+// utils
+import { moderateScale } from 'utils/scale';
 import TextInput from '../TextInput';
 
 const ContainerTouchableView = styled(TouchableView)`

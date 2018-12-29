@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { List, ListItem, Left, Right, Text } from 'native-base';
+import { CommStatusBar, LeftBackIcon, Thumbnail } from 'xn-react-native-applets';
 
-import { ContainerView } from '../../components/Drawer/Styles';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import Thumbnail from '../../components/Thumbnail';
-import SalesChanceStore from '../../logicStores/salesChance';
+// components
+import { ContainerView } from 'components/Drawer/Styles';
+
+// logicStores
+import SalesChanceStore from 'logicStores/salesChance';
 
 @observer
 class SalesPhasePicker extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
   componentDidMount() {
     SalesChanceStore.findSalesPhaseReq({ isActive: true });
   }

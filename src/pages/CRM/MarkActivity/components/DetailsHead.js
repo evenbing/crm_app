@@ -7,18 +7,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { MarketActivityStatus } from '../../../../constants/enum';
-import { formatDateByMoment, formatDateType } from '../../../../utils/base';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
 // static source
-import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
+import PrincipalIcon from 'img/crm/details/principalGo.png';
+
+// constants
+import { theme } from 'constants';
+import { MarketActivityStatus } from 'constants/enum';
+
+// utils
+import { formatDateByMoment, formatDateType } from 'utils/base';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import Thumbnail from '../../../../components/Thumbnail';
-import TouchableView from '../../../../components/TouchableView';
-import { FormActionSheet } from '../../../../components/Modal';
+import { HeaderBack } from 'components/Details';
+import { FormActionSheet } from 'components/Modal';
 
 const ContainerView = styled.View``;
 

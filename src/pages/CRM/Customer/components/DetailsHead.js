@@ -7,13 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import { VerticalDivider } from '../../../../components/Styles/Divider';
-import TouchableView from '../../../../components/TouchableView';
-import Thumbnail from '../../../../components/Thumbnail';
+import { HeaderBack } from 'components/Details';
+import { VerticalDivider } from 'components/Styles/Divider';
 
 const ContainerView = styled.View``;
 

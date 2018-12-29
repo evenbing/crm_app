@@ -8,12 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView } from 'xn-react-native-applets';
 
 // utils
 import { goBack } from 'utils/navigationService';
 import { moderateScale } from 'utils/scale';
-
-import TouchableView from '../TouchableView';
 
 const ContainerView = styled.View`
   flex-direction: row;

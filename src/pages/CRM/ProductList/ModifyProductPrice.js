@@ -6,19 +6,22 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
-import { moderateScale } from '../../../utils/scale';
-import { theme } from '../../../constants';
-import Toast from '../../../utils/toast';
-import { ProductListEnum } from '../../../constants/form';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil, Thumbnail } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+import { ProductListEnum } from 'constants/form';
+
+// utils
+import { moderateScale } from 'utils/scale';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import NavItem from '../../../components/NavItem';
-import Thumbnail from '../../../components/Thumbnail';
-import NavInputItem from '../../../components/NavInputItem';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import NavItem from 'components/NavItem';
+import NavInputItem from 'components/NavInputItem';
 
-import ProductListModel from '../../../logicStores/productList';
+// logicStores
+import ProductListModel from 'logicStores/productList';
 
 const MainView = styled.View`
   flex: 1;
@@ -103,7 +106,7 @@ class ModifyProductPrice extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   initState = () => {

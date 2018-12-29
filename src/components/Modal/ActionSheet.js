@@ -8,13 +8,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Modal from 'react-native-modal';
-import { theme } from '../../constants';
-import { moderateScale } from '../../utils/scale';
-import { getFooterBottom } from '../../utils/utils';
+import { DevicesUtil, TouchableView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+
+// utils
+import { moderateScale } from 'utils/scale';
 
 // components
-import TouchableView from '../../components/TouchableView';
-import { HorizontalDivider } from '../../components/Styles/Divider';
+import { HorizontalDivider } from 'components/Styles/Divider';
+
+const { getFooterBottom } = DevicesUtil;
 
 const ModalView = styled(Modal)`
   margin: 0;

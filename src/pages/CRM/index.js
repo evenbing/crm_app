@@ -9,7 +9,6 @@ import { CommStatusBar, TopRightView } from 'xn-react-native-applets';
 // utils
 import { moderateScale } from 'utils/scale';
 
-
 // components
 import { HeadItem } from 'components/CRM';
 import NavItem from 'components/NavItem';

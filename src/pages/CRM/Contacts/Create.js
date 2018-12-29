@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { routers, theme } from 'constants';
@@ -15,13 +16,11 @@ import { CustomerType } from 'constants/enum';
 
 // utils
 import { verifyPhone, verifyMobile } from 'utils/formVerify';
-import Toast from 'utils/toast';
 
 // logicStores
 import ContactsModel from 'logicStores/contacts';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import TitleItem from 'components/Details/TitleItem';
@@ -81,7 +80,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   render() {

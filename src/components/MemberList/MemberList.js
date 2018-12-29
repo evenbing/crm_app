@@ -10,16 +10,17 @@ import styled from 'styled-components';
 import {
   ListView,
   RefreshControl,
-  Dimensions,
 } from 'react-native';
+import { DevicesUtil, TouchableView } from 'xn-react-native-applets';
+
+// constants
+import theme from 'constants/theme';
+
 import SilderItem from './SilderItem';
 import MemberItem from './MemberItem';
 import ListHeader from './ListHeader';
-import TouchableView from '../TouchableView';
-import { isAndroid } from '../../utils/utils';
-import theme from '../../constants/theme';
 
-const { height } = Dimensions.get('window');
+const { isAndroid, deviceHeight } = DevicesUtil;
 
 const ContainerView = styled.View`
   flex: 1;
@@ -215,7 +216,7 @@ class MemberList extends React.PureComponent {
           initialListSize={500}
           {...restProps}
         />
-        <SilderView height={height}>
+        <SilderView height={deviceHeight}>
           {this.renderSilder()}
         </SilderView>
       </ContainerView>

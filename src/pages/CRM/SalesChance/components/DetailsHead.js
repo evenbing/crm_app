@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
 // base
 import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
@@ -20,8 +21,6 @@ import PrincipalIcon from 'img/crm/details/principalGo.png';
 
 // components
 import { HeaderBack } from 'components/Details';
-import Thumbnail from 'components/Thumbnail';
-import TouchableView from 'components/TouchableView';
 
 const ContainerView = styled.View``;
 

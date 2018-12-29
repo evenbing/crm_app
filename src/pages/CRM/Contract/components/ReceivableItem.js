@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import moment from 'moment';
-import { moderateScale } from '../../../../utils/scale';
-import { routers, theme } from '../../../../constants';
-import { DataTitleTypes } from '../../../../constants/enum';
+import { TouchableView } from 'xn-react-native-applets';
 
 // static source
-import rightArrow from '../../../../img/home/ico_right_arrow.png';
+import rightArrow from 'img/home/ico_right_arrow.png';
 
-// components
-import TouchableView from '../../../../components/TouchableView';
+// constants
+import { DataTitleTypes } from 'constants/enum';
+
+// utils
+import { moderateScale } from 'utils/scale';
+import { routers, theme } from 'constants';
 
 const ContainerView = styled.View`
   margin-top: ${moderateScale(10)};

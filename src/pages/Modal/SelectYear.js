@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import uuidv1 from 'uuid/v1';
 import { ListItem, Left, Right, Text } from 'native-base';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import { theme } from '../../constants';
-import Thumbnail from '../../components/Thumbnail';
-import RightIcon from '../../img/ico_right_arrow.png';
+import { CommStatusBar, LeftBackIcon, Thumbnail } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+
+// static source
+import RightIcon from 'img/ico_right_arrow.png';
 
 const ContainerView = styled.View`
   flex: 1;

@@ -10,20 +10,29 @@ import { useStrict } from 'mobx';
 import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-import { routers, theme } from '../../../constants';
-import * as drawerUtils from '../../../utils/drawer';
-import { SalesClueType, LeadsStatus } from '../../../constants/enum';
-import { filterObject, nativeCallPhone } from '../../../utils/base';
+import { CommStatusBar, LeftBackIcon, NativeUtil, RightView } from 'xn-react-native-applets';
+
+// static source
+import AddressIcon from 'img/crm/buttonList/address.png';
+import PhoneIcon from 'img/crm/buttonList/phone.png';
+
+// constants
+import { routers, theme } from 'constants';
+import { SalesClueType, LeadsStatus } from 'constants/enum';
+
+// utils
+import * as drawerUtils from 'utils/drawer';
+import { filterObject } from 'utils/base';
+
+// logicStores
+import SalesCluesStore from 'logicStores/salesClues';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
-import FlatListTable from '../../../components/FlatListTable';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
-
-import SalesCluesStore from '../../../logicStores/salesClues';
+import SearchInput from 'components/SearchInput';
+import { ContainerView, DefaultHeaderView } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from 'components/SwipeList';
+import FlatListTable from 'components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
 
 // constants config
 import {
@@ -35,9 +44,7 @@ import {
   FilterList,
 } from './_fieldCfg';
 
-// static source
-import AddressIcon from '../../../img/crm/buttonList/address.png';
-import PhoneIcon from '../../../img/crm/buttonList/phone.png';
+const { nativeCallPhone } = NativeUtil;
 
 useStrict(true);
 

@@ -8,11 +8,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // utils
-import { isIos } from 'utils/utils';
 import { delay, formatDateByMoment, formatDateType, formatNumberToString } from 'utils/base';
-import Toast from 'utils/toast';
 
 // constants
 import { SalesChanceEnum } from 'constants/form';
@@ -26,12 +25,11 @@ import {
   PriceListType,
 } from 'constants/enum';
 
+// logicStores
+import SalesChanceStore from 'logicStores/salesChance';
+import BusinessStore from 'logicStores/business';
+
 // components
-import {
-  CommStatusBar,
-  LeftBackIcon,
-  RightView,
-} from 'components/Layout';
 import {
   ContainerScrollView,
   ContainerView,
@@ -45,8 +43,7 @@ import NavInputItem from 'components/NavInputItem';
 import ProductItem from './components/ProductItem';
 import AddProduct from './components/AddProduct';
 
-import SalesChanceStore from '../../../logicStores/salesChance';
-import BusinessStore from '../../../logicStores/business';
+const { isIos } = DevicesUtil;
 
 @observer
 class EditorMore extends React.Component {
@@ -188,7 +185,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (error) {
-      Toast.showError(error.message);
+      ToastUtil.showError(error.message);
     }
   }
   onAddProduct = () => {

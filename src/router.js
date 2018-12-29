@@ -8,10 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
-import { AboutScreen } from 'xn-react-native-applets';
+import { AboutScreen, DevicesUtil } from 'xn-react-native-applets';
 import { routers, theme } from './constants';
 import { DefaultHeaderView } from './components/Styles/Layout';
-import { getStatusBarHeight } from './utils/utils';
 import { moderateScale } from './utils/scale';
 
 // root page -> loading
@@ -104,6 +103,8 @@ import ModuleListScreen from './pages/Modal/ModuleTypePicker/ModuleList';
 import CityPickerScreen from './pages/Modal/CityPicker';
 import SalesPhasePickerScreen from './pages/Modal/SalesPhasePicker';
 import ProductPickerScreen from './pages/Modal/ProductPicker';
+
+const { getStatusBarHeight } = DevicesUtil;
 
 const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },

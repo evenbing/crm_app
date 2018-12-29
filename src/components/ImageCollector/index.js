@@ -3,13 +3,13 @@ import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ImagePicker from 'react-native-image-crop-picker';
+import { ToastUtil } from 'xn-react-native-applets';
 import uuidv1 from 'uuid/v1';
 
 // static source
 import addIcon from 'img/add.png';
 
 // utils
-import Toast from 'utils/toast';
 import { attachmentDelete } from 'service/attachment';
 
 import { theme } from '../../constants';
@@ -97,7 +97,7 @@ class ImageCollector extends React.PureComponent {
       });
       this.props.onConfirm && this.props.onConfirm(pagerData);
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       // StatusBar.setBarStyle('light-content');
     }

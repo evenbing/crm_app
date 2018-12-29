@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
 // constants
 import { routers } from 'constants';
@@ -13,7 +14,6 @@ import IcoUpcomingTasks from 'img/home/ico_upcomingtasks.png';
 
 // components
 import NavItem from 'components/NavItem';
-import { CommStatusBar, LeftBackIcon } from 'components/Layout';
 
 // logicStores
 import TaskScheduleStore from 'logicStores/taskSchedule';

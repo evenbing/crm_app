@@ -5,9 +5,12 @@
  * @author JUSTIN XU
  */
 import styled from 'styled-components';
+import { DevicesUtil } from 'xn-react-native-applets';
+
 import theme from '../../constants/theme';
-import { getFooterBottom } from '../../utils/utils';
 import { moderateScale } from '../../utils/scale';
+
+const { getFooterBottom } = DevicesUtil;
 
 // container styles
 export const ContainerView = styled.View`

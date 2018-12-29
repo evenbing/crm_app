@@ -7,13 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../constants';
-import { getHeaderHeight } from '../../utils/utils';
+import { DevicesUtil, TouchableView, Thumbnail } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import TouchableView from '../TouchableView';
-import Thumbnail from '../Thumbnail';
 import FilterList from '../Modal/FilterList';
+
+const { getHeaderHeight } = DevicesUtil;
 
 const ContainerView = styled.View``;
 

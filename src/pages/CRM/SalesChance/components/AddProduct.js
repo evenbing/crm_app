@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { DevicesUtil } from 'xn-react-native-applets';
 
 // constants
 import theme from 'constants/theme';
@@ -7,7 +8,8 @@ import theme from 'constants/theme';
 // utils
 import { formatMoney } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-import { getFooterBottom } from 'utils/utils';
+
+const { getFooterBottom } = DevicesUtil;
 
 const Container = styled.View`
   flex-direction: row;

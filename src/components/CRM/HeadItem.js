@@ -8,8 +8,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View, Text, Image } from 'react-native';
-
-import TouchableView from '../../components/TouchableView';
+import { TouchableView } from 'xn-react-native-applets';
 
 import { theme } from '../../constants';
 

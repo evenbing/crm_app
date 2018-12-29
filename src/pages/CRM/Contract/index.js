@@ -10,23 +10,27 @@ import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx/';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, NativeUtil, RightView } from 'xn-react-native-applets';
+
+// static source
+import AddressIcon from 'img/crm/buttonList/address.png';
+import PhoneIcon from 'img/crm/buttonList/phone.png';
 
 // constants
-import { theme, routers } from '../../../constants';
-import { CustomerType } from '../../../constants/enum';
+import { theme, routers } from 'constants';
+import { CustomerType } from 'constants/enum';
 
 // utils
-import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, nativeCallPhone } from '../../../utils/base';
+import * as drawerUtils from 'utils/drawer';
+import { filterObject } from 'utils/base';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, ListFooterComponent } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
-import FlatListTable from '../../../components/FlatListTable';
-import ActionSheet from '../../../components/Modal/ActionSheet';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+import SearchInput from 'components/SearchInput';
+import { ContainerView, ListFooterComponent } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList, FooterTotal } from 'components/SwipeList';
+import FlatListTable from 'components/FlatListTable';
+import ActionSheet from 'components/Modal/ActionSheet';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
 import LeftItem from './components/LeftItem';
 
 import ContractModel from '../../../logicStores/contract';
@@ -41,9 +45,7 @@ import {
   FilterList,
 } from './_fieldCfg';
 
-// static source
-import AddressIcon from '../../../img/crm/buttonList/address.png';
-import PhoneIcon from '../../../img/crm/buttonList/phone.png';
+const { nativeCallPhone } = NativeUtil;
 
 useStrict(true);
 

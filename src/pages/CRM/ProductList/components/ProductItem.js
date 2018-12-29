@@ -8,6 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
@@ -15,10 +16,6 @@ import { theme } from 'constants';
 // utils
 import { formatMoney } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-
-// components
-import TouchableView from 'components/TouchableView';
-import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled(TouchableView)`
   height: ${moderateScale(100)};

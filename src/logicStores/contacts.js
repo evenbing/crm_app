@@ -6,6 +6,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getContactList,
   createContact,
@@ -17,7 +18,6 @@ import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { TASK_TYPE, SCHEDULE_TYPE, ModuleType } from '../constants/enum';
 import { getSalesChanceList } from '../service/salesChance';
 import { createLocationId } from '../service/app';
-import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 
 useStrict(true);
@@ -60,7 +60,7 @@ class ContactStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.contactList.refreshing = false;
@@ -85,7 +85,7 @@ class ContactStore {
         this.contactDetails.map = contact;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.contactDetails.refreshing = false;
@@ -131,7 +131,7 @@ class ContactStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.contactTotal = initTotal;
       });
@@ -155,7 +155,7 @@ class ContactStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -177,7 +177,7 @@ class ContactStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -194,7 +194,7 @@ class ContactStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Thumbnail } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
@@ -11,9 +12,6 @@ import EditorIcon from 'img/editor.png';
 // utils
 import { moderateScale } from 'utils/scale';
 import { formatMoney } from 'utils/base';
-
-// components
-import Thumbnail from 'components/Thumbnail';
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;

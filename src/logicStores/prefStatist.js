@@ -7,6 +7,7 @@
 import moment from 'moment';
 import { action, observable, runInAction, useStrict, computed } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getSalesSum,
   getSalesTrend,
@@ -14,7 +15,6 @@ import {
   getSalesRankingList,
   getFollowUpStatisticList,
 } from '../service/prefStatist';
-import Toast from '../utils/toast';
 import { initFlatList, initFollowUpList } from './initState';
 import { mapToArray } from '../utils/base';
 import { FollowUpModuleType } from '../constants/enum';
@@ -122,7 +122,7 @@ class PrefStatistStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -142,7 +142,7 @@ class PrefStatistStore {
         });
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -158,7 +158,7 @@ class PrefStatistStore {
         this.salesStatisticList = [...salesStatisticList];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -180,7 +180,7 @@ class PrefStatistStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -236,7 +236,7 @@ class PrefStatistStore {
         this.followUpList.list = [...dynamicFollowUpStatisticList];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.followUpList.refreshing = false;

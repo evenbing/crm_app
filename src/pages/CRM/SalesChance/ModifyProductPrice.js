@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { CommStatusBar, LeftBackIcon, RightView, Thumbnail, DevicesUtil } from 'xn-react-native-applets';
 
 // utils
-import { isIos } from 'utils/utils';
 import { delay, formatNumberToString } from 'utils/base';
 
 // constants
@@ -15,18 +15,14 @@ import {
   ContainerView,
   ContainerScrollView,
 } from 'components/Styles/Layout';
-import {
-  CommStatusBar,
-  LeftBackIcon,
-  RightView,
-} from 'components/Layout';
 import NavInputItem from 'components/NavInputItem';
 import {
   TextareaGroup,
   TextareaView,
 } from 'components/Styles/Editor';
-import Thumbnail from 'components/Thumbnail';
 import { CenterText } from 'components/Styles/Form';
+
+const { isIos } = DevicesUtil;
 
 const ProductImage = styled.View`
   padding-top: ${theme.moderateScale(14)}px;

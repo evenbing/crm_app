@@ -9,13 +9,11 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import uuidv1 from 'uuid/v1';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil, DevicesUtil } from 'xn-react-native-applets';
 
 // utils
 import { delay, formatDateByMoment, formatNumberToString } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-import Toast from 'utils/toast';
-import { isIos } from 'utils/utils';
 
 // constants
 import { theme, routers } from 'constants';
@@ -24,7 +22,6 @@ import { TaskEnum } from 'constants/form';
 
 // components
 import DateTimePicker from 'components/DateTimePicker';
-import { LeftBackIcon, CommStatusBar, RightView } from 'components/Layout';
 import NavInputItem from 'components/NavInputItem';
 import { FormActionSheet } from 'components/Modal';
 import { CenterText } from 'components/Styles/Form';
@@ -36,6 +33,7 @@ import TaskScheduleModel from 'logicStores/taskSchedule';
 import AttachmentModel from 'logicStores/attachment';
 import { getNewId } from '../../service/app';
 
+const { isIos } = DevicesUtil;
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
 const ScrollView = styled.ScrollView`
@@ -177,7 +175,7 @@ class AddTask extends Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   onFocus = async (y = 40) => {
@@ -335,7 +333,7 @@ class AddTask extends Component {
             leftText="负责人"
             onPress={() => {
               if (!(moduleId && moduleType)) {
-                Toast.showError('请先选择关联业务');
+                ToastUtil.showError('请先选择关联业务');
                 return;
               }
               navigate(routers.selectEmployee, {
@@ -364,7 +362,7 @@ class AddTask extends Component {
             leftText="参与人"
             onPress={() => {
               if (!(moduleId && moduleType)) {
-                Toast.showError('请先选择关联业务');
+                ToastUtil.showError('请先选择关联业务');
                 return;
               }
               navigate(routers.selectEmployee, {

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
 import { ListItem, Left, Body, Text, Right } from 'native-base';
+import { CommStatusBar, LeftBackIcon, Thumbnail } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
@@ -25,10 +26,8 @@ import navIcon from 'img/nav.png';
 import RelatedDocsModel from 'logicStores/relatedDocs';
 
 // components
-import { LeftBackIcon, CommStatusBar } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
-import Thumbnail from 'components/Thumbnail';
 
 const NavIconView = styled.Image`
   width: ${moderateScale(6)};

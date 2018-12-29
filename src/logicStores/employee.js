@@ -6,13 +6,13 @@
  */
 import { action, observable, computed, runInAction, useStrict } from 'mobx';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getEmployeeList,
   createTeamUser,
   getManageTeamList,
   getOwnerUserName,
 } from '../service/employee';
-import Toast from '../utils/toast';
 import { formatMemberList } from '../utils/base';
 
 useStrict(true);
@@ -63,7 +63,7 @@ class EmployeeStore {
         this.employeeList = formatMemberList(result);
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.refreshing = false;
@@ -93,7 +93,7 @@ class EmployeeStore {
         this.manageTeamList.teamList = [...teamList];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.manageTeamList.refreshing = false;
@@ -110,7 +110,7 @@ class EmployeeStore {
       await createTeamUser(options);
       callback && callback();
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

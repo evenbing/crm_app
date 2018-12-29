@@ -7,10 +7,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView } from 'xn-react-native-applets';
+
 import { theme } from '../constants';
 
 import BorderShadow from './Shadow/BorderShadow';
-import TouchableView from './TouchableView';
 
 // shadow-opacity: 0.2;
 // shadow-radius: 2px;

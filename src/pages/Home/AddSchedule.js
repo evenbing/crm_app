@@ -10,21 +10,26 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // utils
 import { moderateScale } from 'utils/scale';
-import { isIos } from 'utils/utils';
 import { formatDateByMoment, formatNumberToString, delay } from 'utils/base';
-import Toast from 'utils/toast';
 
 // constants
 import { theme, routers } from 'constants';
 import { NoticeTypes, RepeatTypes } from 'constants/enum';
 import { TaskEnum } from 'constants/form';
 
+// service
+import { getNewId, createLocationId } from 'service/app';
+
+// logicStores
+import TaskScheduleModel from 'logicStores/taskSchedule';
+import AttachmentModel from 'logicStores/attachment';
+
 // components
 import DateTimePicker from 'components/DateTimePicker';
-import { LeftBackIcon, CommStatusBar, RightView } from 'components/Layout';
 import NavInputItem from 'components/NavInputItem';
 import { FormActionSheet } from 'components/Modal';
 import { CenterText } from 'components/Styles/Form';
@@ -32,10 +37,7 @@ import ImageCollector from 'components/ImageCollector';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
 import { ContainerView } from 'components/Drawer/Styles';
 
-import TaskScheduleModel from '../../logicStores/taskSchedule';
-import AttachmentModel from '../../logicStores/attachment';
-import { getNewId, createLocationId } from '../../service/app';
-
+const { isIos } = DevicesUtil;
 const formatDateType = 'YYYY-MM-DD HH:mm';
 
 const ScrollView = styled.ScrollView`
@@ -199,7 +201,7 @@ class AddSchedule extends Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   onFocus = async (y = 40) => {
@@ -387,7 +389,7 @@ class AddSchedule extends Component {
             leftText="参与人"
             onPress={() => {
               // if (!(moduleId && moduleType)) {
-              //   Toast.showError('请先选择关联业务');
+              //   ToastUtil.showError('请先选择关联业务');
               //   return;
               // }
               navigate(routers.selectEmployee, {

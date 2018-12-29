@@ -9,22 +9,21 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { StatusBar, KeyboardAvoidingView } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import { ToastUtil, Thumbnail, TouchableView, DevicesUtil } from 'xn-react-native-applets';
 
 // utils
-import { moderateScale } from '../../utils/scale';
-import { getFooterBottom, isIos, isIphoneX } from '../../utils/utils';
-import { mapToArray, formatPickerImage } from '../../utils/base';
-import Toast from '../../utils/toast';
+import { moderateScale } from 'utils/scale';
+import { mapToArray, formatPickerImage } from 'utils/base';
 
 // constants
-import { theme } from '../../constants';
-import { DynamicRecordType, CameraOrPickerType } from '../../constants/enum';
+import { theme } from 'constants';
+import { DynamicRecordType, CameraOrPickerType } from 'constants/enum';
 
 // components
-import Thumbnail from '../Thumbnail';
-import TouchableView from '../TouchableView';
 import { SendFilterList, FormActionSheet } from '../Modal';
 import TextInput from '../TextInput';
+
+const { getFooterBottom, isIos, isIphoneX } = DevicesUtil;
 
 const ContainerView = styled.View`
   position: absolute;
@@ -146,7 +145,7 @@ class SendFooter extends React.PureComponent {
         this.setState({ content: null });
       });
     } catch (err) {
-      Toast.showError(err.message);
+      ToastUtil.showError(err.message);
     }
   };
 

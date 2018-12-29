@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
@@ -19,8 +20,6 @@ import PrincipalIcon from 'img/crm/details/principalGo.png';
 
 // components
 import { HeaderBack } from 'components/Details';
-import TouchableView from 'components/TouchableView';
-import Thumbnail from 'components/Thumbnail';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;

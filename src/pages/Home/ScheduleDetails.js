@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import { Alert } from 'react-native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
+
 
 // constants
 import { routers, theme } from 'constants';
@@ -22,7 +24,6 @@ import { formatDateByMoment } from 'utils/base';
 import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
-import { CommStatusBar, LeftBackIcon } from 'components/Layout';
 import { ContainerView, ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { renderBasicItem, RemarkView, RemarkText, ImageTitleView } from 'components/Details/Styles';

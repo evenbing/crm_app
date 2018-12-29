@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { RefreshControl } from 'react-native';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -18,7 +19,6 @@ import LeaderIcon from 'img/team/leader.png';
 import AddUserIcon from 'img/team/addUser.png';
 
 // components
-import { CommStatusBar, LeftBackIcon } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import Accordion from 'components/Accordion';

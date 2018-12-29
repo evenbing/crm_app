@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Thumbnail } from 'xn-react-native-applets';
 import { Image, View } from 'react-native';
 
 // constants
@@ -14,9 +15,6 @@ import { theme } from 'constants';
 
 // utils
 import { formatMoney } from 'utils/base';
-
-// components
-import Thumbnail from 'components/Thumbnail';
 
 const CardItemGroup = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;

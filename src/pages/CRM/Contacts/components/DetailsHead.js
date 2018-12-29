@@ -7,12 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
+
+import { theme } from 'constants';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import Thumbnail from '../../../../components/Thumbnail';
-import TouchableView from '../../../../components/TouchableView';
+import { HeaderBack } from 'components/Details';
 
 const ContainerView = styled.View`
   padding: 0 ${theme.moderateScale(15)}px;

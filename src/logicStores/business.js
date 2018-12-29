@@ -7,11 +7,11 @@
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   create,
   find,
 } from '../service/business';
-import Toast from '../utils/toast';
 import { initDetailMap } from './initState';
 
 useStrict(true);
@@ -34,7 +34,7 @@ class BusinessStore {
         callback && callback(this.businessDetail.list);
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.businessDetail.refreshing = false;
@@ -55,7 +55,7 @@ class BusinessStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

@@ -7,15 +7,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 import moment from 'moment';
-import { theme } from '../../constants';
-import { DynamicRecordType } from '../../constants/enum';
-import { moderateScale } from '../../utils/scale';
-import { getIamgeByFileExtension } from '../../utils/fileExtension';
 
-// components
-import TouchableView from '../TouchableView';
-import Thumbnail from '../Thumbnail';
+// constants
+import { theme } from 'constants';
+import { DynamicRecordType } from 'constants/enum';
+
+// utils
+import { moderateScale } from 'utils/scale';
+import { getIamgeByFileExtension } from 'utils/fileExtension';
 
 const ContainerView = styled(TouchableView)`
   flex-direction: row;

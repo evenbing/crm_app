@@ -3,19 +3,24 @@ import PropTypes from 'prop-types';
 import { ListItem, Left, Text, Right } from 'native-base';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { LeftBackIcon, CommStatusBar } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import Thumbnail from '../../../components/Thumbnail';
-import FlatListTable from '../../../components/FlatListTable';
-import okIcon from '../../../img/modal/ok.png';
+import { Thumbnail, LeftBackIcon, CommStatusBar } from 'xn-react-native-applets';
 
-// store
-import CustomerStore from '../../../logicStores/customer';
-import ContactStore from '../../../logicStores/contacts';
-import MarkActivityStore from '../../../logicStores/markActivity';
-import SalesClueStore from '../../../logicStores/salesClues';
-import SalesChanceStore from '../../../logicStores/salesChance';
-import { ModuleTypes } from '../../../constants/enum';
+// static source
+import okIcon from 'img/modal/ok.png';
+
+// constants
+import { ModuleTypes } from 'constants/enum';
+
+// logicStores
+import CustomerStore from 'logicStores/customer';
+import ContactStore from 'logicStores/contacts';
+import MarkActivityStore from 'logicStores/markActivity';
+import SalesClueStore from 'logicStores/salesClues';
+import SalesChanceStore from 'logicStores/salesChance';
+
+// components
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
 
 useStrict(true);
 

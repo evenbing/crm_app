@@ -8,15 +8,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Image } from 'react-native';
+import { TouchableView } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
 
 // utils
 import { moderateScale } from 'utils/scale';
-
-// components
-import TouchableView from '../TouchableView';
 
 const ContainerView = styled(TouchableView)`
   width: 100%;

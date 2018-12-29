@@ -9,27 +9,35 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { theme, routers } from '../../../constants';
-import { ModuleType } from '../../../constants/enum';
-import { formatLocationMap, getUserId, nativeCallPhone } from '../../../utils/base';
-import { getNewId } from '../../../service/app';
-import Toast from '../../../utils/toast';
+import { CommStatusBar, LeftBackIcon, NativeUtil, ToastUtil } from 'xn-react-native-applets';
+
+// constants
+import { theme, routers } from 'constants';
+import { ModuleType } from 'constants/enum';
+
+// utils
+import { formatLocationMap, getUserId } from 'utils/base';
+
+// service
+import { getNewId } from 'service/app';
+
+// logicStores
+import SalesCluesModel from 'logicStores/salesClues';
+import DynamicModel from 'logicStores/dynamic';
+import AttachmentModel from 'logicStores/attachment';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../../components/TabContainer';
-import DynamicList from '../../../components/Details/DynamicList';
-import SendFooter from '../../../components/Details/SendFooter';
-import EditorFooter from '../../../components/Details/EditorFooter';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import FlatListTable from 'components/FlatListTable';
+import TabContainer from 'components/TabContainer';
+import DynamicList from 'components/Details/DynamicList';
+import SendFooter from 'components/Details/SendFooter';
+import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
 
-import SalesCluesModel from '../../../logicStores/salesClues';
-import DynamicModel from '../../../logicStores/dynamic';
-import AttachmentModel from '../../../logicStores/attachment';
+const { nativeCallPhone } = NativeUtil;
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -96,7 +104,7 @@ class Details extends React.Component {
         });
       });
     } catch (err) {
-      Toast.showError(err.message);
+      ToastUtil.showError(err.message);
     }
   };
   onPressSend = ({ content, contentType }, callback) => {

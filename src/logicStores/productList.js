@@ -6,12 +6,12 @@
  */
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getProductClazzList,
   updateProduct,
   getPriceProductList,
 } from '../service/product';
-import Toast from '../utils/toast';
 import { getArrayByPid } from '../utils/base';
 import { initFlatList } from './initState';
 
@@ -69,7 +69,7 @@ class ProductListStore {
         this.productList.topList = [...topList];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.productList.refreshing = false;
@@ -86,7 +86,7 @@ class ProductListStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

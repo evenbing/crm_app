@@ -8,8 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
-import { theme } from '../../constants/index';
-import { getHeaderPadding } from '../../utils/utils';
+import { DevicesUtil } from 'xn-react-native-applets';
+
+import { theme } from 'constants';
+
+const { getHeaderPadding } = DevicesUtil;
 
 const ContainerView = styled.View`
   flex: 1;

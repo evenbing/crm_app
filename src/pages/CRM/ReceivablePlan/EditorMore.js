@@ -8,31 +8,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
-import theme from 'constants/theme';
+import { theme, routers } from 'constants';
 import { ContractEnum, ReceivablePlanEnum } from 'constants/form';
 import { DataTitleTypes } from 'constants/enum';
 
 // utils
 import { moderateScale } from 'utils/scale';
-import { isIos } from 'utils/utils';
 import { formatDateByMoment, formatNumberToString, formatDateType, delay } from 'utils/base';
-import Toast from 'utils/toast';
+
+// logicStores
+import ReceivablePlanModel from 'logicStores/receivablePlan';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import NavInputItem from '../../../components/NavInputItem';
-import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
-import DateTimePicker from '../../../components/DateTimePicker';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import NavInputItem from 'components/NavInputItem';
+import { ListView, CenterText, RightText } from 'components/Styles/Form';
+import DateTimePicker from 'components/DateTimePicker';
 import { getReceivablePriceStatus, getDateTimeStatus } from './components/ActivityDetailsItem';
 
-import ReceivablePlanModel from '../../../logicStores/receivablePlan';
-import routers from '../../../constants/routers';
-
+const { isIos } = DevicesUtil;
 const LeftViewWidth = moderateScale(110);
 
 @observer
@@ -88,7 +87,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   onFocus = async (y = 40) => {

@@ -10,31 +10,34 @@ import { StatusBar } from 'react-native';
 import { useStrict, toJS } from 'mobx';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
-
-// constants
-import { routers, theme } from '../../../constants';
-import { CustomerType, ModuleType, SalesChanceType } from '../../../constants/enum';
-import { TYPE_CUSTOMER_LIST } from '../../../constants/drawer';
-
-// utils
-import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, formatDateByMoment, getUserId } from '../../../utils/base';
-
-// components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
-import FlatListTable from '../../../components/FlatListTable';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
-import LeftItem from './components/LeftItem';
-import BoardList from './components/BoardList';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
 
 // static source
-import listIcon from '../../../img/crm/screenTab/list.png';
-import boardIcon from '../../../img/crm/screenTab/board.png';
+import FollowIcon from 'img/crm/buttonList/follow.png';
+import UnFollowIcon from 'img/crm/buttonList/unFollow.png';
+import listIcon from 'img/crm/screenTab/list.png';
+import boardIcon from 'img/crm/screenTab/board.png';
 
-import SalesChanceStore from '../../../logicStores/salesChance';
+// constants
+import { routers, theme } from 'constants';
+import { CustomerType, ModuleType, SalesChanceType } from 'constants/enum';
+import { TYPE_CUSTOMER_LIST } from 'constants/drawer';
+
+// utils
+import * as drawerUtils from 'utils/drawer';
+import { filterObject, formatDateByMoment, getUserId } from 'utils/base';
+
+// logicStores
+import SalesChanceStore from 'logicStores/salesChance';
+
+// components
+import SearchInput from 'components/SearchInput';
+import { ContainerView, DefaultHeaderView } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from 'components/SwipeList';
+import FlatListTable from 'components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
+import LeftItem from './components/LeftItem';
+import BoardList from './components/BoardList';
 
 // constants config
 import {
@@ -46,10 +49,6 @@ import {
   IsBoardTypeMap,
   FilterList,
 } from './_fieldCfg';
-
-// static source
-import FollowIcon from '../../../img/crm/buttonList/follow.png';
-import UnFollowIcon from '../../../img/crm/buttonList/unFollow.png';
 
 useStrict(true);
 

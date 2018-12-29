@@ -7,8 +7,8 @@
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import { uploadImageReq } from '../service/attachment';
-import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -54,7 +54,7 @@ class AttachmentStore {
         callback && callback(restProps);
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

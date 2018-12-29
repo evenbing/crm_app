@@ -7,26 +7,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
-import { routers, theme as themeVar } from '../../../constants';
-import { ContractEnum } from '../../../constants/form';
-import { CustomerType } from '../../../constants/enum';
+import { routers, theme as themeVar } from 'constants';
+import { ContractEnum } from 'constants/form';
+import { CustomerType } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, formatDateType } from '../../../utils/base';
-import { verifyDateTime } from '../../../utils/formVerify';
-import Toast from '../../../utils/toast';
+import { formatDateByMoment, formatDateType } from 'utils/base';
+import { verifyDateTime } from 'utils/formVerify';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TitleItem from '../../../components/Details/TitleItem';
-import NavInputItem from '../../../components/NavInputItem';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import { ContainerScrollView } from '../../../components/Styles/Layout';
-import { ListView, CenterText, RightText } from '../../../components/Styles/Form';
-import DateTimePicker from '../../../components/DateTimePicker';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import TitleItem from 'components/Details/TitleItem';
+import NavInputItem from 'components/NavInputItem';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+import { ContainerScrollView } from 'components/Styles/Layout';
+import { ListView, CenterText, RightText } from 'components/Styles/Form';
+import DateTimePicker from 'components/DateTimePicker';
 // import { FormActionSheet } from '../../../components/Modal';
 
 import ContractModel from '../../../logicStores/contract';
@@ -93,7 +92,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   render() {

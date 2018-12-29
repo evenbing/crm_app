@@ -8,9 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DatePicker } from 'antd-mobile-rn';
-
-// components
-import TouchableView from './TouchableView';
+import { TouchableView } from 'xn-react-native-applets';
 
 const ContainerView = styled.View``;
 

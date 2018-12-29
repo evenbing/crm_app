@@ -7,14 +7,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import TabsPanel from '../../../components/TabsPanel';
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import FlatListTable from '../../../components/FlatListTable';
+import TabsPanel from 'components/TabsPanel';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import FlatListTable from 'components/FlatListTable';
 import FollowUpItem from './components/FollowUpItem';
 
 import PrefStatistModel from '../../../logicStores/prefStatist';

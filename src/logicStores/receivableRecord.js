@@ -6,6 +6,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getReceivableRecordList,
   getReceivableRecordDetails,
@@ -14,7 +15,6 @@ import {
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
 import { getAppModuleType } from '../utils/base';
-import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -67,7 +67,7 @@ class ReceivableRecordStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.receivableRecordList.refreshing = false;
@@ -92,7 +92,7 @@ class ReceivableRecordStore {
         this.receivableRecordDetails.map = receivableDetail;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.receivableRecordDetails.refreshing = false;
@@ -120,7 +120,7 @@ class ReceivableRecordStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.receivableRecordTotal = initTotal;
       });
@@ -140,7 +140,7 @@ class ReceivableRecordStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

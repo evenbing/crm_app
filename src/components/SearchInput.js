@@ -7,8 +7,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { TouchableView } from 'xn-react-native-applets';
+
 import TextInput from './TextInput';
-import TouchableView from './TouchableView';
 import { moderateScale } from '../utils/scale';
 
 const SearchView = styled.View`

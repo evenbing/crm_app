@@ -10,24 +10,29 @@ import { useStrict } from 'mobx';
 import { StatusBar } from 'react-native';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
+
+// static source
+import FollowIcon from 'img/crm/buttonList/follow.png';
+import UnFollowIcon from 'img/crm/buttonList/unFollow.png';
 
 // constants
-import { routers, theme } from '../../../constants';
-import { MarkActivityType, MarketActivityStatus, ModuleType } from '../../../constants/enum';
+import { routers, theme } from 'constants';
+import { MarkActivityType, MarketActivityStatus, ModuleType } from 'constants/enum';
 
 // utils
-import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, formatDateByMoment, formatDateType, getUserId } from '../../../utils/base';
+import * as drawerUtils from 'utils/drawer';
+import { filterObject, formatDateByMoment, formatDateType, getUserId } from 'utils/base';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout/index';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, DefaultHeaderView } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList } from '../../../components/SwipeList';
-import FlatListTable from '../../../components/FlatListTable';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+import SearchInput from 'components/SearchInput';
+import { ContainerView, DefaultHeaderView } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList } from 'components/SwipeList';
+import FlatListTable from 'components/FlatListTable';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
 
-import MarkActivityStore from '../../../logicStores/markActivity';
+// logicStores
+import MarkActivityStore from 'logicStores/markActivity';
 
 // constants config
 import {
@@ -38,10 +43,6 @@ import {
   MarkActivityResponsibilityTypeFilterMap,
   FilterList,
 } from './_fieldCfg';
-
-// static source
-import FollowIcon from '../../../img/crm/buttonList/follow.png';
-import UnFollowIcon from '../../../img/crm/buttonList/unFollow.png';
 
 useStrict(true);
 

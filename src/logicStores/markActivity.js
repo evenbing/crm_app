@@ -7,6 +7,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getMarkActivityList,
   createMarkActivity,
@@ -18,7 +19,6 @@ import {
   createFollow,
   deleteFollow,
 } from '../service/app';
-import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
@@ -66,7 +66,7 @@ class MarkActivityStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.markActivityList.refreshing = false;
@@ -90,7 +90,7 @@ class MarkActivityStore {
         this.markActivityDetail.map = activity;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -138,7 +138,7 @@ class MarkActivityStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.markActivityTotal = initTotal;
       });
@@ -157,7 +157,7 @@ class MarkActivityStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -174,7 +174,7 @@ class MarkActivityStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -191,7 +191,7 @@ class MarkActivityStore {
          callback && callback();
        });
      } catch (e) {
-       Toast.showError(e.message);
+       ToastUtil.showError(e.message);
      }
    }
 
@@ -204,14 +204,14 @@ class MarkActivityStore {
            errors = [],
          } = await deleteFollow({ id: followId });
          if (errors.length) throw new Error(errors[0].message);
-         Toast.showSuccess('取消关注成功');
+         ToastUtil.showSuccess('取消关注成功');
        } else {
          // 执行关注
          const {
            errors = [],
          } = await createFollow(restProps);
          if (errors.length) throw new Error(errors[0].message);
-         Toast.showSuccess('关注成功');
+         ToastUtil.showSuccess('关注成功');
        }
        runInAction(() => {
          this.getMarkActivityDetailReq({ id: restProps.objectId });
@@ -219,7 +219,7 @@ class MarkActivityStore {
          callback && callback();
        });
      } catch (e) {
-       Toast.showError(e.message);
+       ToastUtil.showError(e.message);
      }
    }
 }

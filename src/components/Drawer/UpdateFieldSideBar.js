@@ -7,12 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import theme from '../../constants/theme';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
+
+import theme from 'constants/theme';
 
 // components
 import FooterGroup from './FooterGroup';
-import Thumbnail from '../Thumbnail';
-import TouchableView from '../TouchableView';
 import {
   ContainerView,
   TopTitleText,

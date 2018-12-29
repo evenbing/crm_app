@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { routers, theme } from 'constants';
@@ -17,11 +18,8 @@ import { DataTitleTypes, PayType } from 'constants/enum';
 // utils
 import { delay, formatDateByMoment, formatDateType, formatNumberToString } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-import { isIos } from 'utils/utils';
-import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
@@ -32,6 +30,7 @@ import DateTimePicker from 'components/DateTimePicker';
 // logicStores
 import ReceivableRecordModel from 'logicStores/receivableRecord';
 
+const { isIos } = DevicesUtil;
 const LeftViewWidth = moderateScale(110);
 
 @observer
@@ -93,7 +92,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   onFocus = async (y = 40) => {

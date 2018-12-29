@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil, DevicesUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -16,11 +17,11 @@ import { LeadsSource, MarkActivityType, SexTypes } from 'constants/enum';
 // utils
 import { delay, formatLocationMap, formatNumberToString } from 'utils/base';
 import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from 'utils/formVerify';
-import { isIos } from 'utils/utils';
-import Toast from 'utils/toast';
+
+// logicStores
+import SalesCluesModel from 'logicStores/salesClues';
 
 // components
-import { LeftBackIcon, RightView, CommStatusBar } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import TitleItem from 'components/Details/TitleItem';
 import NavInputItem from 'components/NavInputItem';
@@ -29,8 +30,7 @@ import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
 import { ListView, CenterText } from 'components/Styles/Form';
 import FormActionSheet from 'components/Modal/FormActionSheet';
 
-// logicStores
-import SalesCluesModel from 'logicStores/salesClues';
+const { isIos } = DevicesUtil;
 
 class CreateSalesClueMore extends React.Component {
   state = {
@@ -96,7 +96,7 @@ class CreateSalesClueMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   onFocus = async (y = 40) => {

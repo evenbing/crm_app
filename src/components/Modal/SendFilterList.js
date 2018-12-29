@@ -8,12 +8,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
-import { theme } from '../../constants';
-import { moderateScale } from '../../utils/scale';
+import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
-// components
-import TouchableView from '../../components/TouchableView';
-import Thumbnail from '../../components/Thumbnail';
+// constants
+import { theme } from 'constants';
+
+// utils
+import { moderateScale } from 'utils/scale';
 
 const ModalView = styled(Modal)`
   margin-top: ${props => theme.moderateScale(props.myMarginTop)};

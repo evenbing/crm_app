@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
 
-import { LeftBackIcon, RightView, CommStatusBar } from '../../../components/Layout';
-import { theme, routers } from '../../../constants';
-import { ContainerView } from '../../../components/Styles/Layout';
-import okIcon from '../../../img/go.png';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { ProductType, PriceListType } from '../../../constants/enum';
+// static source
+import okIcon from 'img/go.png';
+
+// constants
+import { theme, routers } from 'constants';
+import { SalesChanceEnum } from 'constants/form';
+import { ProductType, PriceListType } from 'constants/enum';
+
+// utils
+import { width } from 'utils/scale';
+
+// components
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
 import ProductListItem from './ProductListItem';
-import { SalesChanceEnum } from '../../../constants/form';
-import { width } from '../../../utils/scale';
 
 const FlatList = styled.FlatList`
   flex: 1;

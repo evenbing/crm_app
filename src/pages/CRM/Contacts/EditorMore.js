@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -15,16 +16,13 @@ import { ContactsEnum } from 'constants/form';
 import { CustomerType, SexTypes } from 'constants/enum';
 
 // utils
-import { isIos } from 'utils/utils';
 import { formatDateByMoment, formatLocationMap, formatNumberToString, formatDateType, delay } from 'utils/base';
 import { verifyPhone, verifyMobile, verifyEMail, verifyPostalCode } from 'utils/formVerify';
-import Toast from 'utils/toast';
 
 // logicStores
 import ContactsModel from 'logicStores/contacts';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
@@ -33,6 +31,8 @@ import NavInputItem from 'components/NavInputItem';
 import { FormActionSheet } from 'components/Modal';
 import DateTimePicker from 'components/DateTimePicker';
 import { ListView, CenterText } from 'components/Styles/Form';
+
+const { isIos } = DevicesUtil;
 
 @observer
 class EditorMore extends React.Component {
@@ -96,7 +96,7 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   onFocus = async (y = 40) => {

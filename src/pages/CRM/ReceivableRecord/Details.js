@@ -9,30 +9,32 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, ToastUtil } from 'xn-react-native-applets';
 
 // constants
-import { theme, routers } from '../../../constants';
-import { ModuleType } from '../../../constants/enum';
+import { theme, routers } from 'constants';
+import { ModuleType } from 'constants/enum';
 
 // utils
-import { formatDateByMoment, getUserId } from '../../../utils/base';
-import Toast from '../../../utils/toast';
+import { formatDateByMoment, getUserId } from 'utils/base';
+
+// service
+import { getNewId } from 'service/app';
+
+// logicStores
+import ReceivableRecordModel from 'logicStores/receivableRecord';
+import DynamicModel from 'logicStores/dynamic';
+import AttachmentModel from 'logicStores/attachment';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../../components/TabContainer';
-import DynamicList from '../../../components/Details/DynamicList';
-import SendFooter from '../../../components/Details/SendFooter';
-import EditorFooter from '../../../components/Details/EditorFooter';
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
+import TabContainer from 'components/TabContainer';
+import DynamicList from 'components/Details/DynamicList';
+import SendFooter from 'components/Details/SendFooter';
+import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
-
-import ReceivableRecordModel from '../../../logicStores/receivableRecord';
-import DynamicModel from '../../../logicStores/dynamic';
-import AttachmentModel from '../../../logicStores/attachment';
-import { getNewId } from '../../../service/app';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -97,7 +99,7 @@ class Details extends React.Component {
         });
       });
     } catch (err) {
-      Toast.showError(err.message);
+      ToastUtil.showError(err.message);
     }
   };
   onPressSend = ({ content, contentType }, callback) => {

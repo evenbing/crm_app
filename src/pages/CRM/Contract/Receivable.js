@@ -7,14 +7,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
-import { theme } from '../../../constants';
-import { DataTitleTypes } from '../../../constants/enum';
-import { moderateScale } from '../../../utils/scale';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+import { DataTitleTypes } from 'constants/enum';
+
+// utils
+import { moderateScale } from 'utils/scale';
 
 // components
-import { ContainerView } from '../../../components/Styles/Layout';
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import FlatListTable from '../../../components/FlatListTable';
+import { ContainerView } from 'components/Styles/Layout';
+import FlatListTable from 'components/FlatListTable';
 import ReceivableTitle from './components/ReceivableTitle';
 import ReceivableItem from './components/ReceivableItem';
 

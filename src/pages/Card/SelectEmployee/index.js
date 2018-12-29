@@ -7,12 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
 
 // constants
 import { theme } from 'constants';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import SearchInput from 'components/SearchInput';
 import { ContainerView } from 'components/Styles/Layout';
 import MemberList from 'components/MemberList/MemberList';

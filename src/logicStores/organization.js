@@ -6,10 +6,10 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getOrganizationList,
 } from '../service/organization';
-import Toast from '../utils/toast';
 import { initFlatList } from './initState';
 
 useStrict(true);
@@ -42,7 +42,7 @@ class OrganizationStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.organizationList.refreshing = false;

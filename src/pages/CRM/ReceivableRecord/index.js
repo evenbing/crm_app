@@ -10,27 +10,32 @@ import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx/';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, NativeUtil } from 'xn-react-native-applets';
+
+// static source
+import AddressIcon from 'img/crm/buttonList/address.png';
+import PhoneIcon from 'img/crm/buttonList/phone.png';
 
 // constants
-import { routers, theme } from '../../../constants';
-import { CustomerType } from '../../../constants/enum';
-import { TYPE_CUSTOMER_LIST } from '../../../constants/drawer';
+import { routers, theme } from 'constants';
+import { CustomerType } from 'constants/enum';
+import { TYPE_CUSTOMER_LIST } from 'constants/drawer';
 
 // utils
-import * as drawerUtils from '../../../utils/drawer';
-import { filterObject, nativeCallPhone } from '../../../utils/base';
+import * as drawerUtils from 'utils/drawer';
+import { filterObject } from 'utils/base';
+
+// logicStores
+import ReceivableRecordModel from 'logicStores/receivableRecord';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import SearchInput from '../../../components/SearchInput';
-import { ContainerView, ListFooterComponent } from '../../../components/Styles/Layout';
-import { ScreenTab, ListItem, ButtonList, FooterTotal } from '../../../components/SwipeList';
-import FlatListTable from '../../../components/FlatListTable';
-import ActionSheet from '../../../components/Modal/ActionSheet';
-import { Drawer, FilterSideBar, UpdateFieldSideBar } from '../../../components/Drawer';
+import SearchInput from 'components/SearchInput';
+import { ContainerView, ListFooterComponent } from 'components/Styles/Layout';
+import { ScreenTab, ListItem, ButtonList, FooterTotal } from 'components/SwipeList';
+import FlatListTable from 'components/FlatListTable';
+import ActionSheet from 'components/Modal/ActionSheet';
+import { Drawer, FilterSideBar, UpdateFieldSideBar } from 'components/Drawer';
 import LeftItem from './components/LeftItem';
-
-import ReceivableRecordModel from '../../../logicStores/receivableRecord';
 
 // constants config
 import {
@@ -42,9 +47,7 @@ import {
   FilterList,
 } from './_fieldCfg';
 
-// static source
-import AddressIcon from '../../../img/crm/buttonList/address.png';
-import PhoneIcon from '../../../img/crm/buttonList/phone.png';
+const { nativeCallPhone } = NativeUtil;
 
 useStrict(true);
 

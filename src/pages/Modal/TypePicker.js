@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, Left, Right, Text } from 'native-base';
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import Thumbnail from '../../components/Thumbnail';
-import { ContainerScrollView } from '../../components/Styles/Layout';
+import { CommStatusBar, LeftBackIcon, Thumbnail } from 'xn-react-native-applets';
+
+
+import { ContainerScrollView } from 'components/Styles/Layout';
 
 const TypePicker = (props) => {
   const {

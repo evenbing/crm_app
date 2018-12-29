@@ -6,12 +6,12 @@
  */
 import moment from 'moment';
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
+import { ToastUtil } from 'xn-react-native-applets';
 import autobind from 'autobind-decorator';
 import {
   getDynamicList,
   createDynamic,
 } from '../service/dynamic';
-import Toast from '../utils/toast';
 import { initFlatList } from './initState';
 
 useStrict(true);
@@ -101,7 +101,7 @@ class DynamicStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.dynamicList.refreshing = false;
@@ -122,7 +122,7 @@ class DynamicStore {
         this.getDynamicListReq({ moduleType, moduleId });
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

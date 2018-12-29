@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
 // components
-import { LeftBackIcon, CommStatusBar } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
 import ProductItem from './components/ProductItem';

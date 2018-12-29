@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { routers, theme } from 'constants';
@@ -16,10 +17,8 @@ import { ReceivablePlanEnum } from 'constants/form';
 // utils
 import { formatDateByMoment, formatDateType } from 'utils/base';
 import { moderateScale } from 'utils/scale';
-import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
@@ -77,7 +76,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   render() {

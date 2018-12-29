@@ -6,13 +6,13 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getPriceList,
   updatePriceToActive,
   updatePriceToInActive,
   getPriceProductList,
 } from '../service/price';
-import Toast from '../utils/toast';
 import { initFlatList } from './initState';
 
 useStrict(true);
@@ -45,7 +45,7 @@ class PriceListStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.priceList.refreshing = false;
@@ -70,7 +70,7 @@ class PriceListStore {
         this.getPriceListReq();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -89,7 +89,7 @@ class PriceListStore {
         this.priceProductList.list = [...priceProductList];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.priceProductList.refreshing = false;

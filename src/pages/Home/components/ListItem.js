@@ -5,8 +5,9 @@
  * @author
  */
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { TouchableView } from 'xn-react-native-applets';
 
 // static source
 import OperateIconImage from '../../../img/home/ico_operate_icon.png';
@@ -14,7 +15,6 @@ import OperateIconImage from '../../../img/home/ico_operate_icon.png';
 import { moderateScale } from '../../../utils/scale';
 import { theme } from '../../../constants';
 import { HorizontalDivider } from '../../../components/Styles/Divider';
-import TouchableView from '../../../components/TouchableView';
 
 const DivderView = styled.View`
   width: ${moderateScale(1)}px;

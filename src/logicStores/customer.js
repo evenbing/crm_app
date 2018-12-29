@@ -7,6 +7,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   find as getCustomerList,
   createCustomer,
@@ -20,7 +21,6 @@ import {
   createLocationId,
   getCustomerName,
 } from '../service/app';
-import Toast from '../utils/toast';
 import { initFlatList, initDetailMap } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
@@ -70,7 +70,7 @@ class CustomerStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.customerList.refreshing = false;
@@ -94,7 +94,7 @@ class CustomerStore {
         this.customerDetail.map = customer;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -148,7 +148,7 @@ class CustomerStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.customerTotal = initTotal;
       });
@@ -176,7 +176,7 @@ class CustomerStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -198,7 +198,7 @@ class CustomerStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -215,7 +215,7 @@ class CustomerStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -229,14 +229,14 @@ class CustomerStore {
           errors = [],
         } = await deleteFollow({ id: followId });
         if (errors.length) throw new Error(errors[0].message);
-        Toast.showSuccess('取消关注成功');
+        ToastUtil.showSuccess('取消关注成功');
       } else {
         // 执行关注
         const {
           errors = [],
         } = await createFollow(restProps);
         if (errors.length) throw new Error(errors[0].message);
-        Toast.showSuccess('关注成功');
+        ToastUtil.showSuccess('关注成功');
       }
       runInAction(() => {
         this.getCustomerDetailReq({ id: restProps.objectId || restProps.id });
@@ -244,7 +244,7 @@ class CustomerStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

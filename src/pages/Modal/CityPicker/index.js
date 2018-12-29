@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ContainerView } from '../../../components/Drawer/Styles';
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
+import styled from 'styled-components';
+import { CommStatusBar, LeftBackIcon, RightView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+import { mapTree } from 'constants/address';
+
+// components
+import { ContainerView } from 'components/Drawer/Styles';
 import CityList from './components/CityList';
-import { theme } from '../../../constants';
-import { mapTree } from '../../../constants/address';
 
 const Container = styled.View`
   flex: 1;

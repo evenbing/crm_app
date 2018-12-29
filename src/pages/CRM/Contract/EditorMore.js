@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react/native';
 import { View } from 'react-native';
+import { CommStatusBar, DevicesUtil, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme as themeVar, routers } from 'constants';
@@ -17,11 +18,11 @@ import { CustomerType, SalesChanceType, ContactsType, PackType, PackStatus, PayT
 // utils
 import { formatDateByMoment, formatNumberToString, formatDateType, delay } from 'utils/base';
 import { verifyDateTime } from 'utils/formVerify';
-import { isIos } from 'utils/utils';
-import Toast from 'utils/toast';
+
+// logicStores
+import ContractModel from 'logicStores/contract';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from 'components/Layout';
 import { ContainerScrollView } from 'components/Styles/Layout';
 import { ListView, CenterText, RightText } from 'components/Styles/Form';
 import { HorizontalDivider } from 'components/Styles/Divider';
@@ -31,8 +32,7 @@ import NavInputItem from 'components/NavInputItem';
 import DateTimePicker from 'components/DateTimePicker';
 import { FormActionSheet } from 'components/Modal';
 
-import ContractModel from 'logicStores/contract';
-import theme from '../../../constants/theme';
+const { isIos } = DevicesUtil;
 
 @observer
 class EditorMore extends React.Component {
@@ -106,14 +106,14 @@ class EditorMore extends React.Component {
         pop(1);
       });
     } catch (e) {
-      Toast.showWarning(e.message);
+      ToastUtil.showWarning(e.message);
     }
   };
   onFocus = async (y = 40) => {
     await delay();
     this.scrollViewRef.scrollTo({
       x: 0,
-      y: theme.moderateScale(isIos() ? y : y + 30),
+      y: themeVar.moderateScale(isIos() ? y : y + 30),
       animated: true,
     });
   };
@@ -434,7 +434,7 @@ class EditorMore extends React.Component {
             leftText="客户方签约人"
             onPress={() => {
               if (!customerId) {
-                Toast.showError('请先选择客户');
+                ToastUtil.showError('请先选择客户');
                 return;
               }
               navigate(routers.contacts, {

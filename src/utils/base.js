@@ -5,9 +5,8 @@
  * @author JUSTIN XU
  */
 import moment from 'moment';
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { pinyin } from './pinyin';
-import Toast from './toast';
 
 export function delay(time = 300) {
   return new Promise(resolve => setTimeout(() => resolve(time), time));
@@ -51,28 +50,6 @@ export const parserMoney = value => value.replace(/\$\s?|(,*)/g, '');
 export function getAppModuleType(moduleType) {
   if (!moduleType) throw new Error('模块类型不为空');
   return `CRM_${moduleType}`;
-}
-
-// nav go back
-export function nativeGoBack() {
-  try {
-    NativeModules.system.navTo('BACK');
-  } catch (e) {
-    console.log("system don't support navTo");
-  }
-}
-
-// call telPhone
-export function nativeCallPhone(telPhone) {
-  if (!telPhone) {
-    Toast.showError('暂无电话号码耶');
-    return;
-  }
-  try {
-    NativeModules.system.call(telPhone);
-  } catch (e) {
-    console.log("system don't support call");
-  }
 }
 
 // 递归生产二维数组

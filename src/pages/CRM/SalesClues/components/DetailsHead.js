@@ -7,16 +7,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme } from '../../../../constants';
-import { LeadsStatus } from '../../../../constants/enum';
+import { Thumbnail } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
+import { LeadsStatus } from 'constants/enum';
 
 // static source
-import PrincipalIcon from '../../../../img/crm/details/principalGo.png';
+import PrincipalIcon from 'img/crm/details/principalGo.png';
 
 // components
-import { HeaderBack } from '../../../../components/Details';
-import Thumbnail from '../../../../components/Thumbnail';
-import { FormActionSheet } from '../../../../components/Modal';
+import { HeaderBack } from 'components/Details';
+import { FormActionSheet } from 'components/Modal';
 
 const ContainerView = styled.View``;
 

@@ -7,11 +7,11 @@
  */
 import { action, observable, runInAction, useStrict, computed } from 'mobx';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   find, detail, create, update, del, updateTaskHours, updateTaskComplete, updateReadMessage,
 } from '../service/taskSchedule';
 import { initFlatList } from './initState';
-import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -48,7 +48,7 @@ class TaskScheduleStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.taskScheduleList.refreshing = false;
@@ -71,7 +71,7 @@ class TaskScheduleStore {
         this.taskDetailMap = { ...taskSchedule };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.taskScheduleList.refreshing = false;
@@ -98,7 +98,7 @@ class TaskScheduleStore {
         this.scheduleDetailMap = { ...taskSchedule };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.taskScheduleList.refreshing = false;
@@ -156,7 +156,7 @@ class TaskScheduleStore {
         this.scheduleList.list = [...result];
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.scheduleList.refreshing = false;
@@ -195,7 +195,7 @@ class TaskScheduleStore {
         this.taskList.list = list;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.taskList.refreshing = false;
@@ -213,7 +213,7 @@ class TaskScheduleStore {
       } = await create(options);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
-        Toast.showSuccess(options.successMsg || '创建成功');
+        ToastUtil.showSuccess(options.successMsg || '创建成功');
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         this.getTaskRelatedToMeReq();
         this.getScheduleRelatedToMeReq();
@@ -223,7 +223,7 @@ class TaskScheduleStore {
       });
     } catch (e) {
       callback && callback(e);
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -241,10 +241,10 @@ class TaskScheduleStore {
         this.getTaskRelatedToMeReq();
         this.getScheduleRelatedToMeReq();
         callback && callback();
-        Toast.showSuccess('更新延时成功');
+        ToastUtil.showSuccess('更新延时成功');
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -261,10 +261,10 @@ class TaskScheduleStore {
         this.getTaskScheduleRelatedToMeReq(this.queryProps);
         this.getTaskRelatedToMeReq();
         callback && callback();
-        Toast.showSuccess('设置完成成功');
+        ToastUtil.showSuccess('设置完成成功');
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -282,7 +282,7 @@ class TaskScheduleStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -302,7 +302,7 @@ class TaskScheduleStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -312,7 +312,7 @@ class TaskScheduleStore {
       if (!ids.length) return;
       await updateReadMessage({ ids });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

@@ -7,28 +7,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-native-applets';
 
 // constants
-import { theme, routers } from '../../../constants';
-import { MarkActivityEnum } from '../../../constants/form';
+import { theme, routers } from 'constants';
+import { MarkActivityEnum } from 'constants/form';
 
 // utils
-import { formatDateByMoment, formatDateType } from '../../../utils/base';
-import { verifyDateTime } from '../../../utils/formVerify';
-import Toast from '../../../utils/toast';
+import { formatDateByMoment, formatDateType } from 'utils/base';
+import { verifyDateTime } from 'utils/formVerify';
 
 // components
-import { CommStatusBar, LeftBackIcon, RightView } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
-import { TextareaGroup, TextareaView } from '../../../components/Styles/Editor';
-import NavInputItem from '../../../components/NavInputItem';
-import CreateMoreButton from '../../../components/Create/CreateMoreButton';
-import TitleItem from '../../../components/Details/TitleItem';
-import DateTimePicker from '../../../components/DateTimePicker';
-import { ListView, CenterText } from '../../../components/Styles/Form';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import { TextareaGroup, TextareaView } from 'components/Styles/Editor';
+import NavInputItem from 'components/NavInputItem';
+import CreateMoreButton from 'components/Create/CreateMoreButton';
+import TitleItem from 'components/Details/TitleItem';
+import DateTimePicker from 'components/DateTimePicker';
+import { ListView, CenterText } from 'components/Styles/Form';
 
-import MarkActivityStore from '../../../logicStores/markActivity';
+// logicStores
+import MarkActivityStore from 'logicStores/markActivity';
 
 class Create extends React.Component {
   state = {
@@ -71,7 +71,7 @@ class Create extends React.Component {
         goBack();
       });
     } catch (error) {
-      Toast.showWarning(error.message);
+      ToastUtil.showWarning(error.message);
     }
   };
   render() {

@@ -6,6 +6,7 @@
  */
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getReceivablePlanList,
   getReceivablePlanDetails,
@@ -14,7 +15,6 @@ import {
 import { initDetailMap, receivableFlatList } from './initState';
 import { getAttachmentList } from '../service/attachment';
 import { getAppModuleType } from '../utils/base';
-import Toast from '../utils/toast';
 
 useStrict(true);
 
@@ -67,7 +67,7 @@ class ReceivablePlanStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.receivablePlanList.refreshing = false;
@@ -92,7 +92,7 @@ class ReceivablePlanStore {
         this.receivablePlanDetails.map = receivablePlan;
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.receivablePlanDetails.refreshing = false;
@@ -120,7 +120,7 @@ class ReceivablePlanStore {
         };
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
       runInAction(() => {
         this.receivablePlanTotal = initTotal;
       });
@@ -140,7 +140,7 @@ class ReceivablePlanStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }

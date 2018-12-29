@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon, ToastUtil } from 'xn-react-native-applets';
 
 // constants
 import { theme, routers } from 'constants';
@@ -17,10 +18,8 @@ import { ModuleType } from 'constants/enum';
 // utils
 import { getUserId, formatDateByMoment } from 'utils/base';
 import { getNewId } from 'service/app';
-import Toast from 'utils/toast';
 
 // components
-import { CommStatusBar, LeftBackIcon } from 'components/Layout';
 import { ContainerView } from 'components/Styles/Layout';
 import { HorizontalDivider } from 'components/Styles/Divider';
 import FlatListTable from 'components/FlatListTable';
@@ -105,7 +104,7 @@ class Details extends React.Component {
         });
       });
     } catch (err) {
-      Toast.showError(err.message);
+      ToastUtil.showError(err.message);
     }
   };
   onPressSend = ({ content, contentType }, callback) => {

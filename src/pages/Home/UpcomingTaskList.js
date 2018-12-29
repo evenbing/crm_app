@@ -9,17 +9,18 @@ import PropTypes from 'prop-types';
 import { Alert } from 'react-native';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
 // constants
-import { routers, DelayActionSheetType } from '../../constants';
+import { routers, DelayActionSheetType } from 'constants';
 
 // utils
-import { formatDateByMoment, formatDateTaskScheduleType } from '../../utils/base';
+import { formatDateByMoment, formatDateTaskScheduleType } from 'utils/base';
 
-import { CommStatusBar, LeftBackIcon } from '../../components/Layout';
-import FlatListTable from '../../components/FlatListTable';
-import { ContainerView } from '../../components/Styles/Layout';
-import ActionSheet from '../../components/Modal/ActionSheet';
+// components
+import FlatListTable from 'components/FlatListTable';
+import { ContainerView } from 'components/Styles/Layout';
+import ActionSheet from 'components/Modal/ActionSheet';
 import ListItem from './components/ListItem';
 
 import TaskScheduleStore from '../../logicStores/taskSchedule';

@@ -9,27 +9,35 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { observer } from 'mobx-react/native';
 import styled from 'styled-components';
-import { theme, routers } from '../../../constants';
-import { ModuleType } from '../../../constants/enum';
-import { getNewId } from '../../../service/app';
-import { formatDateByMoment, getUserId, nativeCallPhone } from '../../../utils/base';
-import Toast from '../../../utils/toast';
+import { CommStatusBar, LeftBackIcon, NativeUtil, ToastUtil } from 'xn-react-native-applets';
+
+// constants
+import { theme, routers } from 'constants';
+import { ModuleType } from 'constants/enum';
+
+// service
+import { getNewId } from 'service/app';
+
+// utils
+import { formatDateByMoment, getUserId } from 'utils/base';
 
 // components
-import { CommStatusBar, LeftBackIcon } from '../../../components/Layout';
-import { ContainerView } from '../../../components/Styles/Layout';
-import { HorizontalDivider } from '../../../components/Styles/Divider';
+import { ContainerView } from 'components/Styles/Layout';
+import { HorizontalDivider } from 'components/Styles/Divider';
+import FlatListTable from 'components/FlatListTable';
+import TabContainer from 'components/TabContainer';
+import DynamicList from 'components/Details/DynamicList';
+import SendFooter from 'components/Details/SendFooter';
+import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
-import FlatListTable from '../../../components/FlatListTable';
-import TabContainer from '../../../components/TabContainer';
-import DynamicList from '../../../components/Details/DynamicList';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
-import SendFooter from '../../../components/Details/SendFooter';
-import EditorFooter from '../../../components/Details/EditorFooter';
+
 
 import CustomerModel from '../../../logicStores/customer';
 import DynamicModel from '../../../logicStores/dynamic';
 import AttachmentModel from '../../../logicStores/attachment';
+
+const { nativeCallPhone } = NativeUtil;
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -101,7 +109,7 @@ class Details extends React.Component {
         });
       });
     } catch (err) {
-      Toast.showError(err.message);
+      ToastUtil.showError(err.message);
     }
   };
   onPressSend = ({ content, contentType }, callback) => {

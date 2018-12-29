@@ -9,13 +9,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { theme } from '../../constants';
-// import { updateImage } from '../../service/app';
+import { ToastUtil, TouchableView } from 'xn-react-native-applets';
+
+// constants
+import { theme } from 'constants';
 
 // components
-import TouchableView from '../TouchableView';
-import { ActionSheet } from '../../components/Modal';
-import Toast from '../../utils/toast';
+import { ActionSheet } from 'components/Modal';
 
 const ContainerView = styled.View`
   padding-top: ${theme.moderateScale(11)};
@@ -79,7 +79,7 @@ class ScanCard extends React.PureComponent {
     }
     const file = this.getFile(image);
     // TODO
-    Toast.showSuccess(`image: ${JSON.stringify(file)}`);
+    ToastUtil.showSuccess(`image: ${JSON.stringify(file)}`);
     // await updateImage(file);
     // onPress();
   };

@@ -6,13 +6,13 @@
  */
 import { action, observable, computed, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
+import { ToastUtil } from 'xn-react-native-applets';
 import {
   getReceivableIssueList,
   createReceivableIssue,
   createReceivablePlan,
   createReceivableRecord,
 } from '../service/receivable';
-import Toast from '../utils/toast';
 import { initFlatList } from './initState';
 import { formatDateByMoment, formatDateType } from '../utils/base';
 import { ReceivableDetailType } from '../constants/enum';
@@ -111,7 +111,7 @@ class ReceivablePlanStore {
         }
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     } finally {
       runInAction(() => {
         this.receivableIssueList.refreshing = false;
@@ -131,7 +131,7 @@ class ReceivablePlanStore {
         this.getReceivableIssueReq({ pactId });
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -147,7 +147,7 @@ class ReceivablePlanStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 
@@ -163,7 +163,7 @@ class ReceivablePlanStore {
         callback && callback();
       });
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   }
 }
