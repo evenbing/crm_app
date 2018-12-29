@@ -4,7 +4,9 @@
  * @time 2018/8/8
  * @author JUSTIN XU
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post } = rpcUtil;
 
 /**
  * 获取承租人信息和用户id

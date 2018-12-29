@@ -4,7 +4,9 @@
  * @Last Modified by: Edmond.Shi
  * @Last Modified time: 2018-09-20 16:40:51
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post } = rpcUtil;
 
 /** 删除日程或者任务
  * @add by zhao

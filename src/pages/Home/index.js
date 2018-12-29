@@ -8,23 +8,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, View } from 'react-native';
 import { observer } from 'mobx-react/native';
-
-// static source
-import MoreIcon from 'img/more.png';
-import CheckedIcon from 'img/checked.png';
+import { CommStatusBar, TopRightView } from 'xn-react-native-applets';
 
 // constants
 import { routers, CreateActionSheetType, DelayActionSheetType } from 'constants';
 
 // utils
 import { get2Date } from 'utils/date';
-import { formatDateByMoment, nativeGoBack } from 'utils/base';
+import { formatDateByMoment } from 'utils/base';
 
 // logicStores
 import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
-import { CommStatusBar, RightView } from 'components/Layout';
 import { ActionSheet } from 'components/Modal';
 import { ContainerView, ListFooterComponent } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
@@ -33,17 +29,6 @@ import TodayView from './components/TodayView';
 import TaskScheduleListItem from './components/ListItem';
 
 const formatDateTaskScheduleType = 'HH:mm';
-
-const RightList = [
-  {
-    image: MoreIcon,
-    onPress: nativeGoBack,
-  },
-  {
-    image: CheckedIcon,
-    onPress: nativeGoBack,
-  },
-];
 
 @observer
 class Home extends React.Component {
@@ -310,11 +295,11 @@ class Home extends React.Component {
   }
 }
 
-Home.navigationOptions = () => ({
+Home.navigationOptions = ({ navigation }) => ({
   title: '首页',
   headerRight: (
-    <RightView
-      list={RightList}
+    <TopRightView
+      onPress={() => navigation.navigate(routers.about)}
     />
   ),
 });

@@ -7,6 +7,7 @@
 export default {
   // initial loading Stack
   authLoading: 'app.authLoading',
+  about: 'app.about',
   // tabView
   tabView: 'app.root.tabView',
   // home module

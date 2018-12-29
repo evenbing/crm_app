@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
+import { AboutScreen } from 'xn-react-native-applets';
 import { routers, theme } from './constants';
 import { DefaultHeaderView } from './components/Styles/Layout';
 import { getStatusBarHeight } from './utils/utils';
@@ -308,6 +309,7 @@ const TabBarStack = TabNavigator(TabBarRouteConfig, TabBarNavigatorConfig);
 
 const RootRouteConfig = {
   [routers.authLoading]: { screen: AuthLoadingScreen },
+  [routers.about]: { screen: AboutScreen },
   [routers.tabView]: { screen: TabBarStack },
   // common
 };

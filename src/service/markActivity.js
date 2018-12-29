@@ -4,8 +4,10 @@
  * @time 2018/8/27
  * @author JUSTIN XU
  */
-import { post } from '../utils/rpc';
 import { ModuleType } from '../constants/enum';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post } = rpcUtil;
 
 /** 查询市场活动列表
  *

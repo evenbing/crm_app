@@ -4,9 +4,11 @@
  * @time 2018/8/28
  * @author zhao
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
 import { ModuleType } from '../constants/enum';
 
+const { post } = rpcUtil;
 /** 查看产品目录列表
  * @add by zhao
  * @params options

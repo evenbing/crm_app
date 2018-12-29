@@ -4,7 +4,9 @@
  * @time 2018/8/28
  * @author zhao
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post } = rpcUtil;
 
 /** 转移合同负责人
  * @add by zhao

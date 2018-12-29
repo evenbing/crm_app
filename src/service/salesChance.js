@@ -4,8 +4,10 @@
  * @time 2018/8/27
  * @author JUSTIN XU
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
 import { ModuleType } from '../constants/enum';
+
+const { post } = rpcUtil;
 
 /**
  *

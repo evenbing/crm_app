@@ -21,7 +21,7 @@ const ContainerView = styled.View`
 `;
 
 const ImageIcon = styled.Image`
-  width: ${moderateScale(16)};
+  width: ${moderateScale(9)};
   height: ${moderateScale(16)};
 `;
 

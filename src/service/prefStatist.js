@@ -4,8 +4,10 @@
  * @time 2018/8/28
  * @author zhao
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
 import { getUserId } from '../utils/base';
+
+const { post } = rpcUtil;
 // import { ModuleType } from '../constants/enum';
 
 /** 销售总额数据统计

@@ -4,11 +4,13 @@
  * @Last Modified by: ShiQuan
  * @Last Modified time: 2018-09-24 20:18:59
  */
-import { post, uploadImage as uploadImg } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post, uploadImage } = rpcUtil;
 
 // 上传图片
-export function uploadImage(formData) {
-  return uploadImg(formData);
+export function uploadImageReq(formData) {
+  return uploadImage(formData);
 }
 
 /** 获取附件

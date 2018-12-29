@@ -7,7 +7,7 @@
 
 import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
-import { uploadImage } from '../service/attachment';
+import { uploadImageReq } from '../service/attachment';
 import Toast from '../utils/toast';
 
 useStrict(true);
@@ -47,7 +47,7 @@ class AttachmentStore {
       const {
         errors = [],
         ...restProps
-      } = await uploadImage(formdata);
+      } = await uploadImageReq(formdata);
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.updateImageResult = { ...restProps };

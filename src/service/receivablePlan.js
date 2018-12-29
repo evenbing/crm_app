@@ -4,7 +4,9 @@
  * @time 2018/8/27
  * @author JUSTIN XU
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
+
+const { post } = rpcUtil;
 
 /** 高级查询回款计划
  * @params options

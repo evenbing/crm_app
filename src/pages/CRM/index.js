@@ -4,18 +4,13 @@ import styled from 'styled-components';
 import { useStrict } from 'mobx';
 import { observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
-
-// static source
-import MoreIcon from 'img/more.png';
-import CheckedIcon from 'img/checked.png';
+import { CommStatusBar, TopRightView } from 'xn-react-native-applets';
 
 // utils
-import { nativeGoBack } from 'utils/base';
 import { moderateScale } from 'utils/scale';
 
 
 // components
-import { CommStatusBar, RightView } from 'components/Layout';
 import { HeadItem } from 'components/CRM';
 import NavItem from 'components/NavItem';
 import { routers } from 'constants';
@@ -98,17 +93,6 @@ const NavList = [
   },
 ];
 
-const RightList = [
-  {
-    image: MoreIcon,
-    onPress: nativeGoBack,
-  },
-  {
-    image: CheckedIcon,
-    onPress: nativeGoBack,
-  },
-];
-
 @observer
 class CRM extends React.Component {
   onNavHandler = (path) => {
@@ -155,11 +139,11 @@ class CRM extends React.Component {
   }
 }
 
-CRM.navigationOptions = () => ({
+CRM.navigationOptions = ({ navigation }) => ({
   title: 'CRM',
   headerRight: (
-    <RightView
-      list={RightList}
+    <TopRightView
+      onPress={() => navigation.navigate(routers.about)}
     />
   ),
 });

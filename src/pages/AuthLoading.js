@@ -8,17 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import getConfig from '../config';
+import { getConfig, rpcUtil, ToastUtil, CommStatusBar, XnLoading } from 'xn-react-native-applets';
 import routers from '../constants/routers';
 
 // utils
-import { getPassportId, init } from '../utils/rpc';
 import { reset } from '../utils/navigationService';
-import Toast from '../utils/toast';
-
-// constants
-import CommStatusBar from '../components/Layout/CommStatusBar';
-import XnLoading from '../components/xnLoading';
 
 import { getPassportInfo } from '../service/app';
 
@@ -26,6 +20,8 @@ const ContainerView = styled.View`
   flex: 1;
   background-color: #fff;
 `;
+
+const { getPassportId, init } = rpcUtil;
 
 class AuthLoading extends React.Component {
   componentDidMount() {
@@ -45,7 +41,7 @@ class AuthLoading extends React.Component {
       global.userId = userId;
       reset(routers.tabView);
     } catch (e) {
-      Toast.showError(e.message);
+      ToastUtil.showError(e.message);
     }
   };
   render() {

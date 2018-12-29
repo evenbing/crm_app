@@ -4,8 +4,10 @@
  * @time 2018/8/28
  * @author zhao
  */
-import { post } from '../utils/rpc';
+import { rpcUtil } from 'xn-react-native-applets';
 import { ModuleType } from '../constants/enum';
+
+const { post } = rpcUtil;
 
 /** 分页查询价格列表
  * @add by zhao
