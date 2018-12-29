@@ -4200,13 +4200,6 @@ js-rn-echarts@^0.1.0:
   dependencies:
     echarts "3.2.3"
 
-js-root-toast@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/js-root-toast/-/js-root-toast-0.1.4.tgz#11dc9db673cd295cfe78ff756ed49d40897b6107"
-  integrity sha512-wY7lRxYmaV9m6/u3JDVqhFqKAEsWn867f7uU0epnLKxYg6KamNzkPpbxTY/21dgf/GrBAhsdJqNR6+J91e2FJQ==
-  dependencies:
-    react-native-root-siblings "2.2.0"
-
 js-root-toast@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/js-root-toast/-/js-root-toast-0.1.5.tgz#d280f25b1382ae1064e99519b277a681af4e6820"
@@ -7532,9 +7525,10 @@ xmldom@0.1.x:
   resolved "http://registry.npm.taobao.org/xmldom/download/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
   integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
 
-"xn-react-native-applets@https://gitee.com/details/xn-react-native-applets.git":
-  version "0.0.1"
-  resolved "https://gitee.com/details/xn-react-native-applets.git#fe88c6e6137798e426c4b779d0e9126952f0a6dc"
+xn-react-native-applets@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/xn-react-native-applets/-/xn-react-native-applets-0.1.0.tgz#11da2c4a2e71d0bf18d8daa5f6f4ec0412029ae3"
+  integrity sha512-lRFaDdW6JyBFvQ+HuIHQpfyW5oEpzUKoljV4BVhj0FSd86HigxuJGVFebBIl+9T/T2Q5YgSZXeVjUb7+NCiSDQ==
   dependencies:
     js-root-toast "^0.1.5"
     md5 "^2.2.1"

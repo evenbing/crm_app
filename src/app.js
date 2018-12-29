@@ -7,8 +7,7 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
 import { Root } from 'native-base';
-import RootModal from 'js-root-toast';
-import { NativeUtil } from 'xn-react-native-applets';
+import { NativeUtil, RootToast } from 'xn-react-native-applets';
 import Navigator from './router';
 
 // utils
@@ -48,7 +47,7 @@ class App extends React.Component {
             registerTopNavigator(navigatorRef);
           }}
           onNavigationStateChange={() => {
-            global.$RootToast && RootModal.hide(global.$RootToast);
+            global.$RootToast && RootToast.hide(global.$RootToast);
           }}
           {...this.props}
         />

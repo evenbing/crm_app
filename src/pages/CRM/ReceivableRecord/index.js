@@ -6,7 +6,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StatusBar } from 'react-native';
 import { useStrict } from 'mobx/';
 import { SwipeRow } from 'native-base';
 import { observer } from 'mobx-react/native';
@@ -78,11 +77,9 @@ class ReceivableRecord extends React.Component {
     this.getData();
   };
   onCloseDrawer = () => {
-    StatusBar.setBarStyle('light-content');
     this.setState({ drawerVisible: false });
   };
   onOpenDrawer = () => {
-    StatusBar.setBarStyle('dark-content');
     this.setState({ drawerVisible: true });
   };
   onFilter = async () => {

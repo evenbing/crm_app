@@ -7,8 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import RootModal from 'js-root-toast';
-import { DevicesUtil, TouchableView, Thumbnail } from 'xn-react-native-applets';
+import { DevicesUtil, TouchableView, Thumbnail, RootToast } from 'xn-react-native-applets';
 
 // toast
 import { theme } from 'constants';
@@ -103,11 +102,11 @@ class FilterList extends React.PureComponent {
       onHidden: onPressClose,
     };
     return (
-      <RootModal {...rootModalProps}>
+      <RootToast {...rootModalProps}>
         <ContainerView>
           {this.renderItem()}
         </ContainerView>
-      </RootModal>
+      </RootToast>
     );
   }
 }
