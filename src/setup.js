@@ -18,6 +18,7 @@ if (!__DEV__) {
     'Warning: checkPropTypes',
     'Warning: React.createClass',
     'Warning: PropTypes',
+    'Warning: Invalid argument supplied to oneOf',
   ];
 }
 

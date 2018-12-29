@@ -45,7 +45,7 @@ const TotalView = styled.View`
   border: 1px solid ${theme.borderColor};
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
@@ -171,14 +171,34 @@ class Details extends React.Component {
     ContactsModel.getContactTotalReq(item);
   };
   renderTotalItem = () => {
-    const { contactTotal: { scheduleTotal, taskTotal, salesTotal } } = ContactsModel;
+    const {
+      contactTotal: {
+        scheduleTotal, taskTotal, salesTotal,
+      },
+      contactDetails: { map },
+    } = ContactsModel;
+    const {
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
+    const hasData = Object.keys(map).length;
     const list = [
       { title: '日程', text: scheduleTotal },
       { title: '任务', text: taskTotal },
-      { title: '销售机会', text: salesTotal },
+      {
+        title: '销售机会',
+        text: salesTotal,
+        onPress: () => {
+          if (!hasData) return;
+          navigate(routers.salesChance, {
+            customerId: map.id,
+          });
+        },
+      },
     ];
     return list.map(_ => (
-      <ItemView key={_.title}>
+      <ItemView key={_.title} onPress={_.onPress}>
         <NumberText>{_.text}</NumberText>
         <TitleText>{_.title}</TitleText>
       </ItemView>

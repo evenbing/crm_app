@@ -207,20 +207,20 @@ class Details extends React.Component {
     const {
       navigation: {
         navigate,
-        state,
       },
     } = this.props;
     const {
       contractTotal: { issueTotal, attaTotal },
       contractDetails: { map },
     } = ContractModel;
-    const { item } = state.params || {};
+    const hasData = Object.keys(map).length;
     const list = [
       {
         title: '文档',
         text: attaTotal,
         onPress: () => {
-          this.props.navigation.navigate(routers.relatedDocs, {
+          if (!hasData) return;
+          navigate(routers.relatedDocs, {
             item: map,
             moduleType: ModuleType.pact,
           });
@@ -230,17 +230,16 @@ class Details extends React.Component {
         title: '回款',
         text: issueTotal,
         onPress: () => {
-          navigate(
-            routers.receivable,
-            {
-              id: item.id,
-              callback: () => {
-                this.getContractDetail();
-                this.getContractTotal();
-              },
+          if (!hasData) return;
+          navigate(routers.receivable, {
+            id: map.id,
+            callback: () => {
+              this.getContractDetail();
+              this.getContractTotal();
             },
-          );
-        } },
+          });
+        },
+      },
     ];
     return list.map(_ => (
       <ItemView key={_.title} onPress={_.onPress} >

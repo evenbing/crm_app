@@ -41,12 +41,10 @@ class ProductList extends React.Component {
   getData = () => {
     const {
       state: {
-        params: {
-          priceId,
-        } = {},
+        params = {},
       },
     } = this.props.navigation;
-    ProductListModel.getProductClazzListReq({ priceId });
+    ProductListModel.getProductClazzListReq(params);
   };
 
   renderItem = (itemProps) => {

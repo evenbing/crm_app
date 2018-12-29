@@ -197,11 +197,18 @@ class SalesChance extends React.Component {
         searchValue,
         selectedList,
       },
+      props: {
+        navigation: { state },
+      },
     } = this;
-    const obj = {
+    const params = state.params || {};
+    let obj = {
       pageNumber,
       name: searchValue,
     };
+    if (Object.keys(params).length) {
+      obj = { ...obj, ...params };
+    }
     // query header tab
     screenTabList.map((v, i) => {
       if (i === screenTabList.length - 1 || !v.list.length) return null;

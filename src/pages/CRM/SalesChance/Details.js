@@ -45,7 +45,7 @@ const TotalView = styled.View`
   align-items: center;
 `;
 
-const ItemView = styled.View`
+const ItemView = styled.TouchableOpacity`
   align-items: center;
   flex: 1;
 `;
@@ -194,16 +194,49 @@ class Details extends React.Component {
       salesClueTotal: {
         scheduleTotal, taskTotal, contactTotal, productTotal, pactTotal,
       },
+      salesChanceDetail: { map },
     } = SalesChanceModel;
+    const {
+      props: {
+        navigation: { navigate },
+      },
+    } = this;
+    const hasData = Object.keys(map).length;
     const list = [
       { title: '日程', text: scheduleTotal },
       { title: '任务', text: taskTotal },
-      { title: '联系人', text: contactTotal },
-      { title: '产品', text: productTotal },
-      { title: '合同', text: pactTotal },
+      {
+        title: '联系人',
+        text: contactTotal,
+        onPress: () => {
+          navigate(routers.contacts, {
+            opportunityId: map.id,
+          });
+        },
+      },
+      {
+        title: '产品',
+        text: productTotal,
+        onPress: () => {
+          if (!hasData) return;
+          navigate(routers.productList, {
+            opportunityId: map.id,
+          });
+        },
+      },
+      {
+        title: '合同',
+        text: pactTotal,
+        onPress: () => {
+          if (!hasData) return;
+          navigate(routers.contract, {
+            opportunityId: map.id,
+          });
+        },
+      },
     ];
     return list.map(_ => (
-      <ItemView key={_.title}>
+      <ItemView key={_.title} onPress={_.onPress}>
         <NumberText>{_.text}</NumberText>
         <TitleText>{_.title}</TitleText>
       </ItemView>

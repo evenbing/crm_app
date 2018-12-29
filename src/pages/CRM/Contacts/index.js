@@ -143,13 +143,13 @@ class Contacts extends React.Component {
         navigation: { state },
       },
     } = this;
-    const { customerId } = state.params || {};
-    const obj = {
+    const params = state.params || {};
+    let obj = {
       pageNumber,
       companyName: searchValue,
     };
-    if (customerId) {
-      obj.customerId = customerId;
+    if (Object.keys(params).length) {
+      obj = { ...obj, ...params };
     }
     // query header tab
     screenTabList.map((v, i) => {
