@@ -74,7 +74,13 @@ class UpcomingScheduleList extends React.Component {
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getScheduleRelatedToMeReq({ pageNumber });
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const params = state.params || {};
+    TaskScheduleStore.getScheduleRelatedToMeReq({ pageNumber, ...params });
   };
 
   selectDelayType = () => {

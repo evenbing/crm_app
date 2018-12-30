@@ -110,10 +110,10 @@ const HomeRouteConfig = {
   [routers.home]: { screen: HomeScreen },
   [routers.selectYear]: { screen: SelectYearScreen },
   [routers.messageList]: { screen: MessageListScreen },
-  [routers.upcomingScheduleList]: { screen: UpcomingScheduleListScreen },
-  [routers.upcomingTaskList]: { screen: UpcomingTaskListScreen },
   [routers.addSchedule]: { screen: AddScheduleScreen },
   [routers.addTask]: { screen: AddTaskScreen },
+  [routers.upcomingScheduleList]: { screen: UpcomingScheduleListScreen },
+  [routers.upcomingTaskList]: { screen: UpcomingTaskListScreen },
   [routers.taskDetails]: { screen: TaskDetailsScreen },
   [routers.scheduleDetails]: { screen: ScheduleDetailsScreen },
 
@@ -138,6 +138,7 @@ const HomeNavigatorConfig = {
       backgroundColor: '#ffffff',
       height: theme.headerHeight + getStatusBarHeight(true),
       borderBottomWidth: 0,
+      ...theme.commonShadow,
     },
     headerTitleStyle: {
       color: '#333238',
@@ -246,6 +247,12 @@ const CrmRouteConfig = {
   [routers.cityPicker]: { screen: CityPickerScreen },
   [routers.selectEmployee]: { screen: SelectEmployeeScreen },
   [routers.productPicker]: { screen: ProductPickerScreen },
+
+  // schedule / task
+  [routers.upcomingScheduleList]: { screen: UpcomingScheduleListScreen },
+  [routers.upcomingTaskList]: { screen: UpcomingTaskListScreen },
+  [routers.scheduleDetails]: { screen: ScheduleDetailsScreen },
+  [routers.taskDetails]: { screen: TaskDetailsScreen },
 };
 
 const CrmNavigatorConfig = {
@@ -282,7 +289,7 @@ const TabBarRouteConfig = {
 };
 
 const TabBarNavigatorConfig = {
-  initialRouteName: routers.crm,
+  initialRouteName: routers.home,
   tabBarOptions: {
     activeTintColor: theme.primaryColor,
     inactiveTintColor: '#AAAAAA',

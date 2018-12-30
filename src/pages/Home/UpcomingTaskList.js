@@ -63,7 +63,13 @@ class UpcomingTaskList extends React.Component {
   };
 
   getData = (pageNumber = 1) => {
-    TaskScheduleStore.getTaskRelatedToMeReq({ pageNumber });
+    const {
+      props: {
+        navigation: { state },
+      },
+    } = this;
+    const params = state.params || {};
+    TaskScheduleStore.getTaskRelatedToMeReq({ pageNumber, ...params });
   };
 
   selectDelayType = () => {

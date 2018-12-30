@@ -200,8 +200,28 @@ class Details extends React.Component {
     } = this;
     const hasData = Object.keys(map).length;
     const list = [
-      { title: '日程', text: scheduleTotal },
-      { title: '任务', text: taskTotal },
+      {
+        title: '日程',
+        text: scheduleTotal,
+        onPress: () => {
+          if (!hasData) return;
+          navigate(routers.upcomingScheduleList, {
+            moduleId: map.id,
+            moduleType: ModuleType.customer,
+          });
+        },
+      },
+      {
+        title: '任务',
+        text: taskTotal,
+        onPress: () => {
+          if (!hasData) return;
+          navigate(routers.upcomingTaskList, {
+            moduleId: map.id,
+            moduleType: ModuleType.customer,
+          });
+        },
+      },
       {
         title: '联系人',
         text: contactTotal,

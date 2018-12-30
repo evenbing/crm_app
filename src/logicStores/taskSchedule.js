@@ -9,6 +9,10 @@ import { action, observable, runInAction, useStrict, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import { ToastUtil } from 'xn-react-native-applets';
 import {
+  TASK_SCHEDULE_TYPE,
+  TASK_SCHEDULE_CATEGORY,
+} from '../constants/enum';
+import {
   find, detail, create, update, del, updateTaskHours, updateTaskComplete, updateReadMessage,
 } from '../service/taskSchedule';
 import { initFlatList } from './initState';
@@ -132,8 +136,8 @@ class TaskScheduleStore {
   @action async getScheduleRelatedToMeReq({
     pageNumber = 1,
     pageSize = 0,
-    type = 'SCHEDULE',
-    category = 'UNREAD',
+    type = TASK_SCHEDULE_TYPE.schedule,
+    category = TASK_SCHEDULE_CATEGORY.unread,
     ...restProps
   } = {}) {
     try {
@@ -171,8 +175,8 @@ class TaskScheduleStore {
   @action async getTaskRelatedToMeReq({
     pageNumber = 1,
     pageSize = 0,
-    type = 'TASK',
-    category = 'UNREAD',
+    type = TASK_SCHEDULE_TYPE.task,
+    category = TASK_SCHEDULE_CATEGORY.unread,
     ...restProps
   } = {}) {
     try {

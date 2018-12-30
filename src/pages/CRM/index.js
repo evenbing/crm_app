@@ -142,7 +142,10 @@ CRM.navigationOptions = ({ navigation }) => ({
   title: 'CRM',
   headerRight: (
     <TopRightView
-      onPress={() => navigation.navigate(routers.about)}
+      appName="CRM"
+      onPress={() => navigation.navigate(routers.about, {
+        // code: 'CRM',
+      })}
     />
   ),
 });

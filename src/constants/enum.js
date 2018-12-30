@@ -15,8 +15,16 @@ export const PriceListType = 'PRICELIST/SELECT';
 export const ProductType = 'PRODUCT/SELECT';
 
 // 任务日程
-export const TASK_TYPE = 'TASK';
-export const SCHEDULE_TYPE = 'SCHEDULE';
+export const TASK_SCHEDULE_TYPE = {
+  task: 'TASK',
+  schedule: 'SCHEDULE',
+};
+
+export const TASK_SCHEDULE_CATEGORY = {
+  all: 'ALL',
+  read: 'READ',
+  unread: 'UNREAD',
+};
 
 // 选择相片或者拍照
 export const CameraOrPickerType = {

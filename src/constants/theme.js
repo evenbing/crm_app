@@ -32,6 +32,13 @@ export default {
   headerHeight: 45,
   iconSize: 22,
   moderateScale: (size, factor) => moderateScale(size, factor),
+  commonShadow: {
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
   // form
   getLeftStyle: (inputProps, width = 80) => ({
     inputProps: {

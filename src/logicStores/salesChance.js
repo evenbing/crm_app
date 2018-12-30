@@ -19,7 +19,7 @@ import {
 import { initFlatList, initDetailMap } from './initState';
 import { deleteFollow, createFollow } from '../service/app';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
-import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
+import { ModuleType, TASK_SCHEDULE_TYPE, TASK_SCHEDULE_CATEGORY } from '../constants/enum';
 import { getContactList } from '../service/contacts';
 import { getContractList } from '../service/contract';
 import { find as getProductBusinessList } from '../service/business';
@@ -111,9 +111,10 @@ class SalesChanceStore {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],
       } = await getTaskScheduleList({
-        type: TASK_TYPE,
+        type: TASK_SCHEDULE_TYPE.task,
         moduleId: id,
         moduleType: ModuleType.opportunity,
+        category: TASK_SCHEDULE_CATEGORY.unread,
         pageSize,
       });
       if (taskErrors.length) throw new Error(taskErrors[0].message);
@@ -121,9 +122,10 @@ class SalesChanceStore {
         totalCount: scheduleTotal = 0,
         errors: scheduleErrors = [],
       } = await getTaskScheduleList({
-        type: SCHEDULE_TYPE,
+        type: TASK_SCHEDULE_TYPE.schedule,
         moduleId: id,
         moduleType: ModuleType.opportunity,
+        category: TASK_SCHEDULE_CATEGORY.unread,
         pageSize,
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);

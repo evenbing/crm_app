@@ -18,7 +18,7 @@ import {
 } from '../service/salesClues';
 import { initDetailMap, initFlatList } from './initState';
 import { find as getTaskScheduleList } from '../service/taskSchedule';
-import { ModuleType, SCHEDULE_TYPE, TASK_TYPE } from '../constants/enum';
+import { ModuleType, TASK_SCHEDULE_TYPE, TASK_SCHEDULE_CATEGORY } from '../constants/enum';
 import { createLocationId } from '../service/app';
 
 useStrict(true);
@@ -97,9 +97,10 @@ class SalesClueStore {
         totalCount: taskTotal = 0,
         errors: taskErrors = [],
       } = await getTaskScheduleList({
-        type: TASK_TYPE,
+        type: TASK_SCHEDULE_TYPE.task,
         moduleId: id,
         moduleType: ModuleType.clues,
+        category: TASK_SCHEDULE_CATEGORY.unread,
         pageSize,
       });
       if (taskErrors.length) throw new Error(taskErrors[0].message);
@@ -107,9 +108,10 @@ class SalesClueStore {
         totalCount: scheduleTotal = 0,
         errors: scheduleErrors = [],
       } = await getTaskScheduleList({
-        type: SCHEDULE_TYPE,
+        type: TASK_SCHEDULE_TYPE.schedule,
         moduleId: id,
         moduleType: ModuleType.clues,
+        category: TASK_SCHEDULE_CATEGORY.unread,
         pageSize,
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);

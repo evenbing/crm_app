@@ -299,7 +299,10 @@ Home.navigationOptions = ({ navigation }) => ({
   title: '首页',
   headerRight: (
     <TopRightView
-      onPress={() => navigation.navigate(routers.about)}
+      appName="CRM"
+      onPress={() => navigation.navigate(routers.about, {
+        // code: 'CRM',
+      })}
     />
   ),
 });
