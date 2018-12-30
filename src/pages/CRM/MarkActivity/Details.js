@@ -13,11 +13,16 @@ import { CommStatusBar, LeftBackIcon, ToastUtil } from 'xn-react-native-applets'
 
 // constants
 import { theme, routers } from 'constants';
-import { ModuleType } from 'constants/enum';
+import { ModuleType, TASK_SCHEDULE_CATEGORY } from 'constants/enum';
 
 // utils
 import { getUserId, formatDateByMoment } from 'utils/base';
 import { getNewId } from 'service/app';
+
+// logicStores
+import MarkActivityModel from 'logicStores/markActivity';
+import DynamicModel from 'logicStores/dynamic';
+import AttachmentModel from 'logicStores/attachment';
 
 // components
 import { ContainerView } from 'components/Styles/Layout';
@@ -29,10 +34,6 @@ import SendFooter from 'components/Details/SendFooter';
 import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
-
-import MarkActivityModel from '../../../logicStores/markActivity';
-import DynamicModel from '../../../logicStores/dynamic';
-import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -151,7 +152,10 @@ class Details extends React.Component {
     const { item } = state.params || {};
     const { markActivityDetail: { map } } = MarkActivityModel;
     if (!Object.keys(map).length) return;
-    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) return;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) {
+      ToastUtil.showWarning('你当前无此权限');
+      return;
+    }
     navigate(routers.teamRoles, {
       ownerUserId: map.ownerUserId,
       moduleId: map.id,
@@ -215,6 +219,7 @@ class Details extends React.Component {
       },
     } = this;
     const hasData = Object.keys(map).length;
+    const isOtherUser = !(map.ownerUserId && (getUserId() === map.ownerUserId));
     const list = [
       {
         title: '日程',
@@ -224,6 +229,8 @@ class Details extends React.Component {
           navigate(routers.upcomingScheduleList, {
             moduleId: map.id,
             moduleType: ModuleType.activity,
+            category: TASK_SCHEDULE_CATEGORY.all,
+            isOtherUser,
           });
         },
       },
@@ -235,6 +242,8 @@ class Details extends React.Component {
           navigate(routers.upcomingTaskList, {
             moduleId: map.id,
             moduleType: ModuleType.activity,
+            category: TASK_SCHEDULE_CATEGORY.all,
+            isOtherUser,
           });
         },
       },

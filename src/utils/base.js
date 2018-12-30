@@ -7,6 +7,7 @@
 import moment from 'moment';
 import { Platform } from 'react-native';
 import { pinyin } from './pinyin';
+import { TASK_SCHEDULE_CATEGORY } from '../constants/enum';
 
 export function delay(time = 300) {
   return new Promise(resolve => setTimeout(() => resolve(time), time));
@@ -24,6 +25,19 @@ export function formatDateByMoment(str, formatType = 'YYYY-MM-DD HH:mm:ss') {
     str = Number(str);
   }
   return moment(str).format(formatType);
+}
+
+// 是否为所有
+export function getAllCategory(navigation) {
+  if (!navigation) return false;
+  const {
+    state: {
+      params: {
+        category,
+      } = {},
+    } = {},
+  } = navigation;
+  return category === TASK_SCHEDULE_CATEGORY.all;
 }
 
 /**

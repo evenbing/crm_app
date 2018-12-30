@@ -64,7 +64,6 @@ AuthLoading.propTypes = {
     goBack: PropTypes.func,
     navigate: PropTypes.func,
     setParams: PropTypes.func,
-    getParam: PropTypes.func,
     state: PropTypes.shape({
       key: PropTypes.string,
       routeName: PropTypes.string,

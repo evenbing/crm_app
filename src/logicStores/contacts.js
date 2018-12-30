@@ -105,7 +105,7 @@ class ContactStore {
         type: TASK_SCHEDULE_TYPE.task,
         moduleId: id,
         moduleType: ModuleType.contact,
-        category: TASK_SCHEDULE_CATEGORY.unread,
+        category: TASK_SCHEDULE_CATEGORY.all,
         pageSize,
       });
       if (taskErrors.length) throw new Error(taskErrors[0].message);
@@ -116,7 +116,7 @@ class ContactStore {
         type: TASK_SCHEDULE_TYPE.schedule,
         moduleId: id,
         moduleType: ModuleType.contact,
-        category: TASK_SCHEDULE_CATEGORY.unread,
+        category: TASK_SCHEDULE_CATEGORY.all,
         pageSize,
       });
       if (scheduleErrors.length) throw new Error(scheduleErrors[0].message);

@@ -12,7 +12,6 @@ import { observer } from 'mobx-react/native';
 import { Alert } from 'react-native';
 import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
-
 // constants
 import { routers, theme } from 'constants';
 import { NoticeTypes } from 'constants/enum';
@@ -107,6 +106,15 @@ class TaskDetails extends React.Component {
   };
   render() {
     const {
+      navigation: {
+        state: {
+          params: {
+            isOtherUser,
+          } = {},
+        },
+      },
+    } = this.props;
+    const {
       taskDetailMap: {
         attachmentList = [],
         name,
@@ -167,7 +175,7 @@ class TaskDetails extends React.Component {
           backgroundColor={theme.whiteColor}
         />
         {
-          Object.keys(TaskScheduleStore.taskDetailMap).length ? (
+          Object.keys(TaskScheduleStore.taskDetailMap).length && !isOtherUser ? (
             <DetailFooter
               onPressEditor={this.onPressEditor}
               onPressDelete={this.onPressDelete}

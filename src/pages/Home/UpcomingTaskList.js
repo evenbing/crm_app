@@ -15,15 +15,16 @@ import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 import { routers, DelayActionSheetType } from 'constants';
 
 // utils
-import { formatDateByMoment, formatDateTaskScheduleType } from 'utils/base';
+import { formatDateByMoment, formatDateTaskScheduleType, getAllCategory } from 'utils/base';
+
+// logicStores
+import TaskScheduleStore from 'logicStores/taskSchedule';
 
 // components
 import FlatListTable from 'components/FlatListTable';
 import { ContainerView } from 'components/Styles/Layout';
 import ActionSheet from 'components/Modal/ActionSheet';
 import ListItem from './components/ListItem';
-
-import TaskScheduleStore from '../../logicStores/taskSchedule';
 
 useStrict(true);
 
@@ -57,9 +58,19 @@ class UpcomingTaskList extends React.Component {
   onPressDetails = ({ path, item }) => {
     if (!path) return;
     const {
-      navigation: { navigate },
+      navigation: {
+        navigate,
+        state: {
+          params: {
+            isOtherUser,
+          } = {},
+        },
+      },
     } = this.props;
-    navigate(path, { item });
+    navigate(path, {
+      item,
+      isOtherUser,
+    });
   };
 
   getData = (pageNumber = 1) => {
@@ -162,7 +173,7 @@ class UpcomingTaskList extends React.Component {
 }
 
 UpcomingTaskList.navigationOptions = ({ navigation }) => ({
-  title: '待办任务',
+  title: getAllCategory(navigation) ? '任务列表' : '待办任务',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}

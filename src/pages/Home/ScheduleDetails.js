@@ -107,6 +107,15 @@ class ScheduleDetails extends React.Component {
   };
   render() {
     const {
+      navigation: {
+        state: {
+          params: {
+            isOtherUser,
+          } = {},
+        },
+      },
+    } = this.props;
+    const {
       scheduleDetailMap: {
         attachmentList = [],
         name,
@@ -171,7 +180,7 @@ class ScheduleDetails extends React.Component {
           backgroundColor={theme.whiteColor}
         />
         {
-          Object.keys(TaskScheduleStore.scheduleDetailMap).length ? (
+          Object.keys(TaskScheduleStore.scheduleDetailMap).length && !isOtherUser ? (
             <DetailFooter
               onPressEditor={this.onPressEditor}
               onPressDelete={this.onPressDelete}

@@ -135,7 +135,10 @@ class Details extends React.Component {
     const { item } = state.params || {};
     const { receivablePlanDetails: { map } } = ReceivablePlanModel;
     if (!Object.keys(map).length) return;
-    if (map.ownerId && (getUserId() !== map.ownerId)) return;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) {
+      ToastUtil.showWarning('你当前无此权限');
+      return;
+    }
     navigate(routers.teamRoles, {
       ownerUserId: map.ownerId,
       moduleId: map.id,

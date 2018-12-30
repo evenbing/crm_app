@@ -21,6 +21,11 @@ import { formatDateByMoment, getUserId } from 'utils/base';
 // service
 import { getNewId } from 'service/app';
 
+// logicStores
+import ContractModel from 'logicStores/contract';
+import DynamicModel from 'logicStores/dynamic';
+import AttachmentModel from 'logicStores/attachment';
+
 // components
 import { ContainerView } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
@@ -30,10 +35,6 @@ import SendFooter from 'components/Details/SendFooter';
 import EditorFooter from 'components/Details/EditorFooter';
 import DetailsHead from './components/DetailsHead';
 import ActivityDetailsItem from './components/ActivityDetailsItem';
-
-import ContractModel from '../../../logicStores/contract';
-import DynamicModel from '../../../logicStores/dynamic';
-import AttachmentModel from '../../../logicStores/attachment';
 
 const TotalView = styled.View`
   height: ${theme.moderateScale(70)};
@@ -134,7 +135,10 @@ class Details extends React.Component {
     const { item } = state.params || {};
     const { contractDetails: { map } } = ContractModel;
     if (!Object.keys(map).length) return;
-    if (map.ownerId && (getUserId() !== map.ownerId)) return;
+    if (map.ownerUserId && (getUserId() !== map.ownerUserId)) {
+      ToastUtil.showWarning('你当前无此权限');
+      return;
+    }
     navigate(routers.teamRoles, {
       ownerUserId: map.ownerId,
       moduleId: map.id,
