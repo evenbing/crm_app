@@ -115,7 +115,7 @@ class CreateSalesChance extends Component {
             tenantId,
             priceId,
           }));
-          BusinessStore.createBusinessReq({ businessDetails });
+          BusinessStore.createProductBusinessReq({ businessDetails });
         }
         goBack();
       });
@@ -346,7 +346,7 @@ class CreateSalesChance extends Component {
             budinessProducts.map(item => (
               <ProductItem
                 key={item.id}
-                {...item}
+                item={item}
                 onPress={this.modifyProductPrice(item)}
               />
             ))

@@ -1,7 +1,7 @@
 /**
- * @component index.js
- * @description 产品目录页面
- * @time 2018/9/4
+ * @component ProductBusiness.js
+ * @description 产品商机页面
+ * @time 2018/12/31
  * @author JUSTIN XU
  */
 import React from 'react';
@@ -10,38 +10,20 @@ import { useStrict } from 'mobx/';
 import { observer } from 'mobx-react/native';
 import { CommStatusBar, LeftBackIcon } from 'xn-react-native-applets';
 
+// logicStores
+import ProductBusinessStore from 'logicStores/business';
+
 // components
 import { ContainerView } from 'components/Styles/Layout';
 import FlatListTable from 'components/FlatListTable';
-import ProductItemList from './components/ProductItemList';
-
-import ProductListModel from '../../../logicStores/productList';
-import { ProductType } from '../../../constants/enum';
+import ProductItem from './components/ProductItem';
 
 useStrict(true);
 
 @observer
-class ProductList extends React.Component {
+class ProductBusiness extends React.Component {
   componentDidMount() {
     this.getData();
-  }
-
-  // onPressItem = ({ item }) => {
-  //   this.props.navigation.navigate(routers.modifyProductPrice, { item });
-  // };
-
-  onPressItem = ({ item }) => {
-    const {
-      state: { params: {
-        type,
-        callback,
-      } = {} },
-      goBack,
-    } = this.props.navigation;
-    if (type === ProductType) {
-      callback && callback(item);
-      goBack();
-    }
   }
 
   getData = () => {
@@ -50,31 +32,18 @@ class ProductList extends React.Component {
         params = {},
       },
     } = this.props.navigation;
-    ProductListModel.getProductClazzListReq(params);
-  };
-
-  renderItem = (itemProps) => {
-    const {
-      onPressSelectIndex,
-    } = ProductListModel;
-    return (
-      <ProductItemList
-        onPressSelectIndex={onPressSelectIndex}
-        onPressItem={this.onPressItem}
-        {...itemProps}
-      />
-    );
+    ProductBusinessStore.getProductBusinessListReq(params);
   };
 
   render() {
     const {
-      productList: { list, refreshing },
+      businessDetail: { list, refreshing },
       topList,
-    } = ProductListModel;
+    } = ProductBusinessStore;
     // console.log(toJS(topList));
     const flatProps = {
       data: topList,
-      renderItem: this.renderItem,
+      renderItemElem: <ProductItem />,
       onRefresh: this.getData,
       keyExtractor: item => item.id,
       refreshing,
@@ -91,8 +60,8 @@ class ProductList extends React.Component {
   }
 }
 
-ProductList.navigationOptions = ({ navigation }) => ({
-  title: '产品目录',
+ProductBusiness.navigationOptions = ({ navigation }) => ({
+  title: '产品商机列表',
   headerLeft: (
     <LeftBackIcon
       onPress={() => navigation.goBack()}
@@ -100,9 +69,9 @@ ProductList.navigationOptions = ({ navigation }) => ({
   ),
 });
 
-ProductList.defaultProps = {};
+ProductBusiness.defaultProps = {};
 
-ProductList.propTypes = {
+ProductBusiness.propTypes = {
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
     goBack: PropTypes.func,
@@ -116,4 +85,4 @@ ProductList.propTypes = {
   }).isRequired,
 };
 
-export default ProductList;
+export default ProductBusiness;

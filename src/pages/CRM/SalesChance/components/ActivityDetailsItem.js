@@ -15,12 +15,13 @@ import { formatDateByMoment, formatDateType, formatMoney } from 'utils/base';
 // constants
 import { OpportunityTypes, OpportunitySource } from 'constants/enum';
 
+// logicStores
+import BusinessStore from 'logicStores/business';
+
 // components
 import TitleItemComponent from 'components/Details/TitleItem';
 import { renderBasicItem, RemarkView, RemarkText, RightSuffix } from 'components/Details/Styles';
 import ProductItem from './ProductItem';
-
-import BusinessStore from '../../../../logicStores/business';
 
 const ContainerView = styled.View``;
 
@@ -35,7 +36,7 @@ class ActivityDetailsItem extends React.Component {
   }
 
   componentDidMount() {
-    BusinessStore.getBusinessDetailReq({
+    BusinessStore.getProductBusinessListReq({
       opportunityId: this.state.id,
     });
   }
@@ -106,7 +107,7 @@ class ActivityDetailsItem extends React.Component {
           budinessProducts.map(item => (
             <ProductItem
               key={item.id}
-              {...item}
+              item={item}
               onPress={() => {}}
             />
           ))

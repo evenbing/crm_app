@@ -1,5 +1,8 @@
 /**
- * create at 2018/08/13
+ * @component ModifyProductPrice.js
+ * @description 编辑产品页面
+ * @time 2018/9/4
+ * @author JUSTIN XU
  */
 import React from 'react';
 import PropTypes from 'prop-types';

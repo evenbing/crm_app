@@ -22,7 +22,7 @@ import { find as getTaskScheduleList } from '../service/taskSchedule';
 import { ModuleType, TASK_SCHEDULE_TYPE, TASK_SCHEDULE_CATEGORY } from '../constants/enum';
 import { getContactList } from '../service/contacts';
 import { getContractList } from '../service/contract';
-import { find as getProductBusinessList } from '../service/business';
+import { getProductBusinessList } from '../service/business';
 
 useStrict(true);
 

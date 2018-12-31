@@ -247,7 +247,7 @@ class Details extends React.Component {
         text: productTotal,
         onPress: () => {
           if (!hasData) return;
-          navigate(routers.productList, {
+          navigate(routers.productBusiness, {
             opportunityId: map.id,
           });
         },

@@ -9,8 +9,8 @@ import { action, observable, runInAction, useStrict } from 'mobx/';
 import autobind from 'autobind-decorator';
 import { ToastUtil } from 'xn-react-native-applets';
 import {
-  create,
-  find,
+  createProductBusiness,
+  getProductBusinessList,
 } from '../service/business';
 import { initDetailMap } from './initState';
 
@@ -20,14 +20,14 @@ useStrict(true);
 class BusinessStore {
   // 详情
   @observable businessDetail = initDetailMap;
-  @action async getBusinessDetailReq({ opportunityId }, callback) {
+  @action async getProductBusinessListReq({ opportunityId }, callback) {
     try {
       if (!opportunityId) throw new Error('opportunityId 不为空');
       this.businessDetail.refreshing = true;
       const {
         result = [],
         errors = [],
-      } = await find({ opportunityId });
+      } = await getProductBusinessList({ opportunityId });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.businessDetail.list = result;
@@ -43,12 +43,12 @@ class BusinessStore {
   }
 
   // 新增
-  @action async createBusinessReq({ businessDetails }, callback) {
+  @action async createProductBusinessReq({ businessDetails }, callback) {
     try {
       const {
         result = null,
         errors = [],
-      } = await create({ businessDetails });
+      } = await createProductBusiness({ businessDetails });
       if (errors.length) throw new Error(errors[0].message);
       runInAction(() => {
         this.businessDetail.map = result;

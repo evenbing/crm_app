@@ -32,6 +32,7 @@ export default {
   salesChanceDetails: 'app.tabView.root.crm.salesChanceDetails',
   salesChanceEditorMore: 'app.tabView.root.crm.salesChanceDetails.salesChanceEditorMore',
   salesChanceModifyProductPrice: 'app.tabView.root.crm.salesChance.salesChanceModifyProductPrice',
+  productBusiness: 'app.tabView.root.crm.salesChance.productBusiness',
   // perfStatist module
   perfStatist: 'app.tabView.root.crm.perfStatist',
   followUpStat: 'app.tabView.root.crm.followUpStat',

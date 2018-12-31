@@ -145,7 +145,7 @@ class EditorMore extends React.Component {
               tenantId,
               priceId,
             }));
-            BusinessStore.createBusinessReq({ businessDetails });
+            BusinessStore.createProductBusinessReq({ businessDetails });
           }
           pop(2);
         });
@@ -177,9 +177,9 @@ class EditorMore extends React.Component {
             tenantId,
             priceId,
           }));
-          BusinessStore.createBusinessReq({ businessDetails }, () => {
+          BusinessStore.createProductBusinessReq({ businessDetails }, () => {
             SalesChanceStore.getSalesChanceTotalReq({ id });
-            BusinessStore.getBusinessDetailReq({ opportunityId: id });
+            BusinessStore.getProductBusinessListReq({ opportunityId: id });
           });
         }
         pop(1);
@@ -547,7 +547,7 @@ class EditorMore extends React.Component {
             budinessProducts.map(item => (
               <ProductItem
                 key={item.id}
-                {...item}
+                item={item}
                 onPress={this.modifyProductPrice(item)}
               />
             ))

@@ -46,27 +46,34 @@ const StatusText = styled.Text`
   color: ${props => props.color};
 `;
 
-const ProductItem = ({
-  item,
-}) => (
-  <ContainerView>
-    <WrapperView>
-      <Thumbnail
-        imgUri={item.image}
-        size={80}
-      />
-      <ContentView>
-        <TitleText>{item.productName || '--'}</TitleText>
-        <PriceText>标准价格：¥{formatMoney(item.setPrice || 0)}</PriceText>
-      </ContentView>
-      <StatusText
-        color={item.isActive ? theme.primaryColor : theme.borderColor}
-      >
-        {item.isActive ? '已启用' : '未启用'}
-      </StatusText>
-    </WrapperView>
-  </ContainerView>
-);
+class ProductItem extends React.PureComponent {
+  render() {
+    const {
+      props: {
+        item,
+      },
+    } = this;
+    return (
+      <ContainerView>
+        <WrapperView>
+          <Thumbnail
+            imgUri={item.image}
+            size={80}
+          />
+          <ContentView>
+            <TitleText>{item.productName || '--'}</TitleText>
+            <PriceText>标准价格：¥{formatMoney(item.setPrice || 0)}</PriceText>
+          </ContentView>
+          <StatusText
+            color={item.isActive ? theme.primaryColor : theme.borderColor}
+          >
+            {item.isActive ? '已启用' : '未启用'}
+          </StatusText>
+        </WrapperView>
+      </ContainerView>
+    );
+  }
+}
 
 ProductItem.defaultProps = {
   item: {},

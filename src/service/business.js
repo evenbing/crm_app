@@ -19,9 +19,9 @@ const { post } = rpcUtil;
  * }
  * @return Promise<Object>
  */
-export function find({
+export function getProductBusinessList({
   pageNumber = 1,
-  pageSize = 15,
+  pageSize = 0,
   opportunityId,
 } = {}) {
   return post({
@@ -93,7 +93,7 @@ export function find({
  */
 
 
-export function create({
+export function createProductBusiness({
   businessDetails,
 } = {}) {
   return post({

@@ -1,6 +1,12 @@
+/**
+ * @component ProductItem.js
+ * @description 产品列表组件
+ * @time 2018/9/4
+ * @author JUSTIN XU
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Thumbnail } from 'xn-react-native-applets';
 
 // constants
@@ -13,11 +19,19 @@ import EditorIcon from 'img/editor.png';
 import { moderateScale } from 'utils/scale';
 import { formatMoney } from 'utils/base';
 
-const Container = styled.TouchableOpacity`
+const ContainerCss = css`
   flex-direction: row;
   padding: ${moderateScale(11)}px ${moderateScale(15)}px;
   justify-content: space-between;
   align-items: center;
+`;
+
+const ContainerTouch = styled.TouchableOpacity`
+  ${ContainerCss};
+`;
+
+const ContainerView = styled.View`
+  ${ContainerCss};
 `;
 
 const ImageView = styled(Thumbnail)`
@@ -83,109 +97,82 @@ const InputViewContent = styled.Text.attrs({
   font-size: ${moderateScale(14)}px;
 `;
 
-const ProductItem = (props) => {
-  const {
-    attachmentList = [],
-    productName = '',
-    standardPrice = '',
-    salesPrice = '',
-    salesNumber = '',
-    comment,
-    discount,
-    salesTotalPrice,
-    onPress,
-  } = props;
-  return (
-    <Container onPress={onPress}>
-      <ImageView
-        imgUri={attachmentList.length ? attachmentList[0].filePath : null}
-        size={109}
-      />
-      <DiscountView>
-        <Discount>{discount ? `折扣:${discount}%` : ''}</Discount>
-      </DiscountView>
-      <ContentView>
-        <Name> {productName} </Name>
-        <InputView>
-          <InputViewTitle>标准价格:</InputViewTitle>
-          <InputViewContent>{`¥${formatMoney(standardPrice)}`}</InputViewContent>
-        </InputView>
-        <InputView>
-          <InputViewTitle>销售价格:</InputViewTitle>
-          <InputViewContent>{salesPrice ? `¥${formatMoney(salesPrice)}` : ''}</InputViewContent>
-        </InputView>
-        <InputView>
-          <InputViewTitle>数量:</InputViewTitle>
-          <InputViewContent>{formatMoney(salesNumber) || ''}</InputViewContent>
-        </InputView>
-        <InputView>
-          <InputViewTitle>备注:</InputViewTitle>
-          <InputViewContent>{comment}</InputViewContent>
-        </InputView>
-        <TotalPrice>
-          <TotalPriceLabel>总价: </TotalPriceLabel>
-          <TotalPriceValue> {salesTotalPrice ? `¥${formatMoney(salesTotalPrice)}` : ''} </TotalPriceValue>
-        </TotalPrice>
-      </ContentView>
-      <Thumbnail
-        source={EditorIcon}
-        size={26}
-      />
-    </Container>
-  );
-};
+class ProductItem extends React.PureComponent {
+  render() {
+    const {
+      props: {
+        item: {
+          attachmentList = [],
+          productName = '',
+          standardPrice = '',
+          salesPrice = '',
+          salesNumber = '',
+          comment,
+          discount,
+          salesTotalPrice,
+        },
+        onPress,
+        showEditor,
+      },
+    } = this;
+    const ContainerType = onPress ? ContainerTouch : ContainerView;
+    return (
+      <ContainerType
+        onPress={onPress}
+      >
+        <ImageView
+          imgUri={attachmentList.length ? attachmentList[0].filePath : null}
+          size={109}
+        />
+        <DiscountView>
+          <Discount>{discount ? `折扣:${discount}%` : ''}</Discount>
+        </DiscountView>
+        <ContentView>
+          <Name> {productName} </Name>
+          <InputView>
+            <InputViewTitle>标准价格:</InputViewTitle>
+            <InputViewContent>{`¥${formatMoney(standardPrice)}`}</InputViewContent>
+          </InputView>
+          <InputView>
+            <InputViewTitle>销售价格:</InputViewTitle>
+            <InputViewContent>{salesPrice ? `¥${formatMoney(salesPrice)}` : ''}</InputViewContent>
+          </InputView>
+          <InputView>
+            <InputViewTitle>数量:</InputViewTitle>
+            <InputViewContent>{formatMoney(salesNumber) || ''}</InputViewContent>
+          </InputView>
+          <InputView>
+            <InputViewTitle>备注:</InputViewTitle>
+            <InputViewContent>{comment}</InputViewContent>
+          </InputView>
+          <TotalPrice>
+            <TotalPriceLabel>总价: </TotalPriceLabel>
+            <TotalPriceValue> {salesTotalPrice ? `¥${formatMoney(salesTotalPrice)}` : ''} </TotalPriceValue>
+          </TotalPrice>
+        </ContentView>
+        {
+          showEditor ? (
+            <Thumbnail
+              source={EditorIcon}
+              size={26}
+            />
+          ) : null
+        }
+      </ContainerType>
+    );
+  }
+}
 
 ProductItem.defaultProps = {
-  id: '',
-  opportunityId: '',
-  priceId: '',
-  productId: '',
-  productName: '',
-  rowVersion: '',
-  standardPrice: '',
-  salesPrice: '',
-  salesNumber: '',
-  tenantId: '',
-  comment: '',
-  discount: '',
-  salesTotalPrice: '',
-};
-
-ProductItem.defaultProps = {
-  attachmentList: [],
+  item: {},
+  onPress: null,
+  showEditor: true,
 };
 
 ProductItem.propTypes = {
-  id: PropTypes.string,
-  opportunityId: PropTypes.string,
-  priceId: PropTypes.string,
-  productId: PropTypes.string,
-  productName: PropTypes.string,
-  rowVersion: PropTypes.string,
-  standardPrice: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  salesPrice: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  salesNumber: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  discount: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  tenantId: PropTypes.string,
-  comment: PropTypes.string,
-  salesTotalPrice: PropTypes.string,
-  onPress: PropTypes.func.isRequired,
-  attachmentList: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
+  item: PropTypes.objectOf(PropTypes.any),
+  onPress: PropTypes.func,
+  showEditor: PropTypes.bool,
 };
 
 export default ProductItem;

@@ -61,6 +61,7 @@ import CreateSalesChanceScreen from './pages/CRM/SalesChance/CreateSalesChance';
 import SalesChanceDetailsScreen from './pages/CRM/SalesChance/Details';
 import SalesChanceEditorMoreScreen from './pages/CRM/SalesChance/EditorMore';
 import SalesChanceModifyProductPriceScreen from './pages/CRM/SalesChance/ModifyProductPrice';
+import ProductBusinessScreen from './pages/CRM/SalesChance/ProductBusiness';
 // root page -> CRM -> 业绩统计 module
 import PerfStatistScreen from './pages/CRM/PerfStatist';
 import FollowUpStatScreen from './pages/CRM/PerfStatist/FollowUpStat';
@@ -201,6 +202,7 @@ const CrmRouteConfig = {
   [routers.salesChanceDetails]: { screen: SalesChanceDetailsScreen },
   [routers.salesChanceEditorMore]: { screen: SalesChanceEditorMoreScreen },
   [routers.salesChanceModifyProductPrice]: { screen: SalesChanceModifyProductPriceScreen },
+  [routers.productBusiness]: { screen: ProductBusinessScreen },
 
   [routers.perfStatist]: { screen: PerfStatistScreen },
   [routers.followUpStat]: { screen: FollowUpStatScreen },
