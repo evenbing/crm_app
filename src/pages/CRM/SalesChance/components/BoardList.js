@@ -8,14 +8,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+// constants
+import theme from 'constants/theme';
+
 // components
-import Accordion from '../../../../components/Accordion';
-import ListItem from '../../../../components/SwipeList/ListItem';
-import theme from '../../../../constants/theme';
+import Accordion from 'components/Accordion';
+import ListItem from 'components/SwipeList/ListItem';
 
-const ContainerView = styled.View``;
+const ContainerView = styled.ScrollView``;
 
-class BoardList extends React.Component {
+class BoardList extends React.PureComponent {
   state = {
     activeIndex: 0,
   };
@@ -105,38 +107,6 @@ class BoardList extends React.Component {
             );
           })
         }
-        {/* <Accordion
-          left="需求确定 (30%)"
-          right="20,000,000.00/1个"
-          showMain={activeIndex === 0}
-          onPress={() => this.onPressHeader(0)}
-        >
-          <ListItem {...ListItemProps} />
-        </Accordion>
-        <Accordion
-          left="初步接洽 (10%)"
-          right="0.00/0个"
-          showMain={activeIndex === 1}
-          onPress={() => this.onPressHeader(1)}
-        >
-          <ListItem {...ListItemProps} />
-        </Accordion>
-        <Accordion
-          left="方案报价 (60%)"
-          right="0.00/0个"
-          showMain={activeIndex === 2}
-          onPress={() => this.onPressHeader(2)}
-        >
-          <ListItem {...ListItemProps} />
-        </Accordion>
-        <Accordion
-          left="谈判审核 (10%)"
-          right="0.00/0个"
-          showMain={activeIndex === 3}
-          onPress={() => this.onPressHeader(3)}
-        >
-          <ListItem {...ListItemProps} />
-        </Accordion> */}
       </ContainerView>
     );
   }

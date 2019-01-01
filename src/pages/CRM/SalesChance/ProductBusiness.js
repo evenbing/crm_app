@@ -38,12 +38,14 @@ class ProductBusiness extends React.Component {
   render() {
     const {
       businessDetail: { list, refreshing },
-      topList,
     } = ProductBusinessStore;
-    // console.log(toJS(topList));
     const flatProps = {
-      data: topList,
-      renderItemElem: <ProductItem />,
+      data: list,
+      renderItemElem: (
+        <ProductItem
+          showEditor={false}
+        />
+      ),
       onRefresh: this.getData,
       keyExtractor: item => item.id,
       refreshing,
