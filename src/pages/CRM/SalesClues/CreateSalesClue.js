@@ -11,7 +11,7 @@ import { CommStatusBar, LeftBackIcon, RightView, ToastUtil } from 'xn-react-nati
 // constants
 import { theme, routers } from 'constants';
 import { SalesClueEnum } from 'constants/form';
-import { MarkActivityType } from 'constants/enum';
+import { LeadsSource, MarkActivityType } from 'constants/enum';
 
 // logicStores
 import SalesCluesModel from 'logicStores/salesClues';
@@ -24,11 +24,14 @@ import NavInputItem from 'components/NavInputItem';
 // import ScanCard from '../../../components/Create/ScanCard';
 import CreateMoreButton from 'components/Create/CreateMoreButton';
 import { ListView, CenterText } from 'components/Styles/Form';
+import FormActionSheet from 'components/Modal/FormActionSheet';
 
 class CreateSalesClue extends React.Component {
   state = {
     name: null,
+    phone: null,
     companyName: null,
+    source: null,
     departmentId: null,
     leadsDepartmentName: null,
     activityId: null,
@@ -74,7 +77,9 @@ class CreateSalesClue extends React.Component {
     const {
       state: {
         name,
+        phone,
         companyName,
+        source,
         departmentId,
         leadsDepartmentName,
         activityId,
@@ -108,6 +113,15 @@ class CreateSalesClue extends React.Component {
             })}
           />
           <NavInputItem
+            leftText="电话"
+            {...theme.getLeftStyle({
+              keyboardType: 'numeric',
+              placeholder: SalesClueEnum.phone,
+              value: phone,
+              onChangeText: phone => this.setState({ phone }),
+            })}
+          />
+          <NavInputItem
             leftText="客户名称"
             {...theme.getLeftStyle({
               placeholder: SalesClueEnum.companyName,
@@ -115,6 +129,25 @@ class CreateSalesClue extends React.Component {
               onChangeText: companyName => this.setState({ companyName }),
             })}
           />
+          <FormActionSheet
+            onConfirm={({ key }) => {
+              this.setState({ source: key });
+            }}
+            typeEnum={LeadsSource}
+          >
+            <NavInputItem
+              leftText="线索来源"
+              needPress={false}
+              center={
+                <CenterText
+                  active={source}
+                >
+                  {source ? LeadsSource[source] : SalesClueEnum.source}
+                </CenterText>
+              }
+              {...theme.navItemStyle}
+            />
+          </FormActionSheet>
           <NavInputItem
             leftText="市场活动"
             onPress={() => navigate(routers.markActivity, {

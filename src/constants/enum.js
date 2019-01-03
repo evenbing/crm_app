@@ -220,6 +220,13 @@ export const TimeTypes = {
   THIS_YEAR: '本年',
 };
 
+export const OpportunityStatusType = {
+  PLANNED: '已计划',
+  ONGOING: '进行中',
+  END: '已关闭',
+  SUSPEND: '终止',
+};
+
 
 // 业务类型
 // label：显示的给用户

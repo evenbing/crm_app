@@ -7,15 +7,16 @@
 import {
   TYPE_CUSTOMER_LIST,
   TYPE_LIST,
-} from '../../../constants/drawer';
+} from 'constants/drawer';
 import {
   initFilterListMap,
   initBoardOrListMap,
-} from '../../../constants/screenTab';
+} from 'constants/screenTab';
 import {
   TimeTypes,
-} from '../../../constants/enum';
-import { mapToArray } from '../../../utils/base';
+  OpportunityStatusType,
+} from 'constants/enum';
+import { mapToArray } from 'utils/base';
 
 export const FilterList = [
   {
@@ -31,6 +32,13 @@ export const FilterList = [
     type: TYPE_LIST,
     selectedIndex: -1,
     list: mapToArray(TimeTypes),
+  },
+  {
+    key: 'statusList',
+    label: '活动状态',
+    type: TYPE_LIST,
+    selectedIndex: -1,
+    list: mapToArray(OpportunityStatusType),
   },
   {
     key: 'customerIds',
