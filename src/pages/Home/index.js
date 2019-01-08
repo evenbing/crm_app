@@ -301,7 +301,7 @@ Home.navigationOptions = ({ navigation }) => ({
     <TopRightView
       appName="CRM"
       onPress={() => navigation.navigate(routers.about, {
-        // code: 'CRM',
+        code: 'crm_app',
       })}
     />
   ),
