@@ -1,13 +1,13 @@
-## react-native
+### crm_app
 
 ### 在线原型
 
->> https://run.mockplus.cn/rOs13rLy8ED1voWL/index.html?to=42B2F30D-BA75-4DE2-A5D2-AFC3874D95D5
+> https://run.mockplus.cn/rOs13rLy8ED1voWL/index.html?to=42B2F30D-BA75-4DE2-A5D2-AFC3874D95D5
 
 ###版本环境
 ```html
-node 8.0+(v8.11.1)
-npm 5.0+(v5.6.0)
+node 8.0+(v8.12.0)
+npm 5.0+(v6.7.0)
 java (v1.8.0_172)
 ```
 ### 安装依赖
@@ -24,13 +24,13 @@ java (v1.8.0_172)
   |--components     组件
   |--constants      常量
   |--img            静态资源
-  |--logicStores    mobx modal数据
+  |--logicStores    mobx store
   |--pages          页面(一个tabBar一个文件夹.)
     |--Card         共用 card
       |--CompanyDepartment          公司部门
       |--RelatedDocs                相关文档
       |--SelectDepartment           选择部门
-      |--TeamMembers                团队成员
+      |--SelectEmployee             选择团队
       |--TeamRoles                  团队成员2
     |--CRM          CRM tab
       |--Contacts                   联系人模块（Justin）
@@ -86,12 +86,10 @@ java (v1.8.0_172)
   |--service        服务API
   |--utils          工具文件夹
   |--app.js         
-  |--config         xhr环境配置        
   |--router.js      路由配置        
   |--setup.js       全局入口js
 
 |--package.json
 |--install.sh       打包脚本
-|--PROGRESS.md      进度md
 |--README.md
 ```
