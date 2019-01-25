@@ -139,7 +139,6 @@ const HomeNavigatorConfig = {
       backgroundColor: '#ffffff',
       height: theme.headerHeight + getStatusBarHeight(true),
       borderBottomWidth: 0,
-      ...theme.commonShadow,
     },
     headerTitleStyle: {
       color: '#333238',

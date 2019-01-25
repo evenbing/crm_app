@@ -14,9 +14,10 @@ import {
 } from 'constants/screenTab';
 import {
   TimeTypes,
-  OpportunityStatusType,
 } from 'constants/enum';
 import { mapToArray } from 'utils/base';
+
+export const SALES_PHASE_IDS_KEY = 'salesPhaseIds';
 
 export const FilterList = [
   {
@@ -34,11 +35,11 @@ export const FilterList = [
     list: mapToArray(TimeTypes),
   },
   {
-    key: 'statusList',
-    label: '活动状态',
+    key: SALES_PHASE_IDS_KEY,
+    label: '销售状态',
     type: TYPE_LIST,
     selectedIndex: -1,
-    list: mapToArray(OpportunityStatusType),
+    list: [],
   },
   {
     key: 'customerIds',

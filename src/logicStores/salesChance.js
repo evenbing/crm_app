@@ -237,15 +237,14 @@ class SalesChanceStore {
 
   // 高级查询销售阶段
   @observable salesPhaseList = initFlatList;
-  @action async findSalesPhaseReq(options) {
+  @action async findSalesPhaseReq(options = {}, callback) {
     try {
       const {
         result = [],
       } = await findSalesPhase(options);
-      // debugger;
       runInAction(() => {
-        // TODO next
         this.salesPhaseList.list = result;
+        callback && callback(result);
       });
     } catch (e) {
       ToastUtil.showError(e.message);

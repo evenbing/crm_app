@@ -10,6 +10,9 @@ import styled from 'styled-components';
 import { Thumbnail } from 'xn-react-native-applets';
 import { Image, View } from 'react-native';
 
+// static source
+import defaultIcon from 'img/default_avatar_icon.png';
+
 // constants
 import { theme } from 'constants';
 
@@ -119,7 +122,7 @@ class RankItem extends React.PureComponent {
               </RankView>
               <Thumbnail
                 imgUri={item.headImg ? item.headImg.trim() : null}
-                // imgUri={item.headImg ? 'https://sqimg.qq.com/qq_product_operations/im/2015/qblog_fig2.png' : null}
+                defaultIcon={defaultIcon}
                 size={52}
                 round
               />

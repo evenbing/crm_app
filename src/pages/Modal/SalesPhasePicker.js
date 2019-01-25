@@ -13,7 +13,7 @@ import SalesChanceStore from 'logicStores/salesChance';
 @observer
 class SalesPhasePicker extends Component {
   componentDidMount() {
-    SalesChanceStore.findSalesPhaseReq({ isActive: true });
+    SalesChanceStore.findSalesPhaseReq();
   }
 
   render() {

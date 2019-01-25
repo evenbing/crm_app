@@ -46,6 +46,7 @@ import {
   SalesChanceAmountTypeFilterMap,
   SalesChanceResponsibilityTypeFilterMap,
   IsBoardTypeMap,
+  SALES_PHASE_IDS_KEY,
   FilterList,
 } from './_fieldCfg';
 
@@ -72,7 +73,19 @@ class SalesChance extends React.Component {
     this.props.navigation.setParams({
       onPressRight: this.onPressRight,
     });
-    SalesChanceStore.findSalesPhaseReq({});
+    SalesChanceStore.findSalesPhaseReq({}, (list) => {
+      const { filterList } = this.state;
+      const index = filterList.findIndex(v => v.key === SALES_PHASE_IDS_KEY);
+      if (index && !filterList[index].list.length) {
+        filterList[index].list = list.map((v) => {
+          v.key = v.id;
+          return v;
+        });
+        this.setState({
+          filterList,
+        });
+      }
+    });
     this.getData();
   }
   onToggleType = () => {
@@ -222,7 +235,7 @@ class SalesChance extends React.Component {
     });
     // query sideBar
     selectedList.forEach((v) => {
-      if (v.type === TYPE_CUSTOMER_LIST || v.key === 'statusList') {
+      if (v.type === TYPE_CUSTOMER_LIST || v.key === SALES_PHASE_IDS_KEY) {
         obj[v.key] = [v.value];
       } else {
         obj[v.key] = v.value;

@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TouchableView, Thumbnail } from 'xn-react-native-applets';
 
+// static source
+import defaultIcon from 'img/default_avatar_icon.png';
+
 import { theme } from 'constants';
 
 const ContainerView = styled(TouchableView)`
@@ -62,8 +65,8 @@ const MemberItem = ({
         )
       }
       <Thumbnail
-        source={require('../../img/default_avatar.png')}
         imgUri={item.headImg ? item.headImg.trim() : null}
+        defaultIcon={defaultIcon}
         size={60}
       />
       <NameText>{item.userName}</NameText>

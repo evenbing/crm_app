@@ -7525,10 +7525,10 @@ xmldom@0.1.x:
   resolved "http://registry.npm.taobao.org/xmldom/download/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
   integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
 
-xn-react-native-applets@^0.1.1:
-  version "0.1.1"
-  resolved "http://registry.npm.taobao.org/xn-react-native-applets/download/xn-react-native-applets-0.1.1.tgz#86dbdc8354e1e6d30a086d9de754952a661f6533"
-  integrity sha1-htvcg1Th5tMKCG2d51SVKmYfZTM=
+xn-react-native-applets@^0.1.2:
+  version "0.1.2"
+  resolved "http://registry.npm.taobao.org/xn-react-native-applets/download/xn-react-native-applets-0.1.2.tgz#ab830c3b2f31077f3d17dc9b246f478e631122a1"
+  integrity sha1-q4MMOy8xB389F9ybJG9HjmMRIqE=
   dependencies:
     js-root-toast "^0.1.5"
     md5 "^2.2.1"

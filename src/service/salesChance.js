@@ -28,7 +28,7 @@ const { post } = rpcUtil;
  *  sourceType  机会来源  否
  *  followTimeType  跟进时间范围  否 TODAY-今日，YESTERDAY-昨日，LAST_WEEK-上周，THIS_WEEK-本周，NEXT_WEEK-下周，LAST_MONTH-上月，THIS_MONTH-本月，LAST_QUARTER-上季，THIS_QUARTER-本季，LAST_YEAR-上年，THIS_YEAR-本年
  *  sortColumn  表头排序  否
- *  statusList 活动状态 否 PLANNED-已计划，ONGOING-进行中，END-已关闭，SUSPEND-终止 [状态1，状态2,...]
+ *  salesPhaseIds 销售状态
  * }
  */
 export function getSalesChanceList({
@@ -49,7 +49,7 @@ export function getSalesChanceList({
   sourceType,
   followTimeType,
   sortColumn,
-  statusList,
+  salesPhaseIds,
 } = {}) {
   return post({
     method: 'api.customerrelations.opportunity.find',
@@ -70,7 +70,7 @@ export function getSalesChanceList({
     sourceType,
     followTimeType,
     sortColumn,
-    statusList,
+    salesPhaseIds,
   });
 }
 
@@ -287,14 +287,13 @@ export function changeOwnerUser({
 }
 
 /** 高级查询销售阶段
- *
- * @param
+ * @params
  * {
- * isActive 是否启用 否
+ *  isActive 是否启用 否
  * } param0
  */
 export function findSalesPhase({
-  isActive,
+  isActive = true,
 } = {}) {
   return post({
     method: 'api.customerrelations.salesPhase.find',

@@ -40,7 +40,7 @@
   "rn-viewpager": "^1.2.9",
   "styled-components": "^3.3.3",
   "uuid": "^3.3.2",
-  "xn-react-native-applets": "^0.1.1"
+  "xn-react-native-applets": "^0.1.2"
  },
  "devDependencies": {
   "babel-eslint": "^8.2.3",
