@@ -66,7 +66,7 @@ const MemberItem = ({
       }
       <Thumbnail
         imgUri={item.headImg ? item.headImg.trim() : null}
-        defaultIcon={defaultIcon}
+        defaultImage={defaultIcon}
         size={60}
       />
       <NameText>{item.userName}</NameText>
